@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0008]:000121390024092156",
+    "length": 4000,
+    "offset": 267000,
+    "rationale": [
+      "Revisit the previously read case-001 ICFR window whose actual text is omitted from the retained evidence page.",
+      "Case-005 explicitly reports unremediated material weakness, while case-002 has an effective ICFR audit opinion and case-007 also has effective ICFR; recover case-001 raw meaning before judging recurrence or proposing a reusable measurement.",
+      "This is an ordinary charged reread, not new coverage; no conclusion about omitted source content is assumed."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0008]:000121390024092156\", \"offset\": 267000, \"length\": 4000, \"rationale\": [\"Revisit the previously read case-001 ICFR window whose actual text is omitted from the retained evidence page.\", \"Case-005 explicitly reports unremediated material weakness, while case-002 has an effective ICFR audit opinion and case-007 also has effective ICFR; recover case-001 raw meaning before judging recurrence or proposing a reusable measurement.\", \"This is an ordinary charged reread, not new coverage; no conclusion about omitted source content is assumed.\"]}",
+  "request_hash": "922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b",
+  "response_id": "local-922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b",
+  "usage": {
+    "accounting_tokens": 237574,
+    "agent_id": "/root/icfr_v4_h025",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4431a08cc68eed0a04fb98eb527559ee2137352ba87e9bc779d44d9c56493d07",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "f90867ab7ebbc99b81a9879aac7b611a01f15a2b0a195996764800dfcab5ea0d",
+    "request_hash": "922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b",
+    "token_usage": null
+  }
+}

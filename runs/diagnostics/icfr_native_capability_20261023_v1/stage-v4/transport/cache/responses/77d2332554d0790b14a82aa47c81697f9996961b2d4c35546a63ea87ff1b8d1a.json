@@ -1,0 +1,38 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-004",
+      "case-006",
+      "case-008"
+    ],
+    "max_documents": 6,
+    "query": "internal control over financial reporting",
+    "rationale": [
+      "Read evidence distinguishes unresolved material weakness in case-005, significant deficiencies in case-001, and explicit effective ICFR opinions in cases-002 and -007; disclosure controls in case-003 are a different assessment.",
+      "Locate PIT ICFR assessment sections for the remaining control cases to test whether severity or remediation status recurs across independent issuers before fixing a reusable measurement.",
+      "This narrowed query addresses unread case scopes; existing readable windows remain evidence, and query hits will require bounded raw reads."
+    ],
+    "source_families": [
+      "filing",
+      "10-k",
+      "sec_filing"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"fetch_evidence\", \"case_refs\": [\"case-004\", \"case-006\", \"case-008\"], \"source_families\": [\"filing\", \"10-k\", \"sec_filing\"], \"max_documents\": 6, \"query\": \"internal control over financial reporting\", \"rationale\": [\"Read evidence distinguishes unresolved material weakness in case-005, significant deficiencies in case-001, and explicit effective ICFR opinions in cases-002 and -007; disclosure controls in case-003 are a different assessment.\", \"Locate PIT ICFR assessment sections for the remaining control cases to test whether severity or remediation status recurs across independent issuers before fixing a reusable measurement.\", \"This narrowed query addresses unread case scopes; existing readable windows remain evidence, and query hits will require bounded raw reads.\"]}",
+  "request_hash": "77d2332554d0790b14a82aa47c81697f9996961b2d4c35546a63ea87ff1b8d1a",
+  "response_id": "local-77d2332554d0790b14a82aa47c81697f9996961b2d4c35546a63ea87ff1b8d1a",
+  "usage": {
+    "accounting_tokens": 238913,
+    "agent_id": "/root/icfr_v4_h022",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "160c023894bab486127533ec5a8697136e3015940fbfd1884fcaac0d3278983d",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "4493ad0157565f7a268b5e3a0732eb18b259e84ceecb6512784dbc24f7b671bd",
+    "request_hash": "77d2332554d0790b14a82aa47c81697f9996961b2d4c35546a63ea87ff1b8d1a",
+    "token_usage": null
+  }
+}

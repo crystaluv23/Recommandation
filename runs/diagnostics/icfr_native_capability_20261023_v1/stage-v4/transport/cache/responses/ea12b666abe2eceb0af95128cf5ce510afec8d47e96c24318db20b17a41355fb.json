@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0002]:000095017025054321",
+    "length": 4000,
+    "offset": 857281,
+    "rationale": [
+      "Read the located annual-report material-weakness passage for case-005 to establish its actual ICFR conclusion and reporting period.",
+      "Compare the annual disclosure with the already-read May quarterly disclosure; repeated disclosure is corroboration, not an independent event.",
+      "Retain significant deficiencies, material weaknesses, effective ICFR opinions and disclosure-control conclusions as distinct states; generic audit language alone does not establish a weakness."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0002]:000095017025054321\",\"offset\":857281,\"length\":4000,\"rationale\":[\"Read the located annual-report material-weakness passage for case-005 to establish its actual ICFR conclusion and reporting period.\",\"Compare the annual disclosure with the already-read May quarterly disclosure; repeated disclosure is corroboration, not an independent event.\",\"Retain significant deficiencies, material weaknesses, effective ICFR opinions and disclosure-control conclusions as distinct states; generic audit language alone does not establish a weakness.\"]}",
+  "request_hash": "ea12b666abe2eceb0af95128cf5ce510afec8d47e96c24318db20b17a41355fb",
+  "response_id": "local-ea12b666abe2eceb0af95128cf5ce510afec8d47e96c24318db20b17a41355fb",
+  "usage": {
+    "accounting_tokens": 235423,
+    "agent_id": "/root/icfr_v4_h020",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "b26107c52f7af4d40a17082809524598ac0b670277a96181191294fcc69425c7",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "af8794e870c0977e00ed60d40fc69b631d23ae1948a2c96420ad1a89bf1457e4",
+    "request_hash": "ea12b666abe2eceb0af95128cf5ce510afec8d47e96c24318db20b17a41355fb",
+    "token_usage": null
+  }
+}

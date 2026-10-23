@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0005]:[ANON_ID_0006]24000089",
+    "length": 4000,
+    "offset": 152965,
+    "rationale": [
+      "Read the located point-in-time ICFR passage for case-007 to test recurrence beyond case-005's explicit unremediated material weakness.",
+      "Interpret current weakness, historical references and remediation separately; case-001 discloses significant deficiencies, while case-002 has an effective ICFR audit opinion.",
+      "The navigation hint is discovery only; its matching source binding permits a bounded raw read, not an evidentiary conclusion."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0005]:[ANON_ID_0006]24000089\", \"offset\": 152965, \"length\": 4000, \"rationale\": [\"Read the located point-in-time ICFR passage for case-007 to test recurrence beyond case-005's explicit unremediated material weakness.\", \"Interpret current weakness, historical references and remediation separately; case-001 discloses significant deficiencies, while case-002 has an effective ICFR audit opinion.\", \"The navigation hint is discovery only; its matching source binding permits a bounded raw read, not an evidentiary conclusion.\"]}",
+  "request_hash": "cdf2e676ccdf05b60001f36cc2be3470644ee2472795cd82d38b497eb5a40fe6",
+  "response_id": "local-cdf2e676ccdf05b60001f36cc2be3470644ee2472795cd82d38b497eb5a40fe6",
+  "usage": {
+    "accounting_tokens": 230138,
+    "agent_id": "/root/icfr_v4_h017",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "80c343c2141f6c3f3aa11e7bf7757a5cb738932253c58a4596a1b82b32ba9e74",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "b5c2ac38ce18b021382c132662829cc7eb04c9cc8e6d1b93a46f42943f8b15e6",
+    "request_hash": "cdf2e676ccdf05b60001f36cc2be3470644ee2472795cd82d38b497eb5a40fe6",
+    "token_usage": null
+  }
+}

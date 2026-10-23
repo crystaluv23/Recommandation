@@ -1,0 +1,37 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-005",
+      "case-007"
+    ],
+    "max_documents": 4,
+    "query": "material weakness",
+    "rationale": [
+      "Read evidence establishes significant deficiencies in positive case-001 and an effective audited ICFR opinion in control case-002; these are distinct reported control states, not demonstrated stock effects.",
+      "Positive case-003 reports effective disclosure controls and no material ICFR changes, which does not independently establish an effective ICFR assessment.",
+      "Narrow the existing source search to two additional positive cases to locate ICFR conclusions and test recurrence before defining a reusable predicate; unread directory entries and query hits cannot establish their control state."
+    ],
+    "source_families": [
+      "filing",
+      "10-k",
+      "sec_filing"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"fetch_evidence\", \"case_refs\": [\"case-005\", \"case-007\"], \"source_families\": [\"filing\", \"10-k\", \"sec_filing\"], \"max_documents\": 4, \"query\": \"material weakness\", \"rationale\": [\"Read evidence establishes significant deficiencies in positive case-001 and an effective audited ICFR opinion in control case-002; these are distinct reported control states, not demonstrated stock effects.\", \"Positive case-003 reports effective disclosure controls and no material ICFR changes, which does not independently establish an effective ICFR assessment.\", \"Narrow the existing source search to two additional positive cases to locate ICFR conclusions and test recurrence before defining a reusable predicate; unread directory entries and query hits cannot establish their control state.\"]}",
+  "request_hash": "9868fe226e12218f67b0a48c011f657facde32f449f836e886172f3db3014270",
+  "response_id": "local-9868fe226e12218f67b0a48c011f657facde32f449f836e886172f3db3014270",
+  "usage": {
+    "accounting_tokens": 227775,
+    "agent_id": "/root/icfr_v4_h015",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "e97d4a02099f8205ac9522315b086dfa9f444d46bee6e550a7a3093ccc4dd6d1",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "014ec7a6cc74d0c2af776260d29bc6d73f7aa8da085c5f6c959f18d280c7cfc3",
+    "request_hash": "9868fe226e12218f67b0a48c011f657facde32f449f836e886172f3db3014270",
+    "token_usage": null
+  }
+}

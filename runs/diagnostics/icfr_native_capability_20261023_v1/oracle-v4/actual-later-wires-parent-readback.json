@@ -1,0 +1,6 @@
+{
+  "review_evidence_sha256": "0e36e6f9916a1508a62d140c3fd32ddb7e19d994174e2e31ab47aeec9eadaf6e",
+  "immutable_bindings_verified": 118,
+  "scope": "parent readback of static h001-h023 answers/observations and h024 input only; not a later answer or full semantic acceptance",
+  "findings": []
+}

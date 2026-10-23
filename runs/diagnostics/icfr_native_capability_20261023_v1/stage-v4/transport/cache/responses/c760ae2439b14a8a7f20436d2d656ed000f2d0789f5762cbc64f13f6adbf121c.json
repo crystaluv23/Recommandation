@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+    "length": 4000,
+    "offset": 861281,
+    "rationale": [
+      "Continue the case-005 annual ICFR assessment at the issued next_readable_start; the retained window ends mid-description of the material weakness.",
+      "Verify the precise deficiency and remediation status before defining a reusable ICFR measurement; preserve significant deficiencies, material weaknesses, disclosure controls and auditor opinions as distinct observations.",
+      "The later case-005 quarterly disclosure states the weakness remained unremediated, while the read case-002 auditor report states effective ICFR; neither contrast proves stock-direction benefit."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0000]:000095017025054321\",\"offset\":861281,\"length\":4000,\"rationale\":[\"Continue the case-005 annual ICFR assessment at the issued next_readable_start; the retained window ends mid-description of the material weakness.\",\"Verify the precise deficiency and remediation status before defining a reusable ICFR measurement; preserve significant deficiencies, material weaknesses, disclosure controls and auditor opinions as distinct observations.\",\"The later case-005 quarterly disclosure states the weakness remained unremediated, while the read case-002 auditor report states effective ICFR; neither contrast proves stock-direction benefit.\"]}",
+  "request_hash": "c760ae2439b14a8a7f20436d2d656ed000f2d0789f5762cbc64f13f6adbf121c",
+  "response_id": "local-c760ae2439b14a8a7f20436d2d656ed000f2d0789f5762cbc64f13f6adbf121c",
+  "usage": {
+    "accounting_tokens": 236949,
+    "agent_id": "/root/icfr_v4_h021",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "ae7722857c9607a28ae3ec928625ff0daf28c49ca9f459b18542bea2ed43b960",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "115c6e4a3ae2767529b62a2d154ba68b3efe8846d219cb6a55b4c916918ec53d",
+    "request_hash": "c760ae2439b14a8a7f20436d2d656ed000f2d0789f5762cbc64f13f6adbf121c",
+    "token_usage": null
+  }
+}

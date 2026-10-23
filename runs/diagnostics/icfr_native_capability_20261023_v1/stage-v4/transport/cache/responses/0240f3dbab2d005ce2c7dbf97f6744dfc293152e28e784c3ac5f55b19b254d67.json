@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000114036125008438",
+    "length": 4000,
+    "offset": 5491290,
+    "rationale": [
+      "Read the preceding annual-report audit opinion for control case-002; the last window contains audit procedures and generic ICFR definitions, not the effectiveness conclusion.",
+      "Case-001 explicitly reports significant deficiencies, which are less severe than material weaknesses. Preserve that distinction and do not equate effective disclosure controls or no quarterly ICFR changes with an affirmative ICFR effectiveness opinion.",
+      "Establish direct source support for the comparison before defining a reusable ICFR measurement; other cases and unexamined spans remain unknown."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0000]:000114036125008438\",\"offset\":5491290,\"length\":4000,\"rationale\":[\"Read the preceding annual-report audit opinion for control case-002; the last window contains audit procedures and generic ICFR definitions, not the effectiveness conclusion.\",\"Case-001 explicitly reports significant deficiencies, which are less severe than material weaknesses. Preserve that distinction and do not equate effective disclosure controls or no quarterly ICFR changes with an affirmative ICFR effectiveness opinion.\",\"Establish direct source support for the comparison before defining a reusable ICFR measurement; other cases and unexamined spans remain unknown.\"]}",
+  "request_hash": "0240f3dbab2d005ce2c7dbf97f6744dfc293152e28e784c3ac5f55b19b254d67",
+  "response_id": "local-0240f3dbab2d005ce2c7dbf97f6744dfc293152e28e784c3ac5f55b19b254d67",
+  "usage": {
+    "accounting_tokens": 217451,
+    "agent_id": "/root/icfr_v4_h013",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "afc2d3b7da3007815096d5e169628d619593e6578413e5505f91b0f2e0597a20",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "043873f870bdbe05beac204fe8ad713d40680bd72bf7a2e1e152243d52d4c0ba",
+    "request_hash": "0240f3dbab2d005ce2c7dbf97f6744dfc293152e28e784c3ac5f55b19b254d67",
+    "token_usage": null
+  }
+}

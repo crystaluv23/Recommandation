@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:[ANON_ID_0001]24000179",
+    "length": 4000,
+    "offset": 2099411,
+    "rationale": [
+      "Continue the incomplete case-004 control disclosure at its supplied next readable coordinate.",
+      "Distinguish no material ICFR changes from an affirmative effectiveness assessment; the current sentence is truncated and establishes neither remediation nor absence of weaknesses.",
+      "Read the remaining control text before defining the reusable ICFR measurement and comparing it with the observed significant deficiencies, material weakness and effective-control opinions."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0000]:[ANON_ID_0001]24000179\",\"offset\":2099411,\"length\":4000,\"rationale\":[\"Continue the incomplete case-004 control disclosure at its supplied next readable coordinate.\",\"Distinguish no material ICFR changes from an affirmative effectiveness assessment; the current sentence is truncated and establishes neither remediation nor absence of weaknesses.\",\"Read the remaining control text before defining the reusable ICFR measurement and comparing it with the observed significant deficiencies, material weakness and effective-control opinions.\"]}",
+  "request_hash": "f29cadf4a20c09fb9b117aab34806e4dc838d9d141ed2bd1be7a5dde6571a04f",
+  "response_id": "local-f29cadf4a20c09fb9b117aab34806e4dc838d9d141ed2bd1be7a5dde6571a04f",
+  "usage": {
+    "accounting_tokens": 238156,
+    "agent_id": "/root/icfr_v4_h024",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "09a9ceb0c2308a74ec35ad6fca56b9628f41bde4f133c24bcc07eccd82bc7fd7",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "696e925952119400586346c8f7fdc4d5d20a10c22e01d1e86c0bd11e3a02b07a",
+    "request_hash": "f29cadf4a20c09fb9b117aab34806e4dc838d9d141ed2bd1be7a5dde6571a04f",
+    "token_usage": null
+  }
+}

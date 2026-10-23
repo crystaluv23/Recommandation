@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:[ANON_ID_0001]24000013",
+    "length": 4000,
+    "offset": 1171171,
+    "rationale": [
+      "The case-007 window describes audit procedures, not the issuer-specific ICFR opinion; it cannot establish a material weakness or effective controls.",
+      "Read the immediately preceding source window to locate the actual opinion and test the emerging deficiency-severity contrast against another positive case.",
+      "Keep significant deficiencies, material weaknesses, disclosure-control conclusions and generic audit language distinct; no cohort-wide conclusion is established."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0000]:[ANON_ID_0001]24000013\",\"offset\":1171171,\"length\":4000,\"rationale\":[\"The case-007 window describes audit procedures, not the issuer-specific ICFR opinion; it cannot establish a material weakness or effective controls.\",\"Read the immediately preceding source window to locate the actual opinion and test the emerging deficiency-severity contrast against another positive case.\",\"Keep significant deficiencies, material weaknesses, disclosure-control conclusions and generic audit language distinct; no cohort-wide conclusion is established.\"]}",
+  "request_hash": "151868c186184f8ad6f43a6b2673537c62bb1e27b10bf21a3118df9a93c03d1d",
+  "response_id": "local-151868c186184f8ad6f43a6b2673537c62bb1e27b10bf21a3118df9a93c03d1d",
+  "usage": {
+    "accounting_tokens": 231173,
+    "agent_id": "/root/icfr_v4_h019",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "7b2e9112c25b1f3a60920b897d4d65102d8b957ff56cced15154f56a13a36549",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "7fd579847a6a3df429f75ea8c08e9a5193018e93ef4766cf897a53f1c395bc6d",
+    "request_hash": "151868c186184f8ad6f43a6b2673537c62bb1e27b10bf21a3118df9a93c03d1d",
+    "token_usage": null
+  }
+}

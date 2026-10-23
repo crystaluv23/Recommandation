@@ -2027,9 +2027,11 @@
         "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/equivalence-evidence.json",
         "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-first-wires-review.md",
         "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-read-retention-review.md",
-        "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json"
+        "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json"
       ],
-      "result": "Active isolated v4 diagnostic. Independent implementation counterreview27 existing+17 new controls passed; original15 protected semantic fields unchanged,182 exact working-tree files archived and read back, source263/stable18/needs265/disclosures6 and candidate1/consumer4 fixed. Old v3 ten/2055941 charged, no old answers/actions/cache imported and no cap increase. Fresh native first4 wires and read004-to007 independently preserve actual catalog18, source spans/query origins, object/time and budget. Initial snapshot10 new accepted first answers/0model corrections/1698075; no candidate/admission/consumer yet. Actual current frontier is stage progress, not this historical snapshot. Fast and MVP remain open; no external API/network/labels/business pointer advance."
+      "result": "Frozen v4 remains a bounded diagnostic, no full successor or new acceptance closure. Checkpoint25 new accepted first answers/0model corrections/5126205 logical reservations; including unchanged old v3 debt35/7182146. h026 pending. Independent fixed-prefix review23 answers,15 actual source windows,65 query origins,18 cards per wire, explicit working-body12/15 and backlog12/265 omission; parent rehashed118 static bindings unchanged. Distinctions among severity/ICFR/DCP/audit procedure/dated opinion/planned versus completed remediation are faithful in that prefix. h025 ordinary charged reread is not independent new coverage and lies outside the23-answer semantic review. No candidate/admission/consumer yet; candidate1/consumer4, original caps/source/semantic oracle unchanged. A classification-meta implementation is committed separately at ba309796 and has not modified frozen original code. Fast/MVP open; no external API/network/new labels/business pointer advance."
     }
   ],
   "review": {
@@ -2082,7 +2084,9 @@
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/equivalence-evidence.json",
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-first-wires-review.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-read-retention-review.md",
-      "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json"
+      "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",

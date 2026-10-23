@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000095017025075392",
+    "length": 4000,
+    "offset": 2335566,
+    "rationale": [
+      "Read the located material-weakness passage in case-005 latest pre-cutoff filing to test recurrence of an ICFR measurement.",
+      "Case-001 explicitly reports significant deficiencies, which must remain distinct from material weaknesses; case-002 has an effective ICFR audit opinion.",
+      "Navigation alone supplies no source support, and case-003 effective disclosure controls plus unchanged ICFR do not establish an effective ICFR assessment."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0000]:000095017025075392\",\"offset\":2335566,\"length\":4000,\"rationale\":[\"Read the located material-weakness passage in case-005 latest pre-cutoff filing to test recurrence of an ICFR measurement.\",\"Case-001 explicitly reports significant deficiencies, which must remain distinct from material weaknesses; case-002 has an effective ICFR audit opinion.\",\"Navigation alone supplies no source support, and case-003 effective disclosure controls plus unchanged ICFR do not establish an effective ICFR assessment.\"]}",
+  "request_hash": "f23ca1d21bfea3529705af76fd1b561fecda672406577112e7bb4b5648316806",
+  "response_id": "local-f23ca1d21bfea3529705af76fd1b561fecda672406577112e7bb4b5648316806",
+  "usage": {
+    "accounting_tokens": 223540,
+    "agent_id": "/root/icfr_v4_h016",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "83fb041afe5be20b0a003561ceee854edcb9350946ce1c671b05c08083cd39d5",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "6fb331707f66b13e9b5d0ecf6293f27fb7ad24f7130e57326ed820f7a11a22a4",
+    "request_hash": "f23ca1d21bfea3529705af76fd1b561fecda672406577112e7bb4b5648316806",
+    "token_usage": null
+  }
+}
