@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：用户批准分类持久化A；隔离分支codex/classification-meta-context于ba309796保存同轮实际声明并补齐多case分页寻址/完整读取，354项关联检查（1skip）及独立反例通过。原checkout仅登记[实现与证据](../reports/classification-meta-context-20261023.md)，冻结v4未热改，真实模型语义、Fast/MVP仍open。
+
 - 2026-10-23：subagent本次实际恢复，补预算/恢复独立实现审查27既有+17反例通过；正式v4按原263源/18版本/265needs/六披露/1+4分母、原cap和v3历史10/2055941前缀冻结，15原始语义字段逐项同，182源码归档读回同。独立新作者真实前4wire及h004→h007阅读保真/18卡/query-origin/预算传播已核，12新答/0纠错/2122553后h013待派发，尚无候选/准入/消费，不关闭Fast或MVP。外部API/网络/业务推进0，旧失败/终态保留。见[进行中报告](../reports/mining-native-v4-20261023.md)。
 
 - 2026-10-23：spec-first将v3真实10答/2055941作为新代码验收不可变资源前缀，保持global/Mining原cap、local回执独立、旧identity禁入新cache；共享model一次初始化、有序replay和完成seed快照两端等额。自审共同改写快照/计数反例揭等额保护不足，补不可变checkpoint字节receipt；future回执/丢失checkpoint不冒充早期消耗，首失败及两次harness误把初始化目录/contract当缓存均保留。最终497关联通过/源码hash稳/网络0。独立方案审已核用户附件授权和实余70/10526971；实现独立审查及fresh派发遇工具agent thread limit reached，未建正式v4 oracle/stage，0新作者/API/业务推进。三旧oracle/263源/v3的316文件同，原失败/分母/MVP open保持。见[报告](../reports/mining-preserved-budget-20261023.md)。

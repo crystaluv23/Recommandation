@@ -1,0 +1,49 @@
+test_actual_results_survive_meta_save_and_individually_scoped_source_reads (tests.test_classification_meta_context.ClassificationMetaContextTests.test_actual_results_survive_meta_save_and_individually_scoped_source_reads) ... ok
+test_complete_long_declaration_remains_visible_but_native_read_fails_its_budget (tests.test_classification_meta_context.ClassificationMetaContextTests.test_complete_long_declaration_remains_visible_but_native_read_fails_its_budget) ... ok
+test_duplicate_malformed_and_null_meta_reject_but_explicit_empty_roundtrips (tests.test_classification_meta_context.ClassificationMetaContextTests.test_duplicate_malformed_and_null_meta_reject_but_explicit_empty_roundtrips) ... ok
+test_legacy_and_missing_round_are_not_reconstructed_from_another_result (tests.test_classification_meta_context.ClassificationMetaContextTests.test_legacy_and_missing_round_are_not_reconstructed_from_another_result) ... ok
+test_real_categories_unbounded_and_missing_keep_their_actual_declarations (tests.test_classification_meta_context.ClassificationMetaContextTests.test_real_categories_unbounded_and_missing_keep_their_actual_declarations) ... ok
+test_real_critic_initial_catalog_then_actual_source_read_preserves_anonymous_hash (tests.test_classification_meta_context.ClassificationMetaContextTests.test_real_critic_initial_catalog_then_actual_source_read_preserves_anonymous_hash) ... ok
+test_round_meta_roundtrip_reaches_actual_slow_memory_index_without_definition_lookup (tests.test_classification_meta_context.ClassificationMetaContextTests.test_round_meta_roundtrip_reaches_actual_slow_memory_index_without_definition_lookup) ... ERROR
+test_wrong_round_result_and_extra_or_wrong_version_owners_reject (tests.test_classification_meta_context.ClassificationMetaContextTests.test_wrong_round_result_and_extra_or_wrong_version_owners_reject) ... ok
+test_actual_invoked_override_is_captured_before_mutation_and_noop_clears_products (tests.test_signal_classification_contract.SignalClassificationContractTests.test_actual_invoked_override_is_captured_before_mutation_and_noop_clears_products) ... ok
+test_core_to_real_reflect_final_persistence_posthoc_and_critic_reuses_only_saved_declaration (tests.test_signal_classification_contract.SignalClassificationContractTests.test_core_to_real_reflect_final_persistence_posthoc_and_critic_reuses_only_saved_declaration) ... ok
+test_identity_projection_keeps_source_binding_and_valid_anonymous_view (tests.test_signal_classification_contract.SignalClassificationContractTests.test_identity_projection_keeps_source_binding_and_valid_anonymous_view) ... ok
+test_negative_scalar_can_be_positive_category (tests.test_signal_classification_contract.SignalClassificationContractTests.test_negative_scalar_can_be_positive_category) ... ok
+test_override_unknown_and_full_frozen_skill_are_not_guessed (tests.test_signal_classification_contract.SignalClassificationContractTests.test_override_unknown_and_full_frozen_skill_are_not_guessed) ... ok
+test_real_same_positive_scalar_has_three_different_states_and_exact_parameters (tests.test_signal_classification_contract.SignalClassificationContractTests.test_real_same_positive_scalar_has_three_different_states_and_exact_parameters) ... ok
+test_same_ref_in_different_rounds_cannot_fill_unknown_or_rebind_another_result (tests.test_signal_classification_contract.SignalClassificationContractTests.test_same_ref_in_different_rounds_cannot_fill_unknown_or_rebind_another_result) ... ok
+test_unbounded_is_available_definition_without_numeric_and_missing_is_status_only (tests.test_signal_classification_contract.SignalClassificationContractTests.test_unbounded_is_available_definition_without_numeric_and_missing_is_status_only) ... ok
+test_wrong_version_hash_conflicts_and_forged_input_projection_reject_or_stay_unknown (tests.test_signal_classification_contract.SignalClassificationContractTests.test_wrong_version_hash_conflicts_and_forged_input_projection_reject_or_stay_unknown) ... ok
+test_masked_input_construction_is_rejected_not_silently_accepted (tests.test_evolution_reflection_memory.IdentityEgressMaskingTests.test_masked_input_construction_is_rejected_not_silently_accepted) ... ok
+test_unmasked_index_and_masked_views_keep_refs_resolvable (tests.test_evolution_reflection_memory.IdentityEgressMaskingTests.test_unmasked_index_and_masked_views_keep_refs_resolvable) ... ok
+test_v144_brief_view_slots_authored_items_before_legacy_strings (tests.test_evolution_reflection_memory.IdentityEgressMaskingTests.test_v144_brief_view_slots_authored_items_before_legacy_strings) ... ok
+test_brief_and_paginated_directory_stay_bounded_and_discoverable (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_brief_and_paginated_directory_stay_bounded_and_discoverable) ... ok
+test_case_reference_survives_generation_archival_and_import (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_case_reference_survives_generation_archival_and_import) ... ok
+test_catalog_has_bounded_counts_and_exact_read_costs (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_catalog_has_bounded_counts_and_exact_read_costs) ... ok
+test_complete_reads_fail_closed_for_role_path_and_budget (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_complete_reads_fail_closed_for_role_path_and_budget) ... ok
+test_false_success_and_technical_research_claim_fail (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_false_success_and_technical_research_claim_fail) ... ok
+test_hash_and_source_identity_tampering_fail (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_hash_and_source_identity_tampering_fail) ... ok
+test_invalid_counter_reference_never_grants_supporting_source_scope (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_invalid_counter_reference_never_grants_supporting_source_scope) ... ok
+test_legacy_is_verbatim_unreviewed_and_old_serialization_unchanged (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_legacy_is_verbatim_unreviewed_and_old_serialization_unchanged) ... ok
+test_malformed_authored_fields_raise_typed_errors_before_hash_or_resolve (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_malformed_authored_fields_raise_typed_errors_before_hash_or_resolve) ... ok
+test_outcome_scope_and_level_are_enforced (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_outcome_scope_and_level_are_enforced) ... ok
+test_production_reflection_repairs_only_the_malformed_authored_field (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_production_reflection_repairs_only_the_malformed_authored_field) ... ok
+test_same_outcome_different_cases_never_share_fact_source (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_same_outcome_different_cases_never_share_fact_source) ... ok
+test_source_and_scope_conflicts_declare_real_outcome_dependencies (tests.test_evolution_reflection_memory.SourcedReflectionMemoryTests.test_source_and_scope_conflicts_declare_real_outcome_dependencies) ... ok
+
+======================================================================
+ERROR: test_round_meta_roundtrip_reaches_actual_slow_memory_index_without_definition_lookup (tests.test_classification_meta_context.ClassificationMetaContextTests.test_round_meta_roundtrip_reaches_actual_slow_memory_index_without_definition_lookup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/tests/test_classification_meta_context.py", line 211, in test_round_meta_roundtrip_reaches_actual_slow_memory_index_without_definition_lookup
+    engine = SignalEvolutionEngine(registry=SignalRegistry(root/'signals'), raw_info_store=RawInfoStore(),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py", line 3689, in __init__
+    raise ValidationError("Signal evolution requires label-visible Discovery cases")
+stock_opportunity_agent.models.ValidationError: Signal evolution requires label-visible Discovery cases
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.127s
+
+FAILED (errors=1)

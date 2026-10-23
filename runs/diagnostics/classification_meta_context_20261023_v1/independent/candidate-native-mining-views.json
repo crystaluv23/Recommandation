@@ -1,0 +1,1814 @@
+[
+  {
+    "seed": "discovery",
+    "state": "ready",
+    "budget": {
+      "heavy_remaining": 12,
+      "light_remaining": 4,
+      "browse_remaining": 24
+    },
+    "available_source_families": [],
+    "measurable_evidence_manifest": {},
+    "signal_catalog": [],
+    "signal_catalog_disclosure": {
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "omitted_before": 0,
+        "omitted_after": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "max_entry_bytes": 8000,
+      "selection_is_exhaustive": true,
+      "read_action": "inspect_catalog scope=signals item_refs",
+      "read_byte_limit": 16000
+    },
+    "case_refs": [
+      "case_control"
+    ],
+    "case_prediction_times": {
+      "case_control": "2025-01-15T12:00:00+00:00"
+    },
+    "tool_contracts": {
+      "inspect_catalog": {
+        "default_scope": "signals",
+        "budget_by_scope": {
+          "signals": "light",
+          "evidence": "light",
+          "memory": "browse",
+          "backlog": "light"
+        },
+        "allowed_scopes": [
+          "signals",
+          "evidence",
+          "memory",
+          "backlog"
+        ]
+      },
+      "compute_statistic": {
+        "rules": [
+          "latest_minus_comparable_prior",
+          "latest_over_comparable_prior",
+          "latest_over_latest"
+        ],
+        "operand_count": 2,
+        "operand_scope": "same_case",
+        "operand_order": "numerator_then_denominator_or_latest_then_prior",
+        "numeric_requirements": "finite operands and result; non-zero denominator for ratios"
+      },
+      "read_span": {
+        "target_fields": [
+          "fact_ref",
+          "event_ref",
+          "document_ref"
+        ],
+        "target_count": 1,
+        "offset_min": 0,
+        "length_min": 1,
+        "length_max": 4000,
+        "window_applies_to": [
+          "event_ref",
+          "document_ref"
+        ],
+        "budget_by_target": {
+          "fact_ref": "heavy",
+          "event_ref": "browse",
+          "document_ref": "browse"
+        }
+      }
+    },
+    "known_fact_refs": [],
+    "known_event_refs": [],
+    "known_relation_refs": [],
+    "label_map": {
+      "case_control": "control"
+    },
+    "research_axis": {
+      "axis_id": "surge_direction",
+      "population": "eligible_discovery_cases",
+      "positive": "realized_max_multiple >= 2.0",
+      "control": "realized_max_multiple < 2.0"
+    },
+    "evidence_digest": {
+      "fetches": 0,
+      "families_fetched": [],
+      "fact_count": 0,
+      "event_count": 0,
+      "relation_count": 0,
+      "cases_with_facts": [],
+      "concept_case_coverage": {},
+      "label_counts": {
+        "positive": 0,
+        "control": 1
+      }
+    },
+    "modality_coverage": {
+      "structured": {
+        "available": false,
+        "explored": false,
+        "status": "not_available"
+      },
+      "narrative": {
+        "available": false,
+        "explored": false,
+        "status": "not_available"
+      }
+    },
+    "prior_modality_footprints": [],
+    "meta_info": {
+      "items": [],
+      "included_refs": [],
+      "deferred_refs": [],
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "deferred": 0
+      },
+      "directory": {
+        "items": [],
+        "total": 48,
+        "level": null,
+        "next_cursor": 9,
+        "oversized_refs": [],
+        "sources": [
+          {
+            "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:13ffab96cd3122d1a40f91ce1fc0600dfc0487d75f87e5abdb7fdd9cf76c3cde",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:345b7a92e6fb868c00f00510958dc0640c9e85a7cb20a3d001a089c4ac4dfb72",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:78eb080cf0a9bedc73824b86f09c35d2e089b0d1d3cddfddf9a3041b68c261c5",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:03d67ce6ee14457c6267cc4000f825a9b8b56ac9a595ebdccad6c350db8408c3",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:1afaac899b5cf3a459e25911eac1e104675f56ecfaac859d0d74d8b6425fe093",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:7303dfa05dc2022d2a6d685b9157782de408232b6530a8fb88d856cf46c4578f",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:10a1520e61b0abc3da636fcfa0bb31a5ac3fbda0da6f2f063c703ae680b8a7c7"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          }
+        ]
+      },
+      "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
+      "read_byte_limit": 48000,
+      "budget_class": "browse"
+    },
+    "meta_memory_disclosures": [],
+    "slow_method_memory": {},
+    "memory_consumption": {
+      "read_refs": [],
+      "original_disclosure_bytes": 2,
+      "original_disclosure_limit": 48000
+    },
+    "available_actions": [
+      "inspect_manifest",
+      "inspect_catalog",
+      "fetch_evidence",
+      "compute_statistic",
+      "read_span",
+      "compare_groups",
+      "propose_candidate",
+      "record_deferred",
+      "record_no_pattern"
+    ]
+  },
+  {
+    "seed": "discovery",
+    "state": "exploring",
+    "budget": {
+      "heavy_remaining": 12,
+      "light_remaining": 4,
+      "browse_remaining": 23
+    },
+    "available_source_families": [],
+    "measurable_evidence_manifest": {},
+    "signal_catalog": [],
+    "signal_catalog_disclosure": {
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "omitted_before": 0,
+        "omitted_after": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "max_entry_bytes": 8000,
+      "selection_is_exhaustive": true,
+      "read_action": "inspect_catalog scope=signals item_refs",
+      "read_byte_limit": 16000
+    },
+    "case_refs": [
+      "case_control"
+    ],
+    "case_prediction_times": {
+      "case_control": "2025-01-15T12:00:00+00:00"
+    },
+    "tool_contracts": {
+      "inspect_catalog": {
+        "default_scope": "signals",
+        "budget_by_scope": {
+          "signals": "light",
+          "evidence": "light",
+          "memory": "browse",
+          "backlog": "light"
+        },
+        "allowed_scopes": [
+          "signals",
+          "evidence",
+          "memory",
+          "backlog"
+        ]
+      },
+      "compute_statistic": {
+        "rules": [
+          "latest_minus_comparable_prior",
+          "latest_over_comparable_prior",
+          "latest_over_latest"
+        ],
+        "operand_count": 2,
+        "operand_scope": "same_case",
+        "operand_order": "numerator_then_denominator_or_latest_then_prior",
+        "numeric_requirements": "finite operands and result; non-zero denominator for ratios"
+      },
+      "read_span": {
+        "target_fields": [
+          "fact_ref",
+          "event_ref",
+          "document_ref"
+        ],
+        "target_count": 1,
+        "offset_min": 0,
+        "length_min": 1,
+        "length_max": 4000,
+        "window_applies_to": [
+          "event_ref",
+          "document_ref"
+        ],
+        "budget_by_target": {
+          "fact_ref": "heavy",
+          "event_ref": "browse",
+          "document_ref": "browse"
+        }
+      }
+    },
+    "known_fact_refs": [],
+    "known_event_refs": [],
+    "known_relation_refs": [],
+    "label_map": {
+      "case_control": "control"
+    },
+    "research_axis": {
+      "axis_id": "surge_direction",
+      "population": "eligible_discovery_cases",
+      "positive": "realized_max_multiple >= 2.0",
+      "control": "realized_max_multiple < 2.0"
+    },
+    "evidence_digest": {
+      "fetches": 0,
+      "families_fetched": [],
+      "fact_count": 0,
+      "event_count": 0,
+      "relation_count": 0,
+      "cases_with_facts": [],
+      "concept_case_coverage": {},
+      "label_counts": {
+        "positive": 0,
+        "control": 1
+      }
+    },
+    "modality_coverage": {
+      "structured": {
+        "available": false,
+        "explored": false,
+        "status": "not_available"
+      },
+      "narrative": {
+        "available": false,
+        "explored": false,
+        "status": "not_available"
+      }
+    },
+    "prior_modality_footprints": [],
+    "meta_info": {
+      "items": [],
+      "included_refs": [],
+      "deferred_refs": [],
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "deferred": 0
+      },
+      "directory": {
+        "items": [],
+        "total": 48,
+        "level": null,
+        "next_cursor": 9,
+        "oversized_refs": [],
+        "sources": [
+          {
+            "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:13ffab96cd3122d1a40f91ce1fc0600dfc0487d75f87e5abdb7fdd9cf76c3cde",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:345b7a92e6fb868c00f00510958dc0640c9e85a7cb20a3d001a089c4ac4dfb72",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:78eb080cf0a9bedc73824b86f09c35d2e089b0d1d3cddfddf9a3041b68c261c5",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:03d67ce6ee14457c6267cc4000f825a9b8b56ac9a595ebdccad6c350db8408c3",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:1afaac899b5cf3a459e25911eac1e104675f56ecfaac859d0d74d8b6425fe093",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:7303dfa05dc2022d2a6d685b9157782de408232b6530a8fb88d856cf46c4578f",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:10a1520e61b0abc3da636fcfa0bb31a5ac3fbda0da6f2f063c703ae680b8a7c7"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          }
+        ]
+      },
+      "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
+      "read_byte_limit": 48000,
+      "budget_class": "browse"
+    },
+    "meta_memory_disclosures": [],
+    "slow_method_memory": {},
+    "memory_consumption": {
+      "read_refs": [],
+      "original_disclosure_bytes": 2,
+      "original_disclosure_limit": 48000
+    },
+    "last_action_result": {
+      "action": "inspect_catalog",
+      "scope": "memory",
+      "result": {
+        "items": [],
+        "included_refs": [],
+        "deferred_refs": [],
+        "counts": {
+          "available": 0,
+          "included": 0,
+          "deferred": 0
+        },
+        "directory": {
+          "items": [],
+          "total": 48,
+          "level": "case",
+          "next_cursor": 8,
+          "oversized_refs": [],
+          "sources": [
+            {
+              "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 1,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 2,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 1,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:13ffab96cd3122d1a40f91ce1fc0600dfc0487d75f87e5abdb7fdd9cf76c3cde",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 2,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:345b7a92e6fb868c00f00510958dc0640c9e85a7cb20a3d001a089c4ac4dfb72",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 1,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:78eb080cf0a9bedc73824b86f09c35d2e089b0d1d3cddfddf9a3041b68c261c5",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 2,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:03d67ce6ee14457c6267cc4000f825a9b8b56ac9a595ebdccad6c350db8408c3",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 1,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            },
+            {
+              "source_ref": "reflection_source:1afaac899b5cf3a459e25911eac1e104675f56ecfaac859d0d74d8b6425fe093",
+              "level": "case",
+              "case_refs": [
+                "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+              ],
+              "plan_refs": [
+                "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+              ],
+              "canonical_outcomes": {},
+              "runtime_signal_classification": true,
+              "signal_round": 2,
+              "signal_ref": "runway_control:v1",
+              "signal_refs": [
+                "runway_control:v1"
+              ],
+              "signal_refs_omitted": 0,
+              "source_kind": "runtime_signal_classification",
+              "read_bytes": 2076
+            }
+          ],
+          "signal_ref": "runway_control:v1"
+        },
+        "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
+        "read_byte_limit": 48000,
+        "budget_class": "browse"
+      }
+    },
+    "catalog_observations": {
+      "items": [
+        {
+          "observation_ref": "97b329805a00a7cd1d3cd513c09105a0a56c0a92186eb86f6d69b858679ea4b7",
+          "scope": "memory",
+          "arguments": {
+            "action": "inspect_catalog",
+            "scope": "memory",
+            "cursor": 0,
+            "level": "case",
+            "signal_ref": "runway_control:v1"
+          },
+          "action_id": 1,
+          "response_hash": "48e32c8f2556f993fc1acaa6f015f087e4904658cfa41eaa2fdb94b321e5bab9",
+          "source_snapshot_hash": "9b7a0b0d8fe8fefbf690dcca1e23817ccca223dc2123242771eb2328b429363f",
+          "result": {
+            "items": [],
+            "included_refs": [],
+            "deferred_refs": [],
+            "counts": {
+              "available": 0,
+              "included": 0,
+              "deferred": 0
+            },
+            "directory": {
+              "items": [],
+              "total": 48,
+              "level": "case",
+              "next_cursor": 8,
+              "oversized_refs": [],
+              "sources": [
+                {
+                  "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:13ffab96cd3122d1a40f91ce1fc0600dfc0487d75f87e5abdb7fdd9cf76c3cde",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:345b7a92e6fb868c00f00510958dc0640c9e85a7cb20a3d001a089c4ac4dfb72",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:78eb080cf0a9bedc73824b86f09c35d2e089b0d1d3cddfddf9a3041b68c261c5",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:03d67ce6ee14457c6267cc4000f825a9b8b56ac9a595ebdccad6c350db8408c3",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:1afaac899b5cf3a459e25911eac1e104675f56ecfaac859d0d74d8b6425fe093",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                }
+              ],
+              "signal_ref": "runway_control:v1"
+            },
+            "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
+            "read_byte_limit": 48000,
+            "budget_class": "browse"
+          },
+          "source_snapshot_matches": true
+        }
+      ],
+      "counts": {
+        "available": 1,
+        "included": 1,
+        "omitted_before": 0,
+        "omitted_after": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "max_entry_bytes": 32000,
+      "selection_is_exhaustive": true,
+      "omitted_entries": [],
+      "selection_order": "most_recent_successful_catalog_request_first",
+      "snapshot_status": "historical_tool_responses",
+      "revisit_action": "inspect_catalog with saved arguments; ordinary scope budget",
+      "current_state_note": "Evidence reads/compute preserve directory population and cursor validity; historical read_windows are not current read status. A changed source snapshot can change pagination; refresh only when current pagination is required."
+    },
+    "available_actions": [
+      "inspect_manifest",
+      "inspect_catalog",
+      "fetch_evidence",
+      "compute_statistic",
+      "read_span",
+      "compare_groups",
+      "propose_candidate",
+      "record_deferred",
+      "record_no_pattern"
+    ]
+  },
+  {
+    "seed": "discovery",
+    "state": "exploring",
+    "budget": {
+      "heavy_remaining": 12,
+      "light_remaining": 4,
+      "browse_remaining": 22
+    },
+    "available_source_families": [],
+    "measurable_evidence_manifest": {},
+    "signal_catalog": [],
+    "signal_catalog_disclosure": {
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "omitted_before": 0,
+        "omitted_after": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "max_entry_bytes": 8000,
+      "selection_is_exhaustive": true,
+      "read_action": "inspect_catalog scope=signals item_refs",
+      "read_byte_limit": 16000
+    },
+    "case_refs": [
+      "case_control"
+    ],
+    "case_prediction_times": {
+      "case_control": "2025-01-15T12:00:00+00:00"
+    },
+    "tool_contracts": {
+      "inspect_catalog": {
+        "default_scope": "signals",
+        "budget_by_scope": {
+          "signals": "light",
+          "evidence": "light",
+          "memory": "browse",
+          "backlog": "light"
+        },
+        "allowed_scopes": [
+          "signals",
+          "evidence",
+          "memory",
+          "backlog"
+        ]
+      },
+      "compute_statistic": {
+        "rules": [
+          "latest_minus_comparable_prior",
+          "latest_over_comparable_prior",
+          "latest_over_latest"
+        ],
+        "operand_count": 2,
+        "operand_scope": "same_case",
+        "operand_order": "numerator_then_denominator_or_latest_then_prior",
+        "numeric_requirements": "finite operands and result; non-zero denominator for ratios"
+      },
+      "read_span": {
+        "target_fields": [
+          "fact_ref",
+          "event_ref",
+          "document_ref"
+        ],
+        "target_count": 1,
+        "offset_min": 0,
+        "length_min": 1,
+        "length_max": 4000,
+        "window_applies_to": [
+          "event_ref",
+          "document_ref"
+        ],
+        "budget_by_target": {
+          "fact_ref": "heavy",
+          "event_ref": "browse",
+          "document_ref": "browse"
+        }
+      }
+    },
+    "known_fact_refs": [],
+    "known_event_refs": [],
+    "known_relation_refs": [],
+    "label_map": {
+      "case_control": "control"
+    },
+    "research_axis": {
+      "axis_id": "surge_direction",
+      "population": "eligible_discovery_cases",
+      "positive": "realized_max_multiple >= 2.0",
+      "control": "realized_max_multiple < 2.0"
+    },
+    "evidence_digest": {
+      "fetches": 0,
+      "families_fetched": [],
+      "fact_count": 0,
+      "event_count": 0,
+      "relation_count": 0,
+      "cases_with_facts": [],
+      "concept_case_coverage": {},
+      "label_counts": {
+        "positive": 0,
+        "control": 1
+      }
+    },
+    "modality_coverage": {
+      "structured": {
+        "available": false,
+        "explored": false,
+        "status": "not_available"
+      },
+      "narrative": {
+        "available": false,
+        "explored": false,
+        "status": "not_available"
+      }
+    },
+    "prior_modality_footprints": [],
+    "meta_info": {
+      "items": [],
+      "included_refs": [],
+      "deferred_refs": [],
+      "counts": {
+        "available": 0,
+        "included": 0,
+        "deferred": 0
+      },
+      "directory": {
+        "items": [],
+        "total": 48,
+        "level": null,
+        "next_cursor": 9,
+        "oversized_refs": [],
+        "sources": [
+          {
+            "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:13ffab96cd3122d1a40f91ce1fc0600dfc0487d75f87e5abdb7fdd9cf76c3cde",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:345b7a92e6fb868c00f00510958dc0640c9e85a7cb20a3d001a089c4ac4dfb72",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:78eb080cf0a9bedc73824b86f09c35d2e089b0d1d3cddfddf9a3041b68c261c5",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:03d67ce6ee14457c6267cc4000f825a9b8b56ac9a595ebdccad6c350db8408c3",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:1afaac899b5cf3a459e25911eac1e104675f56ecfaac859d0d74d8b6425fe093",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 2,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          },
+          {
+            "source_ref": "reflection_source:7303dfa05dc2022d2a6d685b9157782de408232b6530a8fb88d856cf46c4578f",
+            "level": "case",
+            "case_refs": [
+              "reflection_case:10a1520e61b0abc3da636fcfa0bb31a5ac3fbda0da6f2f063c703ae680b8a7c7"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "signal_refs": [
+              "runway_control:v1"
+            ],
+            "signal_refs_omitted": 0,
+            "source_kind": "runtime_signal_classification",
+            "read_bytes": 2076
+          }
+        ]
+      },
+      "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
+      "read_byte_limit": 48000,
+      "budget_class": "browse"
+    },
+    "meta_memory_disclosures": [
+      {
+        "ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+        "content": {
+          "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+          "level": "case",
+          "content": {
+            "schema_version": "signal-classification-context-v1",
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1",
+            "contract": {
+              "signal_ref": "runway_control:v1",
+              "spec_hash": "5ac17cf56a97f866ff1a2b98f99e96f5da2a5fa84f43972872aef81dad419756",
+              "definition": "Fixture runway_control.",
+              "execution": {
+                "type": "deterministic",
+                "function": "financial.liquidity_runway_months",
+                "callable_status": "registered",
+                "contract": "Measure cash runway in months from the latest SEC operating cash flow\n    duration and the closest same-currency cash instant at or before its end. Monthly\n    burn is absolute cash flow divided by the rounded reported duration in months.\n    Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <=\n    positive_runway_max_months (default 6) is positive,\n    runway >= negative_runway_min_months (default 12) is negative, and values between\n    are neutral. The positive branch is checked first, so an equal pair of\n    thresholds assigns the shared boundary to positive. Non-negative operating cash flow is negative evidence of a\n    low-runway condition (an effectively unbounded burn runway).\n    ",
+                "parameter_names": [
+                  "positive_runway_max_months",
+                  "negative_runway_min_months",
+                  "max_period_age_days"
+                ],
+                "configured_parameters": {
+                  "positive_runway_max_months": 6,
+                  "negative_runway_min_months": 12
+                }
+              },
+              "declaration_available": true,
+              "result_hash": "8ea3b5d97daa36e3506a0f10f884344132d671312127f5d27253ab5ef5c6c977",
+              "contract_hash": "4a397a44f9e3b0c16b3e764a32a5e9dab301eb7f9d1e8d9582d0722d37b0eb49"
+            }
+          },
+          "case_refs": [
+            "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+          ],
+          "plan_refs": [
+            "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+          ],
+          "canonical_outcomes": {},
+          "runtime_signal_classification": true,
+          "signal_round": 1,
+          "signal_ref": "runway_control:v1"
+        }
+      }
+    ],
+    "slow_method_memory": {},
+    "memory_consumption": {
+      "read_refs": [
+        "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4"
+      ],
+      "original_disclosure_bytes": 2045,
+      "original_disclosure_limit": 48000
+    },
+    "last_action_result": {
+      "action": "inspect_catalog",
+      "scope": "memory",
+      "result": {
+        "sources": [
+          {
+            "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+            "level": "case",
+            "content": {
+              "schema_version": "signal-classification-context-v1",
+              "signal_round": 1,
+              "signal_ref": "runway_control:v1",
+              "contract": {
+                "signal_ref": "runway_control:v1",
+                "spec_hash": "5ac17cf56a97f866ff1a2b98f99e96f5da2a5fa84f43972872aef81dad419756",
+                "definition": "Fixture runway_control.",
+                "execution": {
+                  "type": "deterministic",
+                  "function": "financial.liquidity_runway_months",
+                  "callable_status": "registered",
+                  "contract": "Measure cash runway in months from the latest SEC operating cash flow\n    duration and the closest same-currency cash instant at or before its end. Monthly\n    burn is absolute cash flow divided by the rounded reported duration in months.\n    Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <=\n    positive_runway_max_months (default 6) is positive,\n    runway >= negative_runway_min_months (default 12) is negative, and values between\n    are neutral. The positive branch is checked first, so an equal pair of\n    thresholds assigns the shared boundary to positive. Non-negative operating cash flow is negative evidence of a\n    low-runway condition (an effectively unbounded burn runway).\n    ",
+                  "parameter_names": [
+                    "positive_runway_max_months",
+                    "negative_runway_min_months",
+                    "max_period_age_days"
+                  ],
+                  "configured_parameters": {
+                    "positive_runway_max_months": 6,
+                    "negative_runway_min_months": 12
+                  }
+                },
+                "declaration_available": true,
+                "result_hash": "8ea3b5d97daa36e3506a0f10f884344132d671312127f5d27253ab5ef5c6c977",
+                "contract_hash": "4a397a44f9e3b0c16b3e764a32a5e9dab301eb7f9d1e8d9582d0722d37b0eb49"
+              }
+            },
+            "case_refs": [
+              "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+            ],
+            "plan_refs": [
+              "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+            ],
+            "canonical_outcomes": {},
+            "runtime_signal_classification": true,
+            "signal_round": 1,
+            "signal_ref": "runway_control:v1"
+          }
+        ],
+        "requested_refs": [
+          "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4"
+        ],
+        "byte_count": 2076
+      }
+    },
+    "catalog_observations": {
+      "items": [
+        {
+          "observation_ref": "bb9668f2d4f473e7fb781a5eff2f07a277ff183c1c5bb75b1303b4fe59793618",
+          "scope": "memory",
+          "arguments": {
+            "action": "inspect_catalog",
+            "scope": "memory",
+            "item_refs": [
+              "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4"
+            ]
+          },
+          "action_id": 2,
+          "response_hash": "281b4b482ecb996167eb92cc90cd5e03886c330415a3ce4b70be7554350464d0",
+          "source_snapshot_hash": "761fda4e5acdecf05c4281bbcb4e75f354ca125a0794bca874d5be871246c6e9",
+          "result": {
+            "sources": [
+              {
+                "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+                "level": "case",
+                "content": {
+                  "schema_version": "signal-classification-context-v1",
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "contract": {
+                    "signal_ref": "runway_control:v1",
+                    "spec_hash": "5ac17cf56a97f866ff1a2b98f99e96f5da2a5fa84f43972872aef81dad419756",
+                    "definition": "Fixture runway_control.",
+                    "execution": {
+                      "type": "deterministic",
+                      "function": "financial.liquidity_runway_months",
+                      "callable_status": "registered",
+                      "contract": "Measure cash runway in months from the latest SEC operating cash flow\n    duration and the closest same-currency cash instant at or before its end. Monthly\n    burn is absolute cash flow divided by the rounded reported duration in months.\n    Missing, non-positive, mismatched, or stale facts yield unavailable. Runway <=\n    positive_runway_max_months (default 6) is positive,\n    runway >= negative_runway_min_months (default 12) is negative, and values between\n    are neutral. The positive branch is checked first, so an equal pair of\n    thresholds assigns the shared boundary to positive. Non-negative operating cash flow is negative evidence of a\n    low-runway condition (an effectively unbounded burn runway).\n    ",
+                      "parameter_names": [
+                        "positive_runway_max_months",
+                        "negative_runway_min_months",
+                        "max_period_age_days"
+                      ],
+                      "configured_parameters": {
+                        "positive_runway_max_months": 6,
+                        "negative_runway_min_months": 12
+                      }
+                    },
+                    "declaration_available": true,
+                    "result_hash": "8ea3b5d97daa36e3506a0f10f884344132d671312127f5d27253ab5ef5c6c977",
+                    "contract_hash": "4a397a44f9e3b0c16b3e764a32a5e9dab301eb7f9d1e8d9582d0722d37b0eb49"
+                  }
+                },
+                "case_refs": [
+                  "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+                ],
+                "plan_refs": [
+                  "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                ],
+                "canonical_outcomes": {},
+                "runtime_signal_classification": true,
+                "signal_round": 1,
+                "signal_ref": "runway_control:v1"
+              }
+            ],
+            "requested_refs": [
+              "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4"
+            ],
+            "byte_count": 2076
+          },
+          "source_snapshot_matches": true
+        },
+        {
+          "observation_ref": "97b329805a00a7cd1d3cd513c09105a0a56c0a92186eb86f6d69b858679ea4b7",
+          "scope": "memory",
+          "arguments": {
+            "action": "inspect_catalog",
+            "scope": "memory",
+            "cursor": 0,
+            "level": "case",
+            "signal_ref": "runway_control:v1"
+          },
+          "action_id": 1,
+          "response_hash": "48e32c8f2556f993fc1acaa6f015f087e4904658cfa41eaa2fdb94b321e5bab9",
+          "source_snapshot_hash": "9b7a0b0d8fe8fefbf690dcca1e23817ccca223dc2123242771eb2328b429363f",
+          "result": {
+            "items": [],
+            "included_refs": [],
+            "deferred_refs": [],
+            "counts": {
+              "available": 0,
+              "included": 0,
+              "deferred": 0
+            },
+            "directory": {
+              "items": [],
+              "total": 48,
+              "level": "case",
+              "next_cursor": 8,
+              "oversized_refs": [],
+              "sources": [
+                {
+                  "source_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:ee689e7cbd6e3450e8da9205128b268e571c53a7c672207b782d22fb23156c23"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:13ffab96cd3122d1a40f91ce1fc0600dfc0487d75f87e5abdb7fdd9cf76c3cde",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:62645feee4854446f7f572f220638d21e201f9101e7691f4caa85a3489e284ed"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:345b7a92e6fb868c00f00510958dc0640c9e85a7cb20a3d001a089c4ac4dfb72",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:78eb080cf0a9bedc73824b86f09c35d2e089b0d1d3cddfddf9a3041b68c261c5",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:0bc97a9b8b4d9350b8ae09c393450c29183cfd2e3d2267bc6ad3619cb42795b5"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:03d67ce6ee14457c6267cc4000f825a9b8b56ac9a595ebdccad6c350db8408c3",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 1,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                },
+                {
+                  "source_ref": "reflection_source:1afaac899b5cf3a459e25911eac1e104675f56ecfaac859d0d74d8b6425fe093",
+                  "level": "case",
+                  "case_refs": [
+                    "reflection_case:355fa225c4973ddc247d60e88d707d1268d6a08488a0b6df777544594254e2ef"
+                  ],
+                  "plan_refs": [
+                    "reflection_plan:32d346baf4fed4d7742726f3e180de27912cb67fc365c4c3d00d2ac8446fd436"
+                  ],
+                  "canonical_outcomes": {},
+                  "runtime_signal_classification": true,
+                  "signal_round": 2,
+                  "signal_ref": "runway_control:v1",
+                  "signal_refs": [
+                    "runway_control:v1"
+                  ],
+                  "signal_refs_omitted": 0,
+                  "source_kind": "runtime_signal_classification",
+                  "read_bytes": 2076
+                }
+              ],
+              "signal_ref": "runway_control:v1"
+            },
+            "read_action": "inspect_catalog scope=memory cursor/level/signal_ref, or item_refs for item/source originals",
+            "read_byte_limit": 48000,
+            "budget_class": "browse"
+          },
+          "source_snapshot_matches": false
+        }
+      ],
+      "counts": {
+        "available": 2,
+        "included": 2,
+        "omitted_before": 0,
+        "omitted_after": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "max_entry_bytes": 32000,
+      "selection_is_exhaustive": true,
+      "omitted_entries": [],
+      "selection_order": "most_recent_successful_catalog_request_first",
+      "snapshot_status": "historical_tool_responses",
+      "revisit_action": "inspect_catalog with saved arguments; ordinary scope budget",
+      "current_state_note": "Evidence reads/compute preserve directory population and cursor validity; historical read_windows are not current read status. A changed source snapshot can change pagination; refresh only when current pagination is required."
+    },
+    "available_actions": [
+      "inspect_manifest",
+      "inspect_catalog",
+      "fetch_evidence",
+      "compute_statistic",
+      "read_span",
+      "compare_groups",
+      "propose_candidate",
+      "record_deferred",
+      "record_no_pattern"
+    ]
+  }
+]

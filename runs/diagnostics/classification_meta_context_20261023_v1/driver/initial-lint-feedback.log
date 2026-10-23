@@ -1,0 +1,41 @@
+status: 1
+
+Pre-push lint feedback
+timestamp_utc: 2026-10-23T07:34:50Z
+repo: /Users/l/.codex/worktrees/classification-meta-context/Recommandation
+command: scripts/lint_repo.sh
+
+Repository lint
+root: /Users/l/.codex/worktrees/classification-meta-context/Recommandation
+
+PASS: required meta and lint files exist
+Meta check: PASS (administrative only; not live/learning/benefit acceptance)
+PASS: meta records and convergence review are consistent (administrative only)
+PASS: .githooks/pre-push is executable
+PASS: scripts/lint_repo.sh is executable
+PASS: git core.hooksPath is .githooks
+PASS: no merge conflict markers
+PASS: no trailing whitespace
+PASS: no hand-written outcome label constants
+FAIL: broken local markdown link in progress/self-evolution-action-plan-2026-09-06.md -> ../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v112/experiments/round-0001/attempts/plan_r0001_c01.json
+FAIL: broken local markdown link in progress/self-evolution-action-plan-2026-09-06.md -> ../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cycle_state.json
+FAIL: broken local markdown link in progress/self-evolution-action-plan-2026-09-06.md -> ../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/experiments/cycles/cycle-0001/slow_loop_result.json
+FAIL: broken local markdown link in progress/self-evolution-action-plan-2026-09-06.md -> ../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/requests/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json
+FAIL: broken local markdown link in progress/self-evolution-action-plan-2026-09-06.md -> ../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json
+FAIL: broken local markdown link in progress/self-evolution-action-plan-2026-09-06.md -> ../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/a6e8e3409d3ee826aaeadc34a4b66d795780a5cf598505a2e97dcd58ec97a745.json
+FAIL: broken local markdown link in progress/self-evolution-t7-live-audit-2026-09-08.md -> ../runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/f25b6ff6b7e1bc2cb400fc48e548ab1b52c471625b3cfeee27f0867b2b9051ad.json
+FAIL: broken local markdown link in progress/self-evolution-t7-live-audit-2026-09-08.md -> ../runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/6d1fa230117e5cd1d955173acdda14caa9d78cdc15de694ed6ae85a464ab37ef.json
+FAIL: broken local markdown link in reports/fast-slow-magnitude-evolution-action-plan-20260920.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/plans/plan_r0001_c01/record.json
+FAIL: broken local markdown link in reports/fast-slow-magnitude-evolution-action-plan-20260920.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/requests/6c582cd79203f0d8cdc7164e558064753bec9e0c06d4082733a30183ac07ba50.json
+FAIL: broken local markdown link in reports/fast-slow-magnitude-evolution-action-plan-20260920.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/meta/round-0001.json
+FAIL: broken local markdown link in reports/fast-slow-magnitude-evolution-action-plan-20260920.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/state.json
+FAIL: broken local markdown link in reports/fast-slow-magnitude-evolution-action-plan-20260920.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cycle_state.json
+FAIL: broken local markdown link in reports/signal-magnitude-and-fast-parallel-action-plan-20260921.md -> ../runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/evolution_validation.json
+FAIL: broken local markdown link in reports/v130-v138-prompt-flow-audit-20260922.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130
+FAIL: broken local markdown link in reports/v130-v138-prompt-flow-audit-20260922.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138
+FAIL: broken local markdown link in reports/v130-v138-prompt-flow-audit-20260922.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/c5d612e8037dfb6b86c8b4368b3c541a8045be12345e7b1748d70d0b94888991.json
+FAIL: broken local markdown link in reports/v130-v138-prompt-flow-audit-20260922.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/8119a7cd98bc613f53f553b7de7bd90b2c8d5d5b2d31aa15788983ec75573d4b.json
+FAIL: broken local markdown link in reports/v130-v138-prompt-flow-audit-20260922.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/3665caa109d0634830bf5ba520bc9dae2c3e9aa050c8caf06e7a436969c09d1d.json
+FAIL: broken local markdown link in reports/v130-v138-prompt-flow-audit-20260922.md -> ../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138/requests/05595c87267a74a8bc6e038ba1e901276b2d9426c70fbb575a5da86973e270f4.json
+
+Lint result: FAIL (20 issue(s))

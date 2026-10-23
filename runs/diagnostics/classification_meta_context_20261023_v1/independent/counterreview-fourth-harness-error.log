@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_meta_context_20261023_v1/independent/counterreview.py", line 123, in <module>
+    engine = SignalEvolutionEngine(registry=SignalRegistry(Path(temporary)/'signals'),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py", line 3689, in __init__
+    raise ValidationError("Signal evolution requires label-visible Discovery cases")
+stock_opportunity_agent.models.ValidationError: Signal evolution requires label-visible Discovery cases

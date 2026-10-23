@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_meta_context_20261023_v1/independent/counterreview.py", line 24, in <module>
+    from tests.scheme_evolution_test_support import make_record, make_trajectory
+ModuleNotFoundError: No module named 'tests'

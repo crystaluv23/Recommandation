@@ -1,0 +1,80 @@
+{
+  "reason": "Pre-existing tracked historical Markdown links refer to git-ignored original run artifacts absent in a fresh managed worktree. Read-only references, no original artifact edits or lint policy changes. Not research evidence.",
+  "created": [
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v112/experiments/round-0001/attempts/plan_r0001_c01.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260904-v112/experiments/round-0001/attempts/plan_r0001_c01.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cycle_state.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cycle_state.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/experiments/cycles/cycle-0001/slow_loop_result.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/experiments/cycles/cycle-0001/slow_loop_result.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/requests/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/requests/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/727ed7d1ff97e0606ab24af404e215b592bb99eb6cb594b1d141c3a5efb9c706.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/a6e8e3409d3ee826aaeadc34a4b66d795780a5cf598505a2e97dcd58ec97a745.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/deepseek-v7-ordinary-validation-20260905-v118/cache/responses/a6e8e3409d3ee826aaeadc34a4b66d795780a5cf598505a2e97dcd58ec97a745.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/f25b6ff6b7e1bc2cb400fc48e548ab1b52c471625b3cfeee27f0867b2b9051ad.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/f25b6ff6b7e1bc2cb400fc48e548ab1b52c471625b3cfeee27f0867b2b9051ad.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "progress/../runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/6d1fa230117e5cd1d955173acdda14caa9d78cdc15de694ed6ae85a464ab37ef.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/self-evolution-t7-20260908-v1/cache/responses/6d1fa230117e5cd1d955173acdda14caa9d78cdc15de694ed6ae85a464ab37ef.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/plans/plan_r0001_c01/record.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/plans/plan_r0001_c01/record.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/requests/6c582cd79203f0d8cdc7164e558064753bec9e0c06d4082733a30183ac07ba50.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/requests/6c582cd79203f0d8cdc7164e558064753bec9e0c06d4082733a30183ac07ba50.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/meta/round-0001.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/meta/round-0001.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/state.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/state.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cycle_state.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260920-v130/cycle_state.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/evolution_validation.json",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/full-market-expanded-2025plus-v13-approved-inputs/expanded_dataset_proposal/evolution_validation.json",
+      "directory": false
+    },
+    {
+      "worktree_reference": "reports/../runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138",
+      "existing_original": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-dual-self-evolution-20260922-v138",
+      "directory": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_meta_context_20261023_v1/independent/counterreview.py", line 119, in <module>
+    entry = RoundMetaEntry(round_id=1, plan_reflections=(PlanMetaReflection.from_record(record),))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 17, in __init__
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 6302, in __post_init__
+    raise ValidationError("round meta entry requires experiment evidence refs")
+stock_opportunity_agent.models.ValidationError: round meta entry requires experiment evidence refs

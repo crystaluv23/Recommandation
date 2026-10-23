@@ -1,0 +1,96 @@
+{
+  "kind": "offline independent wiring and counterexamples; no live semantic conclusion",
+  "critic_calls": 3,
+  "critic_selected_newly_disclosed_ref": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+  "h1_selected_outside_initial_slice": "reflection_source:0407872bd334a9b6afe858f923cd2559df5e7208af2b76cf63506564de06d7a1",
+  "h1_selector_runtime_headers": 42,
+  "h1_selector_omitted_count": 12,
+  "native_mining_browse_read": {
+    "selected_ref": "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+    "browse_used": 2,
+    "light_used": 0,
+    "heavy_used": 0
+  },
+  "directory_runtime_sources_discovered": 48,
+  "directory_all_units_discovered": 49,
+  "mixed_pages": 25,
+  "signal_filtered_pages": 24,
+  "exact_fit_and_minus_one": true,
+  "oversized_progress": {
+    "items": [],
+    "total": 2,
+    "level": null,
+    "next_cursor": null,
+    "oversized_refs": [
+      "reflection_source:1f6cbf753d241d3aa07411ba17429172e828f50b3c39758faf039f0ca2ad38d4",
+      "reflection_source:e5de351ea7233a15414c0400fc7759aa2caa592f1d42ab0fa6b1a5ece4826294"
+    ],
+    "sources": []
+  },
+  "legacy_exact_match": true,
+  "anonymous_hash": true,
+  "fourth_request_error": "reflection memory access rejected: reflection memory access is repeated or exceeds three requests",
+  "huge_complete_source_read_bytes": 75331,
+  "huge_read_error": "complete reflection sources exceed the read byte budget",
+  "aggregate_read_error": "reflection memory access rejected: complete reflection sources exceed the read byte budget",
+  "aggregate_individual_read_bytes": [
+    20911,
+    20911,
+    20911
+  ],
+  "unknown_and_technical_controls": [
+    {
+      "status": "domain_unavailable",
+      "failures": []
+    },
+    {
+      "status": "validation_failed",
+      "failures": [
+        {
+          "signal_round": 1,
+          "signal_ref": "runway_control:v1",
+          "status": "validation_failed"
+        }
+      ]
+    }
+  ],
+  "whole_case_exclusion_has_no_context": true,
+  "source_hashes_before": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "47032bca4de5a6f8145100235e802c4339137b508d3eb65dcaa4afbc09abd53d"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "38b9a092012d90b4769062de3614dbd43e8f02612f41e088d05e8db48b9b0cbc"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "7e6e4a5773435df0e443cac6db7fe38ecb0386c7876c57ed925023e395303eb1"
+    }
+  ],
+  "source_hashes_after": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "47032bca4de5a6f8145100235e802c4339137b508d3eb65dcaa4afbc09abd53d"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "38b9a092012d90b4769062de3614dbd43e8f02612f41e088d05e8db48b9b0cbc"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "7e6e4a5773435df0e443cac6db7fe38ecb0386c7876c57ed925023e395303eb1"
+    }
+  ],
+  "source_hashes_stable": true,
+  "network_attempts": 0
+}

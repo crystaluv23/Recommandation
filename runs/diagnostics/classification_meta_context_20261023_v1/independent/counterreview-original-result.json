@@ -1,0 +1,66 @@
+{
+  "kind": "independent_offline_counterexample_not_live_model",
+  "cases": 24,
+  "executed_declarations": 48,
+  "critic_initial_disclosed": 2,
+  "critic_after_native_browse_disclosed": 2,
+  "critic_unaddressed_declarations": 46,
+  "critic_source_coverage": {
+    "available": 99,
+    "included": 29,
+    "deferred": 70
+  },
+  "native_browse_disclosure": [
+    {
+      "items": [],
+      "total": 0,
+      "level": "case",
+      "next_cursor": null,
+      "oversized_refs": [],
+      "signal_ref": "runway_control:v1"
+    }
+  ],
+  "known_private_ref_readable_only_if_externally_supplied": "reflection_source:7303dfa05dc2022d2a6d685b9157782de408232b6530a8fb88d856cf46c4578f",
+  "round_meta_save_restore_equal": true,
+  "slow_native_index_declarations": 48,
+  "slow_initial_catalog_declarations": 2,
+  "slow_visible_refs_filter_excludes": 46,
+  "source_hashes_before": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "47032bca4de5a6f8145100235e802c4339137b508d3eb65dcaa4afbc09abd53d"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "798e156686ceb03f090b011fc81470a406a411f62cc9f1743b9bbee173452fe8"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "f8715584e1b66fb7482331a909a3e219a502e2653fade5bdd5733665e6b5df91"
+    }
+  ],
+  "source_hashes_after": [
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "47032bca4de5a6f8145100235e802c4339137b508d3eb65dcaa4afbc09abd53d"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "798e156686ceb03f090b011fc81470a406a411f62cc9f1743b9bbee173452fe8"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "f8715584e1b66fb7482331a909a3e219a502e2653fade5bdd5733665e6b5df91"
+    }
+  ],
+  "source_hashes_stable": true,
+  "network_attempts": 0
+}

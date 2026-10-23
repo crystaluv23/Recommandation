@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_meta_context_20261023_v1/independent/counterreview.py", line 117, in <module>
+    record = replace(make_record('independent_meta_plan', 0, (1.0,)), trajectories=cases, metrics=metrics)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 13, in __init__
+  File "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/src/stock_opportunity_agent/research/evolution_core.py", line 5599, in __post_init__
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Plan evaluation metadata must cover every saved trajectory

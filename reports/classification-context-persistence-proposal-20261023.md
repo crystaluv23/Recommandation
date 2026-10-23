@@ -1,8 +1,10 @@
 # 分类定义进入 critic / Slow 的持久化方案
 
+2026-10-23：用户明确选择 A「完整声明随 meta 保存」。实施与连接验收见 [分类 meta 落地报告](classification-meta-context-20261023.md)。
+
 当前修复可让实际执行的分类声明到达 Reflect、最终 Predictor 和 Posthoc；但真正的 Plan Critic 会再次压缩轨迹。它的原件来自 `CaseReflectionEvidence.from_trajectory().to_model_dict()`，只保留反馈、自反思和执行失败摘要。该 canonical meta 记录没有分类声明，`ReflectionMemoryIndex._cases` 因而也没有相应可读原件。仅修中间 `_plan_critic_trajectory` 不能关闭这条消费链。
 
-需要决策的是如何保存这份 runtime control data；不改变 Signal 测量/类别/阈值、评分、PIT、准入、标签边界或模型权限。用户的 AGENTS.md 要求涉及 canonical schema / 接口实质取舍先准备具体方案并取得决策，因此以下新增 canonical meta 字段尚未实现。
+需要决策的是如何保存这份 runtime control data；不改变 Signal 测量/类别/阈值、评分、PIT、准入、标签边界或模型权限。用户的 AGENTS.md 要求涉及 canonical schema / 接口实质取舍先准备具体方案并取得决策，该决策现已取得，按 A 实施；原方案比较保留如下。
 
 | 方案 | 具体实现 | 代价 |
 |---|---|---|
