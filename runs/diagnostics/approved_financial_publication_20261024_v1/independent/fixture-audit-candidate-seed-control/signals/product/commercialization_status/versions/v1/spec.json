@@ -1,0 +1,61 @@
+{
+  "category": "product",
+  "definition": {
+    "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skill.md",
+    "type": "llm"
+  },
+  "modality": "narrative",
+  "parameters": {
+    "routing_excluded_context_tags": [
+      "mature_operations"
+    ],
+    "routing_required_research_phrases": [
+      "product",
+      "technology",
+      "prototype",
+      "commercialization",
+      "commercial launch",
+      "commercially available",
+      "sellable",
+      "repeatable"
+    ]
+  },
+  "raw_retrieval": {
+    "lookback_days": 1095,
+    "query_terms": [
+      "commercial launch",
+      "commercial shipment",
+      "scaled sales"
+    ],
+    "source_types": [
+      "filing",
+      "company_announcement",
+      "customer_announcement",
+      "earnings_call"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "commercialization_status",
+  "version": 1
+}

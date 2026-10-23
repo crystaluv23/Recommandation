@@ -1,0 +1,11 @@
+{
+  "state": "preparation_rejected",
+  "reason": "Normal input freeze rejected nine original financial fixtures without issuer proof",
+  "plan_exists": false,
+  "execution_marker_exists": false,
+  "publication_count": 0,
+  "original_and_clone_files_equal": 198,
+  "original_registry_version": 12,
+  "source_code_at_rejection": "9a4ab76c",
+  "not_retryable_by_directory_rename": true
+}

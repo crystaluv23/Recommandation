@@ -1,0 +1,67 @@
+{
+  "schema_version": "classification-fresh-consumer-resource-review-v1",
+  "status": "complete_fresh_chain_not_authorized_by_existing_case_envelope",
+  "charges": {
+    "accepted_H_init": {
+      "cost": 0.0,
+      "llm_calls": 1,
+      "tokens": 61888
+    },
+    "accepted_context_selection": {
+      "cost": 0.0,
+      "llm_calls": 1,
+      "tokens": 49144
+    },
+    "completed_consumer_reflect": {
+      "cost": 0.0,
+      "llm_calls": 1,
+      "tokens": 57862
+    },
+    "completed_consumer_predictor": {
+      "cost": 0.0,
+      "llm_calls": 1,
+      "tokens": 66957
+    }
+  },
+  "cumulative_case_usage": {
+    "cost": 0.0,
+    "llm_calls": 4,
+    "tokens": 235851
+  },
+  "fixed_caps": {
+    "case_logical_units": 256000,
+    "single_request_logical_units": 131072,
+    "total_role_calls": 5,
+    "finalization_reserve": 64000
+  },
+  "remaining": {
+    "logical_units": 20149,
+    "role_calls": 1
+  },
+  "decisive_inequality": "A fresh Reflect plus fresh Predictor requires at least 2 role responses; only 1 remains. Existing complete Reflect/Predictor logical charges were 57862+66957; even before a new estimate, resetting to 111032 discards 124819 logical units and 2 consumed calls.",
+  "authorization_scope": "Parent reports user restored the overall MVP goal active with no goal-level budget. This does not amend this case/request/call contract. The subagent goal tool returned null for its own scope; no inference of root goal inactivity is made.",
+  "old_stage": "Completed and semantic 0/1 unchanged; no reentry, no renamed-directory reset, no cache replay represented as fresh behavior.",
+  "new_case_allocation": "No independent new diagnostic case cap or call allowance is inferred or created. Any later explicit resource decision must retain this whole historical ledger and freeze its own scope before dispatch.",
+  "action_taken": "No real role, Signal, preflight executor, simplified role probe or external service executed. Parent accepted the remaining-resource bound and cancelled a new full fresh chain.",
+  "useful_remaining_checks": [
+    "Pure source/code/serialized-input review can check declaration completeness and exact version/result binding, with zero case-role consumption.",
+    "A separately frozen input-only egress check may inspect final payload inclusion and budget admission before cache/receive/inbox; it proves wiring or a budget rejection, not model obedience.",
+    "Do not consume the remaining call on a simplified interpretation probe in this round; parent explicitly declined it as insufficient to close F9."
+  ],
+  "accounting_limit": "Logical wire-estimate plus output-reservation units, not measured host model tokens/cost. Physical receipts remain separately reported; 0 external API fees does not erase local logical accounting.",
+  "physical_completed_consumer_receipts": [
+    {
+      "agent_id": "/root/financial_context_reflect",
+      "inbox_sha256": "1e876b474e4461e3bbe90d965411590d899e5907608fdb801370691af735f61a",
+      "raw_output_sha256": "4918a10aaf00c44fdff56dcc6eab1b6feb45bf34f06b5c800e3cec0b45e5035a",
+      "request_hash": "b1f35d3cf8461f17df010effacce4babcaddcf2db62c23045c11e98d4a0b79cc"
+    },
+    {
+      "agent_id": "/root/financial_context_predictor",
+      "inbox_sha256": "1bce3f148f0754161cdc4bc7c40c3e0d6ee6688942b9d789ab075a0321dd1737",
+      "raw_output_sha256": "cb300df5938c36aa932a99d9513cd5169500a3eb232627aea85d344795ddd46f",
+      "request_hash": "b3210fe61cf325453c2d763f48e061a84340aa10e3373c8cae401adbf74d7b88"
+    }
+  ],
+  "source_evidence": "Accepted H_init and route usages + accepted Reflect/Predictor usages independently sum to the sink ledger and old independent review."
+}

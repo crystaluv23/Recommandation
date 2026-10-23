@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "documents": [
+        {
+          "content": "The company reported a loss and material delay.",
+          "source_type": "news"
+        }
+      ],
+      "expected": "negative",
+      "name": "negative news terms"
+    }
+  ]
+}

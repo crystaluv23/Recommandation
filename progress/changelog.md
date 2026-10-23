@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-24：真实发布准备确认原18项中9份旧财务fixture缺issuer证明仍拒；同时以同一lower-level runner统一candidate/stable的公司、来源别名、正文类型、PIT与technical/domain边界，防误拒与技术失败伪unavailable。原8项反例旧版6fail/3error、新版通过；407关联与独立20组/11批准fixtures双入口通过，原198文件/旧失败保持。当前完整分类输入预演止于request-ready，0角色/网络/标签；旧235851/4次账仅余20149/1次，两个具体资源/迁移接口方案已提交用户，未发布或重置预算。见[验收](../reports/fixture-audit-alignment-20261024.md)及[待决方案](../reports/mvp-next-boundaries-20261024.md)。
+
 - 2026-10-23：实施用户批准的财务期间新口径，以原函数ID＋版本政策保旧版本语义；精确literal分数运算修正三个阈值反例，不改classifier。245关联/85独立控制及真实next-version/11fixtures通过；唯一两项native批次1数值正确、1缺Q4正确unavailable，独立四原文/消费/恢复核过，旧6/1/2与完成态保持。新版本未稳定发布或fresh研究消费，Fast/MVP仍open。见[报告](../reports/financial-period-policy-20261023.md)。
 
 - 2026-10-23：Mining v4策略停止并封存后，合入已批准且独立审过的分类meta A产品补丁；根目录30项新增控制/反思记忆/历史回放通过，保留原有无关改动。真实Critic/Slow语义消费仍待下次触发，不关闭Fast/MVP。见[报告](../reports/classification-meta-context-20261023.md)。

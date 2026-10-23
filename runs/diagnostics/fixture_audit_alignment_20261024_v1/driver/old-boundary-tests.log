@@ -1,0 +1,107 @@
+EEE.FFFF.FF
+======================================================================
+ERROR: test_closed_future_corpus_is_domain_unavailable (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_closed_future_corpus_is_domain_unavailable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 92, in test_closed_future_corpus_is_domain_unavailable
+    self.both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 31, in both
+    _audit_deterministic_fixture(self.spec, fixture, index=0)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4083, in _audit_deterministic_fixture
+    raise ValidationError("capability fixture source_type is outside SignalSpec")
+stock_opportunity_agent.models.ValidationError: capability fixture source_type is outside SignalSpec
+
+======================================================================
+ERROR: test_compatible_typed_source_passes_both_and_real_freeze (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_compatible_typed_source_passes_both_and_real_freeze)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 40, in test_compatible_typed_source_passes_both_and_real_freeze
+    self.both(self.fixture)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 31, in both
+    _audit_deterministic_fixture(self.spec, fixture, index=0)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4083, in _audit_deterministic_fixture
+    raise ValidationError("capability fixture source_type is outside SignalSpec")
+stock_opportunity_agent.models.ValidationError: capability fixture source_type is outside SignalSpec
+
+======================================================================
+ERROR: test_explicit_canonical_company_is_not_replaced_by_an_opaque_alias (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_explicit_canonical_company_is_not_replaced_by_an_opaque_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 48, in test_explicit_canonical_company_is_not_replaced_by_an_opaque_alias
+    self.both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 31, in both
+    _audit_deterministic_fixture(self.spec, fixture, index=0)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 4118, in _audit_deterministic_fixture
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: expected positive, received unavailable
+
+======================================================================
+FAIL: test_source_objects_are_not_coerced_to_text (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_source_objects_are_not_coerced_to_text) (content={'facts': []})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 70, in test_source_objects_are_not_coerced_to_text
+    self.reject_both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 36, in reject_both
+    with self.assertRaises(ValidationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+======================================================================
+FAIL: test_source_objects_are_not_coerced_to_text (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_source_objects_are_not_coerced_to_text) (content=['not text'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 70, in test_source_objects_are_not_coerced_to_text
+    self.reject_both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 36, in reject_both
+    with self.assertRaises(ValidationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+======================================================================
+FAIL: test_source_objects_are_not_coerced_to_text (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_source_objects_are_not_coerced_to_text) (content=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 70, in test_source_objects_are_not_coerced_to_text
+    self.reject_both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 36, in reject_both
+    with self.assertRaises(ValidationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+======================================================================
+FAIL: test_source_objects_are_not_coerced_to_text (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_source_objects_are_not_coerced_to_text) (content=123)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 70, in test_source_objects_are_not_coerced_to_text
+    self.reject_both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 36, in reject_both
+    with self.assertRaises(ValidationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+======================================================================
+FAIL: test_validation_failure_does_not_pass_expected_unavailable (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_validation_failure_does_not_pass_expected_unavailable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 61, in test_validation_failure_does_not_pass_expected_unavailable
+    self.reject_both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 36, in reject_both
+    with self.assertRaises(ValidationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+======================================================================
+FAIL: test_wrong_declared_company_cannot_be_hidden_by_metadata (tests.test_signal_fixture_execution.SignalFixtureExecutionTests.test_wrong_declared_company_cannot_be_hidden_by_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 54, in test_wrong_declared_company_cannot_be_hidden_by_metadata
+    self.reject_both(row)
+  File "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py", line 36, in reject_both
+    with self.assertRaises(ValidationError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.021s
+
+FAILED (failures=6, errors=3)

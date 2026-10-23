@@ -130,7 +130,7 @@ class SeedFixtureIssuerBindingTests(TestCase):
                     self.assertEqual(result.execution_status,
                                      SignalExecutionStatus.VALIDATION_FAILED)
                     self.assertIn("SEC Company Facts", result.execution_error_message)
-                    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+                    with self.assertRaisesRegex(ValidationError, "technical execution failure: validation_failed"):
                         _audit_deterministic_fixture(spec, fixture, index=0)
 
     def test_canonical_company_conflict_cannot_be_masked_by_matching_fixture_bindings(self):

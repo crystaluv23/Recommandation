@@ -410,6 +410,16 @@ and leaves their complete version files unchanged. Correcting the source seed
 template does not repair published fixtures; those require an explicit successor
 under the existing immutable-version contract.
 
+Candidate validation and deterministic stable capability audit use the same
+fixture execution boundary. Both preserve the fixture's declared company ID
+(or the same opaque default), use source-family compatibility, require string
+content and aware clocks, and distinguish a domain-unavailable result from
+technical execution failure. Neither path coerces an object into source text,
+substitutes another issuer or treats validation failure as a passing unavailable
+fixture. A fully future corpus remains unavailable without acquisition, under
+the existing closed-fixture rule. The shared boundary never supplies a missing
+CIK or changes old published fixtures, expected states, measurements or PIT.
+
 Seed and runtime manifests carry an explicit enabled status. Structurally
 unsupported definitions remain auditable but disabled and are omitted from
 category/card/spec disclosure. They may be enabled only after the capability

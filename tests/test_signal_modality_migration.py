@@ -17,13 +17,14 @@ from stock_opportunity_agent.signal_library import (
 AS_OF = "2025-02-01T00:00:00+00:00"
 
 
-def _financial_document(content: str) -> dict[str, object]:
+def _financial_document(content: str, *, metadata: dict[str, str] | None = None) -> dict[str, object]:
     return {
         "document_id": "fixture",
         "source_type": "financials",
         "published_at": "2025-01-20T00:00:00+00:00",
         "available_at": "2025-01-20T00:00:00+00:00",
         "content": content,
+        "metadata": dict(metadata or {}),
     }
 
 
@@ -51,10 +52,12 @@ class SignalModalityMigrationTests(TestCase):
                         "documents": (
                             _financial_document(
                                 '{"schema_version":"sec-company-facts-document-v1",'
+                                '"cik":"0000000001",'
                                 '"filing_date":"2025-01-20","form":"10-Q",'
                                 '"facts":[{"end":"2024-12-31","start":null,'
                                 '"tag":"CashAndCashEquivalentsAtCarryingValue",'
-                                '"taxonomy":"us-gaap","unit":"USD","value":150}]}'
+                                '"taxonomy":"us-gaap","unit":"USD","value":150}]}',
+                                metadata={"cik": "0000000001"},
                             ),
                         ),
                     },
@@ -107,13 +110,15 @@ class SignalModalityMigrationTests(TestCase):
                 "documents": (
                     _financial_document(
                         '{"schema_version":"sec-company-facts-document-v1",'
+                        '"cik":"0000000001",'
                         '"filing_date":"2025-01-20","form":"10-Q","facts":['
                         '{"end":"2024-12-31","start":null,'
                         '"tag":"CashAndCashEquivalentsAtCarryingValue",'
                         '"taxonomy":"us-gaap","unit":"USD","value":50},'
                         '{"end":"2024-12-31","start":null,'
                         '"tag":"LiabilitiesCurrent","taxonomy":"us-gaap",'
-                        '"unit":"USD","value":100}]}'
+                        '"unit":"USD","value":100}]}',
+                        metadata={"cik": "0000000001"},
                     ),
                 ),
             }

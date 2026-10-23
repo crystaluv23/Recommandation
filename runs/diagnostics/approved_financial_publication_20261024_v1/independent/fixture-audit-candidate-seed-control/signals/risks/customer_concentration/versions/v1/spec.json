@@ -1,0 +1,85 @@
+{
+  "category": "risks",
+  "definition": {
+    "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skill.md",
+    "type": "llm"
+  },
+  "modality": "narrative",
+  "parameters": {
+    "result_required_evidence_phrases": [
+      "customer",
+      "customers",
+      "client",
+      "clients",
+      "buyer",
+      "buyers",
+      "offtake",
+      "backlog",
+      "order",
+      "orders",
+      "account",
+      "accounts",
+      "program"
+    ],
+    "routing_answer_need_phrases": [
+      "customer concentration",
+      "customer dependency",
+      "customer dependence",
+      "single customer",
+      "one customer",
+      "largest customer",
+      "major customer",
+      "revenue concentration",
+      "customer diversification",
+      "customer diversity",
+      "diversified customers",
+      "customer mix"
+    ],
+    "routing_required_research_phrases": [
+      "customer",
+      "client",
+      "buyer",
+      "offtake",
+      "backlog",
+      "order",
+      "customer program"
+    ]
+  },
+  "raw_retrieval": {
+    "lookback_days": 1095,
+    "query_terms": [
+      "customer concentration",
+      "major customer",
+      "revenue customer"
+    ],
+    "source_types": [
+      "filing",
+      "earnings_call",
+      "customer_announcement"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "customer_concentration",
+  "version": 1
+}

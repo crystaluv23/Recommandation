@@ -1,0 +1,5 @@
+{
+  "failure": "Review harness incorrectly required more than20 top-level AST statements in the original candidate materializer. The real original method has19 with nested blocks; changed only that review sanity threshold to >5.",
+  "product_calls_before_failure": 0,
+  "product_files_changed": 0
+}

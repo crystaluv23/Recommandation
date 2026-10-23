@@ -1,0 +1,12 @@
+{
+  "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py": "d7490eb612baeb01e65a7db5a734dd14b19abd5fb492096ba82c51401e89ade6",
+  "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "2d01548090c0338b1655bb8a757534ec06577890fdcefd31e2106fa7b6103e35",
+  "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md": "f41433871ee49ee48bb68f330b98b5830f20b2acc1c2531ce7c3bdd4393937c6",
+  "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "3da18535546231ce42b19428e098454b0fb940ce799070741f541cd9583e1984",
+  "/Users/l/Project/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/new-version-specs.json": "e74a3bd15d5dd35086e3fd961ae037401a4a44493e097ecd37ab8263bb22a1c1",
+  "/Users/l/Project/Recommandation/runs/diagnostics/financial_period_policy_20261023_v1/independent/lineage-fixtures.json": "a3975f55552aa28a2a5ef7dd691da3ee722c60d75238d760767dafd142d84b79",
+  "/Users/l/Project/Recommandation/configs/signals_v1.json": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae",
+  "/Users/l/Project/Recommandation/runs/diagnostics/current_financial_apply_20261021_v1/native/stage/plan.json": "7c1120ec07b149744ca9b69aeed7b21aa074f19ff1c83d23a410a54bb3be55b2",
+  "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/review-shared-fixture-candidate.py": "d490a4bbeccea068b0e7ae0ca6283eb0b8dd8a11a94ce87213327bb6077b667e",
+  "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-review.json": "4967d7f0f0dba50df31b0495902ccc248eb805b55e0fcb5938f6d1427f92560d"
+}

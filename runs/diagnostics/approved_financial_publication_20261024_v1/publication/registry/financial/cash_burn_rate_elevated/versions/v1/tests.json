@@ -1,0 +1,167 @@
+{
+  "tests": [
+    {
+      "as_of": "2024-11-06T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-11-06T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-4070000}",
+          "document_id": "doc_q3_ocf",
+          "published_at": "2024-11-06T00:00:00+00:00",
+          "source_type": "financials"
+        },
+        {
+          "available_at": "2024-11-06T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2024Q3I\",\"fy\":2024,\"val\":25877000}",
+          "document_id": "doc_q3_cash",
+          "published_at": "2024-11-06T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "confirmed_high_burn_q3_2024"
+    },
+    {
+      "as_of": "2024-11-06T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-10-01T00:00:00+00:00",
+          "content": "Management proposed a plan to accelerate research and development spending, which may increase cash burn in future periods, but no operating cash flow or cash balance figures were reported and no definitive commitment was made. Historical cash fact: {\"accn\":\"0001410578-22-001260\",\"end\":\"2021-12-31\",\"filed\":\"2022-05-10\",\"form\":\"20-F\",\"fp\":\"FY\",\"frame\":\"CY2021Q4I\",\"fy\":2021,\"val\":3480000}",
+          "document_id": "doc_proposal",
+          "published_at": "2024-10-01T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "neutral",
+      "name": "mere_proposal_no_actuals"
+    },
+    {
+      "as_of": "2025-04-30T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2025-04-30T00:00:00+00:00",
+          "content": "{\"accn\":\"0001410578-25-001051\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-30\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":1955000}",
+          "document_id": "doc_fy2024_ocf",
+          "published_at": "2025-04-30T00:00:00+00:00",
+          "source_type": "company_facts"
+        },
+        {
+          "available_at": "2025-04-30T00:00:00+00:00",
+          "content": "The company explicitly denies any cash burn concern; operating cash flow was positive at 1,955,000 for FY2024 and cash reserves remain adequate.",
+          "document_id": "doc_denial",
+          "published_at": "2025-04-30T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "negative",
+      "name": "explicit_denial_positive_ocf"
+    },
+    {
+      "as_of": "2024-11-06T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-11-06T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-1000000}",
+          "document_id": "doc_below_ocf",
+          "published_at": "2024-11-06T00:00:00+00:00",
+          "source_type": "financials"
+        },
+        {
+          "available_at": "2024-11-06T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2024Q3I\",\"fy\":2024,\"val\":25877000}",
+          "document_id": "doc_below_cash",
+          "published_at": "2024-11-06T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "neutral",
+      "name": "below_threshold_burn"
+    },
+    {
+      "as_of": "2024-11-07T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-11-07T00:00:00+00:00",
+          "content": "The company's cash burn reached about 15.7% of its cash reserves as operating cash flow was negative $4.07 million against $25.877 million in cash. Source facts: {\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-4070000} {\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2024Q3I\",\"fy\":2024,\"val\":25877000}",
+          "document_id": "doc_paraphrase",
+          "published_at": "2024-11-07T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "paraphrase_confirmed_burn"
+    },
+    {
+      "as_of": "2024-11-06T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-10-01T00:00:00+00:00",
+          "content": "The marketing team increased its advertising burn rate to $50,000 per month, but this is unrelated to operating cash flow or cash reserves. Reference cash fact: {\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2024Q3I\",\"fy\":2024,\"val\":25877000}",
+          "document_id": "doc_lookalike",
+          "published_at": "2024-10-01T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "neutral",
+      "name": "lookalike_marketing_burn"
+    },
+    {
+      "as_of": "2024-10-01T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-11-06T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":-4070000}",
+          "document_id": "doc_post_cutoff_ocf",
+          "published_at": "2024-11-06T00:00:00+00:00",
+          "source_type": "financials"
+        },
+        {
+          "available_at": "2024-11-06T00:00:00+00:00",
+          "content": "{\"accn\":\"0001628280-24-045451\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-06\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"frame\":\"CY2024Q3I\",\"fy\":2024,\"val\":25877000}",
+          "document_id": "doc_post_cutoff_cash",
+          "published_at": "2024-11-06T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "post_cutoff_document"
+    },
+    {
+      "as_of": "2024-11-06T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2024-10-01T00:00:00+00:00",
+          "content": "The company may have some cash consumption issues, but no figures are provided. Unclear.",
+          "document_id": "doc_vague",
+          "published_at": "2024-10-01T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "evidence_insufficient_vague"
+    },
+    {
+      "as_of": "2025-04-30T00:00:00+00:00",
+      "company_id": "acme_corp",
+      "documents": [
+        {
+          "available_at": "2025-04-30T00:00:00+00:00",
+          "content": "The previously reported cash burn concern is cancelled; the company now has positive operating cash flow and no material cash consumption. Source fact: {\"accn\":\"0001410578-25-001051\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-30\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"start\":\"2024-01-01\",\"val\":1955000}",
+          "document_id": "doc_cancellation",
+          "published_at": "2025-04-30T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "negative",
+      "name": "cancellation_of_burn_concern"
+    }
+  ]
+}

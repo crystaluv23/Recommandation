@@ -318,6 +318,12 @@ definition-to-implementation consistency, independent
 supporting/counter/unavailable fixtures, and semantic duplicate checks
 without weakening existing gates.
 
+Candidate and stable capability checks share the lower-level fixture runner:
+the same company identity, compatible source family, literal text type, PIT
+visibility and technical/domain disposition apply before and after staging.
+Stable auditing cannot silently replace an explicit fixture company, coerce
+source objects into text or count technical failure as a domain abstention.
+
 `SlowLoopValidation` and `SlowLoopResult` bind the input, memory, experiment,
 and sampling hashes. A result separately reports new candidate, validated new,
 promoted new, and updated counts. Only committed promotions of new Signal ids

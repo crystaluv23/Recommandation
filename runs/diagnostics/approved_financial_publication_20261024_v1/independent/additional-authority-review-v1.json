@@ -1,0 +1,32 @@
+{
+  "status": "additional_preparation_authority_and_preservation_requirements",
+  "actual_approved_inputs_currently_match": true,
+  "approved_specs_sha256": "e74a3bd15d5dd35086e3fd961ae037401a4a44493e097ecd37ab8263bb22a1c1",
+  "authority_gap": {
+    "driver_current_gate": "Only exact two ref names plus source code_bindings are checked before capturing current specs.",
+    "in_memory_counterexample": "Changing positive_min .08 to .09 preserves both exact refs and all code_bindings. No file or product was changed; this shows why ref-only authorization is insufficient.",
+    "required_gate": "Compare full candidate specs against immutable native-approved/plan.json specs and independent approved_new_specs_sha256/addendum identities, before cloning/writing preparation state."
+  },
+  "post_adapter_fix_code_identity": {
+    "expected_issue": "A legitimate audit-adapter repair changes signal_library.py SHA so the old approved candidate_input code_bindings check will reject.",
+    "safe_path": "Retain original candidate/source freeze and historical05e79 binding. Add independently reviewed code-delta/current-implementation binding verifying pure kernels/legacy numeric semantics plus fixture adapter controls, and freeze that addendum in a new plan. Do not change original frozen oracle/new-version-specs merely to satisfy current hash."
+  },
+  "old_clone_history_protection": {
+    "current_gate": "Original Registry full files are rechecked. Reconstructed old snapshot hash protects only old specs/skills, not cloned fixture/learning/test bytes.",
+    "required_gate": "Save old cloned immutable versions and auxiliary history members, then verify unchanged bytes/membership after normal atomic transition. Permit exactly new versions/admissions/promotion metadata and expected stable manifest+registry version changes."
+  },
+  "other_current_behavior": {
+    "SignalRegistry_freeze_all18_audit": "Present and mandatory; actualprepare failed9/18 due genuine missing issuer fixtures. Do not replace it with definition-only snapshot or patch it out.",
+    "normal_transition": "All candidate validation and admission identities staged before promote_validated_batch; replay uses same identity and must not bump twice.",
+    "prepared_failure": "Current partial clone has no plan, execution-start/result/failure marker or publication; preserve clone/log without describing capability failure as completed S7."
+  },
+  "scope": {
+    "product_changes": 0,
+    "oldfiles_changes": 0,
+    "roles": 0,
+    "Signal_execution": 0,
+    "publication": 0,
+    "network": 0,
+    "labels": 0
+  }
+}

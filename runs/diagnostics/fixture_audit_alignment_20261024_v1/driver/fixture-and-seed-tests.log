@@ -1,0 +1,473 @@
+....FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.................
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_growth_yoy:v1', variant='no_metadata')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_growth_yoy:v1', variant='no_body_cik')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_growth_yoy:v1', variant='body_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_growth_yoy:v1', variant='metadata_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_growth_yoy:v1', variant='body_bool')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_growth_yoy:v1', variant='metadata_float')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_acceleration:v1', variant='no_metadata')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_acceleration:v1', variant='no_body_cik')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_acceleration:v1', variant='body_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_acceleration:v1', variant='metadata_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_acceleration:v1', variant='body_bool')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='revenue_acceleration:v1', variant='metadata_float')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='gross_margin_change:v1', variant='no_metadata')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='gross_margin_change:v1', variant='no_body_cik')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='gross_margin_change:v1', variant='body_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='gross_margin_change:v1', variant='metadata_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='gross_margin_change:v1', variant='body_bool')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='gross_margin_change:v1', variant='metadata_float')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='operating_cash_flow_margin:v1', variant='no_metadata')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='operating_cash_flow_margin:v1', variant='no_body_cik')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='operating_cash_flow_margin:v1', variant='body_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='operating_cash_flow_margin:v1', variant='metadata_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='operating_cash_flow_margin:v1', variant='body_bool')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='operating_cash_flow_margin:v1', variant='metadata_float')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='net_share_retirement_yoy:v1', variant='no_metadata')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='net_share_retirement_yoy:v1', variant='no_body_cik')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='net_share_retirement_yoy:v1', variant='body_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='net_share_retirement_yoy:v1', variant='metadata_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='net_share_retirement_yoy:v1', variant='body_bool')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='net_share_retirement_yoy:v1', variant='metadata_float')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='cash_reserves:v1', variant='no_metadata')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='cash_reserves:v1', variant='no_body_cik')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='cash_reserves:v1', variant='body_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='cash_reserves:v1', variant='metadata_mismatch')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='cash_reserves:v1', variant='body_bool')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+======================================================================
+FAIL: test_missing_mismatched_and_malformed_bindings_stay_technical_failures (tests.test_seed_fixture_issuer_binding.SeedFixtureIssuerBindingTests.test_missing_mismatched_and_malformed_bindings_stay_technical_failures) (ref='cash_reserves:v1', variant='metadata_float')
+----------------------------------------------------------------------
+stock_opportunity_agent.models.ValidationError: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py", line 133, in test_missing_mismatched_and_malformed_bindings_stay_technical_failures
+    with self.assertRaisesRegex(ValidationError, "received unavailable"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "received unavailable" does not match "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+
+----------------------------------------------------------------------
+Ran 22 tests in 4.625s
+
+FAILED (failures=36)

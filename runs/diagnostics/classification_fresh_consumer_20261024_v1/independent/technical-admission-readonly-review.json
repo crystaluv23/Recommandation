@@ -1,0 +1,115 @@
+{
+  "schema_version": "read-only-S6-S7-admission-review-v1",
+  "status": "permitted_existing_technical_path_subject_to_exact_frozen_validation_and_atomic_transition",
+  "scope": "Two user-approved existing-signal updates GMv4 / accelerationv3 in a separate successor Registry. No old v182 Registry mutation, no new Mining generation or measured effect.",
+  "owning_specs": [
+    "spec/src/stock_opportunity_agent/signal_library.md:Technical admission record and atomic publication",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md:Technical admission and independent effect observations"
+  ],
+  "required_inputs": [
+    "Exact independent new-version-specs.json and generic fixtures from approved financial_period_policy_20261023_v1, plus source-only freeze/addendum and actual source-result review.",
+    "Read-only original v182 ordered exact18 input refs/specs/skills/stable fixtures; the successor Registry must freeze and prove its baseline identity.",
+    "Complete current candidate implementation/validator/callable-contract/model/alias policy identities; no synthetic arbitrary validator hash.",
+    "Clear separate destination and origin. No rewriting old evaluations, old completed stages or historical source/role budgets."
+  ],
+  "normal_API_order": [
+    {
+      "API": "SignalRegistry.stage_candidate",
+      "fields": [
+        "spec",
+        "skill=None for deterministic",
+        "non-empty complete staged tests",
+        "truthful origin"
+      ],
+      "evidence": "candidate_hash over exact spec/skill/tests; preserve generation data boundary and immutable staged content."
+    },
+    {
+      "API": "SignalCandidateValidator.validate",
+      "fields": [
+        "actual current successor Registry validator",
+        "spec",
+        "skill",
+        "exact staged tests"
+      ],
+      "evidence": "accepted literal true, reasons empty, executed_tests equals every staged fixture count; actual production fixture execution, PIT/evidence checks, exact v3→v4/v2→v3 progression, same registered callable IDs, concept consistency and stable semantic/behavior duplicate checks."
+    },
+    {
+      "API": "Current batch duplicate guard",
+      "fields": [
+        "normalized descriptions",
+        "SignalCandidateValidator._behavior_identity for every candidate"
+      ],
+      "evidence": "Mirror SlowLoop batch guard; per-candidate validator alone does not compare unpublished siblings."
+    },
+    {
+      "API": "SignalRegistry.record_candidate_admission",
+      "fields": [
+        "signal_ref",
+        "input_registry_hash",
+        "validator_hash",
+        "research_targets",
+        "contract_validation",
+        "research_provenance"
+      ],
+      "evidence": "signal-candidate-admission-v1 exact identity/key; accepted true/reasons[]/executed_tests==full staged test count; no effectiveness accepted flag."
+    },
+    {
+      "API": "SignalRegistry.promote_validated_batch",
+      "fields": [
+        "validated_candidates ref→exact candidate_hash",
+        "validated_evaluations ref→exact admission key",
+        "transition_id",
+        "input_version",
+        "input_hash",
+        "ordered input_refs"
+      ],
+      "evidence": "Whole batch validates before stable mutation. Prepared transition rechecks candidate/evaluation/input identity, repeats stable executable-surface audit, copies exact admission into immutable version, increments Registry version at most once and writes applied output snapshot/promotion records."
+    }
+  ],
+  "validator_hash_policy": "Use actual SlowLoop._technical_validator_hash policy or an exactly documented equivalent: policy signal-technical-admission-v1, validator source SHA, executor source SHA, actual deterministic contracts, forbidden identity aliases, runner identity, public registration and model contract hash. Do not substitute a test-result hash or arbitrary 64-hex placeholder.",
+  "research_targets": "Inherit prior exact-version research_status when present. For legacy versions without a target declaration, current SlowLoop fallback is surge_direction; do not invent magnitude support from financial labels.",
+  "research_provenance": {
+    "shape": [
+      "generation_case_ids",
+      "induction_case_ids",
+      "origin",
+      "source_input_hash"
+    ],
+    "origin_enum": [
+      "current_cycle",
+      "legacy_effect_records",
+      "unknown"
+    ],
+    "this_diagnostic": "This is an approved diagnostic/user-defined period update, not an actual new Slow generation cycle. Use truthful unknown lineage where needed; retain known GPRE development/induction exposure and source-input hash, and exclude exposed cases from later independent effect claims. Do not mark current_cycle or invent a Mining author/source."
+  },
+  "atomic_recovery": [
+    "Before any stable edit, freeze exact input Registry version/hash/ordered refs and all passing candidate/admission identities.",
+    "A prepared transition blocks ordinary Registry reads. Recovery can reconcile only that exact prepared identity; changed candidates/evaluations/extra stable mutations reject.",
+    "Copy exact admission.json and manifest admission_keys before output freeze. Read back stable spec/skill/tests/candidate hash/admission key, output version/hash and research status.",
+    "Idempotent exact transition replay may verify/reconcile; never run normal promotion twice under a new identity as a substitute for recovery."
+  ],
+  "status_after_success": {
+    "technical_status": "admitted for those exact two version contents",
+    "effect_status": "unverified",
+    "effect_observation_state": "pending_use; not invented observed zeros",
+    "old_versions_and_evaluations": "unchanged",
+    "new_Mining_signals_count": 0,
+    "updated_existing_signals_count": 2
+  },
+  "evidence_limits": [
+    "Synthetic complete fixtures establish executable contract behavior and safe abstention, not authentic market data coverage or new Mining ability.",
+    "Existing real-source audit establishes one GM numeric measurement and one acceleration missing-Q4 abstention; it does not establish real-source numeric acceleration success.",
+    "Publication in the independent successor Registry may close this two-version technical publication step only after actual durable transition/output audit. It does not alone close full S5–S8 or whole-MVP stable admission.",
+    "No fresh model semantics, selected/executed successor use, Critic/Slow feedback consumption or independent predictive effect follows from admission metadata.",
+    "Do not invoke record_candidate_validation with fake legacy effectiveness.accepted=true to force admission. New admission-v1 is the correct authority; no effect call is required or authorized here."
+  ],
+  "reviewer_actions": {
+    "candidate_validator_executions": 0,
+    "Signal_executions": 0,
+    "Registry_mutations": 0,
+    "publication": 0,
+    "roles": 0,
+    "network": 0,
+    "labels": 0
+  }
+}

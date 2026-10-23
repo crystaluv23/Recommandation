@@ -1,0 +1,16 @@
+...................................................................................................................................................................................................E....................................................................................................
+======================================================================
+ERROR: test_complete_plan_builds_explicit_audited_successor (tests.test_signal_modality_migration.SignalModalityMigrationTests.test_complete_plan_builds_explicit_audited_successor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_modality_migration.py", line 102, in test_complete_plan_builds_explicit_audited_successor
+    source_snapshot = source.freeze()
+                      ^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2335, in freeze
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Signal capability audit failed: {"disabled": {"cash_reserves:v1": ["schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"]}, "enabled_refs": ["cash_to_current_liabilities_ratio:v1", "guidance_acceleration:v1"], "passed": false, "schema_version": "signal-capability-audit-v1"}
+
+----------------------------------------------------------------------
+Ran 296 tests in 20.734s
+
+FAILED (errors=1)

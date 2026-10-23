@@ -1,0 +1,48 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.revenue_acceleration",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": -0.05,
+    "positive_min": 0.05
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Current and prior comparable growth periods.",
+    "minimum_distinct_periods": 3,
+    "minimum_period_span_days": 330,
+    "query_terms": [
+      "revenue",
+      "sales"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "revenue_acceleration",
+  "version": 1
+}

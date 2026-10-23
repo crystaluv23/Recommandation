@@ -1,0 +1,659 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-harness-first-error.json",
+      "sha256": "c0c2a0e3ccf836aafea88c0388a876a17371311ea5be469d118497e7ab4ecf57",
+      "bytes": 299
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-harness-second-error.json",
+      "sha256": "53ca49dea21574925dbcde2601720608bd11ed9679577e8534443a8e8ac1fb9e",
+      "bytes": 409
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-reference-addendum.json",
+      "sha256": "d20e0f94274aa44e590bb30e3e2843ac9125b6b3f54882a747875c968985a00b",
+      "bytes": 1193
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-review-bindings.json",
+      "sha256": "b815fcfe38327f163d3676ad299b5c2ccdffc030dad67d5131fb5981eb43f05c",
+      "bytes": 1759
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-review.json",
+      "sha256": "4967d7f0f0dba50df31b0495902ccc248eb805b55e0fcb5938f6d1427f92560d",
+      "bytes": 21709
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/catalysts/financing_listing_action/manifest.json",
+      "sha256": "acc8a2e7d1e1324a81f760b5aa26e4a0dc244175f0e5a279ebf802aff1d566fd",
+      "bytes": 96
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/catalysts/financing_listing_action/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/catalysts/financing_listing_action/versions/v1/skill.md",
+      "sha256": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b",
+      "bytes": 293
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/catalysts/financing_listing_action/versions/v1/spec.json",
+      "sha256": "3f2c4b23581025d22d2a0ec9dbf2af08150a43485f6691968918613e13f7064d",
+      "bytes": 1593
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/catalysts/financing_listing_action/versions/v1/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb",
+      "bytes": 275
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/cash_reserves/manifest.json",
+      "sha256": "7bebe5a642cf37745e649c423a0304a09cd63cdd8d4952801ba7adb2e97c52c1",
+      "bytes": 85
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/cash_reserves/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/cash_reserves/versions/v1/spec.json",
+      "sha256": "4ed3ab9e94494938f82034953263c8f746a0c846d1151f188c6ff047c853d625",
+      "bytes": 1205
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/cash_reserves/versions/v1/tests.json",
+      "sha256": "429defb3cfc3f3b51d8d8ab5420f262a5ae9b909f7624ff8c781cc3ddc08526b",
+      "bytes": 662
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/gross_margin_change/manifest.json",
+      "sha256": "31c5265119d3bdcb47cf0e5998b70b34a596a7d7dfadd8f0d618be2bb61a8714",
+      "bytes": 91
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/gross_margin_change/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/gross_margin_change/versions/v1/spec.json",
+      "sha256": "074460e39f61cc5cc3760cea2a2340bb62bc677e7b81321186893615c3b0c104",
+      "bytes": 1026
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/gross_margin_change/versions/v1/tests.json",
+      "sha256": "ed6cf40ad764d22ae4006e58c0a682afe6dd6f1a7b90242cb24079f8246ffe06",
+      "bytes": 1027
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/net_share_retirement_yoy/manifest.json",
+      "sha256": "f91324fb5573817f3a412b22ea056db1038b39b4db527f495426c17dd702d399",
+      "bytes": 96
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/net_share_retirement_yoy/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/net_share_retirement_yoy/versions/v1/spec.json",
+      "sha256": "d650b3c97b00a82a92fe6b30206aea2e7ea510183dc7e80d81b1650fd1543a06",
+      "bytes": 1109
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/net_share_retirement_yoy/versions/v1/tests.json",
+      "sha256": "a2de8d31cc934755d7597252cb6ea40254c4a14ffed339cbc1a5eeef31513cbb",
+      "bytes": 852
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/operating_cash_flow_margin/manifest.json",
+      "sha256": "6edd5a007cf356c05ae683c670b0774f1317a6b717bf925869b258d7981175f0",
+      "bytes": 98
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/operating_cash_flow_margin/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/operating_cash_flow_margin/versions/v1/spec.json",
+      "sha256": "a76bdee956ba45566bd91da823e2a58a1333d97a178f5c1a4d62ec2824e25fd0",
+      "bytes": 1120
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/operating_cash_flow_margin/versions/v1/tests.json",
+      "sha256": "7c83976fe947723cc0ce4344424d3401836ef64ed5d5d7c6e0024c37e1aec206",
+      "bytes": 809
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_acceleration/manifest.json",
+      "sha256": "31955bf03f77a54c9f9a8a6cc34e6eaa342f218b2c830d043e13d7b7ed3f7f8e",
+      "bytes": 92
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_acceleration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_acceleration/versions/v1/spec.json",
+      "sha256": "4d7102e3432f6909bbb432ea2afbcfa0e1b232d7b2af57ff98b61d1351ceefa7",
+      "bytes": 1055
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_acceleration/versions/v1/tests.json",
+      "sha256": "3f3fb1a3535e450da0b0ad8e3b9ffc00b539ab7e3a3c5de20ab0d0586e374ed3",
+      "bytes": 898
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_growth_yoy/manifest.json",
+      "sha256": "63a2045f1b80451be18c7d42144454cf8c724afb3de984ca962badb43047b278",
+      "bytes": 90
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_growth_yoy/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_growth_yoy/versions/v1/spec.json",
+      "sha256": "18dba624032e6e700307d0c03a9070b42fe8895f068a5ad3df796bf0e5b79200",
+      "bytes": 1172
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/financial/revenue_growth_yoy/versions/v1/tests.json",
+      "sha256": "eae924fc46cf8fee50a35e060b0c1da10be9afacc826d4457fba9ff7e1a774d4",
+      "bytes": 768
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/management/guidance_acceleration/manifest.json",
+      "sha256": "49f636f50c2a680de9f55259d11d017e3f24235873cef1751f108fc46c28ac60",
+      "bytes": 94
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/management/guidance_acceleration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/management/guidance_acceleration/versions/v1/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833",
+      "bytes": 231
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/management/guidance_acceleration/versions/v1/spec.json",
+      "sha256": "60ef55bf21559fa0e223b8c1ecff47d0d584e612cd26e38ba629213c313a366d",
+      "bytes": 1696
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/management/guidance_acceleration/versions/v1/tests.json",
+      "sha256": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022",
+      "bytes": 262
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/max_drawdown_1y/manifest.json",
+      "sha256": "64a545d6bc6ebdba3c7d46046fbee2e190eb55178bae39081376769cf0eb9bc9",
+      "bytes": 84
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/max_drawdown_1y/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/max_drawdown_1y/versions/v1/spec.json",
+      "sha256": "ae630f536c45e68b68827c65df93de7747034b8f33156172aeb8378bbf37dd1e",
+      "bytes": 903
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/max_drawdown_1y/versions/v1/tests.json",
+      "sha256": "7a2364d627c93eb97f3b6d228942b37204859723de47c90e4f3c90018839bb14",
+      "bytes": 487
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/price_momentum_126d/manifest.json",
+      "sha256": "6391e0734c6bdd4097a871a9cb9425cb7898d492145a39f5e97863ae3cbc68ec",
+      "bytes": 88
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/price_momentum_126d/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/price_momentum_126d/versions/v1/spec.json",
+      "sha256": "9b327567818247081e934009d8045adf335ba9ba78b4795d2c1d8adfa8bf1ef2",
+      "bytes": 1003
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/market/price_momentum_126d/versions/v1/tests.json",
+      "sha256": "c0e1f41e86e6373562a06aa65445055fa9e711da1308fa9b23d4edb836b80d1c",
+      "bytes": 2854
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/news/negative_word_count/manifest.json",
+      "sha256": "9f3e531c10081ea2176d21da45b990b315aab89bbaddf20ec77a196e22bf329e",
+      "bytes": 86
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/news/negative_word_count/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/news/negative_word_count/versions/v1/spec.json",
+      "sha256": "f8ac0bbecd81ac245a97fe5c0b520c50a61b0497547637218d4e30cb78022de4",
+      "bytes": 1019
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/news/negative_word_count/versions/v1/tests.json",
+      "sha256": "5b431cf312a99bdcf614a1938a8becb39a65d6f71da6dc4cdccc1239eca17567",
+      "bytes": 253
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/orders/order_quality/manifest.json",
+      "sha256": "a3a80981ae999c40311b6f1936e0e8745e3ead1891395f65f921d3078a0384ea",
+      "bytes": 82
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/orders/order_quality/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/orders/order_quality/versions/v1/skill.md",
+      "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5",
+      "bytes": 255
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/orders/order_quality/versions/v1/spec.json",
+      "sha256": "ea4fef86e4d2000a415baa1b55fd1670ab4d0092c0607f5a1d6c732e6de806b2",
+      "bytes": 1227
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/orders/order_quality/versions/v1/tests.json",
+      "sha256": "e38a56328d3facf12cf4aa52492b91494f59d8016972cd16378581fcd28703c3",
+      "bytes": 250
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/product/commercialization_status/manifest.json",
+      "sha256": "073e981d5c1c16cc5339a1d699346071fe6dbed78c31b7aa75040c3019ebd68b",
+      "bytes": 94
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/product/commercialization_status/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/product/commercialization_status/versions/v1/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a",
+      "bytes": 579
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/product/commercialization_status/versions/v1/spec.json",
+      "sha256": "50f58342d0420a27f8f53cd1d1384d8934f4b57306c56e62ed884120cc5e0522",
+      "bytes": 1347
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/product/commercialization_status/versions/v1/tests.json",
+      "sha256": "ca1346e15ab1e9aec5e27d2d489efbaa74da6999c2f217aae9fc8439125dd06e",
+      "bytes": 254
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/registry.json",
+      "sha256": "4b8894d57dfa621e534ef4eb25263e8f00254cbcb4327f1f98796314ac279dde",
+      "bytes": 19
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/risks/customer_concentration/manifest.json",
+      "sha256": "70dedd975287cd2a878bdd6fe1ad7fa81a76d88d5d512f8202bfabd001197818",
+      "bytes": 90
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/risks/customer_concentration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/risks/customer_concentration/versions/v1/skill.md",
+      "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04",
+      "bytes": 285
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/risks/customer_concentration/versions/v1/spec.json",
+      "sha256": "fdef492985444307ac701631feab07f533cf3da3dfc40605a4183284f3700563",
+      "bytes": 1756
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control/signals/risks/customer_concentration/versions/v1/tests.json",
+      "sha256": "37a55364eb3cb15ad58ca92e668143dc3d4aadc0f809a25554f648be650a135f",
+      "bytes": 260
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/catalysts/financing_listing_action/manifest.json",
+      "sha256": "acc8a2e7d1e1324a81f760b5aa26e4a0dc244175f0e5a279ebf802aff1d566fd",
+      "bytes": 96
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/catalysts/financing_listing_action/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/catalysts/financing_listing_action/versions/v1/skill.md",
+      "sha256": "4f8e37030da3fac726bf9e33356b32b40013e7495db139e88a104d78b34bcf2b",
+      "bytes": 293
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/catalysts/financing_listing_action/versions/v1/spec.json",
+      "sha256": "3f2c4b23581025d22d2a0ec9dbf2af08150a43485f6691968918613e13f7064d",
+      "bytes": 1593
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/catalysts/financing_listing_action/versions/v1/tests.json",
+      "sha256": "4a097a977d20af2a02cb5f53c0d60982d29f039e8772918959b0588013e150fb",
+      "bytes": 275
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/cash_reserves/manifest.json",
+      "sha256": "7bebe5a642cf37745e649c423a0304a09cd63cdd8d4952801ba7adb2e97c52c1",
+      "bytes": 85
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/cash_reserves/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/cash_reserves/versions/v1/spec.json",
+      "sha256": "4ed3ab9e94494938f82034953263c8f746a0c846d1151f188c6ff047c853d625",
+      "bytes": 1205
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/cash_reserves/versions/v1/tests.json",
+      "sha256": "429defb3cfc3f3b51d8d8ab5420f262a5ae9b909f7624ff8c781cc3ddc08526b",
+      "bytes": 662
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/gross_margin_change/manifest.json",
+      "sha256": "31c5265119d3bdcb47cf0e5998b70b34a596a7d7dfadd8f0d618be2bb61a8714",
+      "bytes": 91
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/gross_margin_change/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/gross_margin_change/versions/v1/spec.json",
+      "sha256": "074460e39f61cc5cc3760cea2a2340bb62bc677e7b81321186893615c3b0c104",
+      "bytes": 1026
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/gross_margin_change/versions/v1/tests.json",
+      "sha256": "ed6cf40ad764d22ae4006e58c0a682afe6dd6f1a7b90242cb24079f8246ffe06",
+      "bytes": 1027
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/net_share_retirement_yoy/manifest.json",
+      "sha256": "f91324fb5573817f3a412b22ea056db1038b39b4db527f495426c17dd702d399",
+      "bytes": 96
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/net_share_retirement_yoy/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/net_share_retirement_yoy/versions/v1/spec.json",
+      "sha256": "d650b3c97b00a82a92fe6b30206aea2e7ea510183dc7e80d81b1650fd1543a06",
+      "bytes": 1109
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/net_share_retirement_yoy/versions/v1/tests.json",
+      "sha256": "a2de8d31cc934755d7597252cb6ea40254c4a14ffed339cbc1a5eeef31513cbb",
+      "bytes": 852
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/operating_cash_flow_margin/manifest.json",
+      "sha256": "6edd5a007cf356c05ae683c670b0774f1317a6b717bf925869b258d7981175f0",
+      "bytes": 98
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/operating_cash_flow_margin/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/operating_cash_flow_margin/versions/v1/spec.json",
+      "sha256": "a76bdee956ba45566bd91da823e2a58a1333d97a178f5c1a4d62ec2824e25fd0",
+      "bytes": 1120
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/operating_cash_flow_margin/versions/v1/tests.json",
+      "sha256": "7c83976fe947723cc0ce4344424d3401836ef64ed5d5d7c6e0024c37e1aec206",
+      "bytes": 809
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_acceleration/manifest.json",
+      "sha256": "31955bf03f77a54c9f9a8a6cc34e6eaa342f218b2c830d043e13d7b7ed3f7f8e",
+      "bytes": 92
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_acceleration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_acceleration/versions/v1/spec.json",
+      "sha256": "4d7102e3432f6909bbb432ea2afbcfa0e1b232d7b2af57ff98b61d1351ceefa7",
+      "bytes": 1055
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_acceleration/versions/v1/tests.json",
+      "sha256": "3f3fb1a3535e450da0b0ad8e3b9ffc00b539ab7e3a3c5de20ab0d0586e374ed3",
+      "bytes": 898
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_growth_yoy/manifest.json",
+      "sha256": "63a2045f1b80451be18c7d42144454cf8c724afb3de984ca962badb43047b278",
+      "bytes": 90
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_growth_yoy/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_growth_yoy/versions/v1/spec.json",
+      "sha256": "18dba624032e6e700307d0c03a9070b42fe8895f068a5ad3df796bf0e5b79200",
+      "bytes": 1172
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/financial/revenue_growth_yoy/versions/v1/tests.json",
+      "sha256": "eae924fc46cf8fee50a35e060b0c1da10be9afacc826d4457fba9ff7e1a774d4",
+      "bytes": 768
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/management/guidance_acceleration/manifest.json",
+      "sha256": "49f636f50c2a680de9f55259d11d017e3f24235873cef1751f108fc46c28ac60",
+      "bytes": 94
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/management/guidance_acceleration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/management/guidance_acceleration/versions/v1/skill.md",
+      "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833",
+      "bytes": 231
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/management/guidance_acceleration/versions/v1/spec.json",
+      "sha256": "60ef55bf21559fa0e223b8c1ecff47d0d584e612cd26e38ba629213c313a366d",
+      "bytes": 1696
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/management/guidance_acceleration/versions/v1/tests.json",
+      "sha256": "6c2e6e93ef345d48ba48a69261fdb41218e2fbf0a924aaff07e2eed2a3cee022",
+      "bytes": 262
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/max_drawdown_1y/manifest.json",
+      "sha256": "64a545d6bc6ebdba3c7d46046fbee2e190eb55178bae39081376769cf0eb9bc9",
+      "bytes": 84
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/max_drawdown_1y/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/max_drawdown_1y/versions/v1/spec.json",
+      "sha256": "ae630f536c45e68b68827c65df93de7747034b8f33156172aeb8378bbf37dd1e",
+      "bytes": 903
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/max_drawdown_1y/versions/v1/tests.json",
+      "sha256": "7a2364d627c93eb97f3b6d228942b37204859723de47c90e4f3c90018839bb14",
+      "bytes": 487
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/price_momentum_126d/manifest.json",
+      "sha256": "6391e0734c6bdd4097a871a9cb9425cb7898d492145a39f5e97863ae3cbc68ec",
+      "bytes": 88
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/price_momentum_126d/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/price_momentum_126d/versions/v1/spec.json",
+      "sha256": "9b327567818247081e934009d8045adf335ba9ba78b4795d2c1d8adfa8bf1ef2",
+      "bytes": 1003
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/market/price_momentum_126d/versions/v1/tests.json",
+      "sha256": "c0e1f41e86e6373562a06aa65445055fa9e711da1308fa9b23d4edb836b80d1c",
+      "bytes": 2854
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/news/negative_word_count/manifest.json",
+      "sha256": "9f3e531c10081ea2176d21da45b990b315aab89bbaddf20ec77a196e22bf329e",
+      "bytes": 86
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/news/negative_word_count/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/news/negative_word_count/versions/v1/spec.json",
+      "sha256": "f8ac0bbecd81ac245a97fe5c0b520c50a61b0497547637218d4e30cb78022de4",
+      "bytes": 1019
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/news/negative_word_count/versions/v1/tests.json",
+      "sha256": "5b431cf312a99bdcf614a1938a8becb39a65d6f71da6dc4cdccc1239eca17567",
+      "bytes": 253
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/orders/order_quality/manifest.json",
+      "sha256": "a3a80981ae999c40311b6f1936e0e8745e3ead1891395f65f921d3078a0384ea",
+      "bytes": 82
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/orders/order_quality/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/orders/order_quality/versions/v1/skill.md",
+      "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5",
+      "bytes": 255
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/orders/order_quality/versions/v1/spec.json",
+      "sha256": "ea4fef86e4d2000a415baa1b55fd1670ab4d0092c0607f5a1d6c732e6de806b2",
+      "bytes": 1227
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/orders/order_quality/versions/v1/tests.json",
+      "sha256": "e38a56328d3facf12cf4aa52492b91494f59d8016972cd16378581fcd28703c3",
+      "bytes": 250
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/product/commercialization_status/manifest.json",
+      "sha256": "073e981d5c1c16cc5339a1d699346071fe6dbed78c31b7aa75040c3019ebd68b",
+      "bytes": 94
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/product/commercialization_status/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/product/commercialization_status/versions/v1/skill.md",
+      "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a",
+      "bytes": 579
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/product/commercialization_status/versions/v1/spec.json",
+      "sha256": "50f58342d0420a27f8f53cd1d1384d8934f4b57306c56e62ed884120cc5e0522",
+      "bytes": 1347
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/product/commercialization_status/versions/v1/tests.json",
+      "sha256": "ca1346e15ab1e9aec5e27d2d489efbaa74da6999c2f217aae9fc8439125dd06e",
+      "bytes": 254
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/registry.json",
+      "sha256": "4b8894d57dfa621e534ef4eb25263e8f00254cbcb4327f1f98796314ac279dde",
+      "bytes": 19
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/risks/customer_concentration/manifest.json",
+      "sha256": "70dedd975287cd2a878bdd6fe1ad7fa81a76d88d5d512f8202bfabd001197818",
+      "bytes": 90
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/risks/customer_concentration/stats.json",
+      "sha256": "0e7adc7dddbc1a7847b4dbfe54864af5a4ec6331bcb30eb218a89b980ee93514",
+      "bytes": 552
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/risks/customer_concentration/versions/v1/skill.md",
+      "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04",
+      "bytes": 285
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/risks/customer_concentration/versions/v1/spec.json",
+      "sha256": "fdef492985444307ac701631feab07f533cf3da3dfc40605a4183284f3700563",
+      "bytes": 1756
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-candidate-seed-control-v2/signals/risks/customer_concentration/versions/v1/tests.json",
+      "sha256": "37a55364eb3cb15ad58ca92e668143dc3d4aadc0f809a25554f648be650a135f",
+      "bytes": 260
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-original-candidate-method.txt",
+      "sha256": "09e347296e4b9b5f6e0c423eb9445a1a47a01d314d9b503a50e7ce02b1f096ea",
+      "bytes": 5097
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/review-shared-fixture-candidate.py",
+      "sha256": "d490a4bbeccea068b0e7ae0ca6283eb0b8dd8a11a94ce87213327bb6077b667e",
+      "bytes": 18622
+    }
+  ]
+}

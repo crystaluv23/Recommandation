@@ -1,0 +1,46 @@
+{
+  "category": "market",
+  "definition": {
+    "description": "Measure maximum drawdown from the point-in-time one-year price series."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "market.max_drawdown_1y",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": -0.5,
+    "positive_min": -0.2
+  },
+  "raw_retrieval": {
+    "lookback_days": 400,
+    "query_terms": [
+      "adjusted close",
+      "price history"
+    ],
+    "source_types": [
+      "market_data"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "max_drawdown_1y",
+  "version": 1
+}

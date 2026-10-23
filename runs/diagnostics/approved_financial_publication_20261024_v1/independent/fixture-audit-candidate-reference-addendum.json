@@ -1,0 +1,16 @@
+{
+  "baseline_commit": "9a4ab76cd9259669af8837b4c45d3caeb240c779",
+  "original_evolution_module_sha256": "2d79e35a090966c3f5e38384b5332cc40822cce56af6fc8e5d482b78145e8578",
+  "original_method_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/independent/fixture-audit-original-candidate-method.txt",
+    "sha256": "09e347296e4b9b5f6e0c423eb9445a1a47a01d314d9b503a50e7ce02b1f096ea"
+  },
+  "final_candidate_review_sha256": "4967d7f0f0dba50df31b0495902ccc248eb805b55e0fcb5938f6d1427f92560d",
+  "review_script_sha256": "d490a4bbeccea068b0e7ae0ca6283eb0b8dd8a11a94ce87213327bb6077b667e",
+  "reproduction_note": "The completed review read HEAD while it was this exact baseline commit. After a later commit, replay must resolve this frozen commit/method snapshot, rather than assuming a later HEAD still denotes the pre-extraction candidate materializer. The already emitted review and script remain unchanged.",
+  "harness_failures_retained": [
+    "fixture-audit-candidate-harness-first-error.json",
+    "fixture-audit-candidate-harness-second-error.json"
+  ],
+  "scope": "All role/real-GPRE/publication restrictions retained."
+}

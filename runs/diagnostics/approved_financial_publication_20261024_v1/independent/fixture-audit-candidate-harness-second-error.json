@@ -1,0 +1,7 @@
+{
+  "failure": "Synthetic narrative spec omitted required skill_file and was rejected by SignalSpec construction after generic and seed controls; added skill_file=skill.md.",
+  "retained_partial_synthetic_registry": "independent/fixture-audit-candidate-seed-control",
+  "next_complete_review_uses": "independent/fixture-audit-candidate-seed-control-v2",
+  "real_GPRE_calls": 0,
+  "product_files_changed": 0
+}

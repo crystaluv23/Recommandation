@@ -1,0 +1,26 @@
+[
+  {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+    "sha256": "d7490eb612baeb01e65a7db5a734dd14b19abd5fb492096ba82c51401e89ade6"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+    "sha256": "2d01548090c0338b1655bb8a757534ec06577890fdcefd31e2106fa7b6103e35"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+    "sha256": "f41433871ee49ee48bb68f330b98b5830f20b2acc1c2531ce7c3bdd4393937c6"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/tests/test_signal_fixture_execution.py",
+    "sha256": "88acdd58663ed5907e7cd694bb1d6b41a9c23f7227cf542b295108f85d52163b"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/tests/test_signal_modality_migration.py",
+    "sha256": "871bcbb4319850c81bf7966697d5d4a29e687cc74f86d640e065b492e41b589a"
+  },
+  {
+    "path": "/Users/l/Project/Recommandation/tests/test_seed_fixture_issuer_binding.py",
+    "sha256": "13a6c41d5cd1162eac244a6c7289cdeaa4d58bc45897c6f8a30e54912dc6f9c5"
+  }
+]

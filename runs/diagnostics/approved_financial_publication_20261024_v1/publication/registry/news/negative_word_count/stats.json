@@ -1,0 +1,37 @@
+{
+  "cost": {
+    "total_cost": 0.0,
+    "total_tokens": 0
+  },
+  "processed_observation_ids": [
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000723125:20250731:0:2:negative_word_count:v2",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000895728:20250930:0:2:negative_word_count:v2"
+  ],
+  "state_statistics": {
+    "negative": {
+      "surge": 1,
+      "surge_rate": 0.5,
+      "total": 2
+    },
+    "neutral": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    },
+    "positive": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    },
+    "unavailable": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    }
+  },
+  "usage": {
+    "executed": 2,
+    "retrieved": 2,
+    "unavailable": 0
+  }
+}

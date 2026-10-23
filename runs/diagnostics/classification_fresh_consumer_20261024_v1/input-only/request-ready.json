@@ -1,0 +1,8 @@
+{
+  "event_type": "request_ready",
+  "logical_reservation": 59446,
+  "model_alias": "independent-subagent",
+  "request_hash": "83b64023be6a1c9295fb6c032f7e73c23171d3299ce33ae3973276046a496e10",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/input-only/requests/83b64023be6a1c9295fb6c032f7e73c23171d3299ce33ae3973276046a496e10.json",
+  "stage": "research_controller_reflect"
+}

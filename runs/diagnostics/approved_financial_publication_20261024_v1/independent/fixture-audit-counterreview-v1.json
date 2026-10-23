@@ -1,0 +1,434 @@
+{
+  "status": "blocked_before_publication_by_real_legacy_identity_gaps_and_fixture_adapter_inconsistency",
+  "authoritative_repo": "/Users/l/Project/Recommandation",
+  "prepared_plan_exists": false,
+  "execution_marker_exists": false,
+  "legacy_missing_binding_refs": [
+    {
+      "ref": "cash_burn_rate_elevated:v2",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_burn_rate_elevated/versions/v2/tests.json",
+      "fixtures": 4,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 1,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 2,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 3,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "cash_reserves:v2",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_reserves/versions/v2/tests.json",
+      "fixtures": 1,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "cash_to_current_liabilities_ratio:v2",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/cash_to_current_liabilities_ratio/versions/v2/tests.json",
+      "fixtures": 3,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 1,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 2,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "gross_margin_change:v3",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/gross_margin_change/versions/v3/tests.json",
+      "fixtures": 1,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "liquidity_runway_months:v3",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/liquidity_runway_months/versions/v3/tests.json",
+      "fixtures": 5,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 1,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 2,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 3,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        },
+        {
+          "fixture_index": 4,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "net_share_retirement_yoy:v3",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/net_share_retirement_yoy/versions/v3/tests.json",
+      "fixtures": 1,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "operating_cash_flow_margin:v2",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/operating_cash_flow_margin/versions/v2/tests.json",
+      "fixtures": 1,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "revenue_acceleration:v2",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_acceleration/versions/v2/tests.json",
+      "fixtures": 1,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    },
+    {
+      "ref": "revenue_growth_yoy:v3",
+      "spec_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/spec.json",
+      "tests_path": "/Users/l/Project/Recommandation/runs/cold_start/minimal_rounds_v182_integrated/signals/financial/revenue_growth_yoy/versions/v3/tests.json",
+      "fixtures": 1,
+      "source_identity_checks": [
+        {
+          "fixture_index": 0,
+          "document_index": 0,
+          "fixture_company_id": null,
+          "body_cik": null,
+          "metadata_cik": null,
+          "issuer_check": "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+        }
+      ]
+    }
+  ],
+  "independent_fixture_adapter_counterexamples": [
+    {
+      "name": "new_approved_sec_company_facts_alias_vs_financials",
+      "results": {
+        "candidate": {
+          "status": "captured_before_Signal",
+          "captured_input": {
+            "company_id": "cik_0000000001",
+            "documents": [
+              {
+                "document_id": "synthetic",
+                "company_id": "cik_0000000001",
+                "source_type": "sec_company_facts",
+                "published_at": "2025-05-08T00:00:00+00:00",
+                "available_at": "2025-05-09T00:00:00+00:00",
+                "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+                "content_hash": "545091e189e40fdacf193b356f7c82f28546d6aae7136b8d933857dc0c801055",
+                "metadata": {
+                  "cik": "0000000001"
+                }
+              }
+            ]
+          },
+          "issuer_checks": [
+            "issuer_binding_valid"
+          ]
+        },
+        "stable_audit": {
+          "status": "ValidationError: capability fixture source_type is outside SignalSpec",
+          "captured_input": null,
+          "issuer_checks": []
+        }
+      }
+    },
+    {
+      "name": "valid_body_and_canonical_fixture_company_no_metadata",
+      "results": {
+        "candidate": {
+          "status": "captured_before_Signal",
+          "captured_input": {
+            "company_id": "cik_0000000001",
+            "documents": [
+              {
+                "document_id": "synthetic",
+                "company_id": "cik_0000000001",
+                "source_type": "financials",
+                "published_at": "2025-05-08T00:00:00+00:00",
+                "available_at": "2025-05-09T00:00:00+00:00",
+                "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+                "content_hash": "545091e189e40fdacf193b356f7c82f28546d6aae7136b8d933857dc0c801055",
+                "metadata": {}
+              }
+            ]
+          },
+          "issuer_checks": [
+            "issuer_binding_valid"
+          ]
+        },
+        "stable_audit": {
+          "status": "captured_before_Signal",
+          "captured_input": {
+            "company_id": "capability_fixture",
+            "documents": [
+              {
+                "document_id": "synthetic",
+                "company_id": "capability_fixture",
+                "source_type": "financials",
+                "published_at": "2025-05-08T00:00:00+00:00",
+                "available_at": "2025-05-09T00:00:00+00:00",
+                "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000001\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+                "content_hash": "545091e189e40fdacf193b356f7c82f28546d6aae7136b8d933857dc0c801055",
+                "metadata": {}
+              }
+            ]
+          },
+          "issuer_checks": [
+            "DataSourceError: SEC Company Facts opaque company has no explicit issuer binding"
+          ]
+        }
+      }
+    },
+    {
+      "name": "opaque_audit_alias_erases_canonical_fixture_company_mismatch",
+      "results": {
+        "candidate": {
+          "status": "captured_before_Signal",
+          "captured_input": {
+            "company_id": "cik_0000000001",
+            "documents": [
+              {
+                "document_id": "synthetic",
+                "company_id": "cik_0000000001",
+                "source_type": "financials",
+                "published_at": "2025-05-08T00:00:00+00:00",
+                "available_at": "2025-05-09T00:00:00+00:00",
+                "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000002\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+                "content_hash": "2ba32eaf9940718dca6a980112ef899f927585a9d758e2a65d13d6885ae03e69",
+                "metadata": {
+                  "cik": "0000000002"
+                }
+              }
+            ]
+          },
+          "issuer_checks": [
+            "DataSourceError: SEC Company Facts metadata issuer mismatch"
+          ]
+        },
+        "stable_audit": {
+          "status": "captured_before_Signal",
+          "captured_input": {
+            "company_id": "capability_fixture",
+            "documents": [
+              {
+                "document_id": "synthetic",
+                "company_id": "capability_fixture",
+                "source_type": "financials",
+                "published_at": "2025-05-08T00:00:00+00:00",
+                "available_at": "2025-05-09T00:00:00+00:00",
+                "content": "{\"accession_number\":\"synthetic\",\"cik\":\"0000000002\",\"facts\":[{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":150},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"Revenues\",\"unit\":\"USD\",\"value\":100},{\"end\":\"2025-03-31\",\"start\":\"2025-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":30},{\"end\":\"2024-03-31\",\"start\":\"2024-01-01\",\"tag\":\"GrossProfit\",\"unit\":\"USD\",\"value\":10}],\"filing_date\":\"2025-05-08\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+                "content_hash": "2ba32eaf9940718dca6a980112ef899f927585a9d758e2a65d13d6885ae03e69",
+                "metadata": {
+                  "cik": "0000000002"
+                }
+              }
+            ]
+          },
+          "issuer_checks": [
+            "issuer_binding_valid"
+          ]
+        }
+      }
+    },
+    {
+      "name": "nonstring_content_rejected_by_candidate_but_coerced_by_audit",
+      "results": {
+        "candidate": {
+          "status": "ValidationError: fixture document content must be a string",
+          "captured_input": null,
+          "issuer_checks": []
+        },
+        "stable_audit": {
+          "status": "captured_before_Signal",
+          "captured_input": {
+            "company_id": "capability_fixture",
+            "documents": [
+              {
+                "document_id": "synthetic",
+                "company_id": "capability_fixture",
+                "source_type": "financials",
+                "published_at": "2025-05-08T00:00:00+00:00",
+                "available_at": "2025-05-09T00:00:00+00:00",
+                "content": "{'facts': 'not a string'}",
+                "content_hash": "1425af99cc8cdca08287f569241aa6b43d95c5748c2c5127b62bd3b6e8f0be60",
+                "metadata": {
+                  "cik": "0000000001"
+                }
+              }
+            ]
+          },
+          "issuer_checks": [
+            "JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+          ]
+        }
+      }
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P1",
+      "kind": "genuine_missing_fixture_identity",
+      "description": "All nine historical financial fixture sets contain typed facts without body.cik and metadata.cik. Opaque audit company cannot prove issuer. This must remain rejected; original and cloned old version files must not be filled or guessed. Current fresh freeze performs all18 capability audit and correctly rejects this baseline."
+    },
+    {
+      "priority": "P1",
+      "kind": "candidate_to_stable_adapter_contract_drift",
+      "description": "Candidate uses fixture.company_id, source_types_compatible and string-only content; stable audit hardcodes capability_fixture, uses literal source membership and str(content) coercion. Captured controls prove false rejection, potential issuer-context false acceptance, and malformed-content coercion without invoking a Signal."
+    },
+    {
+      "priority": "P2",
+      "kind": "cloned_old_version_protection_gap",
+      "description": "Driver rechecks original Registry bytes and reconstructs old spec+skill hash, but does not hash-check cloned old versions/tests after promotion. Snapshot identity excludes fixture file bytes. Add explicit old immutable version-file membership/hash checks while allowing only targeted manifests/registry metadata/new-version paths."
+    },
+    {
+      "priority": "P2",
+      "kind": "exact_output_envelope_check",
+      "description": "Driver saves all output cards but should assert exact18 latest refs == input18 with only approved two refs advanced, and exact admission identity/status keys. Freeze already performs capability audit; a duplicate audit is not a substitute for fixing real fixture gaps."
+    }
+  ],
+  "nonfindings": {
+    "SignalCard_to_dict_exists": true,
+    "all18_metadata_shape_JSON_serializable": true,
+    "research_status_JSON_serializable": true,
+    "SignalCandidateValidation_asdict_JSON_serializable": true,
+    "owning_technical_validator_hash_SimpleNamespace_call_executable": true,
+    "owning_policy_hash_shape": "0b6c42fc62e03f3ae9fb9e06f7853759f26728b25163287c357a8b7880f1598b"
+  },
+  "permitted_local_fix_boundary": "Spec-first align the two fixture materialization adapters on existing company/source/content rules; preserve missing/mismatched issuer rejection, PIT/literal behavior and immutable fixture bytes. Shared pure materialization or minimal congruent adapter logic may be tested with supported aliases/canonical+opaque identity/negative and unavailable cases. No new resource allowance, real source Signal or publication is required for this repair.",
+  "remaining_baseline_block": "Adapter repair cannot manufacture omitted CIK in the nine old financial versions. Exact18 clone still cannot fresh-freeze after an honest fix. Do not bypass freeze, rewrite clone old-version tests, fake an input snapshot or substitute a different baseline under the old hash. A concrete legally versioned migration/initialization design is needed before S7 can proceed; its scope may require the user design decision stipulated by AGENTS.",
+  "history_preservation": "Partial prepare cloned files and failed before plan/execute/publication; retain that clone and log as failed precondition evidence. Old source Registry and completed diagnostics remain unchanged.",
+  "scope": {
+    "roles": 0,
+    "real_source_Signal": 0,
+    "synthetic_Signal": 0,
+    "publication": 0,
+    "original_Registry_writes": 0,
+    "product_edits": 0,
+    "network": 0,
+    "labels": 0
+  },
+  "correction_to_reviewer_earlier_message": "Current SignalRegistry.freeze explicitly invokes audit_capabilities. Earlier shorthand suggesting absent explicit driver audit meant no all18 audit was incorrect; the prepare failure proves the gate runs."
+}

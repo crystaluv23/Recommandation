@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/run_publication.py", line 196, in <module>
+    prepare()
+  File "/Users/l/Project/Recommandation/runs/diagnostics/approved_financial_publication_20261024_v1/run_publication.py", line 82, in prepare
+    snapshot = registry.freeze()
+               ^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py", line 2335, in freeze
+    raise ValidationError(
+stock_opportunity_agent.models.ValidationError: Signal capability audit failed: {"disabled": {"cash_burn_rate_elevated:v2": ["schema_fixture_failed: expected positive, received unavailable"], "cash_reserves:v2": ["schema_fixture_failed: expected positive, received unavailable"], "cash_to_current_liabilities_ratio:v2": ["schema_fixture_failed: expected negative, received unavailable"], "gross_margin_change:v3": ["schema_fixture_failed: expected positive, received unavailable"], "liquidity_runway_months:v3": ["schema_fixture_failed: expected positive, received unavailable"], "net_share_retirement_yoy:v3": ["schema_fixture_failed: expected positive, received unavailable"], "operating_cash_flow_margin:v2": ["schema_fixture_failed: expected positive, received unavailable"], "revenue_acceleration:v2": ["schema_fixture_failed: expected positive, received unavailable"], "revenue_growth_yoy:v3": ["schema_fixture_failed: expected positive, received unavailable"]}, "enabled_refs": ["financing_listing_action:v5", "guidance_acceleration:v3", "max_drawdown_1y:v2", "price_momentum_126d:v2", "negative_word_count:v2", "order_confirmation_disclosed:v3", "order_quality:v2", "commercialization_status:v2", "customer_concentration:v2"], "passed": false, "schema_version": "signal-capability-audit-v1"}

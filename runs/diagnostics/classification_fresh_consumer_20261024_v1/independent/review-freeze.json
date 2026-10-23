@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/conditional-consumer-oracle.json",
+      "sha256": "9920a644dd8015741573bd10ad5dfaee7daed99c4d435a3e54908b08d8e39a61",
+      "bytes": 712216
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/freeze_readonly_review.py",
+      "sha256": "e69f9a1b46c78e48872a577fc3b8e0699d715e777805ad72ddc47abddaf25bec",
+      "bytes": 20975
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/resource-review.json",
+      "sha256": "d88c012919d1c4fbc8382c091816a58fdd6c1ed9ca02124d2a6ae1947390f7aa",
+      "bytes": 3678
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/review-source-bindings.json",
+      "sha256": "abed4f4325a5b11ce56738f19bcb46dcc200a2a4b288e14046d3e813ae023c5d",
+      "bytes": 10190
+    },
+    {
+      "path": "/Users/l/.codex/worktrees/classification-meta-context/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/technical-admission-readonly-review.json",
+      "sha256": "1911b6764b437186e0dc6fc88e78aec54e6bc0fa28362fcac8ff873f6cb9fe51",
+      "bytes": 6927
+    }
+  ],
+  "roles": 0,
+  "Signal_executions": 0,
+  "publication": 0,
+  "network": 0,
+  "labels": 0
+}

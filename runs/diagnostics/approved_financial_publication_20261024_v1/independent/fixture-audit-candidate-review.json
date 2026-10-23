@@ -1,0 +1,603 @@
+{
+  "status": "shared_fixture_candidate_independent_review_passed_legacy_identity_block_remains",
+  "code_bindings": {
+    "src/stock_opportunity_agent/signal_library.py": "d7490eb612baeb01e65a7db5a734dd14b19abd5fb492096ba82c51401e89ade6",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d01548090c0338b1655bb8a757534ec06577890fdcefd31e2106fa7b6103e35"
+  },
+  "original_four_families_and_extended_controls": [
+    {
+      "name": "typed_source_alias",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      },
+      "original_candidate": {
+        "accepted": true
+      },
+      "failures": []
+    },
+    {
+      "name": "canonical_fixture_company_no_metadata",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      },
+      "original_candidate": {
+        "accepted": true
+      },
+      "failures": []
+    },
+    {
+      "name": "metadata_and_body_cannot_hide_wrong_declared_company",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts metadata issuer mismatch"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts metadata issuer mismatch"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts metadata issuer mismatch"
+      },
+      "failures": []
+    },
+    {
+      "name": "nonstring_dict",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "failures": []
+    },
+    {
+      "name": "nonstring_list",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "failures": []
+    },
+    {
+      "name": "nonstring_NoneType",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "failures": []
+    },
+    {
+      "name": "nonstring_int",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture document content must be a string"
+      },
+      "failures": []
+    },
+    {
+      "name": "opaque_default_with_explicit_body_and_metadata",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      },
+      "original_candidate": {
+        "accepted": true
+      },
+      "failures": []
+    },
+    {
+      "name": "opaque_missing_metadata",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+      },
+      "failures": []
+    },
+    {
+      "name": "body_CIK_missing",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+      },
+      "failures": []
+    },
+    {
+      "name": "name_missing",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture name is required"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture name is required"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture name is required"
+      },
+      "failures": []
+    },
+    {
+      "name": "documents_empty",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture requires point-in-time documents"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture requires point-in-time documents"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture requires point-in-time documents"
+      },
+      "failures": []
+    },
+    {
+      "name": "naive_cutoff",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "candidate fixture as_of must be timezone-aware"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "candidate fixture as_of must be timezone-aware"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "candidate fixture as_of must be timezone-aware"
+      },
+      "failures": []
+    },
+    {
+      "name": "naive_source_clock",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "raw info available_at must be timezone-aware"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "raw info available_at must be timezone-aware"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "raw info available_at must be timezone-aware"
+      },
+      "failures": []
+    },
+    {
+      "name": "bad_company_id",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "candidate fixture company_id must use lowercase safe identifier characters"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "candidate fixture company_id must use lowercase safe identifier characters"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "candidate fixture company_id must use lowercase safe identifier characters"
+      },
+      "failures": []
+    },
+    {
+      "name": "unrelated_source",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture source_type is outside candidate retrieval"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture source_type is outside candidate retrieval"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture source_type is outside candidate retrieval"
+      },
+      "failures": []
+    },
+    {
+      "name": "closed_all_future_unavailable",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      },
+      "original_candidate": {
+        "accepted": true
+      },
+      "failures": []
+    },
+    {
+      "name": "closed_all_future_positive_rejected",
+      "candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture expects positive but provides no point-in-time visible documents"
+      },
+      "stable": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture expects positive but provides no point-in-time visible documents"
+      },
+      "original_candidate": {
+        "accepted": false,
+        "type": "ValidationError",
+        "error": "fixture expects positive but provides no point-in-time visible documents"
+      },
+      "failures": []
+    },
+    {
+      "name": "visible_positive_future_negative_cannot_replace",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      },
+      "original_candidate": {
+        "accepted": true
+      },
+      "failures": []
+    },
+    {
+      "name": "body_filing_conservative_PIT_not_visible",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      },
+      "original_candidate": {
+        "accepted": true
+      },
+      "failures": []
+    }
+  ],
+  "approved_generic_fixtures_both_entries": [
+    {
+      "ref": "gross_margin_change:v4",
+      "name": "quarter-yoy-margin",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "gross_margin_change:v4",
+      "name": "negative-margin",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "gross_margin_change:v4",
+      "name": "missing-current-profit",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "gross_margin_change:v4",
+      "name": "required-window-conflict",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "gross_margin_change:v4",
+      "name": "ytd-margin-same-window",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "name": "quarter-immediate-yoy",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "name": "negative-acceleration",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "name": "missing-immediate-quarter",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "name": "annual-adjacent-yoy",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "name": "ytd-no-quarter-synthesis",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    },
+    {
+      "ref": "revenue_acceleration:v3",
+      "name": "required-window-conflict",
+      "candidate": {
+        "accepted": true
+      },
+      "stable": {
+        "accepted": true
+      }
+    }
+  ],
+  "approved_fixture_count": 11,
+  "fresh_seed_catalog": {
+    "source": "/Users/l/Project/Recommandation/configs/signals_v1.json",
+    "source_sha256": "d92407dccbb1e22c011931409bf0d25a1896198826998bfede691a687e3c8fae",
+    "installed": 14,
+    "enabled": 14,
+    "snapshot_hash": "b7eac6c27f8d5f5a04dc0007188a2035638754b04b128f77bf8581c3ca41e159",
+    "audit": {
+      "schema_version": "signal-capability-audit-v1",
+      "enabled_refs": [
+        "financing_listing_action:v1",
+        "cash_reserves:v1",
+        "gross_margin_change:v1",
+        "net_share_retirement_yoy:v1",
+        "operating_cash_flow_margin:v1",
+        "revenue_acceleration:v1",
+        "revenue_growth_yoy:v1",
+        "guidance_acceleration:v1",
+        "max_drawdown_1y:v1",
+        "price_momentum_126d:v1",
+        "negative_word_count:v1",
+        "order_quality:v1",
+        "commercialization_status:v1",
+        "customer_concentration:v1"
+      ],
+      "disabled": {},
+      "passed": true
+    }
+  },
+  "original18": {
+    "fresh_freeze": {
+      "accepted": false,
+      "type": "ValidationError",
+      "error": "Signal capability audit failed: {\"disabled\": {\"cash_burn_rate_elevated:v2\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"cash_reserves:v2\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"cash_to_current_liabilities_ratio:v2\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"gross_margin_change:v3\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"liquidity_runway_months:v3\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"net_share_retirement_yoy:v3\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"operating_cash_flow_margin:v2\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"revenue_acceleration:v2\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"], \"revenue_growth_yoy:v3\": [\"schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding\"]}, \"enabled_refs\": [\"financing_listing_action:v5\", \"guidance_acceleration:v3\", \"max_drawdown_1y:v2\", \"price_momentum_126d:v2\", \"negative_word_count:v2\", \"order_confirmation_disclosed:v3\", \"order_quality:v2\", \"commercialization_status:v2\", \"customer_concentration:v2\"], \"passed\": false, \"schema_version\": \"signal-capability-audit-v1\"}"
+    },
+    "audit": {
+      "schema_version": "signal-capability-audit-v1",
+      "enabled_refs": [
+        "financing_listing_action:v5",
+        "guidance_acceleration:v3",
+        "max_drawdown_1y:v2",
+        "price_momentum_126d:v2",
+        "negative_word_count:v2",
+        "order_confirmation_disclosed:v3",
+        "order_quality:v2",
+        "commercialization_status:v2",
+        "customer_concentration:v2"
+      ],
+      "disabled": {
+        "cash_burn_rate_elevated:v2": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "cash_reserves:v2": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "cash_to_current_liabilities_ratio:v2": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "gross_margin_change:v3": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "liquidity_runway_months:v3": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "net_share_retirement_yoy:v3": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "operating_cash_flow_margin:v2": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "revenue_acceleration:v2": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "revenue_growth_yoy:v3": [
+          "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ]
+      },
+      "passed": false
+    },
+    "all_original_file_bytes_and_members_unchanged": 198
+  },
+  "override": {
+    "candidate_current": {
+      "accepted": true
+    },
+    "candidate_original": {
+      "accepted": true
+    },
+    "stable_default": {
+      "accepted": false,
+      "type": "ValidationError",
+      "error": "expected negative, received positive; resolution=resolved; no data gap; executor interpretation: cash_reserves=100"
+    },
+    "meaning": "Candidate preserves explicit runtime override; stable capability audit correctly checks registered stable default, not caller override."
+  },
+  "LLM_scripted": {
+    "current": {
+      "accepted": true
+    },
+    "original": {
+      "accepted": true
+    },
+    "full_skill_forwarded": true,
+    "scripted_runner_calls": 4,
+    "technical_failure_unavailable_rejected": {
+      "accepted": false,
+      "type": "ValidationError",
+      "error": "technical execution failure: validation_failed: scripted_control: scripted failure"
+    },
+    "all_future_short_circuit": {
+      "accepted": true
+    },
+    "production_role_calls": 0
+  },
+  "unchanged_algorithm_AST": [
+    "_revenue_acceleration_signal",
+    "_gross_margin_change_signal",
+    "_revenue_acceleration_adjacent_signal",
+    "_gross_margin_change_yoy_signal",
+    "_numeric_result",
+    "_sec_facts",
+    "_liquidity_runway_months_signal"
+  ],
+  "source_case_guard": "Every fixture execute_batch denied real GPRE company/CIK and rawcap/secfacts source IDs; all outputs here are synthetic/source-catalog fixtures.",
+  "execution_counts": {
+    "generic_fixture_batches": 74,
+    "real_GPRE_Signal": 0,
+    "real_roles": 0,
+    "external_API": 0,
+    "network": 0,
+    "labels": 0,
+    "publication": 0,
+    "original_Registry_mutations": 0
+  },
+  "initialization_scope": "Only disposable reviewed seed-catalog Registry initialized under independent/fixture-audit-candidate-seed-control. This is a generic positive control, not actual approved-version publication or repair of the original clone.",
+  "remaining_block": "The original nine financial fixtures remain honestly missing body/meta CIK and the full18 clone cannot fresh-freeze. S7 original-clone stays stopped at preparation failure; no migration, hidden fixture edits or reset baseline is authorized by this repair.",
+  "prior_sentinel_evidence": "fixture-audit-counterreview-v1.json and bindings remain unchanged; current execution supplements them.",
+  "reviewer_product_edits": 0
+}

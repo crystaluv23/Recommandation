@@ -4063,60 +4063,125 @@ def deterministic_signal_function_contracts(
 
 
 def _audit_deterministic_fixture(
-    spec: SignalSpec,
-    fixture: Mapping[str, Any],
-    *,
-    index: int,
+    spec: SignalSpec, fixture: Mapping[str, Any], *, index: int,
 ) -> None:
-    """Execute one source-backed fixture without an LLM or external call."""
+    """Audit a deterministic fixture with the candidate execution contract."""
+    _execute_signal_fixture(spec, None, fixture, index=index)
 
+
+def _execute_signal_fixture(
+    spec: SignalSpec, skill: str | None, fixture: Mapping[str, Any], *,
+    index: int,
+    deterministic_functions: Mapping[str, DeterministicSignalFunction] | None = None,
+    llm_runner: LLMSignalRunner | None = None,
+) -> None:
+    """Execute the same source/identity/PIT contract before and after staging."""
+    name = str(fixture.get("name", "")).strip()
+    if not name:
+        raise ValidationError("fixture name is required")
     expected = SignalValue(str(fixture["expected"]))
     as_of = datetime.fromisoformat(
         str(fixture.get("as_of", "2025-01-01T00:00:00+00:00"))
     )
+    if as_of.tzinfo is None or as_of.utcoffset() is None:
+        raise ValidationError("candidate fixture as_of must be timezone-aware")
+    company_id = str(fixture.get("company_id", f"candidate_fixture_{index + 1}"))
+    if not re.fullmatch(r"[a-z0-9][a-z0-9_.:-]*", company_id):
+        raise ValidationError("candidate fixture company_id must use lowercase safe identifier characters")
+    documents_data = fixture.get("documents")
+    if not isinstance(documents_data, list) or not documents_data:
+        raise ValidationError("fixture requires point-in-time documents")
     documents: list[RawInfoDocument] = []
-    for document_index, raw in enumerate(fixture.get("documents", ())):
-        if not isinstance(raw, Mapping):
-            raise ValidationError("capability fixture document must be an object")
-        source_type = str(raw["source_type"])
-        if source_type not in spec.source_types:
-            raise ValidationError("capability fixture source_type is outside SignalSpec")
+    for document_index, raw_document in enumerate(documents_data):
+        if not isinstance(raw_document, Mapping):
+            raise ValidationError("fixture document must be an object")
+        content = raw_document["content"]
+        if not isinstance(content, str):
+            raise ValidationError("fixture document content must be a string")
         published_at = datetime.fromisoformat(
-            str(raw.get("published_at", raw.get("available_at", as_of.isoformat())))
+            str(
+                raw_document.get(
+                    "published_at",
+                    raw_document.get("available_at", as_of.isoformat()),
+                )
+            )
         )
         available_at = datetime.fromisoformat(
-            str(raw.get("available_at", published_at.isoformat()))
+            str(raw_document.get("available_at", published_at.isoformat()))
         )
+        source_type = str(raw_document["source_type"])
+        if not source_types_compatible((source_type,), spec.source_types):
+            raise ValidationError("fixture source_type is outside candidate retrieval")
         documents.append(
             RawInfoDocument.create(
                 document_id=str(
-                    raw.get(
+                    raw_document.get(
                         "document_id",
-                        f"capability_{spec.signal_id}_{index}_{document_index}",
+                        f"candidate_fixture_{index + 1}_{document_index + 1}",
                     )
                 ),
-                company_id="capability_fixture",
+                company_id=company_id,
                 source_type=source_type,
                 published_at=published_at,
                 available_at=available_at,
-                content=str(raw["content"]),
-                metadata=dict(raw.get("metadata", {})),
+                content=content,
+                metadata=dict(raw_document.get("metadata", {})),
             )
         )
-    snapshot_hash = hashlib.sha256(
-        json.dumps(spec.to_dict(), sort_keys=True).encode("utf-8")
-    ).hexdigest()
-    result = SignalExecutor(
-        FrozenSignalRegistry(1, snapshot_hash, (spec,), {}),
-        RawInfoStore(documents=documents),
-    ).execute_batch(
-        (spec.ref,),
-        company_id="capability_fixture",
-        as_of=as_of,
-    ).results[0]
-    if result.value is not expected:
+    if not any(document.available_at <= as_of for document in documents):
+        # A closed fixture corpus with zero point-in-time visible
+        # documents is unavailable by construction: no signal can cite
+        # evidence from an empty corpus, and fixture corpora never
+        # acquire, so resolving or executing would misreport this
+        # legitimate abstention as a technical adapter failure.
+        if expected is SignalValue.UNAVAILABLE:
+            return
         raise ValidationError(
-            f"expected {expected.value}, received {result.value.value}"
+            "fixture expects "
+            f"{expected.value} but provides no point-in-time visible "
+            "documents"
+        )
+    snapshot_payload = {
+        "spec": spec.to_dict(),
+        "skill": (skill or "").rstrip(),
+    }
+    snapshot_hash = hashlib.sha256(
+        json.dumps(snapshot_payload, sort_keys=True).encode("utf-8")
+    ).hexdigest()
+    executor = SignalExecutor(
+        FrozenSignalRegistry(
+            version=0,
+            registry_hash=snapshot_hash,
+            specs=(spec,),
+            skills=({spec.ref: skill} if skill is not None else {}),
+        ),
+        RawInfoStore(documents=documents),
+        deterministic_functions=deterministic_functions,
+        llm_runner=llm_runner,
+    )
+    batch = executor.execute_batch(
+        (spec.ref,), company_id=company_id, as_of=as_of
+    )
+    result = batch.results[0]
+    if result.execution_status not in {
+        SignalExecutionStatus.SUCCESS, SignalExecutionStatus.DOMAIN_UNAVAILABLE
+    }:
+        raise ValidationError(
+            f"technical execution failure: {result.execution_status.value}: "
+            f"{result.execution_error_code}: {result.execution_error_message}"
+        )
+    if result.value is not expected:
+        resolution = batch.resolutions[0]
+        detail = resolution.gap.message if resolution.gap is not None else "no data gap"
+        interpretation = str(result.interpretation).strip()
+        judge_note = (
+            f"; executor interpretation: {interpretation[:400]}"
+            if interpretation
+            else ""
+        )
+        raise ValidationError(
+            f"expected {expected.value}, received {result.value.value}; "
+            f"resolution={resolution.status}; {detail}{judge_note}"
         )
 
 

@@ -1,0 +1,59 @@
+{
+  "confidence": "sparse",
+  "directional": {
+    "correct": 0,
+    "unavailable": 1,
+    "unavailable_with_inputs": 1,
+    "unavailable_without_inputs": 0,
+    "wrong": 1
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [
+    {
+      "context_tag": "large_cap",
+      "issuers": 2,
+      "observations": 2,
+      "positive_surge_rate": 0.0
+    },
+    {
+      "context_tag": "market_data_only",
+      "issuers": 2,
+      "observations": 2,
+      "positive_surge_rate": null
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 0,
+    "misleading": 1,
+    "other": 1
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 5,
+  "selection_reason_codes": [
+    {
+      "count": 5,
+      "reason_code": "assess_applicability"
+    }
+  ],
+  "signal_ref": "price_momentum_126d:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "neutral": {
+      "non_surge": 1,
+      "surge": 0
+    },
+    "positive": {
+      "non_surge": 1,
+      "surge": 0
+    },
+    "unavailable": {
+      "non_surge": 1,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 3,
+  "unique_observations": 3
+}
