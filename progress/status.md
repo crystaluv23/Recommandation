@@ -17,7 +17,7 @@
 预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
 [比较locator修复](../reports/mining-comparison-locators-20261023.md)现保留实际比较whole units并绑定fact/group/axis快照，变更时progress/last双副本失效；273关联/独立反例过、网络0。
 [分类链修复](../reports/classification-contract-propagation-20261023.md)保持局部；旧[财务消费者](../reports/financial-context-consumer-20261023.md)F7/F8窄通过、F9语义仍0/1。
-分类meta按批准方案A已在隔离分支ba309796实现；[354项关联/独立连接审查](../reports/classification-meta-context-20261023.md)通过（1skip）。未并入冻结v4，真实模型语义仍待。
+分类meta按批准方案A实现并于v4停止封存后合入；[354项关联/独立连接审查](../reports/classification-meta-context-20261023.md)通过（1skip），根目录30项回放通过。冻结v4不重入；真实模型语义仍待。
 
 [原生财务批次与阅读诊断](../reports/current-financial-apply-20261021.md)：当前比较用既有v12精确18版本，不替换历史v6。单GPRE/2025-05-30、1780来源view，冻结4389绑定，唯一native批次20.261s/exit0。
 9财务结果为6严格通过、1prior原文版本匹配失败、2期间政策unknown，终态completed_acceptance_failed保留。

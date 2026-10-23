@@ -41,6 +41,7 @@ from stock_opportunity_agent.research.evolution_reflection_memory import (
     ReflectionMemoryIndex,
     reflection_items_from_dict,
     validate_source_snapshot,
+    validate_signal_classification_context,
 )
 from stock_opportunity_agent.signal_library import (
     FrozenSignalRegistry,
@@ -55,6 +56,8 @@ from stock_opportunity_agent.signal_library import (
     SIGNAL_CONTEXT_TAGS,
     signal_result_model_view,
     project_signal_classification_contract,
+    saved_signal_classification_contracts,
+    validate_signal_classification_contract,
     _thaw_json,
 )
 
@@ -2563,6 +2566,28 @@ def _trajectory_has_recorded_signal_statuses(trajectory: ExecutionTrajectory) ->
     return True
 
 
+def _trajectory_signal_classification_context(trajectory: ExecutionTrajectory) -> tuple[dict[str, Any], ...] | None:
+    """Copy only saved declarations bound to actual results in the same round."""
+
+    saved = trajectory.final_context.get("signal_rounds", ())
+    if not isinstance(saved, (list, tuple)):
+        return None
+    rows = []
+    for index in range(len(saved)):
+        contracts = saved_signal_classification_contracts(trajectory.final_context, round_index=index)
+        if not contracts:
+            continue
+        if index >= len(trajectory.signal_rounds):
+            raise ValidationError("saved classification declaration has no actual Signal round")
+        actual = {result.ref: result for result in trajectory.signal_rounds[index].batch.results}
+        for ref, contract in contracts.items():
+            if ref not in actual:
+                raise ValidationError("saved classification declaration has no actual same-round result")
+            rows.append({"signal_round": index + 1, "signal_ref": ref,
+                         "contract": validate_signal_classification_contract(contract, signal_ref=ref, result=actual[ref])})
+    return tuple(rows) if rows else None
+
+
 @dataclass(frozen=True)
 class CaseReflectionEvidence:
     """Anonymous original post-hoc reflection retained in round meta-info."""
@@ -2576,10 +2601,14 @@ class CaseReflectionEvidence:
     jev_decision_feedback: Mapping[str, Any] | None = None
     technical_exclusion: Mapping[str, Any] | None = None
     recorded_signal_execution_failures: tuple[Mapping[str, Any], ...] | None = None
+    signal_classification_context: tuple[Mapping[str, Any], ...] | None = None
 
     def __post_init__(self) -> None:
         if self.case_index < 1:
             raise ValidationError("case reflection index must be positive")
+        if self.signal_classification_context is not None:
+            object.__setattr__(self, "signal_classification_context",
+                               validate_signal_classification_context(self.signal_classification_context))
         if self.recorded_signal_execution_failures is not None:
             rows = self.recorded_signal_execution_failures
             if not isinstance(rows, (list, tuple)):
@@ -2615,6 +2644,8 @@ class CaseReflectionEvidence:
                 RuntimeStopReason(self.termination_trigger),
             )
         if self.technical_exclusion is not None:
+            if self.signal_classification_context is not None:
+                raise ValidationError("technical exclusion cannot carry Signal classification context")
             if self.recorded_signal_execution_failures is not None:
                 raise ValidationError(
                     "technical exclusion cannot carry research-case Signal diagnostics"
@@ -2747,6 +2778,8 @@ class CaseReflectionEvidence:
             value["jev_decision_feedback"] = dict(self.jev_decision_feedback)
         if self.recorded_signal_execution_failures is not None:
             value["recorded_signal_execution_failures"] = [dict(row) for row in self.recorded_signal_execution_failures]
+        if self.signal_classification_context is not None:
+            value["signal_classification_context"] = deepcopy(list(self.signal_classification_context))
         return value
 
     @classmethod
@@ -2801,6 +2834,7 @@ class CaseReflectionEvidence:
                     SignalExecutionStatus.SUCCESS, SignalExecutionStatus.DOMAIN_UNAVAILABLE,
                 }
             ) if _trajectory_has_recorded_signal_statuses(trajectory) else None,
+            signal_classification_context=_trajectory_signal_classification_context(trajectory),
         )
 
     @classmethod
@@ -2839,6 +2873,7 @@ class CaseReflectionEvidence:
             "magnitude_feedback",
             "jev_decision_feedback",
             "recorded_signal_execution_failures",
+            "signal_classification_context",
         } or not required <= set(data):
             raise ValidationError("case reflection evidence fields are invalid")
         feedback = data["candidate_judgment_feedback"]
@@ -2851,6 +2886,8 @@ class CaseReflectionEvidence:
         ):
             raise ValidationError("case reflection magnitude feedback is invalid")
         serialized_jev = data.get("jev_decision_feedback")
+        if "signal_classification_context" in data and not isinstance(data["signal_classification_context"], (list, tuple)):
+            raise ValidationError("Signal classification context must be an array")
         if serialized_jev is not None and not isinstance(serialized_jev, Mapping):
             raise ValidationError("case reflection Jev feedback is invalid")
         return cls(
@@ -2872,6 +2909,7 @@ class CaseReflectionEvidence:
                 dict(serialized_jev) if serialized_jev is not None else None
             ),
             recorded_signal_execution_failures=data.get("recorded_signal_execution_failures"),
+            signal_classification_context=data.get("signal_classification_context"),
         )
 
     @property
@@ -8382,6 +8420,12 @@ def _mask_identity_values(
             if isinstance(metadata, Mapping) and isinstance(metadata.get("classification_contract"), Mapping):
                 projected["measurement_context"]["classification_contract"] = project_signal_classification_contract(
                     metadata["classification_contract"], projected["measurement_context"]["classification_contract"])
+            declarations = item.get("signal_classification_context")
+            if isinstance(declarations, (list, tuple)):
+                for original, target in zip(declarations, projected["signal_classification_context"], strict=True):
+                    target["contract"] = project_signal_classification_contract(original["contract"], target["contract"])
+            if item.get("schema_version") == "signal-classification-context-v1":
+                projected["contract"] = project_signal_classification_contract(item["contract"], projected["contract"])
             return projected
         return item
 

@@ -36,6 +36,35 @@ Provide pure, bounded model views and reference resolution over immutable,
 already anonymous retrospective reflection artifacts. The module never opens
 files, calls models, or grants access to Raw Info or blind execution.
 
+## Saved Signal classification declarations
+
+User-approved persistence option A retains optional complete
+`signal_classification_context` in original case meta. Validate each exact
+round/ref/contract envelope before indexing; do not query current definitions or
+combine different result/round declarations. Register each as a separate runtime
+case source under the original case and Plan scopes. Its source catalog row
+identifies it as `runtime_signal_classification`, with round, exact version and
+complete `read_bytes`; the definition/skill is available only through ordinary
+complete-unit `read_refs`. Runtime declarations do not independently establish
+canonical prediction outcomes, causal explanations or Signal efficacy.
+
+Legacy rows without the optional field retain their original source identities
+and hashes. Catalog/read bounds and role permissions remain unchanged; omitted
+units and oversized reads stay explicit, and full declarations are not silently
+cropped to fit a model request. Model-facing identity projection preserves the
+declaration's canonical source hash and binds its actual projected view hash.
+
+The existing paginated directory also exposes runtime declaration source headers
+in optional `sources`, using one cursor across reflection briefs and those
+headers. Exact-version/level filters apply to both populations. Headers contain
+scope and full read cost, never definition bodies; omitted and oversized headers
+remain explicit. With no runtime declarations the legacy directory is unchanged.
+Native Critic and Mining consumers use their existing browse/read operations and
+budgets. Slow H1's bounded source selector also considers complete readable runtime
+declarations beyond the initial catalog slice; its existing 32KB selector manifest
+and 48KB whole-source limits still apply. Its omitted counts do not mean all
+declarations were disclosed, and native directory paging remains available.
+
 ## Contract
 
 - Every brief includes shared `usage_context` and a runtime `performance` view.

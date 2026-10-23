@@ -83,6 +83,33 @@ old source units changes content hashes (and legacy case membership), breaking
 already-authored references. New runtime contexts provide the complete status
 records; restart/archive projections preserve that producer evidence exactly.
 
+`CaseReflectionEvidence.signal_classification_context` is optional runtime
+control data approved by the user on 2026-10-23 (persistence option A). Each row
+contains an exact one-based `signal_round`, versioned `signal_ref`, and the
+complete saved `contract`. Runtime extracts only declarations present in that
+trajectory's accepted final-context cards and validates each against the actual
+result in the same round. Repeated versions in different rounds remain separate;
+unknown/mismatched result or version bindings fail closed. Registry/default
+function declarations and authored reflection prose cannot reconstruct a missing
+historical declaration. The shared declaration integrity validator still owns
+the contract envelope; metadata is not proof of its research meaning.
+
+Absence stays absent through legacy load/save and reconstruction, preserving
+existing source hashes. An explicitly saved empty array round-trips as empty;
+runtime does not invent an empty array for an old trajectory with no saved
+declaration. Whole-case technical exclusions retain their existing minimal
+attribution-only shape. Per-Signal failures never become successful domain
+measurements merely because a declaration exists. The field changes no Signal
+result/state, outcome, score, permission or completion pointer.
+
+Plan/round meta and imported history preserve this complete optional field.
+Critic/Slow source indexing registers individually addressable declaration
+units with exact case/Plan scope. Initial catalogs disclose only identity, scope
+and complete read size; reading a declaration uses existing source reads and
+request/case budgets. An over-budget declaration remains a visible unreadable
+gap, never a clipped substitute or a guessed class predicate. Anonymous egress
+rehashes projected declaration views while retaining the original source hash.
+
 Final Basic Info cards retain the upstream `document_id` and `available_at` beside
 the complete literal and stable projection id. Final context explicitly includes
 the actual `prediction_time`; consumers must not infer it from optional price

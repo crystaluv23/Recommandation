@@ -8889,7 +8889,7 @@ class SignalEvolutionEngine:
         fast_sources = {}
         for row in meta_index.source_catalog():
             ref = row["source_ref"]
-            if ref not in visible_refs or row["read_bytes"] > 48_000:
+            if (ref not in visible_refs and not row.get("runtime_signal_classification")) or row["read_bytes"] > 48_000:
                 continue
             original = meta_index.read_refs([ref], role="signal_mining", max_bytes=48_000)["sources"][0]
             fast_sources[ref] = {
@@ -8900,6 +8900,8 @@ class SignalEvolutionEngine:
                     expand_aliases=False,
                 ),
                 **({"brief": previews[ref]} if ref in previews else {}),
+                **({key: row[key] for key in ("source_kind", "signal_ref", "signal_round", "case_refs", "plan_refs")}
+                   if row.get("runtime_signal_classification") else {}),
             }
         originals, original_manifest = read_slow_sources(
             (), role_scope="H1", source_catalog=fast_sources, budget_bytes=48_000,
@@ -9123,6 +9125,8 @@ class SignalEvolutionEngine:
                 "ref": str(ref), "content_hash": _canonical_hash(dict(raw)),
                 "currently_included": str(ref) in manifest.get("included_refs", ()),
                 "read_bytes": entry_size,
+                **({key: raw[key] for key in ("source_kind", "signal_ref", "signal_round", "case_refs", "plan_refs")}
+                   if raw.get("source_kind") == "runtime_signal_classification" else {}),
             }
             preview = {
                 **compact_row,

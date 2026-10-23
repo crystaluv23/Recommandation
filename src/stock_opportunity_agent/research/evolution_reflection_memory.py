@@ -13,6 +13,7 @@ from stock_opportunity_agent.artifacts import canonical_json_hash
 from stock_opportunity_agent.models import ValidationError
 from stock_opportunity_agent.memory.knowledge import empty_performance, source_signal_refs
 from stock_opportunity_agent.research.cross_round_reflection import validate_prediction_comparison
+from stock_opportunity_agent.signal_library import validate_signal_classification_contract
 
 
 _ROLES = frozenset({"proposer", "plan_critic", "round_reflector", "slow_reflection", "signal_mining", "signal_update"})
@@ -302,6 +303,28 @@ def _approved(value: Any) -> None:
             _approved(child)
 
 
+def validate_signal_classification_context(value: Any) -> tuple[dict[str, Any], ...]:
+    """Validate saved round-owned declarations without inferring their meaning."""
+
+    if not isinstance(value, (list, tuple)):
+        raise ValidationError("Signal classification context must be an array")
+    rows, seen = [], set()
+    for row in value:
+        if (not isinstance(row, Mapping)
+                or set(row) != {"signal_round", "signal_ref", "contract"}
+                or type(row["signal_round"]) is not int or row["signal_round"] < 1
+                or not isinstance(row["signal_ref"], str)
+                or re.fullmatch(r"[a-z0-9][a-z0-9_:-]*:v[1-9][0-9]*", row["signal_ref"]) is None):
+            raise ValidationError("Signal classification context round/version is invalid")
+        key = (row["signal_round"], row["signal_ref"])
+        if key in seen:
+            raise ValidationError("Signal classification context has duplicate round/version")
+        seen.add(key)
+        contract = validate_signal_classification_contract(row["contract"], signal_ref=row["signal_ref"])
+        rows.append({"signal_round": key[0], "signal_ref": key[1], "contract": contract})
+    return tuple(rows)
+
+
 @dataclass(frozen=True)
 class ReflectionItem:
     """One immutable authored learning item; checked sources do not prove truth."""
@@ -467,6 +490,9 @@ class ReflectionMemoryIndex:
         cases = []
         for position, raw in enumerate(rows, 1):
             row = deepcopy(dict(raw))
+            classification_context = validate_signal_classification_context(row["signal_classification_context"]) if "signal_classification_context" in row else ()
+            if "signal_classification_context" in row and row.get("technical_exclusion") is not None:
+                raise ValidationError("technical exclusion cannot carry Signal classification context")
             reflection = row.get("self_reflection", {})
             identity = row.get("source_identity") or (reflection.get("source_identity") if isinstance(reflection, Mapping) else None)
             snapshot = reflection.get("source_snapshot") if isinstance(reflection, Mapping) else None
@@ -491,6 +517,11 @@ class ReflectionMemoryIndex:
             }
             fact_ref = self._source(facts, level="case", case_refs=(case_ref,), plan_refs=plan_scope, canonical_outcomes=outcomes)
             original_ref = self._source(row, level="case", case_refs=(case_ref,), plan_refs=plan_scope, canonical_outcomes=outcomes)
+            for declaration in classification_context:
+                ref = self._source({"schema_version": "signal-classification-context-v1", **declaration},
+                                   level="case", case_refs=(case_ref,), plan_refs=plan_scope)
+                self._sources[ref].update(runtime_signal_classification=True,
+                    signal_round=declaration["signal_round"], signal_ref=declaration["signal_ref"])
             if isinstance(reflection, Mapping):
                 self._layer(reflection, level="case", owner_ref=case_ref, source_refs=(fact_ref, original_ref), case_refs=(case_ref,), plan_refs=plan_scope)
         return tuple(cases)
@@ -658,6 +689,7 @@ class ReflectionMemoryIndex:
             value["signal_refs_omitted"] = max(0, len(signals) - 12)
         value["source_kind"] = (
             "runtime_plan_statistics" if source.get("runtime_statistics") else
+            "runtime_signal_classification" if source.get("runtime_signal_classification") else
             "item" if source["source_ref"] in self._items else
             "canonical_case_facts" if "source_identity" in source["content"] else
             "legacy_snippet" if {"category", "index", "text", "owner_ref"} <= set(source["content"]) else
@@ -686,6 +718,8 @@ class ReflectionMemoryIndex:
                 return -1
             if "source_identity" in source["content"]:
                 return 0
+            if source.get("runtime_signal_classification"):
+                return 1
             if source["source_ref"] in self._items:
                 return 3 if source.get("legacy_unreviewed") else 1
             return 2
@@ -1040,26 +1074,35 @@ class ReflectionMemoryIndex:
 
     def directory(self, *, cursor: int = 0, max_bytes: int = 8_000, level: str | None = None,
                   signal_ref: str | None = None) -> dict[str, Any]:
-        """Page complete briefs under a full-envelope budget for deferred discovery."""
+        """Page complete briefs and runtime source headers within one envelope."""
         if level is not None and (not isinstance(level, str) or level not in _CATEGORIES):
             raise ValidationError("reflection directory level is invalid")
         if signal_ref is not None and (not isinstance(signal_ref, str) or re.fullmatch(r"[a-z0-9_:-]+:v[1-9][0-9]*", signal_ref) is None):
             raise ValidationError("reflection Signal index requires an exact version")
-        catalog = [self._brief(item) for item in reversed(tuple(self._items.values()))
+        briefs = [self._brief(item) for item in reversed(tuple(self._items.values()))
                    if (level is None or item.level == level)
                    and (signal_ref is None or signal_ref in item.related_signal_refs)]
+        sources = [self._catalog_row(source) for source in self._sources.values()
+                   if source.get("runtime_signal_classification")
+                   and (level is None or source["level"] == level)
+                   and (signal_ref is None or source["signal_ref"] == signal_ref)]
+        catalog = [("sources", row, row["source_ref"]) for row in sources]
+        catalog.extend(("items", row, row["item_ref"]) for row in briefs)
         if type(cursor) is not int or not 0 <= cursor <= len(catalog):
             raise ValidationError("reflection directory cursor is invalid")
         result: dict[str, Any] = {"items": [], "total": len(catalog), "level": level, "next_cursor": cursor if cursor < len(catalog) else None, "oversized_refs": []}
+        if sources:
+            result["sources"] = []
         if signal_ref is not None:
             result["signal_ref"] = signal_ref
         for position in range(cursor, len(catalog)):
+            collection, row, ref = catalog[position]
             next_cursor = position + 1 if position + 1 < len(catalog) else None
-            trial = {**result, "items": [*result["items"], catalog[position]], "next_cursor": next_cursor}
+            trial = {**result, collection: [*result[collection], row], "next_cursor": next_cursor}
             if _bytes(trial) > max_bytes:
-                if result["items"]:
+                if result["items"] or result.get("sources"):
                     break
-                trial = {**result, "oversized_refs": [*result["oversized_refs"], catalog[position]["item_ref"]], "next_cursor": next_cursor}
+                trial = {**result, "oversized_refs": [*result["oversized_refs"], ref], "next_cursor": next_cursor}
                 if _bytes(trial) > max_bytes:
                     break
             result = trial

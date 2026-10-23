@@ -1,6 +1,6 @@
 # 分类声明随 meta 保存：方案 A 落地
 
-用户于 2026-10-23 明确选择完整声明随 meta 保存。本次在隔离分支 `codex/classification-meta-context` 实施，原 checkout 的冻结 v4 生产代码不变。**实际保存→重读→Critic/Slow/Mining 原件读取的离线连接通过；真实模型语义消费、Fast 总体与工程 MVP 仍未通过。** 不启动完整后继、不修改业务完成指针，也不重置旧诊断预算。
+用户于 2026-10-23 明确选择完整声明随 meta 保存。在隔离分支 `codex/classification-meta-context` 实施并完成独立审查后，于 Mining v4 停止策略及原代码/来源封存（42bb9a4b）后合入当前 checkout。**实际保存→重读→Critic/Slow/Mining 原件读取的离线连接通过；真实模型语义消费、Fast 总体与工程 MVP 仍未通过。** 不启动完整后继、不修改业务完成指针，也不重置旧诊断预算。
 
 ## 最终行为
 
@@ -17,6 +17,6 @@
 - H1 此控制在32KB内露出42/48声明 header，仍有12条总目录遗漏（其中6条是声明）；明确计数未被删除。完整 native 目录可分页找到全部48，但这不保证单次角色预算足以全部读完。Critic仍最多3次读取交换、累计48KB；超长原件明确拒绝而不剪裁。
 - 这些调用的模型答复是脚本控制，只证明实际生产入口连接与权限/预算行为，不能声称 fresh 模型已正确解释定义或形成研究诊断。下一次真实 Critic/Slow 触发须检查实际请求、原答、纠错和保存，旧 financial consumer 语义0/1保持。
 
-根目录冻结 v4 完成/停止前不将此代码并入其运行 checkout；隔离 checkpoint 可独立审阅。原测量、分类、评分、标签、准入、PIT 和所有已完成 stage 产物不变。
+根目录在 v4 停止并封存后应用精确 ba309796 产品补丁，保留已有非本任务改动；根目录新增分类控制、reflection memory 及历史回放30项通过。v4不得以当前代码重入。原测量、分类、评分、标签、准入、PIT 和所有已完成 stage 产物不变。
 
 `.githooks/pre-push` 最终通过，已亲读 `.lint-feedback/pre-push-last.log`（status0 / PASS）。初次隔离 worktree 缺少 git-ignored 历史运行原件，旧文档20个链接导致 lint 失败；仅为存在于原 checkout 的目标建立本地读取引用后复验通过，未改旧报告、原件或 lint 政策。原反馈和引用清单已保存；此项属于工作区检查，不是研究证据。

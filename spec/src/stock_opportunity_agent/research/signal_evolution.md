@@ -7,6 +7,14 @@ usage context is validated against actually disclosed Experience refs, then
 preserved deterministically inside the materialized Signal parameters. It does
 not change admission, research labels or causal-effect status.
 
+Saved case classification declarations are independently scoped runtime sources
+in the same meta index. H1's optional source selector considers readable complete
+declaration units even when the bounded initial meta catalog deferred them; its
+header shows exact Signal version, round and scope without the definition body.
+The existing selector envelope and original-source budgets are unchanged, with
+omissions explicit. Native Mining can additionally page those headers through
+the common memory directory and request originals with its existing actions.
+
 ## Technical admission and independent effect observations
 
 The 2026-10-02 user decision admits technically valid direction and magnitude
