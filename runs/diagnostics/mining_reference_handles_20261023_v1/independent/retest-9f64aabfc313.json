@@ -1,0 +1,110 @@
+{
+  "code_sha256": "9f64aabfc313b47c38bcd6e0c1938f3a73c43eb763c1e07f611a880bbb9bfa1b",
+  "passed": 22,
+  "failed": 2,
+  "results": [
+    {
+      "case": "memory_original_content_reference_fields_unchanged",
+      "passed": true
+    },
+    {
+      "case": "retained_catalog_memory_original_unchanged",
+      "passed": true
+    },
+    {
+      "case": "signal_spec_original_reference_key_unchanged",
+      "passed": true
+    },
+    {
+      "case": "structured_literal_value_unchanged",
+      "passed": true
+    },
+    {
+      "case": "semantic_threshold_value_unchanged",
+      "passed": true
+    },
+    {
+      "case": "all_scalar_literal_fields_unchanged",
+      "passed": true
+    },
+    {
+      "case": "ordinary_nested_reference_roundtrip",
+      "passed": true
+    },
+    {
+      "case": "typed_patch_reference_and_prose_distinguished",
+      "passed": true
+    },
+    {
+      "case": "typed_patch_reference_exact_permissions",
+      "passed": true
+    },
+    {
+      "case": "unknown_alias_rejected",
+      "passed": true
+    },
+    {
+      "case": "wrong_kind_alias_rejected",
+      "passed": true
+    },
+    {
+      "case": "duplicate_decoded_dictionary_key_rejected",
+      "passed": true
+    },
+    {
+      "case": "same_shape_distinct_graph_cache_discriminator",
+      "passed": true
+    },
+    {
+      "case": "native_identity_projection_then_handle_inverse",
+      "passed": true
+    },
+    {
+      "case": "typed_index_membership_not_identifier_spelling",
+      "passed": true
+    },
+    {
+      "case": "arbitrary_semantic_field_value_is_literal",
+      "passed": true
+    },
+    {
+      "case": "nested_fact_value_keeps_all_reference_keys",
+      "passed": true
+    },
+    {
+      "case": "typed_patch_measurement_object_stays_literal",
+      "passed": true
+    },
+    {
+      "case": "typed_patch_candidate_restores_citations_preserves_measurement",
+      "passed": true
+    },
+    {
+      "case": "catalog_memory_noncontent_original_fields_preserved",
+      "passed": true
+    },
+    {
+      "case": "catalog_signals_noncontent_original_fields_preserved",
+      "passed": true
+    },
+    {
+      "case": "catalog_backlog_noncontent_original_fields_preserved",
+      "passed": true
+    },
+    {
+      "case": "default_signal_catalog_none_scope_preserves_original_card",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected={'items': [{'capability_contract': {'fact_ref': 'fact-0000000000000000', 'relation_refs': ['relation-0000000000000000']}}]}; actual={'items': [{'capability_contract': {'fact_ref': '~60ece94d:f0', 'relation_refs': ['~60ece94d:r0']}}]}"
+    },
+    {
+      "case": "inspect_manifest_last_result_preserves_semantic_contract",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected={'source_contract': {'fact_ref': 'fact-0000000000000000', 'relation_ref': 'relation-0000000000000000'}}; actual={'source_contract': {'fact_ref': '~60ece94d:f0', 'relation_ref': '~60ece94d:r0'}}"
+    }
+  ],
+  "network": "socket connect prohibited",
+  "production_mutations": 0,
+  "production_stage_reentry": 0
+}

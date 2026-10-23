@@ -6,11 +6,11 @@
 
 ## 最新实证
 
+[大图引用无损表示](../reports/mining-reference-handles-20261023.md)：spec-first结构handle/typed反投影与cache图指纹已修；481关联/独立24反例过，首原件误改及默认目录/manifest漏项保留。4221引用完整往返，同实际输入零receive230052（原264980），原消费10/2055941及316封存同；非fresh完成。下一仅离线交付真实query origin，不重开v3/重置预算。
 [目录跨步与v3终态](../reports/mining-catalog-working-context-20261023.md)：470关联/独立8组过；9ae48904实际两源三窗+原目录/18卡保留，h007直接读C、h008剩light1。v3最终10fresh/0纠错/2055941，第11请求在prepare前预算阻断，1候选未完成/0passed、4消费未试；不重入/续答/改caps。182源码归档同；离线逐字重建下一264980>single262144共2836，累计仍余10526971/10of80。独立核43命中只列24、query真实origin未交付。旧v1/v2仍pending，各12/2001316与11/1837419、h013/h012未派未答，不造no-pattern；MVP open。
 [能力材料/S4→S5交接](../reports/mining-materialization-evidence-frontier-20261023.md)：263份dev8源/stable18独立核过；ICFR有实际/相反/假设/歧义材料，价格窗口7/8但调整未知/有100天缺口，财务新组合无对应函数，不改定义求过。
 真实692字整行曾裁600、13引用裁12，doc/event后段及relation丢失；现单向whole-unit/实际读窗/source_type交接且绑定原seed，未知先拒，原始/身份/PIT保持。402关联/独立9组过、网络0；5诊断待答/0新作者，不称实现或准入通过。S5显式caller预算止传控制流，不臆继H1额度；旧0/2和1/2不改，真正能力正控仍待。
-[请求预算连接](../reports/mining-request-budget-visibility-20261023.md)：明确scope的成本/余量/下一请求下界进入实际payload，原生普通/patch/identity估算同；生产只接既有single上限、不增aggregate。397关联/独立17组过，网络0。
-原初预算异常误入内容纠错、zero-usage前置拒绝误扣两反例保留后修；顺序cache重建同、默认请求与旧完整字节/hash同。实际两源纯输入四步97429/92841在原98304内，模拟计数/0fresh，不证明规划通过。
+[请求预算连接](../reports/mining-request-budget-visibility-20261023.md)：明确scope的成本/余量/下一请求下界进入实际payload，原生普通/patch/identity估算同；生产只接既有single上限、不增aggregate。397关联/独立17组过，网络0。原初预算异常误入内容纠错、zero-usage前置拒绝误扣两反例保留后修；顺序cache重建同、默认请求与旧完整字节/hash同。实际两源纯输入四步97429/92841在原98304内，模拟计数/0fresh，不证明规划通过。
 [来源身份/提示成本](../reports/mining-source-identity-and-prompt-20261023.md)显式SEC坐标可逆、完整提示义务保持；原生两控8fresh的双operand/差值准确，但第五超预算/无inbox，端点0/2保留，不重入/加预算。非全匿名/Mining闭环。
 [定向query修复](../reports/mining-query-projection-and-generalization-20261023.md)：query贯穿完整concept投影，1179目标0→2；3原件noquery逐字段同，276关联/独立审查过、网络0。
 预冻两控正式结果1/2：namespace首endpoint通过；actual丢prior locator重compare，第5请求受原98304预算阻断。7fresh/0纠错，answered154184；actual90772+blocked26243、namespace63412，无补答/加预算。
@@ -96,5 +96,5 @@ FTI原10-Q误标10-k仍拒，MSannual时间冲突仍unknown；历史news排除/u
   [章节导航与真实控制](../reports/narrative-source-navigation-20261023.md)共用数据层matcher、各自坐标/分页、标题原子计预算；251关联/独立24过，网络0。旧v1形状与commercialization/v5净影响多义仍保留，未改定义。
   私有90日本金到期控制3fresh角色提取正确事实/0纠错、117566逻辑预留、29files同；更强oracle严审0of1不改。额外义务现已逐条对定义映射，不冒称错对象/日期；未发布/非Mining，整体F5/MVP仍open。
   gross_margin/revenue_acceleration期间定义仍待设计决策；不由现有结果倒推答案。
-- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；已读叙事正文实际保留已核；目录窄连接已实际核过；v3已single终止，下一仅离线修无损handle表示及真实query定位交付，不重开旧目标或重置预算；原0/2和1/2不改。
+- 完整反馈消费、新方向/magnitude Mining→忠实实现→技术准入→后继精确使用、完整恢复及双环仍未验证；已读叙事正文实际保留已核；目录窄连接已实际核过；v3已single终止，无损handle表示已局部修；下一仅离线修真实query定位交付，不重开旧目标或重置预算；原0/2和1/2不改。
   旧v182权威Fast/Slow=1/1完成不恢复；所有已完成诊断stage不重入。不启动完整后继，整体MVP保持open。

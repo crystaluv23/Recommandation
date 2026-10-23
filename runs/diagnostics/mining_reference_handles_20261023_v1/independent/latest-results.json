@@ -1,0 +1,82 @@
+{
+  "code_sha256": "8532413cd4b5110ea269b14ec9a5e766d01c52469bd3abcbb2f53099762b060c",
+  "passed": 9,
+  "failed": 6,
+  "results": [
+    {
+      "case": "memory_original_content_reference_fields_unchanged",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected=[{'content': {'fact_ref': 'fact-0000000000000000', 'relation_refs': ['relation-0000000000000000'], 'ref': 'fact-0000000000000000'}}]; actual=[{'content': {'fact_ref': '~60ece94d:f0', 'relation_refs': ['~60ece94d:r0'], 'ref': '~60ece94d:f0'}}]"
+    },
+    {
+      "case": "retained_catalog_memory_original_unchanged",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected={'items': [{'result': {'items': [{'content': {'fact_ref': 'fact-0000000000000000'}}]}}]}; actual={'items': [{'result': {'items': [{'content': {'fact_ref': '~60ece94d:f0'}}]}}]}"
+    },
+    {
+      "case": "signal_spec_original_reference_key_unchanged",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected=[{'original': {'spec': {'definition': {'fact_ref': 'fact-0000000000000000'}}}}]; actual=[{'original': {'spec': {'definition': {'fact_ref': '~60ece94d:f0'}}}}]"
+    },
+    {
+      "case": "structured_literal_value_unchanged",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected={'fact_ref': 'fact-0000000000000000'}; actual={'fact_ref': '~60ece94d:f0'}"
+    },
+    {
+      "case": "semantic_threshold_value_unchanged",
+      "passed": false,
+      "error_type": "AssertionError",
+      "error": "expected={'measurement': {'predicate': {'threshold': {'field': 'fact_ref', 'value': 'fact-0000000000000000'}}}}; actual={'measurement': {'predicate': {'threshold': {'field': 'fact_ref', 'value': '~60ece94d:f0'}}}}"
+    },
+    {
+      "case": "all_scalar_literal_fields_unchanged",
+      "passed": true
+    },
+    {
+      "case": "ordinary_nested_reference_roundtrip",
+      "passed": true
+    },
+    {
+      "case": "typed_patch_reference_and_prose_distinguished",
+      "passed": true
+    },
+    {
+      "case": "typed_patch_reference_exact_permissions",
+      "passed": true
+    },
+    {
+      "case": "unknown_alias_rejected",
+      "passed": true
+    },
+    {
+      "case": "wrong_kind_alias_rejected",
+      "passed": true
+    },
+    {
+      "case": "duplicate_decoded_dictionary_key_rejected",
+      "passed": true
+    },
+    {
+      "case": "same_shape_distinct_graph_cache_discriminator",
+      "passed": true
+    },
+    {
+      "case": "native_identity_projection_then_handle_inverse",
+      "passed": true
+    },
+    {
+      "case": "typed_index_membership_not_identifier_spelling",
+      "passed": false,
+      "error_type": "ValidationError",
+      "error": "Mining reference handle has the wrong evidence kind"
+    }
+  ],
+  "network": "socket connect prohibited",
+  "production_mutations": 0,
+  "production_stage_reentry": 0
+}

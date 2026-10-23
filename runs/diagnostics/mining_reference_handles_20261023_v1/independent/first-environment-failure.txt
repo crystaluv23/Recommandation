@@ -1,0 +1,4 @@
+Initial command: PYTHONPATH=src python3 independent/review_counterexamples.py
+Exit 1 before any control ran. System python3 was Python 3.9:
+ImportError: cannot import name 'UnionType' from 'types'
+No model/provider/source/stage execution occurred. Retrying with project-compatible bundled Python.

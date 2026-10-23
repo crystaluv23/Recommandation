@@ -1,0 +1,50 @@
+test_actual_next_payload_lossless_projection_retains_all_4211_refs (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_actual_next_payload_lossless_projection_retains_all_4211_refs) ... FAIL
+test_namespace_collision_and_unknown_wrong_kind_duplicate_keys (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_namespace_collision_and_unknown_wrong_kind_duplicate_keys) ... ok
+test_native_identity_wire_budget_inverse_cache_and_fresh_reconstruction (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_native_identity_wire_budget_inverse_cache_and_fresh_reconstruction) ... ERROR
+test_same_shape_different_graph_has_distinct_cache_scope_and_aliases (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_same_shape_different_graph_has_distinct_cache_scope_and_aliases) ... ok
+test_small_graph_and_empty_default_keep_existing_wire (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_small_graph_and_empty_default_keep_existing_wire) ... ok
+test_structural_graph_roundtrip_preserves_every_literal_and_order (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_structural_graph_roundtrip_preserves_every_literal_and_order) ... ok
+test_typed_patch_keeps_canonical_hash_paths_and_restores_only_reference_values (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_typed_patch_keeps_canonical_hash_paths_and_restores_only_reference_values) ... ok
+test_adapter_accumulates_usage_and_rejects_non_object (tests.test_mining_role_model.MiningRoleModelTests.test_adapter_accumulates_usage_and_rejects_non_object) ... ok
+test_adapter_passes_view_and_returns_parsed_action (tests.test_mining_role_model.MiningRoleModelTests.test_adapter_passes_view_and_returns_parsed_action) ... ok
+test_correction_selects_only_patch_grammar_and_keeps_permissions (tests.test_mining_role_model.MiningRoleModelTests.test_correction_selects_only_patch_grammar_and_keeps_permissions) ... ok
+test_call_limit_stops_before_new_request_and_optional_limits_are_not_invented (tests.test_mining_request_budget.MiningRequestBudgetTests.test_call_limit_stops_before_new_request_and_optional_limits_are_not_invented) ... ok
+test_malformed_answer_consumes_reservation_but_predispatch_guard_does_not (tests.test_mining_request_budget.MiningRequestBudgetTests.test_malformed_answer_consumes_reservation_but_predispatch_guard_does_not) ... ok
+test_native_envelope_exact_cost_pending_retry_and_sequential_reconstruction (tests.test_mining_request_budget.MiningRequestBudgetTests.test_native_envelope_exact_cost_pending_retry_and_sequential_reconstruction) ... ok
+test_request_stop_propagates_without_model_correction_or_research_verdict (tests.test_mining_request_budget.MiningRequestBudgetTests.test_request_stop_propagates_without_model_correction_or_research_verdict) ... ok
+test_typed_patch_keeps_grammar_and_costs_complete_correction (tests.test_mining_request_budget.MiningRequestBudgetTests.test_typed_patch_keeps_grammar_and_costs_complete_correction) ... ok
+
+======================================================================
+ERROR: test_native_identity_wire_budget_inverse_cache_and_fresh_reconstruction (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_native_identity_wire_budget_inverse_cache_and_fresh_reconstruction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_reference_handles.py", line 139, in test_native_identity_wire_budget_inverse_cache_and_fresh_reconstruction
+    model.next_action(view)
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py", line 328, in next_action
+    parsed, usage = self.caller.complete_json(**kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1049, in complete_json
+    value, usage, _scores = self._complete_json(
+                            ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1138, in _complete_json
+    value, usage, scores = self._complete_json_request(**projected)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1198, in _complete_json_request
+    stage_contract = validate_stage_input(stage, payload, allow_outcomes=allow_outcomes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py", line 154, in validate_stage_input
+    raise ValidationError(f"{stage} input dependency missing: {missing}")
+stock_opportunity_agent.models.ValidationError: mining_controller_step input dependency missing: ['research_axis', 'label_map', 'budget', 'measurable_evidence_manifest', 'signal_catalog', 'signal_catalog_disclosure', 'case_refs', 'case_prediction_times', 'tool_contracts']
+
+======================================================================
+FAIL: test_actual_next_payload_lossless_projection_retains_all_4211_refs (tests.test_mining_reference_handles.MiningReferenceHandleTests.test_actual_next_payload_lossless_projection_retains_all_4211_refs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_reference_handles.py", line 171, in test_actual_next_payload_lossless_projection_retains_all_4211_refs
+    self.assertEqual(len(codec.forward), 4211)
+AssertionError: 4221 != 4211
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.047s
+
+FAILED (failures=1, errors=1)

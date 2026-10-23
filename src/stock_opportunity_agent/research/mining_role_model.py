@@ -10,6 +10,10 @@ enforcement stays entirely in the controller.
 
 from __future__ import annotations
 
+import hashlib
+import json
+import re
+from copy import deepcopy
 from typing import Any, Mapping
 
 from stock_opportunity_agent.models import ValidationError
@@ -23,6 +27,145 @@ from stock_opportunity_agent.research.stage_contracts import NEED_ROW_RATIONALE_
 from stock_opportunity_agent.research.scheme_evolution import EvolutionControlFlow
 
 MINING_CONTROLLER_STAGE = "mining_controller_step"
+
+_REFERENCE_FIELDS = frozenset({
+    "fact_ref", "fact_refs", "known_fact_refs", "relation_ref", "relation_refs",
+    "known_relation_refs", "evidence_refs", "ref", "refs", "relation",
+})
+_LITERAL_FIELDS = frozenset({
+    "content", "original", "spec", "skill", "definition", "measurement",
+    "falsifiers", "usage_context", "rationale", "value", "exact_span", "masked",
+    "raw_span", "readable_text", "meta_info", "meta_memory_disclosures",
+    "slow_method_memory", "signal_catalog", "prior_modality_footprints",
+    "measurable_evidence_manifest", "backlog_needs",
+})
+_HANDLE_INSTRUCTION = (
+    " reference_handles declares lossless request-local fact/relation handles. "
+    "Use the displayed handles in structural reference fields only; they have "
+    "the same runtime authority as their original refs. Never treat spelling "
+    "as a feature. Source text, fact values and prose remain literal. Copy "
+    "issued patch base_hash/paths unchanged; do not recompute their hashes."
+)
+
+
+class _MiningReferenceHandles:
+    """Shorten large reference indexes without changing canonical graph records."""
+
+    def __init__(self, view: Mapping[str, Any]) -> None:
+        self.forward: dict[str, str] = {}
+        self.reverse: dict[str, str] = {}
+        self.kinds: dict[str, str] = {}
+        self.prefix = ""
+        self.scope_hash = ""
+        indexes = {key: view.get(key, []) for key in ("known_fact_refs", "known_relation_refs")}
+        if len(json.dumps(indexes, ensure_ascii=False, separators=(",", ":")).encode()) <= 8192:
+            return
+        # The complete typed map is also a cache discriminator. Ordinals alone
+        # would give two different canonical graphs an identical model wire.
+        refs = [(kind, ref) for kind, key in (("f", "known_fact_refs"), ("r", "known_relation_refs"))
+                for ref in sorted(set(indexes[key])) if isinstance(ref, str)]
+        self.scope_hash = hashlib.sha256(json.dumps(refs, ensure_ascii=False,
+            separators=(",", ":")).encode()).hexdigest()
+        strings: list[str] = []
+
+        def collect(value):
+            if isinstance(value, str):
+                strings.append(value)
+            elif isinstance(value, Mapping):
+                for key, item in value.items():
+                    collect(key)
+                    collect(item)
+            elif isinstance(value, (list, tuple)):
+                for item in value:
+                    collect(item)
+
+        collect(view)
+        self.prefix = "~" + self.scope_hash[:8] + ":"
+        while any(self.prefix in value for value in strings):
+            self.prefix = "~" + self.prefix
+        counts = {"f": 0, "r": 0}
+        for kind, ref in refs:
+            # A canonical identifier cannot belong to both evidence kinds.
+            if ref in self.forward:
+                raise ValidationError("Mining reference indexes overlap")
+            alias = f"{self.prefix}{kind}{counts[kind]:x}"
+            self.forward[ref] = alias
+            self.reverse[alias] = ref
+            self.kinds[ref] = kind
+            counts[kind] += 1
+
+    @staticmethod
+    def _field(path: str) -> str:
+        fields = re.findall(r"[A-Za-z_][A-Za-z0-9_]*", path)
+        return fields[-1] if fields else ""
+
+    def transform(self, value: Any, *, restore: bool = False, field: str = "") -> Any:
+        """Transform only typed reference slots, preserving literal values/prose."""
+        if not self.forward:
+            return value
+        if field in _LITERAL_FIELDS:
+            return deepcopy(value)
+        reference = field in _REFERENCE_FIELDS
+        table = self.reverse if restore else self.forward
+
+        def scalar(item):
+            if not isinstance(item, str):
+                return item
+            if item not in table:
+                if restore and item.startswith(self.prefix):
+                    raise ValidationError("Unknown request-local Mining reference handle")
+                return item
+            canonical = table[item] if restore else item
+            kind = self.kinds[canonical]
+            expected = "f" if "fact_ref" in field else "r" if "relation_ref" in field or field == "relation" else None
+            if expected and kind != expected:
+                if restore:
+                    raise ValidationError("Mining reference handle has the wrong evidence kind")
+                return item
+            return table[item]
+
+        if isinstance(value, str):
+            return scalar(value) if reference else value
+        if isinstance(value, (list, tuple)):
+            items = [self.transform(item, restore=restore, field=field) for item in value]
+            return tuple(items) if isinstance(value, tuple) else items
+        if not isinstance(value, Mapping):
+            return value
+        result = {}
+        for key, item in value.items():
+            target = key
+            if key == "value" and field == "identity_guards":
+                target = str(value.get("field", ""))
+            elif key in {"value", "exact_value"} and field in {"operations", "allowed_operations"}:
+                target = str(value.get("field") or self._field(str(value.get("path", ""))))
+            elif key == "item_id" and field == "obligations":
+                target = str(value.get("item_id_field", ""))
+            if (key == "allowed_append_values" and field == "obligations"
+                    or key == "exact_append_limits" and field == "output_patch_contract") and isinstance(item, Mapping):
+                converted = {path: self.transform(values, restore=restore, field=self._field(path))
+                             for path, values in item.items()}
+            elif key == "result" and (value.get("action") in {"inspect_catalog", "inspect_manifest"}
+                    or value.get("scope") in {"signals", "memory", "backlog", "evidence"}):
+                converted = deepcopy(item)
+            else:
+                converted = self.transform(item, restore=restore, field=target)
+            # Reference-keyed dictionaries occur in exact append permissions;
+            # semantic/source object keys outside a reference slot stay literal.
+            new_key = scalar(key) if reference else key
+            if new_key in result:
+                raise ValidationError("Mining reference restoration creates a duplicate key")
+            result[new_key] = converted
+        return result
+
+    def payload(self, view: Mapping[str, Any]) -> dict[str, Any]:
+        """Return the one encoded object shared by estimation and actual caller."""
+        payload = self.transform(dict(view))
+        if self.forward:
+            if "reference_handles" in payload:
+                raise ValidationError("Mining reference_handles is adapter-owned")
+            payload["reference_handles"] = {"scope_hash": self.scope_hash,
+                "namespace": self.prefix, "lifetime": "this_request_only"}
+        return payload
 
 
 class MiningRequestBudgetExhausted(EvolutionControlFlow):
@@ -184,10 +327,13 @@ class MiningAgentRoleModel:
                 output_instruction + _MINING_CONTROLLER_PROMPT
                 + _SOURCE_FACT_RELATION_INSTRUCTION
             )
-        payload, reserved, ceiling = dict(view), 0, None
+        handles = _MiningReferenceHandles(view)
+        payload, reserved, ceiling = handles.payload(view), 0, None
+        if handles.forward:
+            system_prompt += _HANDLE_INSTRUCTION
         if self.request_limits:
             system_prompt += _REQUEST_BUDGET_INSTRUCTION
-            payload, reserved, ceiling = self._budgeted_payload(system_prompt, view)
+            payload, reserved, ceiling = self._budgeted_payload(system_prompt, payload)
         kwargs = dict(stage=self.stage, system_prompt=system_prompt, payload=payload,
             allow_outcomes=True,
             anonymous_aliases=self.identity_aliases,
@@ -208,4 +354,4 @@ class MiningAgentRoleModel:
         self._consume(usage, reserved)
         if not isinstance(parsed, Mapping):
             raise ValidationError("mining controller action must be an object")
-        return dict(parsed)
+        return handles.transform(dict(parsed), restore=True)

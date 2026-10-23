@@ -782,6 +782,42 @@ its current action result. Catalog receipts alone are not evidence access.
 
 ## Controller egress consistency (2026-10-01)
 
+### Lossless large-graph reference handles (2026-10-23)
+
+For a fact/relation index whose compact UTF-8 JSON exceeds8,192 bytes, the
+Mining role adapter may render its complete existing references as short,
+request-local handles. Smaller indexes keep the existing wire unchanged.
+This is a representation optimization, never graph pruning or a new source of
+evidence. Every fact/relation and its ordered links remains present; runtime,
+ledger, source hashes, candidate records and materialization keep canonical refs.
+Derive handles deterministically from sorted known canonical refs, using a
+namespace absent from every original payload string/key. Include a hash of the
+complete mapping in the model payload: different canonical graphs must never
+share a request/cache identity merely because their short handles look alike.
+No full mapping is duplicated on the wire.
+
+Transform only structural reference fields (including known indexes, comparison
+locators, actual read/computation results and candidate citations). Source text,
+fact values, units, periods, semantic prose and hash values are never replaced.
+Memory/Signal/backlog originals, whole method memory, source `content`, nested
+fact `value` and candidate `measurement`/falsifiers are opaque literal subtrees,
+even if their JSON happens to name a `fact_ref` or `field`. Derive patch-value
+reference semantics only inside recognized operation/permission/identity-guard
+containers, never from an arbitrary semantic object's `field`/`path` keys.
+Protect complete inspect_manifest/inspect_catalog originals in both the last
+result and retained observations, including omitted/default `scope=signals`;
+moving one original between working-view wrappers must not change its meaning.
+The same rule covers the failed action, typed patch reference values/identity
+guards/exact append permissions; patch paths and canonical base_hash remain
+unchanged. Restore returned references before Controller validation/patching.
+Unknown handles remain unknown, wrong-kind/case references gain no authority,
+and no alias implies a source read or semantic truth. Typed permissions remain
+canonical and must pass unchanged validation after restoration. Estimation,
+budget disclosure, actual caller messages, cache identity and replay all use
+the same encoded payload; the mapping hash and instructions count in full.
+Only actual answered usage consumes the original budgets. A sealed evaluation
+is never reentered or charged with a hypothetical encoded request.
+
 MiningAgentRoleModel receives the engine's explicit scoped identity inventory and
 uses the shared reversible transport scope on the complete composed request.
 Masking titles or a raw window alone does not establish anonymity: document handles,

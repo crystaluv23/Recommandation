@@ -1,0 +1,95 @@
+{
+  "schema_version": "mining-reference-handles-independent-bindings-v1",
+  "command": "PYTHONPATH=src /Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 runs/diagnostics/mining_reference_handles_20261023_v1/independent/review_counterexamples.py",
+  "final_counts": {
+    "passed": 24,
+    "failed": 0
+  },
+  "historical_results": [
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/first-results.json",
+      "product_sha256": "8532413cd4b5110ea269b14ec9a5e766d01c52469bd3abcbb2f53099762b060c",
+      "passed": 9,
+      "failed": 6
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/latest-results.json",
+      "product_sha256": "8532413cd4b5110ea269b14ec9a5e766d01c52469bd3abcbb2f53099762b060c",
+      "passed": 9,
+      "failed": 6
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/retest-2a77e131596e.json",
+      "product_sha256": "2a77e131596e4cefd9dff8a91ea38fcc36bbb5e790ccb205949158c2acd06910",
+      "passed": 24,
+      "failed": 0
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/retest-9f64aabfc313.json",
+      "product_sha256": "9f64aabfc313b47c38bcd6e0c1938f3a73c43eb763c1e07f611a880bbb9bfa1b",
+      "passed": 22,
+      "failed": 2
+    }
+  ],
+  "files": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "2a77e131596e4cefd9dff8a91ea38fcc36bbb5e790ccb205949158c2acd06910",
+      "bytes": 30018
+    },
+    {
+      "path": "tests/test_mining_reference_handles.py",
+      "sha256": "76a2eee70cc8bfefc1211410561bf3db076b7455d09754e3349511e0ae049809",
+      "bytes": 14775
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "eff1572ee44c59e320e72fb24bc7c7e903aec9d2b0538e356471c3e93bd5f1d0",
+      "bytes": 58620
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/first-environment-failure.txt",
+      "sha256": "c523d528db542f86716fbeef43ebbf068138a361104b58c6585f10a9de49df6a",
+      "bytes": 297
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/first-results.json",
+      "sha256": "270aca07b08f0836902cf3a1514b3364c294827573ace82b23ab33dff1a1f10a",
+      "bytes": 3048
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/latest-results.json",
+      "sha256": "f3ed2bd74a4293261833549bcc0b59e51fd5fd5581ce9a3d77e04adc689491dc",
+      "bytes": 2903
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/report.md",
+      "sha256": "21d1948448f4231cd9af7f32eb1ffb72666b948d79989e9371fa81c1d1927c97",
+      "bytes": 2007
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/retest-2a77e131596e.json",
+      "sha256": "76adb5274737922f359e9a9540bdc2e87e95ff0ea31fc5bb5886d1138b453790",
+      "bytes": 2530
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/retest-9f64aabfc313.json",
+      "sha256": "9464bcc1787633b5bcadc3fc1d44e37d7a5009848f8aff43b5f33a9e58236949",
+      "bytes": 3090
+    },
+    {
+      "path": "runs/diagnostics/mining_reference_handles_20261023_v1/independent/review_counterexamples.py",
+      "sha256": "c1210eabe7ab27eb1bcb5ce0043adfd7166126f9d031314f75803ba96ff28e92",
+      "bytes": 7782
+    }
+  ],
+  "limits": [
+    "Synthetic offline controls only",
+    "Socket connect prohibited during controls",
+    "No production stage/source/oracle mutation",
+    "Early script revisions were not separately archived; historical results bind actual product hashes",
+    "No independently repeated full native caller/cache or full payload cost estimate",
+    "No fresh model completion or research benefit established"
+  ],
+  "self_hash_omitted": true
+}

@@ -252,10 +252,16 @@ class ICFRNativeCapabilityStageTests(TestCase):
                 stage._review(root, 'semantic-review', targets, fields)
 
     def test_no_author_pending_and_input_only_on_actual_approved_native_axis(self):
-        # Only temporary stage setup; no fixed stage exists or receives an answer.
+        # Exercise current code in a temporary fixture, never refresh the sealed
+        # production oracle when active implementation/spec bytes change.
         with TemporaryDirectory() as temporary:
             root = Path(temporary) / 'stage'
-            with patch.object(stage, 'STAGE_ROOT', root):
+            original = stage.read(stage.ORACLE)
+            oracle = {**original, 'contract_bindings': [stage.binding(Path(row['path']))
+                       for row in original['contract_bindings']]}
+            fixture = Path(temporary) / 'fixture-oracle.json'
+            stage.save(fixture, oracle)
+            with patch.object(stage, 'STAGE_ROOT', root), patch.object(stage, 'ORACLE', fixture):
                 stage.prepare(root)
                 self.assertEqual(stage.read(root / 'workspace/state.json')['last_completed_round'], 0)
                 self.assertIsNone(stage.read(root / 'workspace/cycle_state.json')['active_cycle'])
@@ -285,6 +291,16 @@ class ICFRNativeCapabilityStageTests(TestCase):
                 (root / 'inputs/factory.json').write_text('{}')
                 with self.assertRaises(ValidationError):
                     stage.advance(root)
+
+    def test_sealed_v3_contract_is_not_refrozen_for_active_code(self):
+        # Its immutable test/source bindings intentionally precede this fixture
+        # update. A changed checkout must not silently reuse that evaluation.
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary) / 'not-created'
+            with patch.object(stage, 'STAGE_ROOT', root):
+                with self.assertRaisesRegex(ValidationError, 'frozen bytes drifted'):
+                    stage.prepare(root)
+                self.assertFalse(root.exists())
 
     def test_terminal_reentry_and_scoped_reopen(self):
         with TemporaryDirectory() as temporary:

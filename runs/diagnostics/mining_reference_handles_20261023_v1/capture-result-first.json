@@ -1,0 +1,27 @@
+{
+  "original_input": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/terminal-boundary/blocked-offline-native-estimate.json",
+    "sha256": "0fc9f3519692c15792cdb41ca9100a6c1dbb2bf8b6e4b222bfbd664c289a3c99"
+  },
+  "original_logical_estimate": 264980,
+  "repaired_logical_estimate": 230052,
+  "saving": 34928,
+  "single_limit": 262144,
+  "remaining_single": 32092,
+  "fact_count": 2879,
+  "relation_count": 1342,
+  "total_references": 4221,
+  "codec_scope_hash": "6b1e09cde52bb9b8b213e9ae08bb0b374f606d87502b8b9cdbd4a909d88bbb28",
+  "canonical_input_unchanged": true,
+  "all_sealed_files_unchanged": 316,
+  "sealed_table_matches": 312,
+  "new_inboxes": 0,
+  "new_answers": 0,
+  "new_receipts": 0,
+  "network_calls": 0,
+  "logical_used_preserved": [
+    10,
+    2055941
+  ],
+  "proof_scope": "offline full-input encoding and native zero-receive capture only; no new model compliance or stage continuation"
+}
