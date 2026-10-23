@@ -1,0 +1,1707 @@
+{
+  "consumer_controls": {
+    "not_fixed": "No four-case SignalValue enum mapping or candidate implementation is preauthored. Case facts are private oracle evidence, not production answers.",
+    "original_source_obligations": [
+      {
+        "acceptance_at": "2024-10-30T18:40:53.000Z",
+        "accession": "0001213900-24-092156",
+        "assessment_scope": {
+          "direct_date_scope": "Audit/ICFR statements reference FY2024 and FY2023; retain the exact sentence scope rather than inventing a later cutoff assessment.",
+          "explicit_references": [
+            "2024-06-30",
+            "2023-06-30"
+          ],
+          "report_period_end": "2024-06-30"
+        },
+        "available_at": "2024-10-30T18:40:53+00:00",
+        "case_id": "cik_0001951089:20250530",
+        "case_ref": "case-001",
+        "content_hash": "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "document_id": "sec:cik_0001951089:000121390024092156",
+        "form": "20-F",
+        "mandatory_distinctions": [
+          "Significant deficiency differs from material weakness.",
+          "Internal terminology conflict is real original-body content; preserve both sides.",
+          "No lexical tie-break, majority vote, severity upgrade, or silent choice of the favorable sentence."
+        ],
+        "object": "Original Critical Metals filing calls six items significant deficiencies, defines that concept as less severe than material weakness, then Item15 labels identified items material weaknesses.",
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001951089/sec:cik_0001951089:000121390024092156.json",
+          "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+        },
+        "published_at": "2024-10-30T18:40:53+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "terminology_conflict_counterexample",
+            "raw_end": 258891,
+            "raw_span": "<p style=\"text-align: justify; font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-indent: 0.25in\">In connection with the audit of our consolidated\nfinancial statements for the years ended June 30, 2024 and 2023, we and the auditors identified six significant deficiencies in our internal\ncontrol over financial reporting. The significant deficiencies related to the following:</p>",
+            "raw_span_sha256": "abf0aa4070f72cdfe6247318f91a3819e712564139dfa03fa528d2cc0dbd4b1c",
+            "raw_start": 258500,
+            "readable_rendering": "In connection with the audit of our consolidated financial statements for the years ended June 30, 2024 and 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The significant deficiencies related to the following:"
+          },
+          {
+            "kind": "terminology_conflict_counterexample",
+            "raw_end": 270925,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; text-indent: 0.25in\">In the course of auditing\nthe consolidated financial statements for the years ended June 30, 2024, we and our independent registered public accounting firm identified\nsix significant deficiencies in the internal control over financial reporting as of June 30, 2024, in accordance with the standards established\nby the PCAOB. A significant deficiency is a deficiency, or a combination of deficiencies, in internal control over financial reporting\nthat is less severe than a material weakness, yet important enough to merit attention by those responsible for oversight of the financial\nreporting. These significant deficiencies relate to the segregation of duties, related party transactions, accounting for accounts payable\nand accrued expenses, income tax provision and related disclosures, accounting for complex financial instruments, and cybersecurity programs.\nWe aim to take certain measures by hiring additional personnel and implement polices and procedures to remediate the identified significant\ndeficiencies, although no assurance can be given as to whether these steps will be sufficient. The implementation of these improvements\nmay increase our administrative expenses. To the extent these steps are not successful, we could be forced to incur additional expenses\nand require more of management&#8217;s time.</p>",
+            "raw_span_sha256": "333d90a01acf99157342e449415f9f57793567838fed2666453753ac225ceef6",
+            "raw_start": 269491,
+            "readable_rendering": "In the course of auditing the consolidated financial statements for the years ended June 30, 2024, we and our independent registered public accounting firm identified six significant deficiencies in the internal control over financial reporting as of June 30, 2024, in accordance with the standards established by the PCAOB. A significant deficiency is a deficiency, or a combination of deficiencies, in internal control over financial reporting that is less severe than a material weakness, yet important enough to merit attention by those responsible for oversight of the financial reporting. These significant deficiencies relate to the segregation of duties, related party transactions, accounting for accounts payable and accrued expenses, income tax provision and related disclosures, accounting for complex financial instruments, and cybersecurity programs. We aim to take certain measures by hiring additional personnel and implement polices and procedures to remediate the identified significant deficiencies, although no assurance can be given as to whether these steps will be sufficient. The implementation of these improvements may increase our administrative expenses. To the extent these steps are not successful, we could be forced to incur additional expenses and require more of management’s time."
+          },
+          {
+            "kind": "terminology_conflict_counterexample",
+            "raw_end": 903862,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; text-indent: 0.25in\">Our management is responsible\nfor establishing and maintaining adequate internal control over financial reporting. Internal control over financial reporting is a process\ndesigned to provide reasonable assurance regarding the reliability of financial reporting and the preparation of financial statements\nin accordance with IFRS. A material weakness is a deficiency, or a combination of deficiencies, in internal control over financial reporting\nsuch that there is a reasonable possibility that a material misstatement of annual or interim financial statements will not be prevented\nor detected on a timely basis. In connection with the audit of our consolidated financial statements for the years ended June 30, 2024,\nand 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The identified\nmaterial weaknesses related to the following matters:</p>",
+            "raw_span_sha256": "e9b7bf1e964023d69dfc39bba8af1d91873d20192bfdecc0a8bb2893fed3af24",
+            "raw_start": 902843,
+            "readable_rendering": "Our management is responsible for establishing and maintaining adequate internal control over financial reporting. Internal control over financial reporting is a process designed to provide reasonable assurance regarding the reliability of financial reporting and the preparation of financial statements in accordance with IFRS. A material weakness is a deficiency, or a combination of deficiencies, in internal control over financial reporting such that there is a reasonable possibility that a material misstatement of annual or interim financial statements will not be prevented or detected on a timely basis. In connection with the audit of our consolidated financial statements for the years ended June 30, 2024, and 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The identified material weaknesses related to the following matters:"
+          }
+        ],
+        "registrant_cik": "0001951089",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+          "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+        },
+        "source_number": 1768,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+        "unknown_rules": "A preserved conflict/unknown about clean severity classification is correct. Neutral, absence, or definite material weakness inferred by deleting one side fails."
+      },
+      {
+        "acceptance_at": "2025-03-28T20:00:48.000Z",
+        "accession": "0001641172-25-001168",
+        "assessment_scope": {
+          "management_icfr_assessment_date": null,
+          "reason": "No management assessment is supplied; report period is not an assessment date.",
+          "report_period_end": "2024-12-31"
+        },
+        "available_at": "2025-03-28T20:00:48+00:00",
+        "case_id": "cik_0002009312:20250930",
+        "case_ref": "case-003",
+        "content_hash": "a9e13fc2183551fabc81a570a3934c287fa988d378dfd0f2f751b1501b3525f4",
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "document_id": "sec:cik_0002009312:000164117225001168",
+        "form": "10-K",
+        "mandatory_distinctions": [
+          "Hypothetical risk is not actual identification.",
+          "Explicit no-assessment is not an explicit no-material-weakness conclusion.",
+          "Do not substitute disclosure-controls assessment or no-change language for missing management ICFR assessment."
+        ],
+        "object": "Hypothetical may-experience-material-weakness risk language; management ICFR assessment expressly omitted under newly public company transition period.",
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0002009312/sec:cik_0002009312:000164117225001168.json",
+          "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+        },
+        "published_at": "2025-03-28T20:00:48+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "hypothetical_only_counterexample",
+            "raw_end": 478843,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\"><b><i>We\nmay experience material weaknesses in our internal controls and financial reporting may limit our ability to prevent or detect financial\nmisstatements or omissions. As a result, our financial reports may not be in compliance with U.S. GAAP. Any material weakness, misstatement\nor omission in our financial statements will negatively affect the market and the price of our stock, which could result in significant\nloss to our investors.</i></b></span></p>",
+            "raw_span_sha256": "a83ec9690dde296db958c4c1869a36fd19d5c908ac03d39094d93cc97998b140",
+            "raw_start": 478218,
+            "readable_rendering": "We may experience material weaknesses in our internal controls and financial reporting may limit our ability to prevent or detect financial misstatements or omissions. As a result, our financial reports may not be in compliance with U.S. GAAP. Any material weakness, misstatement or omission in our financial statements will negatively affect the market and the price of our stock, which could result in significant loss to our investors."
+          },
+          {
+            "kind": "additional_management_or_clock_countercheck",
+            "raw_end": 855026,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0pt 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\">This\nAnnual Report does not include a report of management&#8217;s assessment regarding internal controls over financial reporting due to\na transition period established by rules of the SEC for newly public companies.</span></p>",
+            "raw_span_sha256": "17113463a7c82de32ee2e0d33ebfbc2cba9cb835171639ce1a53bf83baf0ab80",
+            "raw_start": 854628,
+            "readable_rendering": "This Annual Report does not include a report of management’s assessment regarding internal controls over financial reporting due to a transition period established by rules of the SEC for newly public companies."
+          },
+          {
+            "kind": "additional_management_or_clock_countercheck",
+            "raw_end": 1647582,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0pt 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\">The\nCompany evaluated all events and transactions that occurred after December 31, 2024 up through March 28, 2025, which is the date that\nthese consolidated financial statements are available to be issued, there were no other any material subsequent events that require disclosure\nin these consolidated financial statements other than disclosed below.</span></p>",
+            "raw_span_sha256": "34394c1a0779052bd78ca018725790197da3c24d9dcd9cfe52025b4f517bc579",
+            "raw_start": 1647050,
+            "readable_rendering": "The Company evaluated all events and transactions that occurred after December 31, 2024 up through March 28, 2025, which is the date that these consolidated financial statements are available to be issued, there were no other any material subsequent events that require disclosure in these consolidated financial statements other than disclosed below."
+          }
+        ],
+        "registrant_cik": "0002009312",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1501.json",
+          "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+        },
+        "source_number": 1501,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/2009312/000164117225001168/form10-k.htm",
+        "unknown_rules": "A source-grounded domain unknown/insufficient-management-assessment conclusion is correct; a technical/budget failure is not this domain result."
+      },
+      {
+        "acceptance_at": "2025-05-20T21:28:45.000Z",
+        "accession": "0000950170-25-075392",
+        "assessment_scope": {
+          "direct_date_scope": "Disclosure-controls evaluation is as of quarter end March 31, 2025; the same paragraph says management ICFR conclusion during the period covered. Do not strengthen this wording into a separate newly dated later assessment.",
+          "report_period_end": "2025-03-31"
+        },
+        "available_at": "2025-05-20T21:28:45+00:00",
+        "case_id": "cik_0001814215:20250530",
+        "case_ref": "case-005",
+        "content_hash": "5b637f54f99546efee5338e6cba61f225d77f5cbfc2fa4664b39e044c2aa1aae",
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "document_id": "sec:cik_0001814215:000095017025075392",
+        "form": "10-Q",
+        "mandatory_distinctions": [
+          "Actual identified ICFR weakness, not merely may/could risk.",
+          "Remediation intent and financing dependence do not prove remediation completed.",
+          "Keep disclosure controls and ICFR distinct even though they appear in one paragraph."
+        ],
+        "object": "Management conclusion about ICFR control environment for accounting/presentation of complex financial instruments; explicitly not effective due to a material weakness, and unremediated during this report period.",
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001814215/sec:cik_0001814215:000095017025075392.json",
+          "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+        },
+        "published_at": "2025-05-20T21:28:45+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "actual_management_icfr_conclusion",
+            "raw_end": 2336241,
+            "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+            "raw_span_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a",
+            "raw_start": 2334869,
+            "readable_rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+          },
+          {
+            "kind": "explicit_nonremediation",
+            "raw_end": 2337349,
+            "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+            "raw_span_sha256": "20b24be5b4d41556083f607e9d373cefea703a4906568fa97a679f986175618c",
+            "raw_start": 2336241,
+            "readable_rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner."
+          }
+        ],
+        "registrant_cik": "0001814215",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1507.json",
+          "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+        },
+        "source_number": 1507,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025075392/buru-20250331.htm",
+        "unknown_rules": "No inference about latest cutoff-day state, later remediation, or stock effect. Source facts are answerable; a legitimate immutable candidate scope may be inapplicable and must preserve the unresolved need. Independent effect uncertainty alone does not erase a measurable in-scope fact."
+      },
+      {
+        "acceptance_at": "2025-04-22T12:00:54.000Z",
+        "accession": "0001213900-25-033933",
+        "assessment_scope": {
+          "explicit_assessment_date": "2024-12-31",
+          "report_period_end": "2024-12-31"
+        },
+        "available_at": "2025-04-22T12:00:54+00:00",
+        "case_id": "cik_0001946703:20250731",
+        "case_ref": "case-006",
+        "content_hash": "bd2b4276a7c5e4d267f5ec556fb0d2510e255da1b36dc9c52aa5289112db3562",
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "document_id": "sec:cik_0001946703:000121390025033933",
+        "form": "20-F",
+        "mandatory_distinctions": [
+          "Explicit dated contrary conclusion is stronger than silence.",
+          "Same filing hypothetical future weaknesses do not override actual dated assessment.",
+          "No broad claim of no deficiencies, no risk, or effective controls in all respects beyond exact statement."
+        ],
+        "object": "Management/Company ICFR effectiveness assessment explicitly says there were no control deficiencies constituting material weaknesses.",
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001946703/sec:cik_0001946703:000121390025033933.json",
+          "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+        },
+        "published_at": "2025-04-22T12:00:54+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "explicit_no_material_weakness_conclusion",
+            "raw_end": 934606,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; background-color: white\"><span style=\"font-family: Times New Roman, Times, Serif\">A\nmaterial weakness is a deficiency, or combination of deficiencies, in internal control over financial reporting, such that there is a\nreasonable possibility that a material misstatement of the Company&#8217;s annual or interim financial statements will not be prevented\nor detected on a timely basis. In its assessment of the effectiveness of internal control over financial reporting as of December 31,\n2024, the Company determined that there were no control deficiencies that constituted material weaknesses.</span></p>",
+            "raw_span_sha256": "889dc62d986623cccac992d2dd7688c7d26940b8f8c961fea2b4c4035173b72f",
+            "raw_start": 933913,
+            "readable_rendering": "A material weakness is a deficiency, or combination of deficiencies, in internal control over financial reporting, such that there is a reasonable possibility that a material misstatement of the Company’s annual or interim financial statements will not be prevented or detected on a timely basis. In its assessment of the effectiveness of internal control over financial reporting as of December 31, 2024, the Company determined that there were no control deficiencies that constituted material weaknesses."
+          }
+        ],
+        "registrant_cik": "0001946703",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1500.json",
+          "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+        },
+        "source_number": 1500,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1946703/000121390025033933/ea0238515-20f_webuy.htm",
+        "unknown_rules": "Later/current condition and predictive effect remain unknown. Explicit source conclusion cannot be discarded as missing evidence; a legitimate immutable measurement scope may be inapplicable, with accurate residual need."
+      }
+    ],
+    "per_case_pass_requires_all": [
+      "Execute the exact new admitted version through autonomous native retrieval and production portfolio limits; record any omissions and unresolved need.",
+      "Independently derive expected output from frozen candidate definition and original facts, preserving object, report/assessment date, cutoff and source provenance.",
+      "For applicable observations, exact source-grounded result and interpretation follow the candidate own measurement semantics. For legitimately inapplicable cases, preserve accurate scope reason and unresolved dated-assessment need. Do not impose a reference four-way classifier or fixed enum mapping; reject invented fact, lost counterevidence or false need closure.",
+      "Reflect closes only proven parts of the dated public-assessment need; missing assessment/conflict/current-state residuals remain explicit.",
+      "Final context preserves actual result, coverage/cause, evidence, period, exact version and residual. Runtime failure may not masquerade as domain unknown.",
+      "Save exact diagnostic-use provenance; never record committed round use or stock efficacy."
+    ],
+    "unknown_is_correct_only_when": "Original source or immutable candidate scope lacks an applicable clean measurement, including omitted assessment, unresolved terminology conflict or legitimate annual-versus-quarterly scope. Preserve cause and residual. Unknown cannot hide adequate in-scope facts or a technical failure; vacuous all-cases unavailable does not pass the pipeline positive control."
+  },
+  "contract_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py",
+      "sha256": "6d5c9941e8b64f13eda7db754292ce6629fbbe105dce4ee2697c51419f3e956a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_icfr_native_capability_stage.py",
+      "sha256": "985ac837f2719b5554d3baca9e7d9f688e244f136292cafda2bfedf281ba2f43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/engineering-mvp.md",
+      "sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_icfr_native_capability_stage.md",
+      "sha256": "f7b03d12b65410d25dda8c9a0bd77644b970af34217d786a8f2b0da6494aef0f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/README.md",
+      "sha256": "9687b05af9b6317474f02cfd24294c0143840fc2ec4cfd39bd2c4b24cc1ac4e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/artifacts.md",
+      "sha256": "b80a1b8318ffd576b6115c6e7da42657c9e477f6966f405f2cd1ae677df71af6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases.md",
+      "sha256": "a7d06d728d55b6a43c8a8a49f0274eab10e0f3a597dbeeb6b3c94377d4cfd522"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/inflections.md",
+      "sha256": "f0d6a9d3445f499e7509973a3a0cf0eb8c9065d9bdfff938e362fe36d97cd3e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/matching.md",
+      "sha256": "ce7ceaaee9f33b808a82b4f305bd5b785113d66bc2c8b809186278ec963ed8b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/outcomes.md",
+      "sha256": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/packets.md",
+      "sha256": "481a0468c2ab9a883fd93acdefca38565ed4321f8a8f0723613d25e1a3237ac1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/selection.md",
+      "sha256": "162590da8409522831570a071bd38a863fbc5bb6faf58a7454b9e0cc32b808ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/config.md",
+      "sha256": "19f986a97fb172d0ec9f8eaf6c29daec636ecdb794dfa5057c9e925dbd968df2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data.md",
+      "sha256": "a787cb39822a20d130842675564807f2bdd5e963d7fc866deb6951ae6850cbb3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/backfill.md",
+      "sha256": "3708943f056598a4270622667da29fb4d3b4f4564858f1a2a0ec2973304858db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/disclosure.md",
+      "sha256": "0d6243c8cacc671f0656bde8518bbc0d992a83547093de9530cc5514b9be6a8d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/documents.md",
+      "sha256": "27f392775f0ba763d711b99c62f79dbc1b53d658652f6e62bcca38e4a3956f26"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/filing_orientation.md",
+      "sha256": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/historical_news.md",
+      "sha256": "a85baf0a33f7b5cc22e2d1931ee295dc5822d57531217faa1665427c6c6aa7af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/json_stream.md",
+      "sha256": "84defdbef4bb66a961feae72d55468c15355df61fed88aa45282ef37e3d668ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/markup.md",
+      "sha256": "84a9e9ba3ad74343e3f0c88d04766808023b5decb346d4043178d539a67c064c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/point_in_time.md",
+      "sha256": "1dd6b06704e08856f3096b4b1f443223730b1f02f5334839f1be767cc8879679"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/raw_info.md",
+      "sha256": "b026c33554eb0c51282509e8e773c179736ed92360235e38f82d441e1c10a72e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "sha256": "2abc386ef4a940b3c0c9ccd19debebb3198bcc1bacad31695e5f017d31d00129"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_companyfacts_profile.md",
+      "sha256": "de50c8f81c0fd9dfb2a8f4542feb5d23436a2ac64dac0d6ffea565975e6e6330"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md",
+      "sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "sha256": "ef413dc6c4e7c0b4aceec5a705d785d89dcd9a90506307ddde5d7720980d72b6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "sha256": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "sha256": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md",
+      "sha256": "8ec3e444bb495e835fc67f85302bcfe60e2457042dced233149e0bb5d8e3f242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/structured.md",
+      "sha256": "940b8954cd4152e563f11f95e81111be914402aa4dc466062d94f07e577e094b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/llm.md",
+      "sha256": "c905fa99b4012094958684b25059e15ae22ce7ed97660e1f80b6373bbaab0e28"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory.md",
+      "sha256": "ce20c743f16ac65ddfbba542c71e1c864913d4145a0e63294ad0faf0168c4cbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/knowledge.md",
+      "sha256": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/playbooks.md",
+      "sha256": "4d90287670992ab71997c56e9fcc14a8a22bf9caf9c78fe64e15b790ca3c353b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/signals.md",
+      "sha256": "3556bee9fa6a8dfb16baa650dbd2376f8bfc399e6c439dc0608f5675f1e2473c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/themes.md",
+      "sha256": "fe3dc35d9ee3cd6bb3f5ec4da00265a95827c909e366f0096b4485debfd21097"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/meta_learning.md",
+      "sha256": "b6d3f75bf8d165ec1aa8f3c4c82b63aa8df344783de23f3b43ec97792c358626"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/models.md",
+      "sha256": "fe334c7256ea9f17e97e401e6eb24e2296da393465763685068753cf78921f02"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/monitoring.md",
+      "sha256": "52fa8798f36e64b5867a7384e2f5004c6394bdc53619a2023b05ad98ea533dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/orchestration.md",
+      "sha256": "6d1938fce5874bece1e823142e8f4c7795957fcb91a1ff08ef79b3efb48413f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/ranking.md",
+      "sha256": "cdb5f0d34a407d60ab475f28c586270e538e155ebfae36133bf42bc0e39a5094"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/reports.md",
+      "sha256": "0acb77425bb5e1e5ed52f6c7177cc1cb752041bad38ef4bb1df97de7c95fc6d9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research.md",
+      "sha256": "4cf80366ff45712f5149aadea5f91b4b5892778883f0db09a2abb206b3ac7960"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/basic_info_orientation.md",
+      "sha256": "418ac2ae8e2f87a872ac1dc325541a2a33abc98e303d06f77fb65e18bd4d843d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/basic_info_visibility.md",
+      "sha256": "e8c29045efc2f2dc421a656d7f2ea6bce5cbf572ada7c1cb420b4b7249740ece"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/cold_start.md",
+      "sha256": "dafa28d6a0e3d4922bcb106a5d5f59c10bbfa77d459a5dc90d5bb4ef50b3f36d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/compute_tools.md",
+      "sha256": "a9a750433fff13c9f83a8a539b3409642e36f0698f68b526afd712249269f0f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/cross_round_reflection.md",
+      "sha256": "fe530f2235d10dbc173809a68b4a7ee443cdbf03bcd08ee4da1f9c3cc88f66d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evidence_acquisition.md",
+      "sha256": "2b34ff3fb37ba138b41ff13b219359a66965073b53cdaaf2a8b38063df495c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_benefit.md",
+      "sha256": "7b276608c18b9c3b1ca150ae5b34437fa0a4ba74b71183f8463c1768852c728b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_control.md",
+      "sha256": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "sha256": "995a1f61413a47123aca1560b997873d6266e0f72de13bbe6d453f3dcdf80fbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dashboard.md",
+      "sha256": "73a28a111a47581de43d7c1ac8706269fed6ce8b39fd1cf01d718882edc2ddab"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dataset.md",
+      "sha256": "acde59ac181b16226b536b1e82ae48cd3e1d9b57b08a88872e9035e8896b2a66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_output_validation.md",
+      "sha256": "de6beaa77c78f0522523c44d9c40787d50f36d178a028dd09769c2e78caa0cbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md",
+      "sha256": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md",
+      "sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_runtime.md",
+      "sha256": "8113d663efb7d800cb04b866e6eae1e9a2f40f434aef01ef91ae5fd49c032e85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_settings.md",
+      "sha256": "4680d20104404e0cce6be02ec8722ced093c103d30fce7b5eab1fa9eba1abc03"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_state_patch.md",
+      "sha256": "2e16a9c893ac6c78274835496abdc07271e27ac51c182c30dbc2a10e49c051bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_transport.md",
+      "sha256": "cf16432574beb010ac34b89b9237f4c48a4bb138d45555c605fdf6f28cefc80d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/inflection_discovery.md",
+      "sha256": "ed72ba45656394e28b2aa6cc1b313e70fef0b5d4da570caf028b089673613b46"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/information_plan.md",
+      "sha256": "ec3b83310efaff961a57f2162aa418c51cb9c7736d70c9b5b8e500cba23b2d9c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/local_role_exchange.md",
+      "sha256": "331960f85ff7721198c73897a61b4d4bb97d87c23b1f8628f56bd1692c4a1d09"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/plan_evolution.md",
+      "sha256": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/playbooks.md",
+      "sha256": "8d8cb892491bfea418bbdb5adebb872a6b7caa1cc0a0702a6aff1302f04af7d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/ralph_loop.md",
+      "sha256": "5070a1afe22dcf215b80e7a0123cbc2373a8b92443be89c16d38cbdac5738a5a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/repair.md",
+      "sha256": "d06c41b195636f494c029fa7628406a4638abf9e613e091fe2f8c32ef1598263"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/scheme_evolution.md",
+      "sha256": "8a72daa75add0e23ab6ae58e1883b1bdbff9270a1a6e720361113b515ece47f7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "645842861a83aeb3059aa9486d7297e3828d276b82b5956a157cfa815ffe6955"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_source_reading.md",
+      "sha256": "367094515285f365d79b5de225ef23a396401a15493994f884348214826ab54c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_tracking.md",
+      "sha256": "0e0a471349262d026b4f1f4e1f3e5af96f1e2025d8c1b87c4371f6716bd365e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "sha256": "f312802d6e81d012cd9cf91c51a4234b347b76fe3c9e551c2e9cce8db1a3bcb8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/review.md",
+      "sha256": "74b6e1e9c61248e2c2b4520cfe7f1edc22c6e3fcf4b91c30324f2fc7ba34d689"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/scanner.md",
+      "sha256": "f0251796566663b193b66f349582fd8fa7cf1952c5f498dbaee9a56262ec5897"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/scoring.md",
+      "sha256": "c2ae8168a4b62510c91fb089b590c012af678e5f3b7f616fb2c366754e621699"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signals.md",
+      "sha256": "52fa2f6acdb6b44eedbf221fb547c24e1a058146c5dce9bd8aa2fd28abd612cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/themes.md",
+      "sha256": "cd85caef708c6c23ec274966bfc742284c6e8bb18fe1f36fb6ed41a3c5f7aa29"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py",
+      "sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py",
+      "sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py",
+      "sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py",
+      "sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py",
+      "sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py",
+      "sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py",
+      "sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py",
+      "sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "dc2a24c345e1abee9c5618312283ab1b22a368fafc2247ddc0f3acedd35d8f36"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py",
+      "sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py",
+      "sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py",
+      "sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py",
+      "sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py",
+      "sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py",
+      "sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py",
+      "sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py",
+      "sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py",
+      "sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py",
+      "sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py",
+      "sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py",
+      "sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py",
+      "sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py",
+      "sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py",
+      "sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py",
+      "sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "1b661a19274579ed5b273c5ab931c4721287a00c71270d5aa00216633a9fc68b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py",
+      "sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py",
+      "sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py",
+      "sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "733e2f305a25cebb60e136cf1b1e21a2ae219ddaefd9a2636bc39b40944c31e7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py",
+      "sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py",
+      "sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "c58cbd09c3af03e5c65fa9040456f31b10ec6758ea4a0af38cc2959480f06040"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "2427275235520d59f2baba7e59b740087ada559685b3ee59b08e4f30293f0550"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "a9c545e5dab37aaa2d6c8487e9f68c49f2aad9cc9b0ccf8084cdcd7e8a05fa70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py",
+      "sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py",
+      "sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py",
+      "sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py",
+      "sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py",
+      "sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "f8715584e1b66fb7482331a909a3e219a502e2653fade5bdd5733665e6b5df91"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "sha256": "5dec23847a4aeefc71bbee1a36adf45181658ffe63f564f03879c45381468033"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py",
+      "sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py",
+      "sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py",
+      "sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py",
+      "sha256": "b5f46d6fff476953870db04f181f14cbe08d0a9c0e92116b48fe9ea062db42fc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py",
+      "sha256": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485"
+    }
+  ],
+  "counterexample_rejection_rules": [
+    "A keyword hit in source1501 yields definite actual weakness: fail.",
+    "Source1501 no assessment becomes no weaknesses/favorable fact: fail.",
+    "Source1500 hypothetical risk overrides explicit dated no-weakness conclusion: fail.",
+    "Source1768 only one side of conflicting severity terminology is cited/retained: fail.",
+    "Source1507 remediation plan is treated as completed remediation, or disclosure controls substituted for ICFR: fail.",
+    "Assessment/report date is promoted to cutoff/current state or retrieved_at to publication date: fail.",
+    "Technically unavailable-shaped output closes missing-assessment/conflict need as answered domain evidence: fail.",
+    "Source1507 and1500 are both in scope, but a keyword-only/unscoped/undefined flag erases their opposite dated factual conclusions: fail. A legitimate clearly defined binary measurement may encode them differently, and reasonable immutable scope may exclude one while preserving its residual need.",
+    "Existing Signal renamed as ICFR, keyword-only word-occurrence flag without object/date/semantics, label copying, authored fixtures alone or schema/model agreement treated as new capability: fail. Presence language in a well-defined reusable measurement is allowed."
+  ],
+  "fixed_denominators": {
+    "consumer_case_refs": [
+      "case-001",
+      "case-003",
+      "case-005",
+      "case-006"
+    ],
+    "consumer_source_controls": 4,
+    "pipeline_positive_control": 1,
+    "retention": "Keep every failed, skipped, blocked, unknown or unselected member in its frozen denominator. No at-least-one-success subset reporting."
+  },
+  "freeze_revision": 5,
+  "frozen_at_utc": "2026-10-23T05:51:58.075503+00:00",
+  "historical_resource_prefix": {
+    "answered_records": {
+      "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json",
+          "sha256": "d694d5b9c9cfc83aa98befeeb7c95a902885b43bbc3a554d49baa295b5455e9e"
+        },
+        "reservation": 234074,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json",
+          "sha256": "cd5972e94991fb0deef546fec9b4da28cebfbbb475ff586dfd31929d05056470"
+        },
+        "reservation": 247395,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json",
+          "sha256": "111f93c8ee35cc67682d5a41480d8115546d86f59fbdc08bc82185c159885789"
+        },
+        "reservation": 111714,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json",
+          "sha256": "7c764237e6f203ea8b6d00f2cc4d3902b8548063dc0a1cdd28085d953bd15fc8"
+        },
+        "reservation": 245898,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json",
+          "sha256": "987066e5e39fec92e94620f9b649092122f79c2b633a90d038051de3a444fb83"
+        },
+        "reservation": 90877,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.json",
+          "sha256": "4e498fb9f0599922dc7d3f96da1eb89b4eab0d5bbcb833c7ddd0be3bb6e90006"
+        },
+        "reservation": 260104,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json",
+          "sha256": "1bcb71cbb27a29fc2064db3c2a8b78e20032b09010aad7d2160ee9803a778a1b"
+        },
+        "reservation": 251665,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.json",
+          "sha256": "2c140b52cb0952b386e099286ee837575544ec09b411c7bb296e03b33d3159cb"
+        },
+        "reservation": 258996,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json",
+          "sha256": "05bffb2073b5b53ad95692fc6dc02a0b102b984ff09ac6cae7df39634683ad4a"
+        },
+        "reservation": 108402,
+        "scopes": [
+          "mining"
+        ]
+      },
+      "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727": {
+        "initial_scope": "mining",
+        "request": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json",
+          "sha256": "9d9ffeb010cd01792a9b6310b3ecee4f4d0ffefd0bfa1b7657cce76e40093e7a"
+        },
+        "reservation": 246816,
+        "scopes": [
+          "mining"
+        ]
+      }
+    },
+    "answered_usage": [
+      10,
+      2055941
+    ],
+    "completion": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+      "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+    },
+    "runtime_archive": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+      "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+    },
+    "stage_root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3"
+  },
+  "novelty_baseline": {
+    "candidate_review": "Object-level novelty remains to be checked against actual generated definition. Reject renamed or duplicated existing measurements, keyword-only/unscoped flags, undefined semantics and label copying. Legitimate clear binary identification is not rejected merely for using presence language.",
+    "finding": "None measures dated management ICFR assessment/material-weakness/remediation conclusions. This is a distinct business object from capital/listing action, changed guidance, qualifying orders/order quality, commercialization, customer concentration. Negative-word substring count is not equivalent semantic measurement.",
+    "six_exact_existing_narrative_definitions": [
+      {
+        "definition": {
+          "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+        },
+        "exact_ref": "financing_listing_action:v5",
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+          "sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a"
+        },
+        "skill_text": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Do not treat completed financing as automatically positive for the fixed surge target. Report completed capital-structure events as neutral capital-structure facts unless the visible span establishes a within-horizon change in runway, dilution, or tradability that is relevant to the fixed surge target; do not infer a directional effect from the existence of a refinancing, buyback authorization, note exchange, or ATM sale. Explain whether the point-in-time effect reduces or increases dilution, distress, or tradability, and whether it is a catalyst or merely a capital-structure event, with literal spans.\n",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+          "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+        }
+      },
+      {
+        "definition": {
+          "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+        },
+        "exact_ref": "guidance_acceleration:v3",
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/management/guidance_acceleration/versions/v3/skill.md",
+          "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+        },
+        "skill_text": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.\n",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/management/guidance_acceleration/versions/v3/spec.json",
+          "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+        }
+      },
+      {
+        "definition": {
+          "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units."
+        },
+        "exact_ref": "order_confirmation_disclosed:v3",
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/order_confirmation/order_confirmation_disclosed/versions/v3/skill.md",
+          "sha256": "cbe90f616917cfadd36b04ec800270772d0b5e3c6f6759e6726145d40a39e071"
+        },
+        "skill_text": "# Skill: Order Confirmation Disclosed\n\n## Purpose\nDetermine whether, within the lookback window (180 days before as_of), the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule.\n\n## Inputs\n- as_of: ISO-8601 timestamp\n- documents: list of documents, each with source_type, published_at, available_at, content\n\n## Lookback Window\nOnly consider documents with published_at >= as_of - 180 days and <= as_of.\n\n## Source Families\nConsider documents from: filing, news, transcript, 10-k, 10-q, 8-k, company_news, sec_filing, earnings_call.\n\n## Semantic Condition\nA qualifying event is a new customer order, contract, offtake agreement, or binding award that:\n- is disclosed by the company or its official filings/press releases;\n- names a counterparty or program;\n- states or implies a value, volume, or delivery schedule;\n- meets the materiality threshold: value >= $1,000,000 or volume >= 1,000 units (or equivalent). Below threshold is neutral.\n\n## Classification Rules\n- **positive**: A confirmed qualifying event is present in at least one document within the lookback window. This includes explicit announcements of new orders, contracts, offtake agreements, or binding awards that meet the materiality threshold and name a counterparty/program. Paraphrases that clearly confirm such an event also qualify. A binding award with only a stated maximum or ceiling value does not meet the materiality threshold unless a minimum or expected value is stated or implied.\n- **negative**: An explicit cancellation or denial of a qualifying event is present in at least one document within the lookback window. This includes statements that a previously announced order, contract, offtake agreement, or binding award has been cancelled, terminated, or denied.\n- **neutral**: Documents within the lookback window are adequate but contain only proposals, memoranda, non-binding intent, lookalikes, below-threshold mentions, or non-qualifying arrangements. Proposals are statements of possible future agreements without confirmation. Non-binding intent includes expressions of interest, exploratory discussions, or memoranda of understanding. Lookalikes are generic mentions of orders/contracts without any specific new event. Below-threshold mentions are qualifying events that do not meet the materiality threshold. Non-qualifying arrangements include distribution agreements, joint pursuit agreements, and similar arrangements that do not themselves constitute a new customer order, contract, offtake agreement, or binding award with a stated or implied value, volume, or delivery schedule.\n- **unavailable**: No documents within the lookback window, or the available documents are genuinely insufficient to make a judgment (e.g., only cover pages, boilerplate, or text that does not address orders/contracts). Post-cutoff-only corpora (all documents published after as_of) also yield unavailable.\n\n## Evidence Citation\nFor positive: cite the verbatim span that confirms the qualifying event.\nFor negative: cite the verbatim span that cancels or denies the event.\nFor neutral: cite the verbatim span that shows the proposal, non-binding intent, lookalike, below-threshold mention, or non-qualifying arrangement.\nFor unavailable: explain why evidence is insufficient.\n\n## Output\nReturn a JSON object with:\n- value: one of \"positive\", \"neutral\", \"negative\", \"unavailable\"\n- confidence: float between 0 and 1\n- evidence: list of cited spans (verbatim) with document_id and text\n",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+          "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+        }
+      },
+      {
+        "definition": {
+          "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+        },
+        "exact_ref": "order_quality:v2",
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/orders/order_quality/versions/v2/skill.md",
+          "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+        },
+        "skill_text": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.\n",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/orders/order_quality/versions/v2/spec.json",
+          "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+        }
+      },
+      {
+        "definition": {
+          "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+        },
+        "exact_ref": "commercialization_status:v2",
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/product/commercialization_status/versions/v2/skill.md",
+          "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+        },
+        "skill_text": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales for a distinct previously non-commercial product or technology. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Ordinary production, throughput, cost, or guidance from an already mature mine, utility, financial institution, or established service is not a commercialization milestone; when the visible evidence shows only such mature operations, return unavailable with empty evidence. Cite literal spans.\n",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/product/commercialization_status/versions/v2/spec.json",
+          "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+        }
+      },
+      {
+        "definition": {
+          "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+        },
+        "exact_ref": "customer_concentration:v2",
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/risks/customer_concentration/versions/v2/skill.md",
+          "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+        },
+        "skill_text": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.\n",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/risks/customer_concentration/versions/v2/spec.json",
+          "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+        }
+      }
+    ]
+  },
+  "pipeline_positive_control": {
+    "fails": [
+      "Honest no-pattern/insufficient-evidence outcome (legal domain outcome, but fails this answerable full-chain positive control).",
+      "Budget/resource/transport/identity/schema/authoring failure, unselected new version, skipped execution or incomplete consumer chain.",
+      "Handwritten candidate, hand-authored answer, forced new-ref retrieval, oracle leak, reentry of completed phases, or retroactive oracle weakening.",
+      "Any known critical source/semantic/version/admission/consumer error accepted as passing."
+    ],
+    "pass_requires_all": [
+      "Fresh independent native Mining actually authors a new reusable source-grounded ICFR measurement from authorized material; no handwritten or oracle-derived Signal substitute.",
+      "Preserve original dev8 grouping/axis, all existing backlog/context obligations, authentic role requests/answers/corrections/ledgers and native materialization evidence.",
+      "Candidate is a reusable, measurable ICFR business-object definition with clear immutable applicability, evidence and unknown semantics. A legitimate binary dated-management-identified-weakness measurement or reasonable annual-assessment scope is allowed; no four-way factual classifier or broader reference obligation is imposed.",
+      "Apply its legitimate immutable scope consistently across all four controls. An inapplicable case may correctly yield domain unknown with residual need; reject impossible/post-cutoff inputs, company/date lookup, arbitrary result-driven exclusion or a vacuous all-cases-unavailable control. At least one source-grounded applicable observation must demonstrate actual measurement, not only safe refusal.",
+      "Native spec→skill→tests→real fixture execution faithfully implements the authored definition; fixture answers do not alter definition or authorize new source policy.",
+      "Independent source/semantic review binds exact candidate/spec/skill/tests/oracle hashes before any promotion, and rejects unknown or incorrect semantics.",
+      "Actual native technical validation, duplicate checks, admission/provenance recording and atomic promotion publish an exact version with predictive effect unverified; no fabricated passing validation or effectiveness evaluator.",
+      "Baseline18 remain unchanged; reopened Registry retains exact promoted spec/skill/tests/admission/transition.",
+      "All four actual native Fast source controls autonomously retrieve and execute the newly admitted exact version within portfolio bounds; result passes source review and reaches actual Reflect/final context with diagnostic-use binding.",
+      "Durable reopen equality and terminal seal preserve accepted outputs and failure denominator without business pointers/committed-use events."
+    ]
+  },
+  "preauthor_clarification": {
+    "at_utc": "2026-10-22T23:00:42.520674+00:00",
+    "authority": "Parent explicit prospective clarification before any production author dispatch; no candidate or consumer result read.",
+    "reason": "Preserve legitimate binary dated ICFR measurements and reasonable immutable scopes. Narrow generic presence rejection to keyword-only/unscoped/undefined/tag-copy shortcuts; no new causal or paired-gain gate.",
+    "supersedes_private_initial_draft": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle/superseded-v1.json",
+      "sha256": "c420ed98239bb470f3ef6d330f32870949fd0df7078501671ee1614eb03e562e"
+    }
+  },
+  "predecessor_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+      "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+      "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+      "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+      "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+      "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+      "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+      "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+      "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+    }
+  ],
+  "privacy": "Private evaluator-only obligations. Never supply this file, oracle passages, expected mapping, source locators or private source classifications to authors.",
+  "prospective_boundary": {
+    "author_outputs_read": false,
+    "candidate_json_supplied": false,
+    "fixed_candidate_enum_answers": false,
+    "output_rule": "Derive concrete expected output independently from the candidate own immutable definition after authoring and before consumer results. This rule and original facts cannot be relaxed after results. A candidate outside this scope is rejected, not used to rewrite oracle."
+  },
+  "prospective_revision": {
+    "driver_obligation": "Never reenter any of the three old stages or import their answers/cache/actions. Charge the immutable v3 historical prefix once to global and Mining, preserve all original ceilings, and expose/reverify the remaining same-account resources at native request and reconstruction boundaries.",
+    "evaluation_destination": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4",
+    "immutable_historical_resource_prefix": {
+      "answered_records": {
+        "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json",
+            "sha256": "d694d5b9c9cfc83aa98befeeb7c95a902885b43bbc3a554d49baa295b5455e9e"
+          },
+          "reservation": 234074,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json",
+            "sha256": "cd5972e94991fb0deef546fec9b4da28cebfbbb475ff586dfd31929d05056470"
+          },
+          "reservation": 247395,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json",
+            "sha256": "111f93c8ee35cc67682d5a41480d8115546d86f59fbdc08bc82185c159885789"
+          },
+          "reservation": 111714,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json",
+            "sha256": "7c764237e6f203ea8b6d00f2cc4d3902b8548063dc0a1cdd28085d953bd15fc8"
+          },
+          "reservation": 245898,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json",
+            "sha256": "987066e5e39fec92e94620f9b649092122f79c2b633a90d038051de3a444fb83"
+          },
+          "reservation": 90877,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.json",
+            "sha256": "4e498fb9f0599922dc7d3f96da1eb89b4eab0d5bbcb833c7ddd0be3bb6e90006"
+          },
+          "reservation": 260104,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json",
+            "sha256": "1bcb71cbb27a29fc2064db3c2a8b78e20032b09010aad7d2160ee9803a778a1b"
+          },
+          "reservation": 251665,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.json",
+            "sha256": "2c140b52cb0952b386e099286ee837575544ec09b411c7bb296e03b33d3159cb"
+          },
+          "reservation": 258996,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json",
+            "sha256": "05bffb2073b5b53ad95692fc6dc02a0b102b984ff09ac6cae7df39634683ad4a"
+          },
+          "reservation": 108402,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json",
+            "sha256": "9d9ffeb010cd01792a9b6310b3ecee4f4d0ffefd0bfa1b7657cce76e40093e7a"
+          },
+          "reservation": 246816,
+          "scopes": [
+            "mining"
+          ]
+        }
+      },
+      "answered_usage": [
+        10,
+        2055941
+      ],
+      "completion": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+        "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+      },
+      "runtime_archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+        "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+      },
+      "stage_root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3"
+    },
+    "new_actor_stage_existed_at_freeze": false,
+    "new_candidate_or_consumer_outputs_read": false,
+    "new_fixed_denominators_are_independent": true,
+    "not_claimed": [
+      "fresh model compliance",
+      "candidate capability passed",
+      "published or reused new Signal",
+      "magnitude",
+      "committed business S8",
+      "independent benefit",
+      "whole MVP"
+    ],
+    "old_author_response_semantics_used_to_change_oracle": false,
+    "old_controls": [
+      {
+        "answered_unique_requests": 12,
+        "candidate_acceptance": "uncompleted",
+        "candidate_denominator": 1,
+        "consumer_attempted": 0,
+        "consumer_denominator": 4,
+        "logical_reservations": 2001316,
+        "new_role_answers_imported": false,
+        "pending_progress": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+          "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+          "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+        },
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+          "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+        }
+      },
+      {
+        "answered_unique_requests": 11,
+        "candidate_acceptance": "uncompleted",
+        "candidate_denominator": 1,
+        "consumer_attempted": 0,
+        "consumer_denominator": 4,
+        "logical_reservations": 1837419,
+        "new_role_answers_imported": false,
+        "pending_progress": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+          "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+          "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+        },
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+          "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+        }
+      },
+      {
+        "answered_unique_requests": 10,
+        "candidate_acceptance": "uncompleted",
+        "candidate_denominator": 1,
+        "consumer_attempted": 0,
+        "consumer_denominator": 4,
+        "logical_reservations": 2055941,
+        "new_role_answers_imported": false,
+        "resource_prefix": {
+          "answered_records": {
+            "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json",
+                "sha256": "d694d5b9c9cfc83aa98befeeb7c95a902885b43bbc3a554d49baa295b5455e9e"
+              },
+              "reservation": 234074,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json",
+                "sha256": "cd5972e94991fb0deef546fec9b4da28cebfbbb475ff586dfd31929d05056470"
+              },
+              "reservation": 247395,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json",
+                "sha256": "111f93c8ee35cc67682d5a41480d8115546d86f59fbdc08bc82185c159885789"
+              },
+              "reservation": 111714,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json",
+                "sha256": "7c764237e6f203ea8b6d00f2cc4d3902b8548063dc0a1cdd28085d953bd15fc8"
+              },
+              "reservation": 245898,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json",
+                "sha256": "987066e5e39fec92e94620f9b649092122f79c2b633a90d038051de3a444fb83"
+              },
+              "reservation": 90877,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.json",
+                "sha256": "4e498fb9f0599922dc7d3f96da1eb89b4eab0d5bbcb833c7ddd0be3bb6e90006"
+              },
+              "reservation": 260104,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json",
+                "sha256": "1bcb71cbb27a29fc2064db3c2a8b78e20032b09010aad7d2160ee9803a778a1b"
+              },
+              "reservation": 251665,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.json",
+                "sha256": "2c140b52cb0952b386e099286ee837575544ec09b411c7bb296e03b33d3159cb"
+              },
+              "reservation": 258996,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json",
+                "sha256": "05bffb2073b5b53ad95692fc6dc02a0b102b984ff09ac6cae7df39634683ad4a"
+              },
+              "reservation": 108402,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json",
+                "sha256": "9d9ffeb010cd01792a9b6310b3ecee4f4d0ffefd0bfa1b7657cce76e40093e7a"
+              },
+              "reservation": 246816,
+              "scopes": [
+                "mining"
+              ]
+            }
+          },
+          "answered_usage": [
+            10,
+            2055941
+          ],
+          "completion": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+            "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+          },
+          "runtime_archive": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+            "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+          },
+          "stage_root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+          "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+        },
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+          "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+        }
+      }
+    ],
+    "old_denominators_not_rewritten": true,
+    "oracle_destination": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/acceptance-obligations.json",
+    "original_semantic_oracle": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle/acceptance-obligations.json",
+      "sha256": "9fec7af60c3b34c8c10139504fae9199286eaf6179cf39ef2d012fbdf2855aa5"
+    },
+    "purpose": "Actual post-repair code-version evaluation, retaining source population, measurement/admission semantics, original old failures and denominators; reference representation, query-origin navigation and historical resource preservation are the repaired code paths. No added calls or resource ceiling.",
+    "remaining_global": [
+      718,
+      56664315
+    ],
+    "remaining_mining": [
+      70,
+      10526971
+    ],
+    "runtime_archive": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-5fcf473b.tar.gz",
+      "sha256": "8aa1f7c780fb821592332ded1a572389c2b045b27643882d40d02d6b465a1315"
+    },
+    "runtime_revision": "5fcf473b25b4c26cd2e4e0748844ac5f690b4ce2",
+    "runtime_source_count": 182,
+    "source_oracle": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/acceptance-obligations.json",
+      "sha256": "dada4c92bac32c133f4efa7bea523d0b0f05d57d0340d1660cdf7976bf257096"
+    },
+    "source_stability_authority": "Parent explicitly declared product source/spec stable for this freeze after independent budget/recovery counterreview."
+  },
+  "research_semantics": {
+    "axis": "existing fixed surge direction; never redefine SignalValue as generic predicate presence",
+    "rules": [
+      "Separate source factual state, candidate measurement state and hypothesized research orientation.",
+      "Do not equate actual weakness with positive just because predicate is present, or no weakness with negative just because absent.",
+      "Require candidate own pre-result definition and rationale to state applicable state meaning, research relevance, counterevidence and uncertainty.",
+      "A defensible target-relevant hypothesis need not prove independent predictive benefit, but stock direction/magnitude cannot be fabricated from the source.",
+      "Unverified effect must remain unverified; technical admission and diagnostic use never establish empirical orientation.",
+      "If source facts are measurable but direction is not justified, preserve factual distinctions and uncertainty under existing contracts; do not invent a mapping to meet this control.",
+      "An irreconcilable direction/definition contract fails or stays unknown before promotion; do not silently change canonical schema.",
+      "A clear binary measurement of whether a dated management assessment explicitly identifies an ICFR material weakness is a legitimate reusable measurement. Presence wording alone is not grounds for rejection. Its canonical directional orientation must remain separately defined and justified.",
+      "Candidate research orientation may use already-authorized runtime development contrast as an unverified hypothesis; no causal proof, paired predictive gain or new labels are required for this engineering control."
+    ],
+    "target": "Existing fixed adjusted-share-price surge outcome; no label, horizon, class or direction redefinition."
+  },
+  "runtime_archive": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-5fcf473b.tar.gz",
+    "sha256": "8aa1f7c780fb821592332ded1a572389c2b045b27643882d40d02d6b465a1315"
+  },
+  "schema_version": "private-prospective-icfr-native-acceptance-v1",
+  "scope_limits": {
+    "business_stage_or_product_changes": 0,
+    "external_calls": 0,
+    "new_business_labels_check_lockedtest": 0,
+    "not_closed_by_this_stage": [
+      "magnitude Mining/admission/reuse",
+      "S1/S2 fresh feedback capability",
+      "committed S8 use",
+      "full business-loop recovery",
+      "independent benefit",
+      "whole engineering MVP"
+    ]
+  },
+  "source_material": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/independent/narrative-material-bindings.json",
+    "sha256": "957c97fb081d42120ede3a464da57ab10bcfe1913fb5a7c7f066b76976fce41f"
+  },
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/source-review/bindings-evidence.json",
+    "sha256": "951c069e4698e6921274a008bbd4bbc0f7afbf2cb636285dd385e7672f28a01f"
+  },
+  "source_scope": {
+    "availability_rule": "SEC retained exact submission acceptance establishes the local historical filing clock; 2026 retrieved_at is capture time. Neither timestamp field alone nor hashes alone prove source authenticity; use bound original body/request/issuer/period/cache chain.",
+    "level": "bounded local historical filing-source binding",
+    "not_claimed": [
+      "contemporaneous remote attestation",
+      "acceptance-instant exact historical bytes",
+      "independent no-modification version history",
+      "latest cutoff-day ICFR truth"
+    ]
+  },
+  "stage_spec_review": {
+    "interpretations_required": [
+      "Pipeline denominator1 is a capability control, not a candidate quota; honest no-pattern is legal and still control failure.",
+      "Private source facts stay out of authors; only preflighted scope-only ICFR assignment may enter.",
+      "An existing narrative skill presence-based historical classification does not override this stage explicit surge-axis meaning.",
+      "Need formulation and consumer expectations cannot silently add a new global SignalValue definition or canonical interface.",
+      "Respect legitimate measurement differences and reasonable pre-result applicability scope; reference facts are not extra candidate definition obligations. No causal/paired-gain admission requirement is added."
+    ],
+    "material_conflict_found": false
+  }
+}

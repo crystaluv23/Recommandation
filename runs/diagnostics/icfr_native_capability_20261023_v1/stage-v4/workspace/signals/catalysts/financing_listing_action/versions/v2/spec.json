@@ -1,0 +1,91 @@
+{
+  "category": "catalysts",
+  "definition": {
+    "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skill.md",
+    "type": "llm"
+  },
+  "parameters": {
+    "result_required_evidence_phrases": [
+      "financing",
+      "refinancing",
+      "debt",
+      "restructuring",
+      "listing",
+      "dilution",
+      "redemption",
+      "reverse split",
+      "share sale",
+      "offering",
+      "placement",
+      "credit facility",
+      "loan",
+      "convertible",
+      "PIPE",
+      "securities purchase agreement"
+    ],
+    "routing_answer_need_phrases": [
+      "financing",
+      "refinancing",
+      "debt restructuring",
+      "listing",
+      "dilution",
+      "runway",
+      "redemption",
+      "reverse split",
+      "share sale",
+      "share offering",
+      "equity offering",
+      "debt maturity",
+      "debt maturities",
+      "PIPE",
+      "securities purchase agreement",
+      "reverse merger"
+    ]
+  },
+  "raw_retrieval": {
+    "lookback_days": 730,
+    "query_terms": [
+      "financing offering",
+      "listing compliance",
+      "reverse split",
+      "PIPE financing",
+      "securities purchase agreement",
+      "at-the-market sales agreement",
+      "equity offering",
+      "convertible note conversion",
+      "pre-funded warrant",
+      "reverse merger",
+      "investment grade credit rating",
+      "credit facility amendment"
+    ],
+    "source_types": [
+      "filing",
+      "company_announcement",
+      "news"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "financing_listing_action",
+  "version": 2
+}

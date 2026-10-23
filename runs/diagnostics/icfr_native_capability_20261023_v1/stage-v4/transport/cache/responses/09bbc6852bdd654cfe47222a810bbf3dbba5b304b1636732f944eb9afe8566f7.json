@@ -1,0 +1,44 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-001",
+      "case-002",
+      "case-003",
+      "case-004",
+      "case-005",
+      "case-006",
+      "case-007",
+      "case-008"
+    ],
+    "max_documents": 24,
+    "query": "internal control over financial reporting",
+    "rationale": [
+      "The complete disclosed Signal directory has no ICFR measurement; source evidence is still unexplored.",
+      "Fetch available structured and narrative material across both runtime label groups and locate public ICFR language for bounded raw reading.",
+      "A query hit supplies navigation only; any candidate must follow actual PIT source reads and preserve ambiguous conclusions as unknown."
+    ],
+    "source_families": [
+      "financial",
+      "filing",
+      "10-k",
+      "sec_filing"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"fetch_evidence\",\"case_refs\":[\"case-001\",\"case-002\",\"case-003\",\"case-004\",\"case-005\",\"case-006\",\"case-007\",\"case-008\"],\"source_families\":[\"financial\",\"filing\",\"10-k\",\"sec_filing\"],\"max_documents\":24,\"query\":\"internal control over financial reporting\",\"rationale\":[\"The complete disclosed Signal directory has no ICFR measurement; source evidence is still unexplored.\",\"Fetch available structured and narrative material across both runtime label groups and locate public ICFR language for bounded raw reading.\",\"A query hit supplies navigation only; any candidate must follow actual PIT source reads and preserve ambiguous conclusions as unknown.\"]}",
+  "request_hash": "09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7",
+  "response_id": "local-09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7",
+  "usage": {
+    "accounting_tokens": 112461,
+    "agent_id": "/root/icfr_v4_h003",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "f286ef576d234d1cdeb423ae730c31dc1e9464ab4d0cd019b1487a8714bbe8b2",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "6c6c28a6ba67ed2f48f23f6098340a208b76c3532c8a4afbfb300a4910f637e9",
+    "request_hash": "09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7",
+    "token_usage": null
+  }
+}

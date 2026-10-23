@@ -1,0 +1,120 @@
+{
+  "reviewer": "/root/budget_counterreview",
+  "scope": "h004_h005_reads_through_h007_input_only",
+  "findings": [],
+  "static_artifact_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc.json",
+      "sha256": "2d17ec7424cdfbd4fb927002ec5ffb26bebb2f83868286601ee0eb1eb935db9c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc.txt",
+      "sha256": "43381fed04c05cf1965d70796c0ecfd0c76474412919986045b1390958e1d105"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc.json",
+      "sha256": "5f2db1a08542fa74e1b51240c9b292fc7adcf9ac7b8f5ebdc61b37e088a90ca4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc.json",
+      "sha256": "068eb4cb6a0cc2ecae2ef54ae21623e3ad7f35ba1a0b263bf0df28d99a83a41e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431.json",
+      "sha256": "289e48a6b37f0f033975ffa930985a8f2963b7988f07efdb4cb0c5bdb4152ef0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431.txt",
+      "sha256": "0b48e7454bb13375a004a8fe9249ae44c24b2062a9f7758484e96e1ae2fe3a48"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431.json",
+      "sha256": "dac4c47de1e86549924eb17bfee083537be1d5e6a7c0194814ebca34294f8586"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431.json",
+      "sha256": "11f499ce1f0b4ed64902ff3958ea26df0bcc997d5d6c8e1c313712b3c4d04c67"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456.json",
+      "sha256": "0f5821095199b15ad8eff0853f686400eb2ca3e12173707082a91ff1fb1fc3b1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456.txt",
+      "sha256": "2063f7a1b5677cdee508274f1994e70df16c225f739241429a0c3ca145aa750e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456.json",
+      "sha256": "70a127df622ee0b2ebe2074d3d18a43fd2bc148334f62686dc225ae432bb0d7d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456.json",
+      "sha256": "ab2137e9525303d12d9ae6062a788ce41abc6780ca80b162601c4e9f1a306c88"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/d8a8e5e099435c83388e7dedb68b702d5cbe034abb0b5f135d39f3401f168ffc.json",
+      "sha256": "dc0bb5231f4864998a8ec66d53621706ed8451d2b7dee71d817ca47103c35526"
+    }
+  ],
+  "native_six_action_observation": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/seeds/hypothesis/observations/62c293d3183a91931ae365975d8b835931ce919c326f7b6f5195a0e2dd28e882.json",
+    "sha256": "bda842015a04019c2cb68a0169e1f239236e682112c89b00e4f8b34db769584b"
+  },
+  "source_reads": [
+    {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json",
+        "sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0"
+      },
+      "case_ref": "case-002",
+      "offset": 3970161,
+      "length": 4000,
+      "readable_chars": 2123,
+      "raw_sha256": "a0daa917d89003c65b3d28867ae75538a7d951677d23302abae9ba0f4cd29385",
+      "h006_to_h007_read_fields_equal": true
+    },
+    {
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+        "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+      },
+      "case_ref": "case-001",
+      "offset": 26191,
+      "length": 696,
+      "readable_chars": 458,
+      "raw_sha256": "a433882cd97cb64b70de75cbc82d73e685fc395a78f0886ef075e3e63774d6e9",
+      "h006_to_h007_read_fields_equal": true
+    }
+  ],
+  "catalog_exact_versions_retained": 18,
+  "query_navigation_verified_counts": {
+    "internal control over financial reporting": 34,
+    "material weakness": 31
+  },
+  "h007_navigation_counts": {
+    "available": 65,
+    "included": 8,
+    "omitted_after": 57,
+    "omitted_before": 0,
+    "oversized": 0
+  },
+  "h006_source_scope_rationale": [
+    "The positive case-001 window contains a cover-page attestation question, not management's ICFR conclusion; the control case-002 window establishes effective disclosure controls and no material ICFR change only for its stated quarter.",
+    "Refine the existing broad ICFR search to locate substantive material-weakness disclosures across the fixed cases, then verify raw meaning and case-specific PIT bindings before defining a reusable measurement.",
+    "This is targeted navigation within fetched filing families, not evidence of absence, a completed contrast or a claim of predictive benefit."
+  ],
+  "independent_semantic_judgment": {
+    "case001": "Cover-page auditor-attestation checkbox question; no management ICFR finding in this window.",
+    "case002": "Effective disclosure controls at the quarter end and no materially affecting/reasonably likely materially affecting ICFR change during the three months ended 2025-03-31; not an annual ICFR-effectiveness or material-weakness conclusion.",
+    "h006_scope_summary": "Faithful to both exact read windows; no absence, current-cutoff ICFR truth or directional benefit inferred."
+  },
+  "runtime_original_oracle_and_source_bindings_unchanged": true,
+  "stage_product_or_oracle_writes": 0,
+  "network_or_new_answers": 0,
+  "not_claimed": [
+    "h007_answer",
+    "candidate_semantics",
+    "full_F5",
+    "MVP"
+  ]
+}

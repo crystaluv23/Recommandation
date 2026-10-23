@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0001]:000114036125008438",
+    "length": 4000,
+    "offset": 5495290,
+    "rationale": [
+      "Inspect the located annual-report material-weakness passage for control case-002 before defining an ICFR measurement.",
+      "The positive case-001 explicitly discloses significant deficiencies, whereas the quarterly effective disclosure-controls statements do not establish absence of ICFR deficiencies.",
+      "The matching navigation coordinates authorize this new source read; its meaning and any counterevidence remain unverified."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0001]:000114036125008438\", \"offset\": 5495290, \"length\": 4000, \"rationale\": [\"Inspect the located annual-report material-weakness passage for control case-002 before defining an ICFR measurement.\", \"The positive case-001 explicitly discloses significant deficiencies, whereas the quarterly effective disclosure-controls statements do not establish absence of ICFR deficiencies.\", \"The matching navigation coordinates authorize this new source read; its meaning and any counterevidence remain unverified.\"]}",
+  "request_hash": "d96019f662356772ef28d9c522256ff6e742ad9185617ce5cf5a74c596b1cf7f",
+  "response_id": "local-d96019f662356772ef28d9c522256ff6e742ad9185617ce5cf5a74c596b1cf7f",
+  "usage": {
+    "accounting_tokens": 212987,
+    "agent_id": "/root/icfr_v4_h012",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "af149bc8fac7f1d877e342b6aa1ba0bad5bc71703bdf6ac4dd819dfdffd5e4aa",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "6ef26d4770c43a0b9016d5b5603574907f7e1bd73f7eaf576307018a758b2815",
+    "request_hash": "d96019f662356772ef28d9c522256ff6e742ad9185617ce5cf5a74c596b1cf7f",
+    "token_usage": null
+  }
+}

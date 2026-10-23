@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0001]:000121390024092156",
+    "length": 696,
+    "offset": 26191,
+    "rationale": [
+      "The sole grounded ICFR-related read belongs to control case-002 and cannot establish a positive-case contrast.",
+      "Read the current located query window for positive case-001; its content remains unknown until read, and the navigation hint is not evidence."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0001]:000121390024092156\",\"offset\":26191,\"length\":696,\"rationale\":[\"The sole grounded ICFR-related read belongs to control case-002 and cannot establish a positive-case contrast.\",\"Read the current located query window for positive case-001; its content remains unknown until read, and the navigation hint is not evidence.\"]}",
+  "request_hash": "dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431",
+  "response_id": "local-dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431",
+  "usage": {
+    "accounting_tokens": 194659,
+    "agent_id": "/root/icfr_v4_h005",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "289e48a6b37f0f033975ffa930985a8f2963b7988f07efdb4cb0c5bdb4152ef0",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "0b48e7454bb13375a004a8fe9249ae44c24b2062a9f7758484e96e1ae2fe3a48",
+    "request_hash": "dd6cc39b3515776fc0ad10c04ab650eb9bd96681a058055c361582c7b6e9f431",
+    "token_usage": null
+  }
+}

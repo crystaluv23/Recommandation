@@ -1,0 +1,1 @@
+{"action": "inspect_catalog", "scope": "signals", "cursor": 7, "rationale": ["The visible catalog contains seven of eighteen Signals; inspect the next page before selecting an ICFR measurement to avoid duplicating an existing capability.", "No source evidence has been fetched or read, so any ICFR candidate and its label contrast remain unestablished."]}

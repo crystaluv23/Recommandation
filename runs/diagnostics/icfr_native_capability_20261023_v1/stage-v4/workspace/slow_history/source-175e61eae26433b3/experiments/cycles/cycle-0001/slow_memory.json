@@ -1,0 +1,1039 @@
+{
+  "contract_hash": "175e61eae26433b3c1a8e1eec68c1c2f3a4191494056e2ab6b41857c585d204f",
+  "cycle_id": 1,
+  "episode_reflections": [
+    {
+      "brief": "Committed-use profile: 5 eligible observations, 5 issuers, 0 unavailable. Positive state 3 surge/0 non-surge (mean 7.01); negative 1/0 (2.85); neutral 0/1 (1.31). Effect unverified; selected-use association only, technical failures excluded. Decisive subset 4/5; neutral is available but not decisive.",
+      "episode_ref": "episode-c0001-001",
+      "kind": "fact",
+      "reflection": "Committed-use profile for cash_burn_rate_elevated:v2 against surge_direction: 5 eligible/physical observations, 5 selection events, 5 unique issuers, 0 unavailable, 0 disputed, 0 outside population. State-outcome matrix: positive 3 surge/0 non-surge; negative 1 surge/0 non-surge; neutral 0 surge/1 non-surge. Mean realized multiple by state: positive 7.01, negative 2.85, neutral 1.31. Effect status is unverified; this is selected-use association, not independent causal benefit, and technical execution failures are excluded from research effect counts. The decisive subset (positive+negative) is 4 of 5 available; the neutral case is available but not decisive, so the decisive/available gap is expected, not unexplained exclusion.",
+      "source_refs": [
+        "target-use:cash_burn_rate_elevated:v2:surge_direction:64a6d6b0313c256012103588f106a81c923d35babdf0e9dc86680acb938ebd83"
+      ],
+      "unresolved_questions": [
+        "Does the positive-state association persist under the paired frozen case pool with matched availability and decisive subsets?",
+        "Are the excluded technical execution failures systematically related to signal state?"
+      ]
+    },
+    {
+      "brief": "Round-1 usage on anon-case-69d5cd592a4863300891 (plan_r0001_c02), coverage role, combine_evidence. Result positive; outcome surge true, realized multiple 3.377, prediction incorrect. Observational association only, not causal credit; single case cannot establish sufficiency or weighting.",
+      "episode_ref": "episode-c0001-002",
+      "kind": "fact",
+      "reflection": "Round-1 usage of cash_burn_rate_elevated:v2 on anon-case-69d5cd592a4863300891 (plan_r0001_c02), selected as coverage with reason_code combine_evidence, applicability hypothesis about operating cash flow and cash balance contextualizing cash-position sustainability. Result value positive; outcome is_surge true with realized_max_multiple 3.377, prediction_correct false. Coverage sufficient; document fingerprint is a company_facts record. This is an observational association, not causal Signal credit; the selection rationale is a claim, not verified. The case is a true surge in the magnitude_ge3_v1 high band (>=3.0), but a single case cannot establish signal sufficiency or weighting.",
+      "source_refs": [
+        "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8"
+      ],
+      "unresolved_questions": [
+        "Was the incorrect prediction driven by the signal, the plan, or other evidence in the same plan?"
+      ]
+    },
+    {
+      "brief": "Round-1 usage on anon-case-4c6cd0f917bb8dd524f0 (plan_r0001_c02), confirmation role, confirm_hypothesis, small_cap/consumer. Result neutral; outcome surge false, realized multiple 1.314, prediction incorrect. Observational only; neutral is available but not decisive, so it is not directional evidence.",
+      "episode_ref": "episode-c0001-003",
+      "kind": "fact",
+      "reflection": "Round-1 usage of cash_burn_rate_elevated:v2 on anon-case-4c6cd0f917bb8dd524f0 (plan_r0001_c02), selected as confirmation with reason_code confirm_hypothesis, context tags small_cap and consumer, applicability hypothesis about elevated cash burn relative to cash balance making the six-month move more liquidity-sensitive than the reported cash balance implies. Result value neutral; outcome is_surge false with realized_max_multiple 1.314, prediction_correct false. Coverage sufficient. This is an observational association, not causal Signal credit. The neutral result is available but not decisive under the measurement contract, so it cannot count as directional evidence for or against the signal.",
+      "source_refs": [
+        "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d"
+      ],
+      "unresolved_questions": [
+        "Would a decisive (positive/negative) call on this case have been correct, and does the neutral abstention reflect signal ambiguity or plan design?"
+      ]
+    }
+  ],
+  "failure_ref": null,
+  "input_hash": "ce4c2812217469b8fbd8e05563266b092df65c4f79eafae1597b41a49e865517",
+  "lesson_additions": [
+    {
+      "applicable_scope": "Interpreting signal-target-use-profile-v1 artifacts under signal-effectiveness-measurement-v1, especially when NEUTRAL states appear in the state_outcome_matrix.",
+      "brief": "Separate available from decisive populations when reading committed-use profiles: NEUTRAL is available but not decisive, so decisive/available gaps are expected, not unexplained exclusion. Report state counts and mean multiples as selected-use associations with effect unverified.",
+      "challenges_refs": [],
+      "counterevidence_refs": [],
+      "guidance": "When reading committed-use profiles for a signal-target pair, separate the available population from the decisive subset: NEUTRAL outcomes are available but not decisive, so a decisive/available gap is expected and must not be reported as unexplained sample exclusion. Report state-outcome counts and mean realized multiples by state as selected-use associations, and keep effect status unverified until paired evidence exists.",
+      "kind": "action",
+      "lesson_id": "lesson-c0001-001",
+      "limitations": "Applies to the cited profile's population and conditions; does not establish causal benefit or generalize to other signals, targets, or thresholds.",
+      "qualifies_refs": [],
+      "support_refs": [
+        "target-use:cash_burn_rate_elevated:v2:surge_direction:64a6d6b0313c256012103588f106a81c923d35babdf0e9dc86680acb938ebd83"
+      ]
+    },
+    {
+      "applicable_scope": "Reflecting on signal-learning-event-v2 usage rows where selection metadata and outcomes are both present.",
+      "brief": "Treat selection rationales as claims, not verified mechanisms. On incorrect predictions, record outcome and realized multiple as observational facts without attributing error to the signal; plans contain other evidence and single cases are weak.",
+      "challenges_refs": [],
+      "counterevidence_refs": [],
+      "guidance": "Treat per-case selection rationales (applicability_hypothesis, selection_reason, expected_role) as claims about why a signal was used, not as verified mechanisms. When a usage case has prediction_correct false, record the outcome and realized multiple as observational facts and avoid attributing the error to the signal; the plan may contain other evidence and the case is a single observation.",
+      "kind": "action",
+      "lesson_id": "lesson-c0001-002",
+      "limitations": "Based on two round-1 usage cases from one plan; does not quantify signal contribution or rule out signal influence.",
+      "qualifies_refs": [],
+      "support_refs": [
+        "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8",
+        "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d"
+      ]
+    }
+  ],
+  "model_view_manifest": {
+    "available_count": 151,
+    "budget_bytes": 64000,
+    "bytes": 5540,
+    "canonicalized_nested_refs": {},
+    "deferred": [
+      {
+        "reason": "item_limit",
+        "ref": "usage:7ef7eea8215e04f32cdc95a2c564f350e30aa7c6a3c0a62b924938441fd04898"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:826ab9c93603accc692fb6256e8383b1099ebf16aeaf57a5a11a38b44af092ae"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ed917a0993d35eeaa080fbe8630143d7fd9f7cbfa7f4fe6d58530bac7b97ec1e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:cash_reserves:v2:surge_direction:6a9cc5c278b4c5b847eae45402471102a2672f39d061cc615ca56984599ffb42"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:010b146506ab9f19873733f9cced882d4e4839295170c0bf2216b9830d44aeda"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0555f05c310ed8651e8bce9fcc7dbc78bde3027d196b7e0a801325baea2eac88"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:16b83bb63098b345464a61c059d4d58b0e01d20ac0b30ab7cc13477651d93bd1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:221206a55e5361011d9b68fe7d7133eda5fd05e2bdd921ef7d6bb85f1f6c9ade"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:23cd2793b2bf02acc0ce45228c0f6c771cdb3dde872b35e4f4cd30b56edc5dac"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:24ddad9822a290d46c41b01836d8793e7e60cdfbaa772f70cce841c81f33b469"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:274442175e9919e529a80619f917b70d046d17f666330296d085fc239b83f713"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:468d328626b3db8184698f6d50be08ae9858ace91df8e3c102fb501898c88057"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6e7dabcee5356810f3eb0810f43fb314c228e520744d75f2d0a7e24a44575e03"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:704e0f7c0733107120ee189f55572468794471a62d33225f0807034502ea7494"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:721693f576a34f1a56d182839758ecdfe2d76b5e783f797e5d3d8ee529448efe"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:798f8c42d7a71197a6edd248f3e64c574dc41eb29ef874a23284e78b8633d649"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7d3062fcb91d9d753da74de7dcad05c5d540a893d858857807822be2df0fd5c1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9582a7940be24a7c82d2e0db78b9859c376dfa6e3c987598bb4d1e3088d59ecc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b222a9e4bfe4fc4297ce7d57d1c2df0624536a41f1fbc02b30b6d927b8b39fb2"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ba16baf429a21d3a11551720219e1c4a38f3e0f62c67f0e92388feba49890f03"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c554b33f785bef94b4d0691f632fd0402e9b2249cfb61966deddf4af43be1366"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d94413241ab863b72170685c4d716504175d410bb9a8a63a2d8cd4ca2ffec99c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e272c21ba3f6e38bfe7b304399c270debf46e594d7141537856b1f6ec764ee43"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f5ba528db1fccfcf2b865e5dbc08a0423eb59701c1ce8a8c0e0a7aa876dcc189"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:cash_to_current_liabilities_ratio:v2:surge_direction:23222a50b0c7bb8d288a0d754c52c0c82b8b0978fe1892d964a76ccd0dfd0153"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7b2edae4d86c73a045a61dfbbf7283b96a244d79e6f607ecd2777f6df18f5d72"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c85975177e8ebb06601380b41bc9169b73858174cb224ec7323a406b360c9e81"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c8839ffc9f648d63b2fcbb97212de70806d85d868d82efb90af2449f47e3ca75"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d805df823076b13a523b4256a068f4d11e75d15e7a5090a380fa977925f747b4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:commercialization_status:v2:surge_direction:4e3727205bd91cb4a55809b2da42039adff2dea0786ff665e39a9aade74b50bf"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4c7652916ff82dc27a4cbf93070afd8f6c8a0007d7d6bc7d8695198d82abf4a3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8cf3cc4f26f432f7e4a6e6c97caaea239329e70c7f2d94d9c394d6a1c1e43c70"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e049ffef0c5f3dc099ba18bf7c0e281da82d1e5983faffac750a0bc73d1acd6b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:customer_concentration:v2:surge_direction:41beb003a6f3e9c1b42899027b56a4af58eb69ee16fafe819ff39172e30866ca"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:05f613a43ae720eb8486fda6b91a7ba8e7a5a862884ce3a15372314061446ec9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4505f32edf672041fb08b6fd45ebc54ad2b3f562c8e3ad160bd21e68aacfcec8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4864351f83a6b28bf07b5b094fe5d26d3c339ad0a2dd346a4fccfaff0ad6a776"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4c2c1a4c0e40e66c4ba71b77b231909c7c664c72353b69a06cf92c776fdb0a1c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7fdd832bacd99fa11dc58f2cdb1df7712a3b4440418a2cc6a42f360e7dec4871"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:84ac5eac55e1ec6cfe1f8d14785502ec0e6f80d667bdb2f26b83e10e11e4cfa1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8b8e928cf1dd6b4a65e84c93df3a527615df5829317cc69c8e2ee03dec8e5b7e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a2e9ccce63f18311dd3da6beeda2d1de9bf96104e01c4c1b73b6a55eecbda0ff"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:adaeeef057d7cb2effc7798589be038197acc97ea9db75567e744967c3136b89"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e22481a47fa8d59cffc33985542166620572fc9d0fa03d2b819d2a2d591a072f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:financing_listing_action:v3:surge_direction:a41a1b8d64caf2b66c8b12fd79a7515643c1fc26d688536a8ffc0adc8c3455b8"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0647493a7bedb9f2949a28f33cb344d45988067dbd54c565b530840b8f01bf4b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1a316555425e2fadb14c43cb589832c44e42641e1e0eb22c3b8703d494730899"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1fbf7948eecefa68f8255d0eb8fa6b75e1a3987c135f336420290474927cf71f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:2ae414fc3ef0c82300fe2064cbf4f996dc923864d382f8b59f70d2b92cf2fa90"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:306c85a0de33c9f836f79add330d541cef2b78f474c1d463b301508fd095232c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:3828588a2486315ac3a99403cee54b9acd003f83023dc2ac8dde26292cb00af3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:60dfd77f713505207023803805cf5339fd01d6721115e00d252f995d48124a1a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6ae9fc849fb8290f86d13ebea990381f7ba0b2fa07b3cd9c2a89438571e6dc7a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:74e3d59bd3f2f07c557616720e0609988793c2dc1951b4987fc5ebcc6a47d8c7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7e1c8ab23c7e68e2a96bb0fedd28af79f59eaead78f621c9b7671f2f6a8b636e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:87a015a54f07faf1460e5b962266949b9aa77b398e9a003aa818d79403729dc4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9af4839aba3539e587f851e4653f330c2e28cf73cbb94f3a967895152439e020"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:aa4a06923c59f112baaadaa0469249b284b86f960c8e4902daded11d204f8bb4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:adb7c9e87b5325f0c492f8b2c162e7a8f29b5760540610edfdd2db263756584e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b3032f46ff942ae9979e341c39d189a25b73870e55202884c4b7329d35a7c258"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:dd5ccb152c440f1acc8397cb3901853bdb57e23c6e7c5f9d0f341b13be90b5c6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e8c4d5b10d694cf3856fd72ca549d7cef407f2a441765b48345448c35297c3b7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:gross_margin_change:v3:surge_direction:1aeaf774778bc82feaac4f52a24560a74d0788434323c80f3c1bc03bacb35bba"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1fb867b5a388aa4cbaed93541c72efa87137c51eb422333758248ef145a2b5ab"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:369ac719bf7b03c38ed0678f1747f489dd200e449d1547932db10647aec3ef63"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:4910544080a51aae583782f24b76d402befde110d49182d7a9cd7ea501caaab7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6fff56b8aefe94959d72c35f506a49a1ee404361da873bda12c0dd144c36fcc1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7bd116d14218429c4e69d4cbf360e0263efc87db76981c556189dcf427acaadc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a102a7df429e1097a1bf60c75b404dbd5c8f6fcc5b66df450b73e4ddc8175263"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a39d5eabd38f2f44a962fe7aef27dd1d664c6954a76499f091d1a034525cfec6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a90cb86fb39e078f0ac269368407a39e8ad2d62a0b3c11710ff4ea3af6afea2a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:guidance_acceleration:v2:surge_direction:01d3327be171a8d87859f9b9b73d1287d40e5dc3a5c1a954d0f6535c8a913a30"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0a4fb66eba62d09d0d1c3c49d555ac3996b555f87557fac8145c8177d62d9a26"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1dc2dd3fcb7a0a714f7fb2311d15e95f31af2e9419c41e692181f98fc3d0ba22"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:34e243031d1271b844474f8cd744044f2d4e2aa17f37cba66655df0d3f80c264"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:50c1bd0c6659639891682a1a1ad189f8068265e6f1b3e04b8531973d16a11236"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:6e696970013f6a759de4f2c8654411be756f2c74661e076023c6239894b9cf0c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:7eb30e9c6921a424030aeac23d1ff69adad72a2692477dea1af622f4a2e412e0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b531f594ab708ebe6bf60f52214eec45b2ee8eee4a15970cbdad97dc7e5c3e61"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bf33fd08a50151ee7a488f4f135c1b459de28f4a5c172afb644cee75d75b9c44"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c06dea57bef5dd69de7d71e419669a380a568387d8e952286b74ca8828e2882a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c1d5f56de66dd61e5d8fe71f0b10ed308fa03cc97c87192bc1b9e2fa38a3bfdf"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d701fd7af32ff3e3ea26723d80dde77022e29acd6f0ba401c8677cb03f4935e9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fb1d4c479fdca8a003e5b9f0327ed7a74ebfb1ab2cbb16e43237f26a8cabb344"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fb644170769f48e4e5bd365244e34126022924c0d6ad5c66a71d4e206fe63ea7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fedb661fad283b5e2e3df60cfd12e9da6306a4ae2235afb1653150f4d5fefb39"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:liquidity_runway_months:v2:surge_direction:7ee770b815f165c860405b00b07e0ecb9e3ea7de395c58ec7ccce9de81de54ba"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1428817ea1dd8b507d275cbcfda13793ef01d933b828849d531d89a55774dc02"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1768b21569566cd2365db20aa08b91600382fd7303cbf4d0cda8661891d60ccc"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:716131b22248f40f1fe5a422fa97b4fbcf0e018a30596235a467533c3097a51c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:759349ac115cd07dc5a6ae9553aa1fb00eb7da1f53c3a036ca0e86c731dc4cd5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:81086775ccb34eb68458d13813b173f547648a18453570aff35d5772a2f7b75a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:9c8947c8dbf8cb505b4d054d63bc2ddc3c791f2ff9a982841cc950baed7516c9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b3d77bd109e5b7d066d1b35ee1a351bf2e2022a064592197b22895bf48410d27"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c12e62cd88e64b89835d82aec320705b1309ace0bd203546f723607d6880085f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d3f9399d6477f621701d3653951b12cb9421f6d5f131f38bfbafbf500ee5b58b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e3fbfd13371008959d17f7bdc83cbe978c4dbf57905083d82a9351e6a1853f54"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:ed53e37731b54ee10ade37097ed0033afb8622fd3ca6718868a885fddbf609c7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:negative_word_count:v2:surge_direction:09e850db6b035b119ccf35e4cfabc1cf2b6524feae0b559c3e6f13876ae23278"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1114758774448469c721d13879ef9d0d44780838ac6e47b64ad0e46f610f9ba9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:280a01c7a333e70f6359edbb594ff9483cc5d42aeaeea4a5a1f8c34095516df4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:net_share_retirement_yoy:v2:surge_direction:4e723e9b69091b05aade7d7eb2bf936b30690912ee83b0a98a029018416340e0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:52ae0236e424a19700fbad3b5591ae97872e5bb8f6b9b9e2e460e4b07feab5fb"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:61e0572e38872d973816bfe2ef39335520b344b832ac990e676a4807648bfc3e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a13f2b918bf3855966c6dae09cc0d1ef2bfc98fc78956a4f64ef95876a105653"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:operating_cash_flow_margin:v2:surge_direction:a54c390df707c77a556820caddc96452d5fab659d897971277ba08a15b055f2b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:007d1449d70a6b32f806f8a62bf9b90f5ea70d6d7917a3e024855d91811b267b"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:1052816fe93d2328289ecc0d8dc489cf345bc88e24f7e151a92a888cca7a2f9a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:53bc975dd458b92a83bf037d5f6c316bf9a5a8d153323e18b53cd6a269a40974"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:56e29902a58ad43419b7423e93d26367710fc6f4133a7b7858d86db3c9504bc3"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a7f9309b6ceae760d0e8d92d2bfeaffce3a78906f2e330da43ba537c37d9cc82"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b528c205b245f264a56cb4293912cb1f9cba22e62940c537878b2d27256fff1e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c60161be5bb3b1b9f39c12f76935883ee1c4df2a1af6355bad6adea173706697"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f0ae7a9a55829692d2e5da323744b8716fba78842910e6418598e988be6bb90f"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:order_confirmation_disclosed:v2:surge_direction:e625897894a001087eb1c6152c921e9b2250364724efd4d8529dc9f859271be0"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:09961e4e4d79d90fbaa04e4f59f2357d46c66fdced804f5f798d27e624c71e72"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:86c1bad735906ef1e8ce3847727db13c94fee90a9771d343d76d28aca52af0f1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8e02d7c86aff9b8dad2f43c142c16e88d27a916fdf4e41341ab0224a23b91632"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b4c1929c4912e9f2fdb6c4351653b4514d6269ad5b512dbfe7901202e91f274c"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:bd6c31f31a211c77da822300caeab215aeb7c87a194badd87a8eb5f344612bf9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:da6b52cd0d3373b5d1523833d1e056401653ff4fbe8c4bc6cdc2cc1e7cc3ad2e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e47d6c2ef61155a987e38ab3e82e2f090854163bb3393c1c98668744a2c0e843"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:e9b64c97034fd4b665397b91da7eeca499fde74c89cad1a0831d2e8743e5eba4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f4023317777b848b5b8813591f46447528eefe939f9ab95bda32642ee9688312"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fb9ba9ff0149ee986ad335fed0497a5db72607aaf3194f59328fa1f29aa5edb7"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:order_quality:v2:surge_direction:74ad35bf33dd029547c1f11dc4aabdea0ae7934e6fe835ba229e4b7518f11948"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b5ed9c736639bd6bc895cbd7ec4db09871d7d628265ca62bceabb8c013a0e9d9"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:price_momentum_126d:v2:surge_direction:15f460a3c569a1acfc9186d89e3226a4da0cde04ae2c8ef913560eb0a07d87f5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:04c6ab4a323960a1b0699f3a1b7b1ca54863de23ad0e3aaa9537cfad8c93867a"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d996ab914aca9110f8b1cb096efe06ec7df49cd2f9e6a59fb9cd86d4cc04bdb6"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:revenue_acceleration:v2:surge_direction:b06ad6a5e2466127a4beb0c4024540222b05d34c7eb087c0f08cba2b04d55ff5"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:34ebf559938d9f5acb7440df26d4c6d50c1e8c6b5f05908ec407cc9f20318611"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:d5091e11ebda3ce2c348ab43c59eb95cc40ae1d1e0c12e38b67d97315bed8562"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "target-use:revenue_growth_yoy:v2:surge_direction:80a88c624576d51eba290d16c713b710b88e91ad0c6bc71bb475752a49a57b42"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:00a367520fd9bfffc5827f4f36425883d8080a4716f4a413866f1a8787e00d96"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:0975a4544c18effc74ce6b7b30f661ab54b0d0b3e59e83108cd49c637c858301"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:15536cc910d2e754957cd608aa1d2e3128865a9a29ab3695e272d7df94631953"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:296ecbcc0e7ca109ec32cca8507d2f9b3a84056b55e2fb54418c350b889ebe61"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:43d9f6ea1ce68a40ca2bfdecfed30db47a084bc4a07a5413e52ee2542af8b7f1"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:53c62a015a4694b725ac313cad219a31c31c3a6ce2c50e3231edcb9b38b8373e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:5eb418e7877645d0e90af9eb0ed983ca69481566c8af75dd7c367570ecf46048"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:60505fcdb539cad37817555efe4badfed850a30d38821f538af8df08e6ff5b06"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:8e2632ad263db64fefcad949c7c22e804098dc46b9876a71482cd41a3c6d0ed4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:a7ec83df7373fbd00bcb027df8fef5a69cc3501dbbeef34c9be74a0a533fae60"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:b528af40d9148b2ba24611f45995e3f71a858503dbc9ba0964ff82f5b036f7a4"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:c727aa4e772a62200f5a45b0679b9b93f25293c1f63ffff5874745676aed8062"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:f0e703a5426e2135f605aef8ef296d7f6e3d6572b46a3a19e86de06b6b29837e"
+      },
+      {
+        "reason": "item_limit",
+        "ref": "usage:fc8f2632859eda3148d793ecca17e1ddd6459e68adaafda72ff4d0ba92684ffa"
+      }
+    ],
+    "deferred_count": 148,
+    "included_count": 3,
+    "included_hashes": {
+      "target-use:cash_burn_rate_elevated:v2:surge_direction:64a6d6b0313c256012103588f106a81c923d35babdf0e9dc86680acb938ebd83": "f4a28f8b2d81145fee96fc676d35e4c947a7d321bcd3e8c3c11517032bc66770",
+      "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8": "41946db2f418ed4256d17b7ac9b1baa0ccea05ba2e05ed5e366ff3ce285f10ad",
+      "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d": "fa5046f521f0c66d3493718a2d0d87ee938b905d5956571f372eaca0f2ba2fa4"
+    },
+    "included_refs": [
+      "target-use:cash_burn_rate_elevated:v2:surge_direction:64a6d6b0313c256012103588f106a81c923d35babdf0e9dc86680acb938ebd83",
+      "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8",
+      "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d"
+    ],
+    "max_items": 3,
+    "prior_memory_view": {
+      "budget_bytes": 32000,
+      "bytes": 224,
+      "deferred": [],
+      "included_hashes": {},
+      "included_refs": [],
+      "requested_refs": [],
+      "schema_version": "slow-method-memory-view-v1",
+      "source_memory_hashes": []
+    },
+    "prior_original_reads": {
+      "available_count": 0,
+      "budget_bytes": 32000,
+      "bytes": 0,
+      "deferred": [],
+      "deferred_count": 0,
+      "included_count": 0,
+      "included_hashes": {},
+      "included_refs": [],
+      "max_items": null,
+      "requested_refs": [],
+      "required_refs": [],
+      "role_scope": "reflection",
+      "schema_version": "slow-source-view-v1"
+    },
+    "requested_refs": [
+      "target-use:cash_burn_rate_elevated:v2:surge_direction:64a6d6b0313c256012103588f106a81c923d35babdf0e9dc86680acb938ebd83",
+      "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8",
+      "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d",
+      "usage:7ef7eea8215e04f32cdc95a2c564f350e30aa7c6a3c0a62b924938441fd04898",
+      "usage:826ab9c93603accc692fb6256e8383b1099ebf16aeaf57a5a11a38b44af092ae",
+      "usage:ed917a0993d35eeaa080fbe8630143d7fd9f7cbfa7f4fe6d58530bac7b97ec1e",
+      "target-use:cash_reserves:v2:surge_direction:6a9cc5c278b4c5b847eae45402471102a2672f39d061cc615ca56984599ffb42",
+      "usage:010b146506ab9f19873733f9cced882d4e4839295170c0bf2216b9830d44aeda",
+      "usage:0555f05c310ed8651e8bce9fcc7dbc78bde3027d196b7e0a801325baea2eac88",
+      "usage:16b83bb63098b345464a61c059d4d58b0e01d20ac0b30ab7cc13477651d93bd1",
+      "usage:221206a55e5361011d9b68fe7d7133eda5fd05e2bdd921ef7d6bb85f1f6c9ade",
+      "usage:23cd2793b2bf02acc0ce45228c0f6c771cdb3dde872b35e4f4cd30b56edc5dac",
+      "usage:24ddad9822a290d46c41b01836d8793e7e60cdfbaa772f70cce841c81f33b469",
+      "usage:274442175e9919e529a80619f917b70d046d17f666330296d085fc239b83f713",
+      "usage:468d328626b3db8184698f6d50be08ae9858ace91df8e3c102fb501898c88057",
+      "usage:6e7dabcee5356810f3eb0810f43fb314c228e520744d75f2d0a7e24a44575e03",
+      "usage:704e0f7c0733107120ee189f55572468794471a62d33225f0807034502ea7494",
+      "usage:721693f576a34f1a56d182839758ecdfe2d76b5e783f797e5d3d8ee529448efe",
+      "usage:798f8c42d7a71197a6edd248f3e64c574dc41eb29ef874a23284e78b8633d649",
+      "usage:7d3062fcb91d9d753da74de7dcad05c5d540a893d858857807822be2df0fd5c1",
+      "usage:9582a7940be24a7c82d2e0db78b9859c376dfa6e3c987598bb4d1e3088d59ecc",
+      "usage:b222a9e4bfe4fc4297ce7d57d1c2df0624536a41f1fbc02b30b6d927b8b39fb2",
+      "usage:ba16baf429a21d3a11551720219e1c4a38f3e0f62c67f0e92388feba49890f03",
+      "usage:c554b33f785bef94b4d0691f632fd0402e9b2249cfb61966deddf4af43be1366",
+      "usage:d94413241ab863b72170685c4d716504175d410bb9a8a63a2d8cd4ca2ffec99c",
+      "usage:e272c21ba3f6e38bfe7b304399c270debf46e594d7141537856b1f6ec764ee43",
+      "usage:f5ba528db1fccfcf2b865e5dbc08a0423eb59701c1ce8a8c0e0a7aa876dcc189",
+      "target-use:cash_to_current_liabilities_ratio:v2:surge_direction:23222a50b0c7bb8d288a0d754c52c0c82b8b0978fe1892d964a76ccd0dfd0153",
+      "usage:7b2edae4d86c73a045a61dfbbf7283b96a244d79e6f607ecd2777f6df18f5d72",
+      "usage:c85975177e8ebb06601380b41bc9169b73858174cb224ec7323a406b360c9e81",
+      "usage:c8839ffc9f648d63b2fcbb97212de70806d85d868d82efb90af2449f47e3ca75",
+      "usage:d805df823076b13a523b4256a068f4d11e75d15e7a5090a380fa977925f747b4",
+      "target-use:commercialization_status:v2:surge_direction:4e3727205bd91cb4a55809b2da42039adff2dea0786ff665e39a9aade74b50bf",
+      "usage:4c7652916ff82dc27a4cbf93070afd8f6c8a0007d7d6bc7d8695198d82abf4a3",
+      "usage:8cf3cc4f26f432f7e4a6e6c97caaea239329e70c7f2d94d9c394d6a1c1e43c70",
+      "usage:e049ffef0c5f3dc099ba18bf7c0e281da82d1e5983faffac750a0bc73d1acd6b",
+      "target-use:customer_concentration:v2:surge_direction:41beb003a6f3e9c1b42899027b56a4af58eb69ee16fafe819ff39172e30866ca",
+      "usage:05f613a43ae720eb8486fda6b91a7ba8e7a5a862884ce3a15372314061446ec9",
+      "usage:4505f32edf672041fb08b6fd45ebc54ad2b3f562c8e3ad160bd21e68aacfcec8",
+      "usage:4864351f83a6b28bf07b5b094fe5d26d3c339ad0a2dd346a4fccfaff0ad6a776",
+      "usage:4c2c1a4c0e40e66c4ba71b77b231909c7c664c72353b69a06cf92c776fdb0a1c",
+      "usage:7fdd832bacd99fa11dc58f2cdb1df7712a3b4440418a2cc6a42f360e7dec4871",
+      "usage:84ac5eac55e1ec6cfe1f8d14785502ec0e6f80d667bdb2f26b83e10e11e4cfa1",
+      "usage:8b8e928cf1dd6b4a65e84c93df3a527615df5829317cc69c8e2ee03dec8e5b7e",
+      "usage:a2e9ccce63f18311dd3da6beeda2d1de9bf96104e01c4c1b73b6a55eecbda0ff",
+      "usage:adaeeef057d7cb2effc7798589be038197acc97ea9db75567e744967c3136b89",
+      "usage:e22481a47fa8d59cffc33985542166620572fc9d0fa03d2b819d2a2d591a072f",
+      "target-use:financing_listing_action:v3:surge_direction:a41a1b8d64caf2b66c8b12fd79a7515643c1fc26d688536a8ffc0adc8c3455b8",
+      "usage:0647493a7bedb9f2949a28f33cb344d45988067dbd54c565b530840b8f01bf4b",
+      "usage:1a316555425e2fadb14c43cb589832c44e42641e1e0eb22c3b8703d494730899",
+      "usage:1fbf7948eecefa68f8255d0eb8fa6b75e1a3987c135f336420290474927cf71f",
+      "usage:2ae414fc3ef0c82300fe2064cbf4f996dc923864d382f8b59f70d2b92cf2fa90",
+      "usage:306c85a0de33c9f836f79add330d541cef2b78f474c1d463b301508fd095232c",
+      "usage:3828588a2486315ac3a99403cee54b9acd003f83023dc2ac8dde26292cb00af3",
+      "usage:60dfd77f713505207023803805cf5339fd01d6721115e00d252f995d48124a1a",
+      "usage:6ae9fc849fb8290f86d13ebea990381f7ba0b2fa07b3cd9c2a89438571e6dc7a",
+      "usage:74e3d59bd3f2f07c557616720e0609988793c2dc1951b4987fc5ebcc6a47d8c7",
+      "usage:7e1c8ab23c7e68e2a96bb0fedd28af79f59eaead78f621c9b7671f2f6a8b636e",
+      "usage:87a015a54f07faf1460e5b962266949b9aa77b398e9a003aa818d79403729dc4",
+      "usage:9af4839aba3539e587f851e4653f330c2e28cf73cbb94f3a967895152439e020",
+      "usage:aa4a06923c59f112baaadaa0469249b284b86f960c8e4902daded11d204f8bb4",
+      "usage:adb7c9e87b5325f0c492f8b2c162e7a8f29b5760540610edfdd2db263756584e",
+      "usage:b3032f46ff942ae9979e341c39d189a25b73870e55202884c4b7329d35a7c258",
+      "usage:dd5ccb152c440f1acc8397cb3901853bdb57e23c6e7c5f9d0f341b13be90b5c6",
+      "usage:e8c4d5b10d694cf3856fd72ca549d7cef407f2a441765b48345448c35297c3b7",
+      "target-use:gross_margin_change:v3:surge_direction:1aeaf774778bc82feaac4f52a24560a74d0788434323c80f3c1bc03bacb35bba",
+      "usage:1fb867b5a388aa4cbaed93541c72efa87137c51eb422333758248ef145a2b5ab",
+      "usage:369ac719bf7b03c38ed0678f1747f489dd200e449d1547932db10647aec3ef63",
+      "usage:4910544080a51aae583782f24b76d402befde110d49182d7a9cd7ea501caaab7",
+      "usage:6fff56b8aefe94959d72c35f506a49a1ee404361da873bda12c0dd144c36fcc1",
+      "usage:7bd116d14218429c4e69d4cbf360e0263efc87db76981c556189dcf427acaadc",
+      "usage:a102a7df429e1097a1bf60c75b404dbd5c8f6fcc5b66df450b73e4ddc8175263",
+      "usage:a39d5eabd38f2f44a962fe7aef27dd1d664c6954a76499f091d1a034525cfec6",
+      "usage:a90cb86fb39e078f0ac269368407a39e8ad2d62a0b3c11710ff4ea3af6afea2a",
+      "target-use:guidance_acceleration:v2:surge_direction:01d3327be171a8d87859f9b9b73d1287d40e5dc3a5c1a954d0f6535c8a913a30",
+      "usage:0a4fb66eba62d09d0d1c3c49d555ac3996b555f87557fac8145c8177d62d9a26",
+      "usage:1dc2dd3fcb7a0a714f7fb2311d15e95f31af2e9419c41e692181f98fc3d0ba22",
+      "usage:34e243031d1271b844474f8cd744044f2d4e2aa17f37cba66655df0d3f80c264",
+      "usage:50c1bd0c6659639891682a1a1ad189f8068265e6f1b3e04b8531973d16a11236",
+      "usage:6e696970013f6a759de4f2c8654411be756f2c74661e076023c6239894b9cf0c",
+      "usage:7eb30e9c6921a424030aeac23d1ff69adad72a2692477dea1af622f4a2e412e0",
+      "usage:b531f594ab708ebe6bf60f52214eec45b2ee8eee4a15970cbdad97dc7e5c3e61",
+      "usage:bf33fd08a50151ee7a488f4f135c1b459de28f4a5c172afb644cee75d75b9c44",
+      "usage:c06dea57bef5dd69de7d71e419669a380a568387d8e952286b74ca8828e2882a",
+      "usage:c1d5f56de66dd61e5d8fe71f0b10ed308fa03cc97c87192bc1b9e2fa38a3bfdf",
+      "usage:d701fd7af32ff3e3ea26723d80dde77022e29acd6f0ba401c8677cb03f4935e9",
+      "usage:fb1d4c479fdca8a003e5b9f0327ed7a74ebfb1ab2cbb16e43237f26a8cabb344",
+      "usage:fb644170769f48e4e5bd365244e34126022924c0d6ad5c66a71d4e206fe63ea7",
+      "usage:fedb661fad283b5e2e3df60cfd12e9da6306a4ae2235afb1653150f4d5fefb39",
+      "target-use:liquidity_runway_months:v2:surge_direction:7ee770b815f165c860405b00b07e0ecb9e3ea7de395c58ec7ccce9de81de54ba",
+      "usage:1428817ea1dd8b507d275cbcfda13793ef01d933b828849d531d89a55774dc02",
+      "usage:1768b21569566cd2365db20aa08b91600382fd7303cbf4d0cda8661891d60ccc",
+      "usage:716131b22248f40f1fe5a422fa97b4fbcf0e018a30596235a467533c3097a51c",
+      "usage:759349ac115cd07dc5a6ae9553aa1fb00eb7da1f53c3a036ca0e86c731dc4cd5",
+      "usage:81086775ccb34eb68458d13813b173f547648a18453570aff35d5772a2f7b75a",
+      "usage:9c8947c8dbf8cb505b4d054d63bc2ddc3c791f2ff9a982841cc950baed7516c9",
+      "usage:b3d77bd109e5b7d066d1b35ee1a351bf2e2022a064592197b22895bf48410d27",
+      "usage:c12e62cd88e64b89835d82aec320705b1309ace0bd203546f723607d6880085f",
+      "usage:d3f9399d6477f621701d3653951b12cb9421f6d5f131f38bfbafbf500ee5b58b",
+      "usage:e3fbfd13371008959d17f7bdc83cbe978c4dbf57905083d82a9351e6a1853f54",
+      "usage:ed53e37731b54ee10ade37097ed0033afb8622fd3ca6718868a885fddbf609c7",
+      "target-use:negative_word_count:v2:surge_direction:09e850db6b035b119ccf35e4cfabc1cf2b6524feae0b559c3e6f13876ae23278",
+      "usage:1114758774448469c721d13879ef9d0d44780838ac6e47b64ad0e46f610f9ba9",
+      "usage:280a01c7a333e70f6359edbb594ff9483cc5d42aeaeea4a5a1f8c34095516df4",
+      "target-use:net_share_retirement_yoy:v2:surge_direction:4e723e9b69091b05aade7d7eb2bf936b30690912ee83b0a98a029018416340e0",
+      "usage:52ae0236e424a19700fbad3b5591ae97872e5bb8f6b9b9e2e460e4b07feab5fb",
+      "usage:61e0572e38872d973816bfe2ef39335520b344b832ac990e676a4807648bfc3e",
+      "usage:a13f2b918bf3855966c6dae09cc0d1ef2bfc98fc78956a4f64ef95876a105653",
+      "target-use:operating_cash_flow_margin:v2:surge_direction:a54c390df707c77a556820caddc96452d5fab659d897971277ba08a15b055f2b",
+      "usage:007d1449d70a6b32f806f8a62bf9b90f5ea70d6d7917a3e024855d91811b267b",
+      "usage:1052816fe93d2328289ecc0d8dc489cf345bc88e24f7e151a92a888cca7a2f9a",
+      "usage:53bc975dd458b92a83bf037d5f6c316bf9a5a8d153323e18b53cd6a269a40974",
+      "usage:56e29902a58ad43419b7423e93d26367710fc6f4133a7b7858d86db3c9504bc3",
+      "usage:a7f9309b6ceae760d0e8d92d2bfeaffce3a78906f2e330da43ba537c37d9cc82",
+      "usage:b528c205b245f264a56cb4293912cb1f9cba22e62940c537878b2d27256fff1e",
+      "usage:c60161be5bb3b1b9f39c12f76935883ee1c4df2a1af6355bad6adea173706697",
+      "usage:f0ae7a9a55829692d2e5da323744b8716fba78842910e6418598e988be6bb90f",
+      "target-use:order_confirmation_disclosed:v2:surge_direction:e625897894a001087eb1c6152c921e9b2250364724efd4d8529dc9f859271be0",
+      "usage:09961e4e4d79d90fbaa04e4f59f2357d46c66fdced804f5f798d27e624c71e72",
+      "usage:86c1bad735906ef1e8ce3847727db13c94fee90a9771d343d76d28aca52af0f1",
+      "usage:8e02d7c86aff9b8dad2f43c142c16e88d27a916fdf4e41341ab0224a23b91632",
+      "usage:b4c1929c4912e9f2fdb6c4351653b4514d6269ad5b512dbfe7901202e91f274c",
+      "usage:bd6c31f31a211c77da822300caeab215aeb7c87a194badd87a8eb5f344612bf9",
+      "usage:da6b52cd0d3373b5d1523833d1e056401653ff4fbe8c4bc6cdc2cc1e7cc3ad2e",
+      "usage:e47d6c2ef61155a987e38ab3e82e2f090854163bb3393c1c98668744a2c0e843",
+      "usage:e9b64c97034fd4b665397b91da7eeca499fde74c89cad1a0831d2e8743e5eba4",
+      "usage:f4023317777b848b5b8813591f46447528eefe939f9ab95bda32642ee9688312",
+      "usage:fb9ba9ff0149ee986ad335fed0497a5db72607aaf3194f59328fa1f29aa5edb7",
+      "target-use:order_quality:v2:surge_direction:74ad35bf33dd029547c1f11dc4aabdea0ae7934e6fe835ba229e4b7518f11948",
+      "usage:b5ed9c736639bd6bc895cbd7ec4db09871d7d628265ca62bceabb8c013a0e9d9",
+      "target-use:price_momentum_126d:v2:surge_direction:15f460a3c569a1acfc9186d89e3226a4da0cde04ae2c8ef913560eb0a07d87f5",
+      "usage:04c6ab4a323960a1b0699f3a1b7b1ca54863de23ad0e3aaa9537cfad8c93867a",
+      "usage:d996ab914aca9110f8b1cb096efe06ec7df49cd2f9e6a59fb9cd86d4cc04bdb6",
+      "target-use:revenue_acceleration:v2:surge_direction:b06ad6a5e2466127a4beb0c4024540222b05d34c7eb087c0f08cba2b04d55ff5",
+      "usage:34ebf559938d9f5acb7440df26d4c6d50c1e8c6b5f05908ec407cc9f20318611",
+      "usage:d5091e11ebda3ce2c348ab43c59eb95cc40ae1d1e0c12e38b67d97315bed8562",
+      "target-use:revenue_growth_yoy:v2:surge_direction:80a88c624576d51eba290d16c713b710b88e91ad0c6bc71bb475752a49a57b42",
+      "usage:00a367520fd9bfffc5827f4f36425883d8080a4716f4a413866f1a8787e00d96",
+      "usage:0975a4544c18effc74ce6b7b30f661ab54b0d0b3e59e83108cd49c637c858301",
+      "usage:15536cc910d2e754957cd608aa1d2e3128865a9a29ab3695e272d7df94631953",
+      "usage:296ecbcc0e7ca109ec32cca8507d2f9b3a84056b55e2fb54418c350b889ebe61",
+      "usage:43d9f6ea1ce68a40ca2bfdecfed30db47a084bc4a07a5413e52ee2542af8b7f1",
+      "usage:53c62a015a4694b725ac313cad219a31c31c3a6ce2c50e3231edcb9b38b8373e",
+      "usage:5eb418e7877645d0e90af9eb0ed983ca69481566c8af75dd7c367570ecf46048",
+      "usage:60505fcdb539cad37817555efe4badfed850a30d38821f538af8df08e6ff5b06",
+      "usage:8e2632ad263db64fefcad949c7c22e804098dc46b9876a71482cd41a3c6d0ed4",
+      "usage:a7ec83df7373fbd00bcb027df8fef5a69cc3501dbbeef34c9be74a0a533fae60",
+      "usage:b528af40d9148b2ba24611f45995e3f71a858503dbc9ba0964ff82f5b036f7a4",
+      "usage:c727aa4e772a62200f5a45b0679b9b93f25293c1f63ffff5874745676aed8062",
+      "usage:f0e703a5426e2135f605aef8ef296d7f6e3d6572b46a3a19e86de06b6b29837e",
+      "usage:fc8f2632859eda3148d793ecca17e1ddd6459e68adaafda72ff4d0ba92684ffa"
+    ],
+    "required_refs": [],
+    "role_scope": "reflection",
+    "schema_version": "slow-source-view-v1",
+    "source_read_mode": "kept_default_view",
+    "source_read_request_refs": [
+      "27de3cc4b4c094e13c95b8b3de7f93fd6160af1b5a2e7b19494ca8ced9b21f35"
+    ],
+    "source_read_usage": {
+      "cost": 0.00436324,
+      "llm_calls": 1,
+      "tokens": 15575
+    }
+  },
+  "parent_memory_hash": "",
+  "pending_feedback_refs": [
+    "usage:7ef7eea8215e04f32cdc95a2c564f350e30aa7c6a3c0a62b924938441fd04898",
+    "usage:826ab9c93603accc692fb6256e8383b1099ebf16aeaf57a5a11a38b44af092ae",
+    "usage:ed917a0993d35eeaa080fbe8630143d7fd9f7cbfa7f4fe6d58530bac7b97ec1e",
+    "target-use:cash_reserves:v2:surge_direction:6a9cc5c278b4c5b847eae45402471102a2672f39d061cc615ca56984599ffb42",
+    "usage:010b146506ab9f19873733f9cced882d4e4839295170c0bf2216b9830d44aeda",
+    "usage:0555f05c310ed8651e8bce9fcc7dbc78bde3027d196b7e0a801325baea2eac88",
+    "usage:16b83bb63098b345464a61c059d4d58b0e01d20ac0b30ab7cc13477651d93bd1",
+    "usage:221206a55e5361011d9b68fe7d7133eda5fd05e2bdd921ef7d6bb85f1f6c9ade",
+    "usage:23cd2793b2bf02acc0ce45228c0f6c771cdb3dde872b35e4f4cd30b56edc5dac",
+    "usage:24ddad9822a290d46c41b01836d8793e7e60cdfbaa772f70cce841c81f33b469",
+    "usage:274442175e9919e529a80619f917b70d046d17f666330296d085fc239b83f713",
+    "usage:468d328626b3db8184698f6d50be08ae9858ace91df8e3c102fb501898c88057",
+    "usage:6e7dabcee5356810f3eb0810f43fb314c228e520744d75f2d0a7e24a44575e03",
+    "usage:704e0f7c0733107120ee189f55572468794471a62d33225f0807034502ea7494",
+    "usage:721693f576a34f1a56d182839758ecdfe2d76b5e783f797e5d3d8ee529448efe",
+    "usage:798f8c42d7a71197a6edd248f3e64c574dc41eb29ef874a23284e78b8633d649",
+    "usage:7d3062fcb91d9d753da74de7dcad05c5d540a893d858857807822be2df0fd5c1",
+    "usage:9582a7940be24a7c82d2e0db78b9859c376dfa6e3c987598bb4d1e3088d59ecc",
+    "usage:b222a9e4bfe4fc4297ce7d57d1c2df0624536a41f1fbc02b30b6d927b8b39fb2",
+    "usage:ba16baf429a21d3a11551720219e1c4a38f3e0f62c67f0e92388feba49890f03",
+    "usage:c554b33f785bef94b4d0691f632fd0402e9b2249cfb61966deddf4af43be1366",
+    "usage:d94413241ab863b72170685c4d716504175d410bb9a8a63a2d8cd4ca2ffec99c",
+    "usage:e272c21ba3f6e38bfe7b304399c270debf46e594d7141537856b1f6ec764ee43",
+    "usage:f5ba528db1fccfcf2b865e5dbc08a0423eb59701c1ce8a8c0e0a7aa876dcc189",
+    "target-use:cash_to_current_liabilities_ratio:v2:surge_direction:23222a50b0c7bb8d288a0d754c52c0c82b8b0978fe1892d964a76ccd0dfd0153",
+    "usage:7b2edae4d86c73a045a61dfbbf7283b96a244d79e6f607ecd2777f6df18f5d72",
+    "usage:c85975177e8ebb06601380b41bc9169b73858174cb224ec7323a406b360c9e81",
+    "usage:c8839ffc9f648d63b2fcbb97212de70806d85d868d82efb90af2449f47e3ca75",
+    "usage:d805df823076b13a523b4256a068f4d11e75d15e7a5090a380fa977925f747b4",
+    "target-use:commercialization_status:v2:surge_direction:4e3727205bd91cb4a55809b2da42039adff2dea0786ff665e39a9aade74b50bf",
+    "usage:4c7652916ff82dc27a4cbf93070afd8f6c8a0007d7d6bc7d8695198d82abf4a3",
+    "usage:8cf3cc4f26f432f7e4a6e6c97caaea239329e70c7f2d94d9c394d6a1c1e43c70",
+    "usage:e049ffef0c5f3dc099ba18bf7c0e281da82d1e5983faffac750a0bc73d1acd6b",
+    "target-use:customer_concentration:v2:surge_direction:41beb003a6f3e9c1b42899027b56a4af58eb69ee16fafe819ff39172e30866ca",
+    "usage:05f613a43ae720eb8486fda6b91a7ba8e7a5a862884ce3a15372314061446ec9",
+    "usage:4505f32edf672041fb08b6fd45ebc54ad2b3f562c8e3ad160bd21e68aacfcec8",
+    "usage:4864351f83a6b28bf07b5b094fe5d26d3c339ad0a2dd346a4fccfaff0ad6a776",
+    "usage:4c2c1a4c0e40e66c4ba71b77b231909c7c664c72353b69a06cf92c776fdb0a1c",
+    "usage:7fdd832bacd99fa11dc58f2cdb1df7712a3b4440418a2cc6a42f360e7dec4871",
+    "usage:84ac5eac55e1ec6cfe1f8d14785502ec0e6f80d667bdb2f26b83e10e11e4cfa1",
+    "usage:8b8e928cf1dd6b4a65e84c93df3a527615df5829317cc69c8e2ee03dec8e5b7e",
+    "usage:a2e9ccce63f18311dd3da6beeda2d1de9bf96104e01c4c1b73b6a55eecbda0ff",
+    "usage:adaeeef057d7cb2effc7798589be038197acc97ea9db75567e744967c3136b89",
+    "usage:e22481a47fa8d59cffc33985542166620572fc9d0fa03d2b819d2a2d591a072f",
+    "target-use:financing_listing_action:v3:surge_direction:a41a1b8d64caf2b66c8b12fd79a7515643c1fc26d688536a8ffc0adc8c3455b8",
+    "usage:0647493a7bedb9f2949a28f33cb344d45988067dbd54c565b530840b8f01bf4b",
+    "usage:1a316555425e2fadb14c43cb589832c44e42641e1e0eb22c3b8703d494730899",
+    "usage:1fbf7948eecefa68f8255d0eb8fa6b75e1a3987c135f336420290474927cf71f",
+    "usage:2ae414fc3ef0c82300fe2064cbf4f996dc923864d382f8b59f70d2b92cf2fa90",
+    "usage:306c85a0de33c9f836f79add330d541cef2b78f474c1d463b301508fd095232c",
+    "usage:3828588a2486315ac3a99403cee54b9acd003f83023dc2ac8dde26292cb00af3",
+    "usage:60dfd77f713505207023803805cf5339fd01d6721115e00d252f995d48124a1a",
+    "usage:6ae9fc849fb8290f86d13ebea990381f7ba0b2fa07b3cd9c2a89438571e6dc7a",
+    "usage:74e3d59bd3f2f07c557616720e0609988793c2dc1951b4987fc5ebcc6a47d8c7",
+    "usage:7e1c8ab23c7e68e2a96bb0fedd28af79f59eaead78f621c9b7671f2f6a8b636e",
+    "usage:87a015a54f07faf1460e5b962266949b9aa77b398e9a003aa818d79403729dc4",
+    "usage:9af4839aba3539e587f851e4653f330c2e28cf73cbb94f3a967895152439e020",
+    "usage:aa4a06923c59f112baaadaa0469249b284b86f960c8e4902daded11d204f8bb4",
+    "usage:adb7c9e87b5325f0c492f8b2c162e7a8f29b5760540610edfdd2db263756584e",
+    "usage:b3032f46ff942ae9979e341c39d189a25b73870e55202884c4b7329d35a7c258",
+    "usage:dd5ccb152c440f1acc8397cb3901853bdb57e23c6e7c5f9d0f341b13be90b5c6",
+    "usage:e8c4d5b10d694cf3856fd72ca549d7cef407f2a441765b48345448c35297c3b7",
+    "target-use:gross_margin_change:v3:surge_direction:1aeaf774778bc82feaac4f52a24560a74d0788434323c80f3c1bc03bacb35bba",
+    "usage:1fb867b5a388aa4cbaed93541c72efa87137c51eb422333758248ef145a2b5ab",
+    "usage:369ac719bf7b03c38ed0678f1747f489dd200e449d1547932db10647aec3ef63",
+    "usage:4910544080a51aae583782f24b76d402befde110d49182d7a9cd7ea501caaab7",
+    "usage:6fff56b8aefe94959d72c35f506a49a1ee404361da873bda12c0dd144c36fcc1",
+    "usage:7bd116d14218429c4e69d4cbf360e0263efc87db76981c556189dcf427acaadc",
+    "usage:a102a7df429e1097a1bf60c75b404dbd5c8f6fcc5b66df450b73e4ddc8175263",
+    "usage:a39d5eabd38f2f44a962fe7aef27dd1d664c6954a76499f091d1a034525cfec6",
+    "usage:a90cb86fb39e078f0ac269368407a39e8ad2d62a0b3c11710ff4ea3af6afea2a",
+    "target-use:guidance_acceleration:v2:surge_direction:01d3327be171a8d87859f9b9b73d1287d40e5dc3a5c1a954d0f6535c8a913a30",
+    "usage:0a4fb66eba62d09d0d1c3c49d555ac3996b555f87557fac8145c8177d62d9a26",
+    "usage:1dc2dd3fcb7a0a714f7fb2311d15e95f31af2e9419c41e692181f98fc3d0ba22",
+    "usage:34e243031d1271b844474f8cd744044f2d4e2aa17f37cba66655df0d3f80c264",
+    "usage:50c1bd0c6659639891682a1a1ad189f8068265e6f1b3e04b8531973d16a11236",
+    "usage:6e696970013f6a759de4f2c8654411be756f2c74661e076023c6239894b9cf0c",
+    "usage:7eb30e9c6921a424030aeac23d1ff69adad72a2692477dea1af622f4a2e412e0",
+    "usage:b531f594ab708ebe6bf60f52214eec45b2ee8eee4a15970cbdad97dc7e5c3e61",
+    "usage:bf33fd08a50151ee7a488f4f135c1b459de28f4a5c172afb644cee75d75b9c44",
+    "usage:c06dea57bef5dd69de7d71e419669a380a568387d8e952286b74ca8828e2882a",
+    "usage:c1d5f56de66dd61e5d8fe71f0b10ed308fa03cc97c87192bc1b9e2fa38a3bfdf",
+    "usage:d701fd7af32ff3e3ea26723d80dde77022e29acd6f0ba401c8677cb03f4935e9",
+    "usage:fb1d4c479fdca8a003e5b9f0327ed7a74ebfb1ab2cbb16e43237f26a8cabb344",
+    "usage:fb644170769f48e4e5bd365244e34126022924c0d6ad5c66a71d4e206fe63ea7",
+    "usage:fedb661fad283b5e2e3df60cfd12e9da6306a4ae2235afb1653150f4d5fefb39",
+    "target-use:liquidity_runway_months:v2:surge_direction:7ee770b815f165c860405b00b07e0ecb9e3ea7de395c58ec7ccce9de81de54ba",
+    "usage:1428817ea1dd8b507d275cbcfda13793ef01d933b828849d531d89a55774dc02",
+    "usage:1768b21569566cd2365db20aa08b91600382fd7303cbf4d0cda8661891d60ccc",
+    "usage:716131b22248f40f1fe5a422fa97b4fbcf0e018a30596235a467533c3097a51c",
+    "usage:759349ac115cd07dc5a6ae9553aa1fb00eb7da1f53c3a036ca0e86c731dc4cd5",
+    "usage:81086775ccb34eb68458d13813b173f547648a18453570aff35d5772a2f7b75a",
+    "usage:9c8947c8dbf8cb505b4d054d63bc2ddc3c791f2ff9a982841cc950baed7516c9",
+    "usage:b3d77bd109e5b7d066d1b35ee1a351bf2e2022a064592197b22895bf48410d27",
+    "usage:c12e62cd88e64b89835d82aec320705b1309ace0bd203546f723607d6880085f",
+    "usage:d3f9399d6477f621701d3653951b12cb9421f6d5f131f38bfbafbf500ee5b58b",
+    "usage:e3fbfd13371008959d17f7bdc83cbe978c4dbf57905083d82a9351e6a1853f54",
+    "usage:ed53e37731b54ee10ade37097ed0033afb8622fd3ca6718868a885fddbf609c7",
+    "target-use:negative_word_count:v2:surge_direction:09e850db6b035b119ccf35e4cfabc1cf2b6524feae0b559c3e6f13876ae23278",
+    "usage:1114758774448469c721d13879ef9d0d44780838ac6e47b64ad0e46f610f9ba9",
+    "usage:280a01c7a333e70f6359edbb594ff9483cc5d42aeaeea4a5a1f8c34095516df4",
+    "target-use:net_share_retirement_yoy:v2:surge_direction:4e723e9b69091b05aade7d7eb2bf936b30690912ee83b0a98a029018416340e0",
+    "usage:52ae0236e424a19700fbad3b5591ae97872e5bb8f6b9b9e2e460e4b07feab5fb",
+    "usage:61e0572e38872d973816bfe2ef39335520b344b832ac990e676a4807648bfc3e",
+    "usage:a13f2b918bf3855966c6dae09cc0d1ef2bfc98fc78956a4f64ef95876a105653",
+    "target-use:operating_cash_flow_margin:v2:surge_direction:a54c390df707c77a556820caddc96452d5fab659d897971277ba08a15b055f2b",
+    "usage:007d1449d70a6b32f806f8a62bf9b90f5ea70d6d7917a3e024855d91811b267b",
+    "usage:1052816fe93d2328289ecc0d8dc489cf345bc88e24f7e151a92a888cca7a2f9a",
+    "usage:53bc975dd458b92a83bf037d5f6c316bf9a5a8d153323e18b53cd6a269a40974",
+    "usage:56e29902a58ad43419b7423e93d26367710fc6f4133a7b7858d86db3c9504bc3",
+    "usage:a7f9309b6ceae760d0e8d92d2bfeaffce3a78906f2e330da43ba537c37d9cc82",
+    "usage:b528c205b245f264a56cb4293912cb1f9cba22e62940c537878b2d27256fff1e",
+    "usage:c60161be5bb3b1b9f39c12f76935883ee1c4df2a1af6355bad6adea173706697",
+    "usage:f0ae7a9a55829692d2e5da323744b8716fba78842910e6418598e988be6bb90f",
+    "target-use:order_confirmation_disclosed:v2:surge_direction:e625897894a001087eb1c6152c921e9b2250364724efd4d8529dc9f859271be0",
+    "usage:09961e4e4d79d90fbaa04e4f59f2357d46c66fdced804f5f798d27e624c71e72",
+    "usage:86c1bad735906ef1e8ce3847727db13c94fee90a9771d343d76d28aca52af0f1",
+    "usage:8e02d7c86aff9b8dad2f43c142c16e88d27a916fdf4e41341ab0224a23b91632",
+    "usage:b4c1929c4912e9f2fdb6c4351653b4514d6269ad5b512dbfe7901202e91f274c",
+    "usage:bd6c31f31a211c77da822300caeab215aeb7c87a194badd87a8eb5f344612bf9",
+    "usage:da6b52cd0d3373b5d1523833d1e056401653ff4fbe8c4bc6cdc2cc1e7cc3ad2e",
+    "usage:e47d6c2ef61155a987e38ab3e82e2f090854163bb3393c1c98668744a2c0e843",
+    "usage:e9b64c97034fd4b665397b91da7eeca499fde74c89cad1a0831d2e8743e5eba4",
+    "usage:f4023317777b848b5b8813591f46447528eefe939f9ab95bda32642ee9688312",
+    "usage:fb9ba9ff0149ee986ad335fed0497a5db72607aaf3194f59328fa1f29aa5edb7",
+    "target-use:order_quality:v2:surge_direction:74ad35bf33dd029547c1f11dc4aabdea0ae7934e6fe835ba229e4b7518f11948",
+    "usage:b5ed9c736639bd6bc895cbd7ec4db09871d7d628265ca62bceabb8c013a0e9d9",
+    "target-use:price_momentum_126d:v2:surge_direction:15f460a3c569a1acfc9186d89e3226a4da0cde04ae2c8ef913560eb0a07d87f5",
+    "usage:04c6ab4a323960a1b0699f3a1b7b1ca54863de23ad0e3aaa9537cfad8c93867a",
+    "usage:d996ab914aca9110f8b1cb096efe06ec7df49cd2f9e6a59fb9cd86d4cc04bdb6",
+    "target-use:revenue_acceleration:v2:surge_direction:b06ad6a5e2466127a4beb0c4024540222b05d34c7eb087c0f08cba2b04d55ff5",
+    "usage:34ebf559938d9f5acb7440df26d4c6d50c1e8c6b5f05908ec407cc9f20318611",
+    "usage:d5091e11ebda3ce2c348ab43c59eb95cc40ae1d1e0c12e38b67d97315bed8562",
+    "target-use:revenue_growth_yoy:v2:surge_direction:80a88c624576d51eba290d16c713b710b88e91ad0c6bc71bb475752a49a57b42",
+    "usage:00a367520fd9bfffc5827f4f36425883d8080a4716f4a413866f1a8787e00d96",
+    "usage:0975a4544c18effc74ce6b7b30f661ab54b0d0b3e59e83108cd49c637c858301",
+    "usage:15536cc910d2e754957cd608aa1d2e3128865a9a29ab3695e272d7df94631953",
+    "usage:296ecbcc0e7ca109ec32cca8507d2f9b3a84056b55e2fb54418c350b889ebe61",
+    "usage:43d9f6ea1ce68a40ca2bfdecfed30db47a084bc4a07a5413e52ee2542af8b7f1",
+    "usage:53c62a015a4694b725ac313cad219a31c31c3a6ce2c50e3231edcb9b38b8373e",
+    "usage:5eb418e7877645d0e90af9eb0ed983ca69481566c8af75dd7c367570ecf46048",
+    "usage:60505fcdb539cad37817555efe4badfed850a30d38821f538af8df08e6ff5b06",
+    "usage:8e2632ad263db64fefcad949c7c22e804098dc46b9876a71482cd41a3c6d0ed4",
+    "usage:a7ec83df7373fbd00bcb027df8fef5a69cc3501dbbeef34c9be74a0a533fae60",
+    "usage:b528af40d9148b2ba24611f45995e3f71a858503dbc9ba0964ff82f5b036f7a4",
+    "usage:c727aa4e772a62200f5a45b0679b9b93f25293c1f63ffff5874745676aed8062",
+    "usage:f0e703a5426e2135f605aef8ef296d7f6e3d6572b46a3a19e86de06b6b29837e",
+    "usage:fc8f2632859eda3148d793ecca17e1ddd6459e68adaafda72ff4d0ba92684ffa"
+  ],
+  "processed_feedback_refs": [
+    "target-use:cash_burn_rate_elevated:v2:surge_direction:64a6d6b0313c256012103588f106a81c923d35babdf0e9dc86680acb938ebd83",
+    "usage:1f809f7ab543acfbda0b5efdd7967c7a995cc14dab4665c91c17a79643f4e6d8",
+    "usage:5f54e9997227928d2a637e260edd68847ad5e151957a9ba0080e3d4202ccfb5d"
+  ],
+  "reflection_work_hash": "e8e5c9304d53f553dbc469903875c407e5f888781dba89d3cad3f6070ec1c843",
+  "schema_version": "slow-memory-v1",
+  "status": "appended",
+  "usage_ref": "1453c7b0cc45a8349f31f5878c7e33b9dbeed80b41f20d69e52558cd8c3539ad"
+}

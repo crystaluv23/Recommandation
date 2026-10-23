@@ -1,0 +1,43 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-001",
+      "case-002",
+      "case-003",
+      "case-004",
+      "case-005",
+      "case-006",
+      "case-007",
+      "case-008"
+    ],
+    "max_documents": 16,
+    "query": "material weakness",
+    "rationale": [
+      "The positive case-001 window contains a cover-page attestation question, not management's ICFR conclusion; the control case-002 window establishes effective disclosure controls and no material ICFR change only for its stated quarter.",
+      "Refine the existing broad ICFR search to locate substantive material-weakness disclosures across the fixed cases, then verify raw meaning and case-specific PIT bindings before defining a reusable measurement.",
+      "This is targeted navigation within fetched filing families, not evidence of absence, a completed contrast or a claim of predictive benefit."
+    ],
+    "source_families": [
+      "10-k",
+      "filing",
+      "sec_filing"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"fetch_evidence\",\"case_refs\":[\"case-001\",\"case-002\",\"case-003\",\"case-004\",\"case-005\",\"case-006\",\"case-007\",\"case-008\"],\"source_families\":[\"10-k\",\"filing\",\"sec_filing\"],\"max_documents\":16,\"query\":\"material weakness\",\"rationale\":[\"The positive case-001 window contains a cover-page attestation question, not management's ICFR conclusion; the control case-002 window establishes effective disclosure controls and no material ICFR change only for its stated quarter.\",\"Refine the existing broad ICFR search to locate substantive material-weakness disclosures across the fixed cases, then verify raw meaning and case-specific PIT bindings before defining a reusable measurement.\",\"This is targeted navigation within fetched filing families, not evidence of absence, a completed contrast or a claim of predictive benefit.\"]}\n",
+  "request_hash": "781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456",
+  "response_id": "local-781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456",
+  "usage": {
+    "accounting_tokens": 194530,
+    "agent_id": "/root/icfr_v4_h006",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "0f5821095199b15ad8eff0853f686400eb2ca3e12173707082a91ff1fb1fc3b1",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "2063f7a1b5677cdee508274f1994e70df16c225f739241429a0c3ca145aa750e",
+    "request_hash": "781a6746f5faff6c83fc4b2292b71689852c31f0070e4332547024f9ff0ad456",
+    "token_usage": null
+  }
+}

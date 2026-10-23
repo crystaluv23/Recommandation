@@ -1,0 +1,73 @@
+{
+  "confidence": "repeated",
+  "directional": {
+    "correct": 9,
+    "unavailable": 0,
+    "unavailable_with_inputs": 0,
+    "unavailable_without_inputs": 0,
+    "wrong": 10
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [
+    {
+      "context_tag": "capital_intensive",
+      "issuers": 23,
+      "observations": 23,
+      "positive_surge_rate": 0.5294117647058824
+    },
+    {
+      "context_tag": "large_cap",
+      "issuers": 17,
+      "observations": 17,
+      "positive_surge_rate": 0.42857142857142855
+    },
+    {
+      "context_tag": "small_cap",
+      "issuers": 17,
+      "observations": 17,
+      "positive_surge_rate": 0.5454545454545454
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 2,
+    "misleading": 4,
+    "other": 4
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 136,
+  "selection_reason_codes": [
+    {
+      "count": 97,
+      "reason_code": "assess_applicability"
+    },
+    {
+      "count": 23,
+      "reason_code": "combine_evidence"
+    },
+    {
+      "count": 15,
+      "reason_code": "answer_need"
+    }
+  ],
+  "signal_ref": "cash_reserves:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 0,
+      "surge": 2
+    },
+    "neutral": {
+      "non_surge": 2,
+      "surge": 2
+    },
+    "positive": {
+      "non_surge": 8,
+      "surge": 9
+    },
+    "unavailable": {
+      "non_surge": 0,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 23,
+  "unique_observations": 23
+}

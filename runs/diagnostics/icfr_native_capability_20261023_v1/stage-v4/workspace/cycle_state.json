@@ -1,0 +1,10 @@
+{
+  "active_cycle": null,
+  "current_signal_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "current_signal_registry_version": 12,
+  "initial_signal_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "initial_signal_registry_version": 12,
+  "last_completed_cycle": 0,
+  "run_contract_hash": "47190c15b8149b045e7b73a030e322ff5db1388bb6efa0cf63232dbe7b474863",
+  "schema_version": "dual-loop-cycle-state-v2"
+}

@@ -1,0 +1,370 @@
+{
+  "evidence": {},
+  "last_action_result": {
+    "action": "inspect_catalog",
+    "result": {
+      "counts": {
+        "available": 18,
+        "included": 4,
+        "omitted_after": 0,
+        "omitted_before": 14,
+        "oversized": 0
+      },
+      "cursor": 14,
+      "items": [
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "skill_file": "order_confirmation_disclosed.md",
+              "type": "llm"
+            },
+            "modality": "narrative",
+            "parameters": {},
+            "raw_retrieval": {
+              "lookback_days": 180,
+              "query_terms": [
+                "order",
+                "contract",
+                "offtake",
+                "binding award",
+                "customer order",
+                "delivery schedule",
+                "named counterparty",
+                "purchase agreement",
+                "supply agreement",
+                "new order",
+                "offtake agreement",
+                "binding contract"
+              ],
+              "source_types": [
+                "filing",
+                "news",
+                "transcript",
+                "10-k",
+                "10-q",
+                "8-k",
+                "company_news",
+                "sec_filing",
+                "earnings_call"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units.",
+          "original_available": true,
+          "read_bytes": 5004,
+          "signal_ref": "order_confirmation_disclosed:v3",
+          "source_hash": "382aefd77c7ad7208b0d07f8fbe9ad96b70c5c40d2370aa01ef505bf9aa7276d"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "skill_file": "skill.md",
+              "type": "llm"
+            },
+            "modality": "narrative",
+            "parameters": {
+              "routing_required_research_phrases": [
+                "purchase order",
+                "purchase orders",
+                "customer order",
+                "customer orders",
+                "order backlog",
+                "funded backlog",
+                "contract award",
+                "customer commitment"
+              ]
+            },
+            "raw_retrieval": {
+              "lookback_days": 730,
+              "query_terms": [
+                "purchase order backlog",
+                "contract award",
+                "customer commitment"
+              ],
+              "source_types": [
+                "filing",
+                "company_announcement",
+                "customer_announcement",
+                "earnings_call"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue.",
+          "original_available": true,
+          "read_bytes": 1324,
+          "signal_ref": "order_quality:v2",
+          "source_hash": "7d054cafc32ddf2d4080451745d58c742a64d2afd2409b1c97b07522ebb0a946"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "skill_file": "skill.md",
+              "type": "llm"
+            },
+            "modality": "narrative",
+            "parameters": {
+              "routing_excluded_context_tags": [
+                "mature_operations"
+              ],
+              "routing_required_research_phrases": [
+                "product",
+                "technology",
+                "prototype",
+                "commercialization",
+                "commercial launch",
+                "commercially available",
+                "sellable",
+                "repeatable"
+              ]
+            },
+            "raw_retrieval": {
+              "lookback_days": 1095,
+              "query_terms": [
+                "commercial launch",
+                "commercial shipment",
+                "scaled sales"
+              ],
+              "source_types": [
+                "filing",
+                "company_announcement",
+                "customer_announcement",
+                "earnings_call"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable.",
+          "original_available": true,
+          "read_bytes": 1761,
+          "signal_ref": "commercialization_status:v2",
+          "source_hash": "16ed86d1f824a0f596e49a5d5848e413b2e5c4fd86058bdcb90b6c95454372ba"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "skill_file": "skill.md",
+              "type": "llm"
+            },
+            "modality": "narrative",
+            "parameters": {
+              "result_required_evidence_phrases": [
+                "customer",
+                "customers",
+                "client",
+                "clients",
+                "buyer",
+                "buyers",
+                "offtake",
+                "backlog",
+                "order",
+                "orders",
+                "account",
+                "accounts",
+                "program"
+              ],
+              "routing_answer_need_phrases": [
+                "customer concentration",
+                "customer dependency",
+                "customer dependence",
+                "single customer",
+                "one customer",
+                "largest customer",
+                "major customer",
+                "revenue concentration",
+                "customer diversification",
+                "customer diversity",
+                "diversified customers",
+                "customer mix"
+              ],
+              "routing_required_research_phrases": [
+                "customer",
+                "client",
+                "buyer",
+                "offtake",
+                "backlog",
+                "order",
+                "customer program"
+              ]
+            },
+            "raw_retrieval": {
+              "lookback_days": 1095,
+              "query_terms": [
+                "customer concentration",
+                "major customer",
+                "revenue customer"
+              ],
+              "source_types": [
+                "filing",
+                "earnings_call",
+                "customer_announcement"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Judge whether the growth thesis depends excessively on one customer or one customer program.",
+          "original_available": true,
+          "read_bytes": 1709,
+          "signal_ref": "customer_concentration:v2",
+          "source_hash": "ee242b80fc0c72ac3d535962b3c92faad5c7f8ab363c70764bc0135d7bb75410"
+        }
+      ],
+      "max_entry_bytes": 8000,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "read_action": "inspect_catalog scope=signals item_refs",
+      "read_byte_limit": 16000,
+      "selection_is_exhaustive": false
+    },
+    "scope": "signals"
+  },
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [
+      {
+        "action": "inspect_catalog",
+        "action_id": 1,
+        "case_refs": [],
+        "coverage": {
+          "keys": [
+            "counts",
+            "cursor",
+            "items",
+            "max_entry_bytes",
+            "next_cursor",
+            "oversized_entries",
+            "read_action",
+            "read_byte_limit",
+            "selection_is_exhaustive"
+          ]
+        },
+        "evidence_refs": [],
+        "input_hash": "024b53c8fd343775dc5559a3031841cf5111629e57c9461ecf6bd6a832fe3427",
+        "note": null,
+        "omitted_coverage": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 4,
+          "omitted_before": 7,
+          "oversized": 0
+        },
+        "output_hash": "271a1ca99607a07f6c5e822d61871b1079472cefe47d98a9763eb81d867358b4",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 1
+        }
+      },
+      {
+        "action": "inspect_catalog",
+        "action_id": 2,
+        "case_refs": [],
+        "coverage": {
+          "keys": [
+            "counts",
+            "cursor",
+            "items",
+            "max_entry_bytes",
+            "next_cursor",
+            "oversized_entries",
+            "read_action",
+            "read_byte_limit",
+            "selection_is_exhaustive"
+          ]
+        },
+        "evidence_refs": [],
+        "input_hash": "b9d9ae28037784168544657558a77c59d2c88b2c64de207d33c95964a84bd20b",
+        "note": null,
+        "omitted_coverage": {
+          "available": 18,
+          "included": 4,
+          "omitted_after": 0,
+          "omitted_before": 14,
+          "oversized": 0
+        },
+        "output_hash": "ce8f628d00918dfddad1f51d64c0b6e29fbd4e43f36c62bb3d7fe8e1d606aa13",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 2
+        }
+      }
+    ],
+    "seed_id": "seed-hypothesis"
+  }
+}

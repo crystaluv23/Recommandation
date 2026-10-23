@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/freeze_oracle_v4.py", line 176, in <module>
+    main()
+  File "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/freeze_oracle_v4.py", line 46, in main
+    assert stage.digest(semantics) == ORIGINAL_SEMANTICS
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

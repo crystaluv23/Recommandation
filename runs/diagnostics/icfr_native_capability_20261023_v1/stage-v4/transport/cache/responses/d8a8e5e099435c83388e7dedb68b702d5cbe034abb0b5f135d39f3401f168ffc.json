@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000121390024092156",
+    "length": 599,
+    "offset": 269880,
+    "rationale": [
+      "Read the source-bound material-weakness navigation hit for positive case-001; its previous cover-page attestation fragment does not establish the issuer ICFR assessment.",
+      "Compare the actual disclosure with the already-read case-002 control, preserving unknowns if this hit is generic risk language."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0000]:000121390024092156\", \"offset\": 269880, \"length\": 599, \"rationale\": [\"Read the source-bound material-weakness navigation hit for positive case-001; its previous cover-page attestation fragment does not establish the issuer ICFR assessment.\", \"Compare the actual disclosure with the already-read case-002 control, preserving unknowns if this hit is generic risk language.\"]}",
+  "request_hash": "d8a8e5e099435c83388e7dedb68b702d5cbe034abb0b5f135d39f3401f168ffc",
+  "response_id": "local-d8a8e5e099435c83388e7dedb68b702d5cbe034abb0b5f135d39f3401f168ffc",
+  "usage": {
+    "accounting_tokens": 193978,
+    "agent_id": "/root/icfr_v4_h007",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "dc0bb5231f4864998a8ec66d53621706ed8451d2b7dee71d817ca47103c35526",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "f3d099a2435b5ca1f3e45bfe44ba136c5ab361e77ceec3cfdf0b4525dd6cfd91",
+    "request_hash": "d8a8e5e099435c83388e7dedb68b702d5cbe034abb0b5f135d39f3401f168ffc",
+    "token_usage": null
+  }
+}

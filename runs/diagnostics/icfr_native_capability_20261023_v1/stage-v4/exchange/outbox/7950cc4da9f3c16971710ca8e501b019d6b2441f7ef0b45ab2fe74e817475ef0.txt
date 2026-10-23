@@ -1,0 +1,1 @@
+{"action":"inspect_catalog","scope":"signals","cursor":14,"rationale":["The retained catalog page ends at next_cursor 14, with four existing Signals still undisclosed.","Inspect the remaining capability cards before defining a distinct ICFR narrative measurement; catalog omissions do not establish novelty."]}

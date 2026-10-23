@@ -1,0 +1,359 @@
+{
+  "contract": {
+    "assignment": " Prospective bounded capability assignment: investigate a reusable narrative measurement in the public ICFR disclosure family. Independently choose and verify the measurement from authorized point-in-time material using the full existing catalog, backlog and tools. This assignment supplies no candidate, source locator, class mapping, supporting answer, or claim about stock direction or magnitude. Preserve unsupported or ambiguous conclusions as unknown. Retain every original action, exploration, evidence and disposition obligation.",
+    "controls": [
+      "case-001",
+      "case-003",
+      "case-005",
+      "case-006"
+    ],
+    "external_api_calls": 0,
+    "fixed_candidate_denominator": 1,
+    "fixed_consumer_denominator": 4,
+    "historical_resource_prefix": {
+      "answered_records": {
+        "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json",
+            "sha256": "d694d5b9c9cfc83aa98befeeb7c95a902885b43bbc3a554d49baa295b5455e9e"
+          },
+          "reservation": 234074,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json",
+            "sha256": "cd5972e94991fb0deef546fec9b4da28cebfbbb475ff586dfd31929d05056470"
+          },
+          "reservation": 247395,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json",
+            "sha256": "111f93c8ee35cc67682d5a41480d8115546d86f59fbdc08bc82185c159885789"
+          },
+          "reservation": 111714,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json",
+            "sha256": "7c764237e6f203ea8b6d00f2cc4d3902b8548063dc0a1cdd28085d953bd15fc8"
+          },
+          "reservation": 245898,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json",
+            "sha256": "987066e5e39fec92e94620f9b649092122f79c2b633a90d038051de3a444fb83"
+          },
+          "reservation": 90877,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.json",
+            "sha256": "4e498fb9f0599922dc7d3f96da1eb89b4eab0d5bbcb833c7ddd0be3bb6e90006"
+          },
+          "reservation": 260104,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json",
+            "sha256": "1bcb71cbb27a29fc2064db3c2a8b78e20032b09010aad7d2160ee9803a778a1b"
+          },
+          "reservation": 251665,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.json",
+            "sha256": "2c140b52cb0952b386e099286ee837575544ec09b411c7bb296e03b33d3159cb"
+          },
+          "reservation": 258996,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json",
+            "sha256": "05bffb2073b5b53ad95692fc6dc02a0b102b984ff09ac6cae7df39634683ad4a"
+          },
+          "reservation": 108402,
+          "scopes": [
+            "mining"
+          ]
+        },
+        "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727": {
+          "initial_scope": "mining",
+          "request": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json",
+            "sha256": "9d9ffeb010cd01792a9b6310b3ecee4f4d0ffefd0bfa1b7657cce76e40093e7a"
+          },
+          "reservation": 246816,
+          "scopes": [
+            "mining"
+          ]
+        }
+      },
+      "answered_usage": [
+        10,
+        2055941
+      ],
+      "completion": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+        "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+      },
+      "runtime_archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+        "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+      },
+      "stage_root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3"
+    },
+    "limits": {
+      "max_local_role_calls": 728,
+      "max_request_tokens": 262144,
+      "max_structured_corrections": 1,
+      "structured_reasoning_token_reserve": 0
+    },
+    "need": "Identify the latest publicly disclosed dated management assessment of ICFR, its assessment period, material-weakness/remediation conclusion, and whether this establishes ICFR status at the prediction cutoff; preserve unknowns and conflicting terminology.",
+    "predecessor_controls": [
+      {
+        "answered_unique_requests": 12,
+        "candidate_acceptance": "uncompleted",
+        "candidate_denominator": 1,
+        "consumer_attempted": 0,
+        "consumer_denominator": 4,
+        "logical_reservations": 2001316,
+        "new_role_answers_imported": false,
+        "pending_progress": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+          "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+          "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+        },
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+          "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+        }
+      },
+      {
+        "answered_unique_requests": 11,
+        "candidate_acceptance": "uncompleted",
+        "candidate_denominator": 1,
+        "consumer_attempted": 0,
+        "consumer_denominator": 4,
+        "logical_reservations": 1837419,
+        "new_role_answers_imported": false,
+        "pending_progress": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+          "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+          "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+        },
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+          "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+        }
+      },
+      {
+        "answered_unique_requests": 10,
+        "candidate_acceptance": "uncompleted",
+        "candidate_denominator": 1,
+        "consumer_attempted": 0,
+        "consumer_denominator": 4,
+        "logical_reservations": 2055941,
+        "new_role_answers_imported": false,
+        "resource_prefix": {
+          "answered_records": {
+            "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json",
+                "sha256": "d694d5b9c9cfc83aa98befeeb7c95a902885b43bbc3a554d49baa295b5455e9e"
+              },
+              "reservation": 234074,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json",
+                "sha256": "cd5972e94991fb0deef546fec9b4da28cebfbbb475ff586dfd31929d05056470"
+              },
+              "reservation": 247395,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json",
+                "sha256": "111f93c8ee35cc67682d5a41480d8115546d86f59fbdc08bc82185c159885789"
+              },
+              "reservation": 111714,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json",
+                "sha256": "7c764237e6f203ea8b6d00f2cc4d3902b8548063dc0a1cdd28085d953bd15fc8"
+              },
+              "reservation": 245898,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json",
+                "sha256": "987066e5e39fec92e94620f9b649092122f79c2b633a90d038051de3a444fb83"
+              },
+              "reservation": 90877,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.json",
+                "sha256": "4e498fb9f0599922dc7d3f96da1eb89b4eab0d5bbcb833c7ddd0be3bb6e90006"
+              },
+              "reservation": 260104,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json",
+                "sha256": "1bcb71cbb27a29fc2064db3c2a8b78e20032b09010aad7d2160ee9803a778a1b"
+              },
+              "reservation": 251665,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.json",
+                "sha256": "2c140b52cb0952b386e099286ee837575544ec09b411c7bb296e03b33d3159cb"
+              },
+              "reservation": 258996,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json",
+                "sha256": "05bffb2073b5b53ad95692fc6dc02a0b102b984ff09ac6cae7df39634683ad4a"
+              },
+              "reservation": 108402,
+              "scopes": [
+                "mining"
+              ]
+            },
+            "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727": {
+              "initial_scope": "mining",
+              "request": {
+                "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json",
+                "sha256": "9d9ffeb010cd01792a9b6310b3ecee4f4d0ffefd0bfa1b7657cce76e40093e7a"
+              },
+              "reservation": 246816,
+              "scopes": [
+                "mining"
+              ]
+            }
+          },
+          "answered_usage": [
+            10,
+            2055941
+          ],
+          "completion": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+            "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+          },
+          "runtime_archive": {
+            "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+            "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+          },
+          "stage_root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-9ae48904.tar.gz",
+          "sha256": "02acdd0479bae8d2cbbd53743224db580c42d1b5e5503d5d4d356adb004291f1"
+        },
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+          "sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b"
+        }
+      }
+    ],
+    "provenance": "current_cycle1 is this isolated diagnostic with accepted-prefix Slow input; not a business commit",
+    "root": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4",
+    "schema_version": "icfr-native-capability-stage-v4",
+    "scope_limits": {
+      "candidate": [
+        300,
+        16777216
+      ],
+      "fast": [
+        12,
+        3145728
+      ],
+      "global": [
+        728,
+        58720256
+      ],
+      "mining": [
+        80,
+        12582912
+      ]
+    },
+    "slow_history_manifest_hash": "ba60fd7c7aa4472900ef26c8068deee66e9d4e51c8a699455432f7eed626bc55"
+  },
+  "contract_hash": "47190c15b8149b045e7b73a030e322ff5db1388bb6efa0cf63232dbe7b474863"
+}

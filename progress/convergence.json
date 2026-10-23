@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-23T03:39:54+00:00",
-    "thread_id": "01a15f73-622f-7130-905e-927e4e6c17c7",
-    "source": "Live get_goal confirms active unbudgeted MVP goal. Separate collaboration service returns agent thread limit reached; no actor or formal v4 stage created. Local497/preserved-source checks are not fresh capability proof. Existing user authority remains, no budget reset or API fallback."
+    "checked_at": "2026-10-23T06:12:59+00:00",
+    "thread_id": "01a1674b-9484-78d0-955c-6db9b35d0a4c",
+    "source": "Live get_goal confirms current continuing unbudgeted MVP goal active. Independent reviewer and exact-inbox production agents actually start this turn. Frozen v4 bounded diagnostic preserves v3 debt/original limits and old terminal states; not a full successor, budget reset, new efficacy claim or external API authorization."
   },
   "acceptance": [
     {
@@ -2012,10 +2012,28 @@
         "runs/diagnostics/mining_preserved_budget_20261023_v1/independent/initial-review.md"
       ],
       "result": "Same original ceilings and source/semantic population; verified v3 ten answered wires/2055941 are immutable global+mining prefix, new records separate, historical identities cannot enter new cache. Shared model initialized once; local cache replay remains ordered; completed-seed counters equal historical plus only that local answered snapshot at save/restore, future receipts or a lost earlier checkpoint cannot replace prefix.497 offline associated pass, code hashes stable/socket0; exact-fit/+1, malformed, drift/reset, dual seeds and native full factory temporary controls covered. Earlier harness directory/contract assertions failed before corrected file checks, not product failures. Independent scheme review confirms adopted user attachment authorizes postrepair same-budget new-code evaluation, but implementation counterreview/fresh dispatch tool returns agent thread limit reached, including after interrupting old pending_init children; stop dispatch, no API fallback/new oracle/stage/actor. Old3 oracle bytes/263sources and v3 312seal rows/316files unchanged, total historical33/5894676 remains visible. No candidate/admission/consumer/business progress; engineering MVP open. Further parent counterexample jointly rewrote completed snapshot and counters consistently; old equality-only check accepted it. Retained actual failing test and prebinding497 evidence, added immutable accepted-checkpoint byte receipt and missing/rewritten receipt controls; full final497 includes that fix. This is parent local evidence, not independent implementation approval."
+    },
+    {
+      "id": "mining-native-v4-20261023",
+      "strategy": "same_budget_fresh_native_candidate_chain_after_representation_repair",
+      "failure_families": [
+        "unverified_fresh_mining_after_local_read_navigation_repair",
+        "historical_consumption_and_downstream_exact_use"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-native-v4-20261023.md",
+        "runs/diagnostics/mining_preserved_budget_20261023_v1/independent-implementation/review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/equivalence-evidence.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-first-wires-review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-read-retention-review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json"
+      ],
+      "result": "Active isolated v4 diagnostic. Independent implementation counterreview27 existing+17 new controls passed; original15 protected semantic fields unchanged,182 exact working-tree files archived and read back, source263/stable18/needs265/disclosures6 and candidate1/consumer4 fixed. Old v3 ten/2055941 charged, no old answers/actions/cache imported and no cap increase. Fresh native first4 wires and read004-to007 independently preserve actual catalog18, source spans/query origins, object/time and budget. Initial snapshot10 new accepted first answers/0model corrections/1698075; no candidate/admission/consumer yet. Actual current frontier is stage progress, not this historical snapshot. Fast and MVP remain open; no external API/network/labels/business pointer advance."
     }
   ],
   "review": {
-    "after_iteration": "mining-preserved-budget-20261023",
+    "after_iteration": "mining-native-v4-20261023",
     "evidence": [
       "reports/icfr-source-and-native-path-preflight-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
@@ -2058,7 +2076,13 @@
       "reports/mining-preserved-budget-20261023.md",
       "runs/diagnostics/mining_preserved_budget_20261023_v1/associated-test-bindings.json",
       "runs/diagnostics/mining_preserved_budget_20261023_v1/preserved-inputs.json",
-      "runs/diagnostics/mining_preserved_budget_20261023_v1/independent/initial-review.md"
+      "runs/diagnostics/mining_preserved_budget_20261023_v1/independent/initial-review.md",
+      "reports/mining-native-v4-20261023.md",
+      "runs/diagnostics/mining_preserved_budget_20261023_v1/independent-implementation/review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/equivalence-evidence.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-first-wires-review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-read-retention-review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2176,14 +2200,22 @@
       "Actual context retention now works, but source selection changes graph growth: broad null/32 fetch2879facts1342relations versus earlier targeted2088/952. Focused source/working-page tests and first-wire fits do not establish complete future native request affordability. The annual source also discloses43section anchors while displaying24; determine actual addressability and total-message cost from frozen original artifacts before another interface or resource decision, rather than call a budget terminal no-pattern or automatically rename/restart it.",
       "First handle projection relied on recursively named reference slots and therefore rewrote opaque source JSON/semantic thresholds; source originals and typed operation containers need schema-owned boundaries in every duplicate working-view copy. Independent controls found defaultscope=None and inspect_manifest copies missed after first literal repair. Complete actual payload roundtrip/native zero-receive fit and synthetic preservation do not prove fresh role planning or any candidate, and a code-specific immutable oracle refusal must not be repaired by refreshing that sealed oracle.",
       "The true-origin repair initially concatenated per-case navigation in input order and reversed all rows for recency; isolated source geometry and the first independent8groups did not test whole-fetch case permutations or same-fetch projection order. Existing accounting regression found it, canonical case order and newest-fetch grouping now preserve both. Script hypothetical query/read after old-answer reconstruction is only a mechanical/full-cost probe: it supplies no fresh decision and cannot count its two captures as sequential answered requests or replace real candidate/admission/use evidence.",
-      "Postrepair new-code evaluation permission does not permit resetting an exhausted target or importing earlier answers. Preserve exact old receipt costs in both role-visible reserved counters and hard gates, reconstruct only local ordered caches, and test both sides of completed-seed snapshots. Empty exchange directories and exchange/contract.json are normal transport initialization, not imported answers. Independent authorization review is not independent implementation acceptance. Subagent service thread limit stops further dispatch; offline tests cannot substitute for fresh model behavior and no external API fallback is authorized. Matching counters and snapshot can be jointly rewritten; bind accepted checkpoint bytes in a separate immutable receipt before restoring. The added joint-rewrite test actually failed the earlier implementation, so earlier497 did not close this family."
+      "Postrepair new-code evaluation permission does not permit resetting an exhausted target or importing earlier answers. Preserve exact old receipt costs in both role-visible reserved counters and hard gates, reconstruct only local ordered caches, and test both sides of completed-seed snapshots. Empty exchange directories and exchange/contract.json are normal transport initialization, not imported answers. Independent authorization review is not independent implementation acceptance. Subagent service thread limit stops further dispatch; offline tests cannot substitute for fresh model behavior and no external API fallback is authorized. Matching counters and snapshot can be jointly rewritten; bind accepted checkpoint bytes in a separate immutable receipt before restoring. The added joint-rewrite test actually failed the earlier implementation, so earlier497 did not close this family.",
+      "The old service thread limit was a verified dispatch stop, not a permanent unavailable state. This turn actually started independent reviewer and fresh exact-inbox actors before continuing. Independent implementation review and exact semantic-oracle equality now permit same-budget code-version evaluation, but partial fresh navigation/read fidelity cannot substitute for complete candidate/admission/consumer capability or Fast closure."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "stop",
-      "strategy": "stop_fresh_dispatch_at_subagent_thread_limit",
-      "action": "Checkpoint locally verified immutable-budget/native-recovery changes and preserve all old controls. Do not create formal v4 oracle/stage or dispatch actors while the subagent tool reports its thread limit. Implementation independent counterreview and prospective freeze remain prerequisites before any later fresh same-budget code-version evaluation.",
-      "stop": "Current subagent service thread limit prevents implementation reviewer/fresh actors. No alternate agent entry, external API, new/reset goal, new resource ceiling, sealed v3 reentry or h011. Resume dispatch only after actual service availability under the continuing user authorization; no assumption that an idle interval restores service."
+      "kind": "diagnose",
+      "strategy": "same_budget_fresh_native_candidate_chain_after_representation_repair",
+      "action": "Continue only the prospective frozen v4 native S4/S5/S7/four-consumer diagnostic, serial exact-inbox fresh authors with verified v3 resource debt. Inspect actual sources and outputs before publication; completed/pending/failed old controls remain untouched.",
+      "stop": "Original single/global/Mining/candidate/Fast ceilings; actual subagent limit or a newly confirmed propagation/semantic prerequisite blocker. No hot edit, API fallback, old reentry, imported answer, extra call or full successor.",
+      "question": "Does repaired current code let independent fresh roles find/read original material, generate and faithfully implement a legitimate ICFR measurement, pass technical and source review, and actually consume the exact admitted version in four fixed cases within original remaining resources?",
+      "pass": "A genuine native candidate chain and all four frozen source-semantic consumers meet original obligations with exact artifacts and reopen equality.",
+      "fail": "Any answerable control remains incomplete/incorrect or a real resource/control/semantic boundary stops the native chain.",
+      "on_pass": "Record only bounded direction candidate/diagnostic consumption evidence; keep full Fast, magnitude, committed S8, whole-loop recovery and effect milestones open.",
+      "on_fail": "Preserve raw failures, original denominators and terminal/pending state; identify the first failed boundary before choosing repair or stopping that strategy.",
+      "new_evidence": "Subagent service actually available; independent implementation counterreview and metadata-only freeze passed. Actual fresh first wires and read-retention/source review now available.",
+      "distinguishing_variable": "Same original inputs/semantic oracle/ceilings with repaired reference/query/navigation and immutable historical consumption, rather than old-answer replay or changed budget."
     }
   },
   "successor_prerequisites": [

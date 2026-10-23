@@ -1,0 +1,108 @@
+{
+  "review": "independent original-prefix and synthetic-transport controls",
+  "findings": [],
+  "controls": [
+    {
+      "case": "actual-three-old-controls",
+      "result": "verified",
+      "usage": [
+        [
+          12,
+          2001316
+        ],
+        [
+          11,
+          1837419
+        ],
+        [
+          10,
+          2055941
+        ]
+      ]
+    },
+    {
+      "case": "resolved-old-root-stage",
+      "result": "rejected",
+      "reason": "diagnostic dispatch was stopped; h013 must remain unanswered in v1 and h012 in v2"
+    },
+    {
+      "case": "resolved-old-root-stage-v2",
+      "result": "rejected",
+      "reason": "diagnostic dispatch was stopped; h013 must remain unanswered in v1 and h012 in v2"
+    },
+    {
+      "case": "resolved-old-root-stage-v3",
+      "result": "rejected",
+      "reason": "v3 is sealed terminal; no h011 or stage reentry is permitted"
+    },
+    {
+      "case": "historical-prefix-answered_usage-[True, 2055941]",
+      "result": "rejected",
+      "reason": "historical consumption requires nonnegative integer counts"
+    },
+    {
+      "case": "historical-prefix-answered_usage-[-1, 2055941]",
+      "result": "rejected",
+      "reason": "historical consumption requires nonnegative integer counts"
+    },
+    {
+      "case": "historical-prefix-answered_usage-[10, 0]",
+      "result": "rejected",
+      "reason": "historical answered consumption changed"
+    },
+    {
+      "case": "historical-prefix-answered_records-{}",
+      "result": "rejected",
+      "reason": "historical answered identities or scopes changed"
+    },
+    {
+      "case": "historical-scope-reassignment",
+      "result": "rejected",
+      "reason": "historical answered identities or scopes changed"
+    },
+    {
+      "case": "original-oracles-committed-equality",
+      "result": "verified"
+    },
+    {
+      "case": "global-exact-fit-invalid-content-and-replay",
+      "result": "verified",
+      "new_cost": 3416
+    },
+    {
+      "case": "global-token-minus-one",
+      "result": "rejected",
+      "reason": "answered request scope ceiling: None"
+    },
+    {
+      "case": "global-no-call-remainder",
+      "result": "rejected",
+      "reason": "answered request scope ceiling: None"
+    },
+    {
+      "case": "mining-exact-fit-invalid-content-and-replay",
+      "result": "verified",
+      "new_cost": 3416
+    },
+    {
+      "case": "mining-token-minus-one",
+      "result": "rejected",
+      "reason": "answered request scope ceiling: mining"
+    },
+    {
+      "case": "mining-no-call-remainder",
+      "result": "rejected",
+      "reason": "answered request scope ceiling: mining"
+    },
+    {
+      "case": "postreview-old-v3-byte-equality-no-v4",
+      "result": "verified",
+      "v3_sealed_files": 312
+    }
+  ],
+  "network_calls": 0,
+  "fresh_production_answers": 0,
+  "formal_v4_created": false,
+  "source_hashes_unchanged": true,
+  "script_sha256": "183e95efbc8c33209639f77ea3dcfe11aadfb59209e48c204565c7bd217edc92"
+}

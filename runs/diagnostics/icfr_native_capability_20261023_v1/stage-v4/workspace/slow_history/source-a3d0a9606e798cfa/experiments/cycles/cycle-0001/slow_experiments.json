@@ -1,0 +1,85 @@
+{
+  "attempts": [
+    {
+      "action_summary": "update",
+      "candidate_hash": "059ccdd711662557d54ce71d3ddaa147b4bae6902aae1061e066f1221bbe9feb",
+      "candidate_ref": "financing_listing_action:v5",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "financing_listing_action:v4",
+      "proposal_hash": "4ead9028984779a061825ec6488ff30faf480e03b30dad7ad887babed8937607",
+      "request_refs": [
+        "0ea41cee0bf097cab35fcc479eabcb6aade6ec65a79eaac947ebc3727c640fc7",
+        "1ae3859abfa134d6b5826014e985b2c3d7a14970dad6ac2b54bb4da151473e5a",
+        "f24ff6f645bc53d19e9edd8171cbfa74196417732b226ff2f2ecb5182e50d204"
+      ],
+      "stage": "Update",
+      "usage_ref": "f24ff6f645bc53d19e9edd8171cbfa74196417732b226ff2f2ecb5182e50d204",
+      "work_id": "cycle-0001:Update:001"
+    },
+    {
+      "action_summary": "update target",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": "Update:002",
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "failed",
+      "parent_signal_ref": "liquidity_runway_months:v2",
+      "proposal_hash": "af0abd962533b27dd280e049de85b82010efdb1fb1cc60a007ffe6d735c9a90b",
+      "request_refs": [
+        "5eba51a523ce16ee2e73a7f9c4ea9172f14e6197d01cff3655f45d8693bd8cf7",
+        "c2be9fdd09da29a3e4f5de114770a60c5ebc6f2e85820b18845c97c02f097f97"
+      ],
+      "stage": "Update",
+      "usage_ref": "c2be9fdd09da29a3e4f5de114770a60c5ebc6f2e85820b18845c97c02f097f97",
+      "work_id": "cycle-0001:Update:002"
+    },
+    {
+      "action_summary": "update target",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": "Update:003",
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "failed",
+      "parent_signal_ref": "net_share_retirement_yoy:v2",
+      "proposal_hash": "c26b604e8e102aa633dda0c7d8aa30ba17384f3d64a4306d9d42cb586be7426d",
+      "request_refs": [
+        "929107dc3dbe1c128b92c5d387a3000efbe1c79ba398c2a8d049257d97543be3",
+        "10901eae2b8c6636ac33ca8dca539dccb72e8a72b5b9500d5dbe2c50b7978637"
+      ],
+      "stage": "Update",
+      "usage_ref": "10901eae2b8c6636ac33ca8dca539dccb72e8a72b5b9500d5dbe2c50b7978637",
+      "work_id": "cycle-0001:Update:003"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "059ccdd711662557d54ce71d3ddaa147b4bae6902aae1061e066f1221bbe9feb",
+      "candidate_ref": "financing_listing_action:v5",
+      "evidence_or_evaluation_refs": [
+        "666564345869bea25859f2e3e691d57d5b6f55bf91c72fd3a0a4c7e5a8364743"
+      ],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "validated",
+      "parent_signal_ref": "financing_listing_action",
+      "proposal_hash": "059ccdd711662557d54ce71d3ddaa147b4bae6902aae1061e066f1221bbe9feb",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:financing_listing_action:v5"
+    }
+  ],
+  "contract_hash": "a3d0a9606e798cfa77aa70cc6584a677dd2e75d7563e57481424f628d5d7a3c9",
+  "cycle_id": 1,
+  "input_hash": "bcbb533e41f3af176322c585c8d8a7c3db2aab05e02a32ab333ece3f10eb9608",
+  "memory_hash": "9924fe35924f7da0c01649d71b0d0d0b42509cc7cc5bbb5107257747f1a79d58",
+  "schema_version": "slow-experiments-v1"
+}

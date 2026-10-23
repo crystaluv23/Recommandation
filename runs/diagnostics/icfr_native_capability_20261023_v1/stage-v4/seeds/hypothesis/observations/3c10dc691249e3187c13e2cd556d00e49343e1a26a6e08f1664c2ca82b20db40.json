@@ -1,0 +1,465 @@
+{
+  "evidence": {},
+  "last_action_result": {
+    "action": "inspect_catalog",
+    "result": {
+      "counts": {
+        "available": 18,
+        "included": 7,
+        "omitted_after": 4,
+        "omitted_before": 7,
+        "oversized": 0
+      },
+      "cursor": 7,
+      "items": [
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "function": "financial.operating_cash_flow_margin",
+              "type": "deterministic"
+            },
+            "modality": "structured",
+            "parameters": {
+              "negative_max": 0.0,
+              "positive_min": 0.1,
+              "routing_answer_need_phrases": [
+                "operating cash flow margin"
+              ]
+            },
+            "raw_retrieval": {
+              "comparison_requirement": "Operating cash flow and revenue for the same period.",
+              "minimum_distinct_periods": 1,
+              "query_terms": [
+                "operating cash flow",
+                "revenue"
+              ],
+              "source_types": [
+                "financials"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+          "original_available": true,
+          "read_bytes": 1035,
+          "signal_ref": "operating_cash_flow_margin:v2",
+          "source_hash": "828ce230b6d441b27c3998dd6c8c74c04ae15fbdb4bf2e30049b31b0c6a0952e"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "function": "financial.revenue_acceleration",
+              "type": "deterministic"
+            },
+            "modality": "structured",
+            "parameters": {
+              "negative_max": -0.05,
+              "positive_min": 0.05
+            },
+            "raw_retrieval": {
+              "comparison_requirement": "Current and prior comparable growth periods.",
+              "minimum_distinct_periods": 3,
+              "minimum_period_span_days": 330,
+              "query_terms": [
+                "revenue",
+                "sales"
+              ],
+              "source_types": [
+                "financials"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Measure whether year-over-year revenue growth is accelerating versus the prior comparable period.",
+          "original_available": true,
+          "read_bytes": 976,
+          "signal_ref": "revenue_acceleration:v2",
+          "source_hash": "b1cdead2c864ecadcaaa061c46ed5900578e56e8b88404022041bb99b7569fe1"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "function": "financial.revenue_growth_yoy",
+              "type": "deterministic"
+            },
+            "modality": "structured",
+            "parameters": {
+              "negative_max": 0.0,
+              "plausible_abs_max": 5.0,
+              "positive_min": 0.25,
+              "routing_answer_need_phrases": [
+                "revenue growth",
+                "year-over-year revenue",
+                "year over year revenue",
+                "yoy revenue"
+              ]
+            },
+            "raw_retrieval": {
+              "comparison_requirement": "Latest period versus prior-year comparable period; use only the per-issuer canonical total revenue series (dominance-resolved; partial or deprecated same-period tag values never displace the total).",
+              "minimum_distinct_periods": 2,
+              "minimum_period_span_days": 330,
+              "query_terms": [
+                "revenue",
+                "sales",
+                "total revenue",
+                "revenues"
+              ],
+              "source_types": [
+                "financials",
+                "company_facts"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Measure the latest point-in-time year-over-year revenue growth.",
+          "original_available": true,
+          "read_bytes": 1268,
+          "signal_ref": "revenue_growth_yoy:v3",
+          "source_hash": "69337857ea9d9b4e6ecb05978baeb84ba2d23dc17fa851d971e8465744f1bbf7"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "skill_file": "skill.md",
+              "type": "llm"
+            },
+            "modality": "narrative",
+            "parameters": {
+              "result_required_evidence_phrases": [
+                "guidance",
+                "outlook",
+                "forecast",
+                "we expect",
+                "management expects",
+                "company expects",
+                "now expects",
+                "raises its",
+                "raised its",
+                "lowers its",
+                "lowered its",
+                "reaffirms",
+                "reaffirmed",
+                "on track to"
+              ],
+              "routing_answer_need_phrases": [
+                "guidance",
+                "outlook",
+                "forecast"
+              ],
+              "routing_need_phrases": [
+                "guidance update",
+                "guidance updates",
+                "updated guidance",
+                "guidance change",
+                "guidance changes",
+                "revised guidance",
+                "guidance revision",
+                "guidance revisions"
+              ]
+            },
+            "raw_retrieval": {
+              "comparison_requirement": "Current guidance versus explicit prior guidance; both current and prior guidance spans must be visible.",
+              "lookback_days": 365,
+              "query_terms": [
+                "guidance outlook forecast",
+                "raises guidance",
+                "raised guidance",
+                "lowers guidance",
+                "lowered guidance",
+                "reaffirms guidance",
+                "reaffirmed guidance",
+                "updated guidance",
+                "revised guidance",
+                "now expects",
+                "management expects",
+                "company expects"
+              ],
+              "source_types": [
+                "earnings_call",
+                "company_announcement",
+                "press_release",
+                "filing"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+          "original_available": true,
+          "read_bytes": 1896,
+          "signal_ref": "guidance_acceleration:v3",
+          "source_hash": "bca7bd051508cee22f06ca62f06d9ea1718de1873900962135133b5dc19d9627"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "function": "market.max_drawdown_1y",
+              "type": "deterministic"
+            },
+            "modality": "structured",
+            "parameters": {
+              "negative_max": -0.5,
+              "positive_min": -0.2
+            },
+            "raw_retrieval": {
+              "lookback_days": 400,
+              "query_terms": [
+                "adjusted close",
+                "price history"
+              ],
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Measure maximum drawdown from the point-in-time one-year price series.",
+          "original_available": true,
+          "read_bytes": 831,
+          "signal_ref": "max_drawdown_1y:v2",
+          "source_hash": "718b2545f0d0d291b5b4a0478223a0afdcd401ce281b649252bba787e1727d36"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "function": "market.price_momentum_126d",
+              "type": "deterministic"
+            },
+            "modality": "structured",
+            "parameters": {
+              "lookback_observations": 126,
+              "negative_max": -0.2,
+              "positive_min": 0.2
+            },
+            "raw_retrieval": {
+              "lookback_days": 400,
+              "minimum_observations": 127,
+              "query_terms": [
+                "adjusted close",
+                "price history"
+              ],
+              "source_types": [
+                "market_data"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series.",
+          "original_available": true,
+          "read_bytes": 923,
+          "signal_ref": "price_momentum_126d:v2",
+          "source_hash": "035f8b19948ad41683f3f9bf039c33e3cbc378dfb3cc61357a10a8f4deb017a6"
+        },
+        {
+          "capability_contract": {
+            "evidence_policy": {
+              "require_exact_span": true,
+              "require_source": true,
+              "require_timestamp": true
+            },
+            "execution": {
+              "function": "news.negative_word_count",
+              "type": "deterministic"
+            },
+            "modality": "structured",
+            "parameters": {
+              "negative_count_min": 1,
+              "terms": [
+                "decline",
+                "loss",
+                "risk",
+                "delay",
+                "investigation",
+                "default"
+              ]
+            },
+            "raw_retrieval": {
+              "lookback_days": 365,
+              "query_terms": [
+                "risk loss delay",
+                "decline warning"
+              ],
+              "source_types": [
+                "news"
+              ]
+            },
+            "schema": {
+              "confidence": {
+                "type": "float"
+              },
+              "value": {
+                "type": "categorical",
+                "values": [
+                  "positive",
+                  "neutral",
+                  "negative",
+                  "unavailable"
+                ]
+              }
+            }
+          },
+          "description": "Count configured negative terms in complete point-in-time company news source documents.",
+          "original_available": true,
+          "read_bytes": 904,
+          "signal_ref": "negative_word_count:v2",
+          "source_hash": "009b1e0b21ce6bcfd58b74c102eafe2dbfe991918ffdac7d250532d20a19e3f0"
+        }
+      ],
+      "max_entry_bytes": 8000,
+      "next_cursor": 14,
+      "oversized_entries": [],
+      "read_action": "inspect_catalog scope=signals item_refs",
+      "read_byte_limit": 16000,
+      "selection_is_exhaustive": false
+    },
+    "scope": "signals"
+  },
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [
+      {
+        "action": "inspect_catalog",
+        "action_id": 1,
+        "case_refs": [],
+        "coverage": {
+          "keys": [
+            "counts",
+            "cursor",
+            "items",
+            "max_entry_bytes",
+            "next_cursor",
+            "oversized_entries",
+            "read_action",
+            "read_byte_limit",
+            "selection_is_exhaustive"
+          ]
+        },
+        "evidence_refs": [],
+        "input_hash": "024b53c8fd343775dc5559a3031841cf5111629e57c9461ecf6bd6a832fe3427",
+        "note": null,
+        "omitted_coverage": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 4,
+          "omitted_before": 7,
+          "oversized": 0
+        },
+        "output_hash": "271a1ca99607a07f6c5e822d61871b1079472cefe47d98a9763eb81d867358b4",
+        "pit_status": "enforced",
+        "source_types": [],
+        "terminal_disposition": null,
+        "usage": {
+          "model_calls": 1
+        }
+      }
+    ],
+    "seed_id": "seed-hypothesis"
+  }
+}

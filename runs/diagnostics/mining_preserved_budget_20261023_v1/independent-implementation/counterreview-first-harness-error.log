@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_preserved_budget_20261023_v1/independent-implementation/counterreview.py", line 117, in <module>
+    run()
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_preserved_budget_20261023_v1/independent-implementation/counterreview.py", line 66, in run
+    client.complete_json(**request)
+  File "/Users/l/Project/Recommandation/scripts/run_icfr_native_capability_stage.py", line 605, in complete_json
+    return super().complete_json(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1049, in complete_json
+    value, usage, _scores = self._complete_json(
+                            ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1132, in _complete_json
+    return self._complete_json_request(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py", line 1198, in _complete_json_request
+    stage_contract = validate_stage_input(stage, payload, allow_outcomes=allow_outcomes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py", line 154, in validate_stage_input
+    raise ValidationError(f"{stage} input dependency missing: {missing}")
+stock_opportunity_agent.models.ValidationError: mining_controller_step input dependency missing: ['research_axis', 'label_map', 'budget', 'measurable_evidence_manifest', 'signal_catalog', 'signal_catalog_disclosure', 'case_refs', 'case_prediction_times', 'tool_contracts']

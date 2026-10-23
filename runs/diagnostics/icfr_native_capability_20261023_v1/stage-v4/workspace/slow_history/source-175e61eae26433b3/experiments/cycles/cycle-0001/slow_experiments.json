@@ -1,0 +1,102 @@
+{
+  "attempts": [
+    {
+      "action_summary": "update target",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": "Update:001",
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "failed",
+      "parent_signal_ref": "customer_concentration:v2",
+      "proposal_hash": "bf3edd5d7adaebbff3662f773d1e9b947f8518503a124e7f904882654d5d4854",
+      "request_refs": [
+        "1cbb4b90fb8951436743269126f267015f5b06a7da33276d2b7d75f0b4f6d7d2",
+        "793c81ed172faddb8e378f330a6bcdfa55ef15a2442b32b59901444667a0e637"
+      ],
+      "stage": "Update",
+      "usage_ref": "793c81ed172faddb8e378f330a6bcdfa55ef15a2442b32b59901444667a0e637",
+      "work_id": "cycle-0001:Update:001"
+    },
+    {
+      "action_summary": "update",
+      "candidate_hash": "26b8304febb135aef16a11d9b9378c97d1d24398c97612f013f54108a0dedd1b",
+      "candidate_ref": "financing_listing_action:v4",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "financing_listing_action:v3",
+      "proposal_hash": "a82b912e4538ca9f113fcb1ad2f864894371934782e7bfab7d2ddd86092a06f5",
+      "request_refs": [
+        "3f764834b64eb5b1e48c9d62a96381c0b832138d1242a7669b5632cadd00222b",
+        "ee283eb086f7677b7c65a14fbe525e6a5d6ca1393da05353b3e9410974c82978"
+      ],
+      "stage": "Update",
+      "usage_ref": "ee283eb086f7677b7c65a14fbe525e6a5d6ca1393da05353b3e9410974c82978",
+      "work_id": "cycle-0001:Update:002"
+    },
+    {
+      "action_summary": "update",
+      "candidate_hash": "154776329dbc1c23a7345a78dd91bc71a81ac4656dcc4a567871d158afd76159",
+      "candidate_ref": "guidance_acceleration:v3",
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "update",
+      "parent_signal_ref": "guidance_acceleration:v2",
+      "proposal_hash": "90c1f847d66b68b3f681170ab28a48650d1143e18fa2756d02461328ea76a5ff",
+      "request_refs": [
+        "3f764834b64eb5b1e48c9d62a96381c0b832138d1242a7669b5632cadd00222b",
+        "b670f2dd6d8aa285aa2e9c86a388b740355b7d9ec4da645f654a97f6446991f7"
+      ],
+      "stage": "Update",
+      "usage_ref": "b670f2dd6d8aa285aa2e9c86a388b740355b7d9ec4da645f654a97f6446991f7",
+      "work_id": "cycle-0001:Update:003"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "26b8304febb135aef16a11d9b9378c97d1d24398c97612f013f54108a0dedd1b",
+      "candidate_ref": "financing_listing_action:v4",
+      "evidence_or_evaluation_refs": [
+        "b6b3796615278189fbd26385971ecd2d1f4db19b1755f4521c3e63c1ed9bd1ed"
+      ],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "validated",
+      "parent_signal_ref": "financing_listing_action",
+      "proposal_hash": "26b8304febb135aef16a11d9b9378c97d1d24398c97612f013f54108a0dedd1b",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:financing_listing_action:v4"
+    },
+    {
+      "action_summary": "candidate validation",
+      "candidate_hash": "154776329dbc1c23a7345a78dd91bc71a81ac4656dcc4a567871d158afd76159",
+      "candidate_ref": "guidance_acceleration:v3",
+      "evidence_or_evaluation_refs": [
+        "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c"
+      ],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "validated",
+      "parent_signal_ref": "guidance_acceleration",
+      "proposal_hash": "154776329dbc1c23a7345a78dd91bc71a81ac4656dcc4a567871d158afd76159",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:candidate:guidance_acceleration:v3"
+    }
+  ],
+  "contract_hash": "175e61eae26433b3c1a8e1eec68c1c2f3a4191494056e2ab6b41857c585d204f",
+  "cycle_id": 1,
+  "input_hash": "ce4c2812217469b8fbd8e05563266b092df65c4f79eafae1597b41a49e865517",
+  "memory_hash": "9e30e511f801bb5e41e2e11968da4b6822ecd8291838af36166f11a67d7295c0",
+  "schema_version": "slow-experiments-v1"
+}

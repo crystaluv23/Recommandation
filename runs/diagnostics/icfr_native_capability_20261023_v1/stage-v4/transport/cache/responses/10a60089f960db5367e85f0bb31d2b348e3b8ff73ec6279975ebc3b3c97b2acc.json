@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+    "length": 4000,
+    "offset": 3970161,
+    "rationale": [
+      "Read the located ICFR passage in the control case-002 filing published before its prediction cutoff.",
+      "Narrative exploration remains unperformed; navigation is discovery only and cannot establish the ICFR conclusion.",
+      "Inspect the source wording and surrounding qualifications before defining a reusable measurement or contrasting labels."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"document_ref\":\"document-sec:[ANON_ID_0001]:000114036125018373\",\"offset\":3970161,\"length\":4000,\"rationale\":[\"Read the located ICFR passage in the control case-002 filing published before its prediction cutoff.\",\"Narrative exploration remains unperformed; navigation is discovery only and cannot establish the ICFR conclusion.\",\"Inspect the source wording and surrounding qualifications before defining a reusable measurement or contrasting labels.\"]}\n",
+  "request_hash": "10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc",
+  "response_id": "local-10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc",
+  "usage": {
+    "accounting_tokens": 188678,
+    "agent_id": "/root/icfr_v4_h004",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "2d17ec7424cdfbd4fb927002ec5ffb26bebb2f83868286601ee0eb1eb935db9c",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "43381fed04c05cf1965d70796c0ecfd0c76474412919986045b1390958e1d105",
+    "request_hash": "10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc",
+    "token_usage": null
+  }
+}

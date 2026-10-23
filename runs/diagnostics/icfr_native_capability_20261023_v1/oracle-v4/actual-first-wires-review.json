@@ -1,0 +1,580 @@
+{
+  "reviewer": "/root/budget_counterreview",
+  "at_utc": "2026-10-23T06:01:14.578416+00:00",
+  "scope": "first_four_inboxes_and_first_three_answers_only",
+  "findings": [],
+  "wires": [
+    {
+      "ordinal": 1,
+      "request_hash": "ea4652362fe82a728ddd63914d3bc591e3813f819fac8c3602deed8a5d976df3",
+      "cost": 91629,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 69,
+        "calls_used": 10,
+        "next_minimum": 20589,
+        "remaining_after": "00000000000010435342",
+        "single_limit": 262144,
+        "this_request": "00000000000000091629",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 2055941
+      },
+      "inbox": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/ea4652362fe82a728ddd63914d3bc591e3813f819fac8c3602deed8a5d976df3.json",
+        "sha256": "22aa8dd0bfd29d7f6fb4805911ea2acf79f322c52ae1f0a502dc5bd543f5de25"
+      },
+      "wire": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/requests/ea4652362fe82a728ddd63914d3bc591e3813f819fac8c3602deed8a5d976df3.json",
+        "sha256": "257fdbaaea0fc0f03e37277411ee8b70b3f88205f29d8f69560aea4a9b58b712"
+      },
+      "agent_id": "/root/icfr_v4_h001",
+      "action": {
+        "action": "inspect_catalog",
+        "cursor": 7,
+        "rationale": [
+          "The visible catalog contains seven of eighteen Signals; inspect the next page before selecting an ICFR measurement to avoid duplicating an existing capability.",
+          "No source evidence has been fetched or read, so any ICFR candidate and its label contrast remain unestablished."
+        ],
+        "scope": "signals"
+      },
+      "raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/ea4652362fe82a728ddd63914d3bc591e3813f819fac8c3602deed8a5d976df3.txt",
+        "sha256": "84ef7463e430822631d8bd4b0cfc7b02eaa00968f5238860470674d8c3c026f0"
+      },
+      "receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/ea4652362fe82a728ddd63914d3bc591e3813f819fac8c3602deed8a5d976df3.json",
+        "sha256": "b6ff852109b13040b98143d71a776778fe1cbe9eef7d990be2baf4feafe4785e"
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/ea4652362fe82a728ddd63914d3bc591e3813f819fac8c3602deed8a5d976df3.json",
+        "sha256": "33109705a625f9d97f179d4ec4482a0c63fadabaaeb97701df4e9f258bb3820b"
+      }
+    },
+    {
+      "ordinal": 2,
+      "request_hash": "7950cc4da9f3c16971710ca8e501b019d6b2441f7ef0b45ab2fe74e817475ef0",
+      "cost": 109150,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 68,
+        "calls_used": 11,
+        "next_minimum": 20589,
+        "remaining_after": "00000000000010326192",
+        "single_limit": 262144,
+        "this_request": "00000000000000109150",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 2147570
+      },
+      "inbox": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/7950cc4da9f3c16971710ca8e501b019d6b2441f7ef0b45ab2fe74e817475ef0.json",
+        "sha256": "0a1910c2cd46dab307bd03d19bd0852afc794c9377fbfa3e244a669869c84486"
+      },
+      "wire": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/requests/7950cc4da9f3c16971710ca8e501b019d6b2441f7ef0b45ab2fe74e817475ef0.json",
+        "sha256": "949104b99deb919638f1cc698d4d60d218d8fa26a102db3920820d1a9c4311fb"
+      },
+      "agent_id": "/root/icfr_v4_h002",
+      "action": {
+        "action": "inspect_catalog",
+        "cursor": 14,
+        "rationale": [
+          "The retained catalog page ends at next_cursor 14, with four existing Signals still undisclosed.",
+          "Inspect the remaining capability cards before defining a distinct ICFR narrative measurement; catalog omissions do not establish novelty."
+        ],
+        "scope": "signals"
+      },
+      "raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/7950cc4da9f3c16971710ca8e501b019d6b2441f7ef0b45ab2fe74e817475ef0.txt",
+        "sha256": "58a1b3e24418d8ec99ae844d87f7dbd64ecc4b03d673eaa78a0516ad022b2336"
+      },
+      "receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/7950cc4da9f3c16971710ca8e501b019d6b2441f7ef0b45ab2fe74e817475ef0.json",
+        "sha256": "b2a98154f2ce0a111daf438aa74c03da7cb195b78fccaa587f993b44efedfcd9"
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/7950cc4da9f3c16971710ca8e501b019d6b2441f7ef0b45ab2fe74e817475ef0.json",
+        "sha256": "4cf5264f0a967be76aa7069e664f0e3c8f5db3faf6f2098d55f598fffb687e97"
+      }
+    },
+    {
+      "ordinal": 3,
+      "request_hash": "09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7",
+      "cost": 112461,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 67,
+        "calls_used": 12,
+        "next_minimum": 20589,
+        "remaining_after": "00000000000010213731",
+        "single_limit": 262144,
+        "this_request": "00000000000000112461",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 2256720
+      },
+      "inbox": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7.json",
+        "sha256": "f286ef576d234d1cdeb423ae730c31dc1e9464ab4d0cd019b1487a8714bbe8b2"
+      },
+      "wire": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/requests/09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7.json",
+        "sha256": "bd997bd5aa4bc8d9d07aadb0e95ba8ce90b5985cda86c6c2e79dce7e0cc56928"
+      },
+      "agent_id": "/root/icfr_v4_h003",
+      "action": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "max_documents": 24,
+        "query": "internal control over financial reporting",
+        "rationale": [
+          "The complete disclosed Signal directory has no ICFR measurement; source evidence is still unexplored.",
+          "Fetch available structured and narrative material across both runtime label groups and locate public ICFR language for bounded raw reading.",
+          "A query hit supplies navigation only; any candidate must follow actual PIT source reads and preserve ambiguous conclusions as unknown."
+        ],
+        "source_families": [
+          "financial",
+          "filing",
+          "10-k",
+          "sec_filing"
+        ]
+      },
+      "raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7.txt",
+        "sha256": "6c6c28a6ba67ed2f48f23f6098340a208b76c3532c8a4afbfb300a4910f637e9"
+      },
+      "receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7.json",
+        "sha256": "b5bb317f41bbecdffdb5de716255be828e59a503d7b61270a058d08eb6adf9b2"
+      },
+      "cache": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/09bbc6852bdd654cfe47222a810bbf3dbba5b304b1636732f944eb9afe8566f7.json",
+        "sha256": "6d5e0b396f4aa6b1a278215083ad318096b4ab819659f83c4ee782656ebb6529"
+      }
+    },
+    {
+      "ordinal": 4,
+      "request_hash": "10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc",
+      "cost": 188678,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 66,
+        "calls_used": 13,
+        "next_minimum": 20589,
+        "remaining_after": "00000000000010025053",
+        "single_limit": 262144,
+        "this_request": "00000000000000188678",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 2369181
+      },
+      "inbox": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc.json",
+        "sha256": "2d17ec7424cdfbd4fb927002ec5ffb26bebb2f83868286601ee0eb1eb935db9c"
+      },
+      "wire": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/requests/10a60089f960db5367e85f0bb31d2b348e3b8ff73ec6279975ebc3b3c97b2acc.json",
+        "sha256": "7ae5d5fee32a11109d1953dc0e9e24a15899b5482bbf21ae900a15dc1592d614"
+      }
+    }
+  ],
+  "retained_catalog_refs": [
+    "cash_burn_rate_elevated:v2",
+    "cash_reserves:v2",
+    "cash_to_current_liabilities_ratio:v2",
+    "commercialization_status:v2",
+    "customer_concentration:v2",
+    "financing_listing_action:v5",
+    "gross_margin_change:v3",
+    "guidance_acceleration:v3",
+    "liquidity_runway_months:v3",
+    "max_drawdown_1y:v2",
+    "negative_word_count:v2",
+    "net_share_retirement_yoy:v3",
+    "operating_cash_flow_margin:v2",
+    "order_confirmation_disclosed:v3",
+    "order_quality:v2",
+    "price_momentum_126d:v2",
+    "revenue_acceleration:v2",
+    "revenue_growth_yoy:v3"
+  ],
+  "retained_catalog_capability_contracts_equal_baseline": true,
+  "fetch_ledger_observation": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/seeds/hypothesis/observations/748c50f87d04a972ebec149922b80ee5d904a722f0a3bdba5a160993b3c76579.json",
+    "sha256": "ae1b57ffb93d82e0bf167cdda1e31aed377e832ba1005f41f995a165c7e473cf"
+  },
+  "query_navigation_original_count": 34,
+  "query_navigation_visible_count": 8,
+  "query_navigation_visible_omitted_after": 26,
+  "query_navigation_span_checks": [
+    {
+      "case_ref": "case-001",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+        "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+      },
+      "raw_start": 25520,
+      "raw_end": 25808,
+      "raw_span_sha256": "7ea3c242166df69451b90d49394529d76c3cee250f567f9790b1d0939ba9919f"
+    },
+    {
+      "case_ref": "case-001",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+        "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+      },
+      "raw_start": 26191,
+      "raw_end": 26887,
+      "raw_span_sha256": "a433882cd97cb64b70de75cbc82d73e685fc395a78f0886ef075e3e63774d6e9"
+    },
+    {
+      "case_ref": "case-002",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1494.json",
+        "sha256": "ca8996edb2e884ad2c5375c67836e71101d921810246c7757dc3409006ed0730"
+      },
+      "raw_start": 304228,
+      "raw_end": 304647,
+      "raw_span_sha256": "40f9ff4beada9728fa2b9d4c796ecac46ef018876fb53f3c9554b37cfda13082"
+    },
+    {
+      "case_ref": "case-002",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1494.json",
+        "sha256": "ca8996edb2e884ad2c5375c67836e71101d921810246c7757dc3409006ed0730"
+      },
+      "raw_start": 305099,
+      "raw_end": 305365,
+      "raw_span_sha256": "2b2347939d7b7f87ac44c841576e90a9121f64233205094f5f804ea0b71e98f4"
+    },
+    {
+      "case_ref": "case-002",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1494.json",
+        "sha256": "ca8996edb2e884ad2c5375c67836e71101d921810246c7757dc3409006ed0730"
+      },
+      "raw_start": 306034,
+      "raw_end": 306377,
+      "raw_span_sha256": "f4df7da9b3e35e21d445702accd9f46ed0e829474e275a916b81aefb7efe14a0"
+    },
+    {
+      "case_ref": "case-002",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json",
+        "sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0"
+      },
+      "raw_start": 3970161,
+      "raw_end": 3970957,
+      "raw_span_sha256": "770e4309414c8976278c2c45afce6d4218a0d145111913ae81d73e448a5949c3"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1501.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "raw_start": 142460,
+      "raw_end": 142729,
+      "raw_span_sha256": "faef232d74f5e77e3ff6fa0c5bf9ab3f3830718a834281063a6c16a8a3148adc"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1501.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "raw_start": 143108,
+      "raw_end": 143676,
+      "raw_span_sha256": "beb3e856968e7e2d94252a65680f5140a27a6e57e6da2b35f76ee103a3d8aa2d"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1501.json",
+        "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+      },
+      "raw_start": 144230,
+      "raw_end": 144691,
+      "raw_span_sha256": "f4a6e57ed7423c5767c64c195d666ee26aa2553b47e28037cc8c9e0fa600283d"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+        "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+      },
+      "raw_start": 1151352,
+      "raw_end": 1151531,
+      "raw_span_sha256": "3ad3eb5eadd89ee00585d096bdf58aa2c15834ed3c711613e45da869149b0cc2"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+        "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+      },
+      "raw_start": 1151928,
+      "raw_end": 1152215,
+      "raw_span_sha256": "b415f9de7df887276d7f002aa0656eef2bd7599ff5b155085fed35a3c525e158"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+        "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+      },
+      "raw_start": 1152640,
+      "raw_end": 1152692,
+      "raw_span_sha256": "26038099500c4d31368e3c1c788553cbf72180acd66b2fb73f35b2d7ba394d4d"
+    },
+    {
+      "case_ref": "case-003",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+        "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+      },
+      "raw_start": 1153122,
+      "raw_end": 1153203,
+      "raw_span_sha256": "6719b90410cf3e6bc6723f013d7bbc4e741362afe0db148fa22ce7062a5b3ee1"
+    },
+    {
+      "case_ref": "case-004",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1761.json",
+        "sha256": "351a116728b85fa4832d5a9924f2ae547c1c2545a26e3d0a1bf9e95fe9fe8652"
+      },
+      "raw_start": 406688,
+      "raw_end": 406695,
+      "raw_span_sha256": "67c36aa8790653e7c28b23ad304c86e583db9a80a2a82732fb6b091650c19ae1"
+    },
+    {
+      "case_ref": "case-004",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1761.json",
+        "sha256": "351a116728b85fa4832d5a9924f2ae547c1c2545a26e3d0a1bf9e95fe9fe8652"
+      },
+      "raw_start": 407163,
+      "raw_end": 407186,
+      "raw_span_sha256": "3c75eb8ec8cf054d458f344628273c60ee61d77d8a25f5f858a482e0435f400b"
+    },
+    {
+      "case_ref": "case-004",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1761.json",
+        "sha256": "351a116728b85fa4832d5a9924f2ae547c1c2545a26e3d0a1bf9e95fe9fe8652"
+      },
+      "raw_start": 407506,
+      "raw_end": 407513,
+      "raw_span_sha256": "67c36aa8790653e7c28b23ad304c86e583db9a80a2a82732fb6b091650c19ae1"
+    },
+    {
+      "case_ref": "case-004",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1761.json",
+        "sha256": "351a116728b85fa4832d5a9924f2ae547c1c2545a26e3d0a1bf9e95fe9fe8652"
+      },
+      "raw_start": 407866,
+      "raw_end": 408739,
+      "raw_span_sha256": "9b9e2cce57ecc40f6b6ce108ccc46716793a4b8786e39c610596e6770052377f"
+    },
+    {
+      "case_ref": "case-004",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1498.json",
+        "sha256": "0085154e7ee21b8fda7b27b31ab01f7dc5d522a7e810c8bbf70ea9d7b6ba1110"
+      },
+      "raw_start": 2098319,
+      "raw_end": 2099410,
+      "raw_span_sha256": "f270cc0afa3277f3a3783ed08dc40dbeda9a30bc6cb967f0a35add440dba559c"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "raw_start": 214947,
+      "raw_end": 214954,
+      "raw_span_sha256": "7b09357124e22504671b0ac9e38b521f3a881135d3805cc8a35d5966628c2695"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "raw_start": 218731,
+      "raw_end": 218754,
+      "raw_span_sha256": "3c75eb8ec8cf054d458f344628273c60ee61d77d8a25f5f858a482e0435f400b"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "raw_start": 219606,
+      "raw_end": 219613,
+      "raw_span_sha256": "7b09357124e22504671b0ac9e38b521f3a881135d3805cc8a35d5966628c2695"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "raw_start": 220143,
+      "raw_end": 220393,
+      "raw_span_sha256": "9e9488df89dfa1a44ff6d51ed03778bd652b36b2199583374796e22600a5a098"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "raw_start": 220799,
+      "raw_end": 220806,
+      "raw_span_sha256": "67c36aa8790653e7c28b23ad304c86e583db9a80a2a82732fb6b091650c19ae1"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "raw_start": 221076,
+      "raw_end": 221398,
+      "raw_span_sha256": "fdf2f6f909ca3bb0b3c5ef2a6707b43fe1299aab95db874324d31603eaf92705"
+    },
+    {
+      "case_ref": "case-005",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1507.json",
+        "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+      },
+      "raw_start": 2335368,
+      "raw_end": 2335964,
+      "raw_span_sha256": "b8881daa97cfdef021992841f734877fbc6da2aaa372e5d815b81572f40ddb4a"
+    },
+    {
+      "case_ref": "case-006",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1500.json",
+        "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+      },
+      "raw_start": 27736,
+      "raw_end": 28141,
+      "raw_span_sha256": "d163f5a9f72c14f822144144e88a8beec0e16abbb10101c3976219e2e738f5f4"
+    },
+    {
+      "case_ref": "case-006",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1500.json",
+        "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+      },
+      "raw_start": 28534,
+      "raw_end": 28849,
+      "raw_span_sha256": "a37bb5204c1227b6b390a73d12f5aa794bcf7160b51ec5032e564359f99dbc8e"
+    },
+    {
+      "case_ref": "case-007",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1503.json",
+        "sha256": "013f9e58b5813bbda256714f70ce1bd9f9d03f04d62a310d5d719a13074e8665"
+      },
+      "raw_start": 196835,
+      "raw_end": 196842,
+      "raw_span_sha256": "f168ccdd91548c5a8c871bd4b9b757c5e889a1672e774bddef4a2714759a7a8f"
+    },
+    {
+      "case_ref": "case-007",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1503.json",
+        "sha256": "013f9e58b5813bbda256714f70ce1bd9f9d03f04d62a310d5d719a13074e8665"
+      },
+      "raw_start": 197145,
+      "raw_end": 197605,
+      "raw_span_sha256": "385f854533dda46b8c010e0340191bddeddf3f615ffde7c7405c335e366e6e2f"
+    },
+    {
+      "case_ref": "case-007",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1503.json",
+        "sha256": "013f9e58b5813bbda256714f70ce1bd9f9d03f04d62a310d5d719a13074e8665"
+      },
+      "raw_start": 197919,
+      "raw_end": 198784,
+      "raw_span_sha256": "8f076640e88086ca2592ad197f6e011cb216f60c339594fb1dfa56a44ea522ab"
+    },
+    {
+      "case_ref": "case-007",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1504.json",
+        "sha256": "abfb49be0c4cf6de095b84d1bd7e007c37c8464a5e9dedbc48ff0c4eaa2fd02e"
+      },
+      "raw_start": 1216751,
+      "raw_end": 1217809,
+      "raw_span_sha256": "3f0625aa2542c260a4f04dcca0ae6726913ca8c8c475c178bd3d611a473af4b8"
+    },
+    {
+      "case_ref": "case-008",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1491.json",
+        "sha256": "24360402c5f358f7e4aa8dc3a141f20f7519e4b33836713b700a8781dceebd02"
+      },
+      "raw_start": 386325,
+      "raw_end": 386658,
+      "raw_span_sha256": "b5125bbf50784782bc280b9322f43b2c429247644bdd4c5f7033d13644a21c0d"
+    },
+    {
+      "case_ref": "case-008",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1491.json",
+        "sha256": "24360402c5f358f7e4aa8dc3a141f20f7519e4b33836713b700a8781dceebd02"
+      },
+      "raw_start": 387073,
+      "raw_end": 387828,
+      "raw_span_sha256": "3b543584c1a5f3222ec3c6af3c0175136b25a77e8c9fb0b41a42311f558a0e10"
+    },
+    {
+      "case_ref": "case-008",
+      "document_binding": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1492.json",
+        "sha256": "fe67e8d8be11b18f57f175b0389b38db219d3ab7312568c7ca9a835134c9e512"
+      },
+      "raw_start": 1584603,
+      "raw_end": 1585392,
+      "raw_span_sha256": "bd6edb479bdf882638d1a331e432e29706906676cd050c52ff41c2d36bc17a7e"
+    }
+  ],
+  "first_three_new_reservations": 313240,
+  "first_three_combined_reservations": 2369181,
+  "historical_prefix": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/contract.json",
+    "sha256": "03196d337a4e07504a824e68e77a5f2fe10d6752380eee3e111ace23a5fb10fc"
+  },
+  "source_bindings_verified": true,
+  "original_oracles_unchanged": true,
+  "runtime_bindings_equal_frozen": true,
+  "no_stage_writes": true,
+  "no_model_authorship_or_network": true,
+  "not_claimed": [
+    "h004 answer correctness",
+    "source_read_or_measurement_completed",
+    "Mining candidate",
+    "technical admission",
+    "four consumers",
+    "MVP closure"
+  ]
+}
