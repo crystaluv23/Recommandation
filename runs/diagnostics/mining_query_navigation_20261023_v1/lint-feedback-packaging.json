@@ -1,0 +1,14 @@
+[
+  {
+    "original_name": "pre-push-first-feedback.txt",
+    "archive": "runs/diagnostics/mining_query_navigation_20261023_v1/pre-push-first-feedback.txt.gz",
+    "sha256": "920398a8ea4d9e60e8e005eae635d119236cc6a00211d34a8b6b2d4f102109ef",
+    "decompressed_exact": true
+  },
+  {
+    "original_name": "pre-push-second-feedback.txt",
+    "archive": "runs/diagnostics/mining_query_navigation_20261023_v1/pre-push-second-feedback.txt.gz",
+    "sha256": "55e22a112b59e98056cbd8fe5d012bd1d36bb8b73ed412daadeeda1c50dfa73a",
+    "decompressed_exact": true
+  }
+]

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_query_navigation_20261023_v1/independent/full-native-audit.py", line 49, in <module>
+    assert request['stage_contract']['payload_hash'] == hashlib.sha256(compact(payload)).hexdigest()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

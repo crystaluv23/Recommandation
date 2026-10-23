@@ -1977,10 +1977,28 @@
         "runs/diagnostics/mining_reference_handles_20261023_v1/capture-result.json"
       ],
       "result": "Spec-first adapter encoding retains all2879facts/1342relations (4221refs), native structured inverse and canonical graph/source/hash/patch authority. Small indexes<=8192 preserve oldwire; large mappings are scoped/hash-bound to prevent same-shape distinct-graph cache aliasing. Independent first9of15 reveals literal-original and kind defects, then22of24 reveals defaultcatalog/manifest duplicate projection omissions; final24of24 at fixed producthash. Final481 associated pass/stablehash/socket0. Initial476pass/1error was immutable v3 oracle rejecting active changedbytes; test uses temporary current-code fixture, separately asserts oldoracle rejection, original untouched. Actual next input full roundtrip/native zero-receive capture230052 versus264980, saving34928 under originalsingle262144; oldused10/2055941 and316sealedfiles/312hashrows unchanged. No productionauthor/inbox/answer/candidate/admission/use/businesspointer. Only local representation/cost verified; future query-origin handoff and fresh genuine candidate chain remain open."
+    },
+    {
+      "id": "mining-query-origin-navigation-20261023",
+      "strategy": "offline_true_query_projection_origin_handoff",
+      "failure_families": [
+        "selected_query_origin_not_handed_to_read",
+        "virtual_and_raw_projection_coordinate_confusion",
+        "new_navigation_breaks_whole_fetch_order_invariance"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-query-navigation-20261023.md",
+        "runs/diagnostics/mining_query_navigation_20261023_v1/associated-test-bindings.json",
+        "runs/diagnostics/mining_query_navigation_20261023_v1/independent/review-result-revision-2.md",
+        "runs/diagnostics/mining_query_navigation_20261023_v1/full-native-result.json",
+        "runs/diagnostics/mining_query_navigation_20261023_v1/independent/full-native-readonly-review.md"
+      ],
+      "result": "Spec-first exact shared selection origins preserve existing excerpt/clipped; HTML and news JSON escape/decoded duplicate keys/reverse fields map true raw fragments, virtual/non-string/gap/oversize explicit. Ordinary charged fetch ledger coverage derives12whole/8000 working navigation, never read/exploration/citation permission. First492 has491pass/1real order-invariance regression; canonicalcase and within-fetch projection order fixed, final492pass/stablehash/socket0. Independent first8groups miss ordering, final10groups/4337oldfunction literal comparisons and all6case permutations pass, oldfailures preserved. Temporary realEngine factory replays onlyold10answers; canonical ledger/evidence JSONhash same, then explicit hypothetical query/read tool actions yield full native request_ready captures232555/234197 each with oldspent10/2055941, not fresh outputs or consecutive newlyconsumed requests.263sources/18baseline/265needs remain,316sealedfiles/312hashrows unchanged. No API/newlabels/inbox/receipt/candidate/admission/use/businesspointer; fresh full capability still required."
     }
   ],
   "review": {
-    "after_iteration": "mining-lossless-reference-handles-20261023",
+    "after_iteration": "mining-query-origin-navigation-20261023",
     "evidence": [
       "reports/icfr-source-and-native-path-preflight-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
@@ -2014,7 +2032,12 @@
       "reports/mining-reference-handles-20261023.md",
       "runs/diagnostics/mining_reference_handles_20261023_v1/associated-test-bindings.json",
       "runs/diagnostics/mining_reference_handles_20261023_v1/independent/report.md",
-      "runs/diagnostics/mining_reference_handles_20261023_v1/capture-result.json"
+      "runs/diagnostics/mining_reference_handles_20261023_v1/capture-result.json",
+      "reports/mining-query-navigation-20261023.md",
+      "runs/diagnostics/mining_query_navigation_20261023_v1/associated-test-bindings.json",
+      "runs/diagnostics/mining_query_navigation_20261023_v1/independent/review-result-revision-2.md",
+      "runs/diagnostics/mining_query_navigation_20261023_v1/full-native-result.json",
+      "runs/diagnostics/mining_query_navigation_20261023_v1/independent/full-native-readonly-review.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2130,21 +2153,22 @@
       "Metadata-only narrative progress was explicitly the old design, not merely an implementation omission. Because each role receives current view rather than a full conversation, preserving coverage receipts/S5 bytes did not preserve S4 meaning. The new working page derives actual complete masked source units without a second store or inferred summary; it must still prove fresh planning rather than turn offline old-source reconstruction into live compliance. Preserve the first padding-harness mistake and distinguish its corrected expectation from a product fix.",
       "The source-body repair preserved S4 meaning but left inspected catalog pages/section locators/next_cursor only in last_action_result. Stateless roles therefore legitimately recovered cursor0 and exhausted scarce light budget; h009 retained all three bodies while losing directory navigation. Prior source/handoff tests and script-held locators missed this related dependency. Audit all four catalog scopes and preserve exact historical responses without reviving stale permissions; no candidate failure or no-pattern inferred from unread material.",
       "Actual context retention now works, but source selection changes graph growth: broad null/32 fetch2879facts1342relations versus earlier targeted2088/952. Focused source/working-page tests and first-wire fits do not establish complete future native request affordability. The annual source also discloses43section anchors while displaying24; determine actual addressability and total-message cost from frozen original artifacts before another interface or resource decision, rather than call a budget terminal no-pattern or automatically rename/restart it.",
-      "First handle projection relied on recursively named reference slots and therefore rewrote opaque source JSON/semantic thresholds; source originals and typed operation containers need schema-owned boundaries in every duplicate working-view copy. Independent controls found defaultscope=None and inspect_manifest copies missed after first literal repair. Complete actual payload roundtrip/native zero-receive fit and synthetic preservation do not prove fresh role planning or any candidate, and a code-specific immutable oracle refusal must not be repaired by refreshing that sealed oracle."
+      "First handle projection relied on recursively named reference slots and therefore rewrote opaque source JSON/semantic thresholds; source originals and typed operation containers need schema-owned boundaries in every duplicate working-view copy. Independent controls found defaultscope=None and inspect_manifest copies missed after first literal repair. Complete actual payload roundtrip/native zero-receive fit and synthetic preservation do not prove fresh role planning or any candidate, and a code-specific immutable oracle refusal must not be repaired by refreshing that sealed oracle.",
+      "The true-origin repair initially concatenated per-case navigation in input order and reversed all rows for recency; isolated source geometry and the first independent8groups did not test whole-fetch case permutations or same-fetch projection order. Existing accounting regression found it, canonical case order and newest-fetch grouping now preserve both. Script hypothetical query/read after old-answer reconstruction is only a mechanical/full-cost probe: it supplies no fresh decision and cannot count its two captures as sequential answered requests or replace real candidate/admission/use evidence."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "repair",
-      "strategy": "offline_true_query_projection_origin_handoff",
-      "action": "Spec-first deliver bounded discovery-only source/case/hash/PIT-bound navigation hints from the existing query selector true projection-to-raw runs through charged fetch; no approximate excerpt first-word find, no new tool/budget class/read/citation authority. Preserve source originals and sealed controls; require ordinary charged read_span for evidence. Offline originals/TOC/Unicode/repeatedtext/hidden/wrongcase/postcutoff/unread-citation controls and native complete-cost proof before any new-code evaluation decision.",
-      "stop": "No API/network/newlabels/freshproductionroles/newcontrol/h011/sealed reentry or resource reset. Stop if exact true origin cannot be established, original/case/PIT binding changes or repeated checks add no information.",
-      "new_evidence": "Lossless reference encoding now fits the actual next full input at230052 with originalspent counters unchanged and24independent/481associated controls. Independent source audit already demonstrates existing query true origins discarded and approximate find misanchors repeatedTOC, isolating a distinct remaining producer dependency.",
-      "distinguishing_variable": "Handoff of existing query selector true projection raw origins through existing fetch result, followed by ordinary read, with the same source population/cutoffs/caps/measurement and no semantic oracle supplied to actors.",
-      "question": "Can the actual existing query selection preserve exact raw origins and make late filing content addressable with existing heavy fetch and browse read, while retaining honest query incompleteness and no unread-evidence authority?",
-      "pass": "Original late-source and representative repeated/TOC/entity/Unicode cases deliver true source/hash/case/raw-window bindings through actual fetch output; no hidden/postcutoff/wrongcase origin or unread candidate acceptance, literal body/graph/PIT/identity/budget unchanged, whole-request cost measured.",
-      "fail": "Hints use heuristic first-word anchoring, locate another occurrence/case/source/hash, imply semantic relevance/completeness or a read without charged read, weaken original gates, add caps or fail full-request cost.",
-      "on_pass": "Checkpoint local handoff repair and independent counterexamples; only then define prospectively frozen new-code capability evaluation with explicit preserved resource accounting. No automatic new control or oldstage reentry.",
-      "on_fail": "Preserve the failing origin/visibility/permission example and narrow or replace the proposed handoff; do not give auditor coordinates to authors or create budget exceptions."
+      "kind": "diagnose",
+      "strategy": "prospective_new_code_control_with_preserved_v3_resource_accounting",
+      "action": "Outside sealed stages, prepare a concrete new-code capability evaluation contract retaining the same263sources/stable18/full265/dev8/semantic oracle obligations and original caps. Audit exact oldv3 answered receipt prefix10/2055941 as already spent under the original mining/global ceilings, never clear or import its answers as new. Bind all prior stopped/terminal controls and exact archives, validate prefix-aware single/aggregate/call/cache accounting and native input-only preparation before any fresh role. No sealed reentry, new cap, forced source/candidate or full business successor.",
+      "stop": "No external API/network/newlabels/check/LockedTest/fullbusinessrun, oldstage advance/reentry/h011 or automatic cap reset. Stop preparation on authority/prefix/hash/accounting contradiction or repeated no-information checks; no production role before complete prospective freeze.",
+      "new_evidence": "Exact navigation working path now locally verified with original source/permission/cost boundaries: final492, independent10/4337 comparisons, original263/fullfactory reconstruction exact and two full hypothetical-state captures fit originalsingle. This removes the specific query origin omission without proving fresh planning or completion.",
+      "distinguishing_variable": "New frozen code only, with repaired lossless graph representation/exact navigation; same input/cohort/semantic obligations and original caps, explicit immutable oldv3 answered-cost prefix rather than budget reset.",
+      "question": "Can a prospectively frozen current-code evaluation preserve all original semantic/source obligations and charge the oldv3 answered prefix without resetting budget or reusing answers, while making the repaired full native path available to fresh independent roles?",
+      "pass": "Frozen contract/oracle retains original protected obligations and exact inputs, strict oldstage immutability/no unanswered response import; prefix-aware unique receipt accounting consumes original10/2055941 and correctly gates all original ceilings/remaining calls; deterministic native input-only control and negative reset/reentry/replay/changed-prefix tests pass before actor dispatch.",
+      "fail": "Any mismatch in original source/semantic/cap authority, oldstage mutation or answer import, cleared/duplicated spent cost, resource-boundary conflict or new input-only native failure.",
+      "on_pass": "Freeze reviewable new-code evaluation and dispatch exact pending native inbox serially to fresh fork-none subagents; independently audit source/candidate/implementation meaning before admission and require all fixed exact-version consumers. Preserve old failures and honest technical stops.",
+      "on_fail": "Keep evaluation unstarted and preserve the conflicting artifacts; narrow the diagnostic or request only a genuinely new resource/definition decision if current authorization cannot cover it. Never rename/reset a limited target."
     }
   },
   "successor_prerequisites": [

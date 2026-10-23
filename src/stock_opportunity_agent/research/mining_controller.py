@@ -610,6 +610,9 @@ class LabelAwareMiningController:
         computed = self._computed_statistics_view()
         if computed is not None:
             view["computed_statistics"] = computed
+        navigation = self._query_navigation_view()
+        if navigation is not None:
+            view['query_navigation'] = navigation
         view["available_actions"] = [
             action for action in ACTIONS
             if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit
@@ -634,6 +637,38 @@ class LabelAwareMiningController:
                 "row_rationale": NEED_ROW_RATIONALE_CONTRACT,
             }
         return view
+
+    def _query_navigation_view(self) -> dict[str, Any] | None:
+        """Retain only actual fetch navigation, without creating read evidence."""
+        entries = {}
+        for entry in reversed(self.ledger.entries):
+            if entry.action != 'fetch_evidence':
+                continue
+            for original in entry.coverage.get('query_navigation', ()):
+                key = canonical_json_hash(original)
+                if key in entries:
+                    continue
+                row = deepcopy(dict(original))
+                document = self._document_by_ref(str(row['document_ref']))
+                case = self.case_by_ref.get(str(row['case_ref']))
+                current = document is not None and case is not None and (
+                    document.content_hash == row['content_hash']
+                    and document.source_type == row['source_type']
+                    and document.published_at.isoformat() == row['published_at']
+                    and document.available_at.isoformat() == row['available_at']
+                    and document.company_id == case.company_id
+                    and document.published_at <= case.prediction_time
+                    and document.available_at <= case.prediction_time)
+                row.update(navigation_ref=key, last_fetch_action_id=entry.action_id,
+                           source_snapshot_matches=current)
+                entries[key] = row
+        if not entries:
+            return None
+        rows = list(entries.values())
+        page = bounded_entry_page(rows, max_items=12, max_bytes=8000)
+        return {**page, 'selection_order': 'most_recent_fetch_first',
+            'revisit_action': 'ordinary narrowed fetch_evidence(query) or source catalog',
+            'current_state_note': 'Historical discovery-only coordinates; use only matching source bindings. Not a source read.'}
 
     def _computed_statistics_entries(self) -> list[dict[str, Any]]:
         """Derive working/citation readiness from actual compute and fetch ledger order."""
@@ -1226,6 +1261,10 @@ class LabelAwareMiningController:
             },
             "unread_same_source": any(result.unread_same_source for result in results),
         }
+        query_navigation = [dict(row) for result in sorted(results, key=lambda item: str(item.request['case_ref']))
+                            for row in result.query_navigation]
+        if query_navigation:
+            coverage['query_navigation'] = query_navigation
         omitted = {
             "excluded_document_ids": sorted({
                 document_id for result in results

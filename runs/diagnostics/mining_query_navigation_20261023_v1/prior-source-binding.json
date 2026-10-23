@@ -1,0 +1,10 @@
+{
+  "revision": "f0f81fb1",
+  "path": "src/stock_opportunity_agent/research/evolution_core.py",
+  "complete_source_sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+  "extracted_functions": [
+    "_h3_document_visible_text",
+    "_query_relevant_excerpt"
+  ],
+  "extracted_sha256": "9f351bb1e4fb7c6b1718057c5f9f61d08ea618a11aec793356ebf9973f1d7e14"
+}

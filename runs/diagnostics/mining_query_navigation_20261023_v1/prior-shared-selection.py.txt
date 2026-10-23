@@ -1,0 +1,106 @@
+def _h3_document_visible_text(document: RawInfoDocument) -> str:
+    """Return deterministic reader-visible text for H3 relevance and excerpts."""
+
+    title = str(document.metadata.get("title", ""))
+    if "news" in document.source_type.casefold():
+        try:
+            payload = json.loads(document.content)
+        except (json.JSONDecodeError, TypeError):
+            payload = None
+        if isinstance(payload, Mapping):
+            fields = [
+                str(payload.get(key) or "")
+                for key in ("title", "summary", "body", "content")
+            ]
+            return " ".join("\n".join((title, *fields)).split())
+    projected, _runs = _normalized_projection_text(document.content)
+    return " ".join(f"{title}\n{projected}".split())
+
+def _query_relevant_excerpt(
+    document: RawInfoDocument,
+    *,
+    query: str | None,
+    max_chars: int,
+) -> tuple[str, bool]:
+    """Select one bounded visible window around the strongest query match."""
+
+    text_value = _h3_document_visible_text(document)
+    if len(text_value) <= max_chars:
+        return text_value, False
+    query_terms = _h3_content_terms(query or "", exclude_generic=True)
+    if not query_terms and document.content.lstrip().startswith(("{", "[")):
+        # Keep original text/lineage; rank dated leaf records, not JSON headers.
+        dated_records: list[tuple[str, int]] = []
+        cutoff = document.available_at.date().isoformat()
+        for record in re.finditer(r"\{[^{}]*\}", text_value):
+            try:
+                fields = json.loads(record.group(0))
+            except json.JSONDecodeError:
+                continue
+            dates = []
+            for value in fields.values():
+                if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+                    continue
+                try:
+                    date.fromisoformat(value)
+                except ValueError:
+                    continue
+                if value <= cutoff:
+                    dates.append(value)
+            if dates:
+                dated_records.append((max(dates), record.start()))
+        if dated_records:
+            _latest, anchor = max(dated_records, key=lambda row: (row[0], -row[1]))
+            return _complete_evidence_window(text_value, anchor, max_chars), True
+    anchors = (
+        [
+            match.start()
+            for match in re.finditer(r"[A-Za-z0-9]+", text_value)
+            if query_terms.intersection(
+                _h3_content_terms(match.group(0), exclude_generic=True)
+            )
+        ]
+        if query_terms else []
+    )
+    queryless_filing = (
+        not query_terms and _evidence_source_family(document.source_type) == "filing"
+    )
+    if queryless_filing:
+        anchors = [
+            match.start()
+            for match in _QUERYLESS_FILING_SUBSTANTIVE.finditer(text_value)
+        ]
+    starts = {0}
+    starts.update(
+        max(0, min(len(text_value) - max_chars, anchor - max_chars // 3))
+        for anchor in anchors
+    )
+
+    # Score exactly the boundary-adjusted window that will leave the controller.
+    adjusted_starts = set()
+    for start in starts:
+        boundary = text_value.find(" ", start, start + 80) if start else -1
+        adjusted_starts.add(boundary + 1 if boundary >= 0 else start)
+
+    def score(start: int) -> tuple[int, int, int, int]:
+        window = _complete_evidence_window(text_value, start, max_chars)
+        if queryless_filing:
+            return (
+                len(set(term.casefold() for term in
+                        _QUERYLESS_FILING_SUBSTANTIVE.findall(window))),
+                -len(_QUERYLESS_FILING_BOILERPLATE.findall(window)),
+                len(re.findall(r"(?:\$|\b\d+(?:\.\d+)?%?\b)", window)),
+                -start,
+            )
+        coverage = _h3_text_query_coverage(
+            (window,), query=query
+        )
+        return (
+            int(coverage["sufficient"]),
+            len(coverage["matched_terms"]),
+            len(coverage["matched_ordered_pairs"]),
+            -start,
+        )
+
+    start = max(adjusted_starts, key=score)
+    return _complete_evidence_window(text_value, start, max_chars), True

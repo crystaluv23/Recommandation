@@ -1,0 +1,36 @@
+test_01_generated_legacy_oracle (__main__.IndependentReview.test_01_generated_legacy_oracle) ... ok
+test_02_json_origin_exactness (__main__.IndependentReview.test_02_json_origin_exactness) ... ok
+test_03_hidden_and_title_cannot_reanchor (__main__.IndependentReview.test_03_hidden_and_title_cannot_reanchor) ... ok
+test_04_raw_limit_and_escape_pairs (__main__.IndependentReview.test_04_raw_limit_and_escape_pairs) ... ok
+test_05_fetch_canonical_unchanged (__main__.IndependentReview.test_05_fetch_canonical_unchanged) ... ok
+test_06_working_view_cross_step_read_authority_and_binding (__main__.IndependentReview.test_06_working_view_cross_step_read_authority_and_binding) ... ERROR
+test_07_scope_pit_and_whole_page (__main__.IndependentReview.test_07_scope_pit_and_whole_page) ... ok
+
+======================================================================
+ERROR: test_06_working_view_cross_step_read_authority_and_binding (__main__.IndependentReview.test_06_working_view_cross_step_read_authority_and_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/mining_query_navigation_20261023_v1/independent/review.py", line 153, in test_06_working_view_cross_step_read_authority_and_binding
+    c._documents[row['document_ref']] = replace(result, documents=(replace(d, content_hash='0' * 64),))
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 11, in __init__
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py", line 164, in __post_init__
+    raise ValidationError("raw info content_hash does not match content")
+stock_opportunity_agent.models.ValidationError: raw info content_hash does not match content
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.509s
+
+FAILED (errors=1)
+{
+  "tests": 7,
+  "failures": 0,
+  "errors": 1,
+  "legacy_oracle_comparisons": 4337,
+  "network_attempts": [],
+  "old_full_core_sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+  "scope": "synthetic fixtures only, source-local projection/fetch/controller methods; no API/LabelStore/stage execution"
+}

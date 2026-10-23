@@ -1,0 +1,9 @@
+{
+  "tests": 10,
+  "failures": 0,
+  "errors": 0,
+  "legacy_oracle_comparisons": 4337,
+  "network_attempts": [],
+  "old_full_core_sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+  "scope": "synthetic fixtures only, source-local projection/fetch/controller methods; no API/LabelStore/stage execution"
+}

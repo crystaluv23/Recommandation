@@ -1,0 +1,7 @@
+Read-only inline audit first failed with AssertionError at line 27.
+Harness assumption: captured request.stage_contract == stage-v3/contract.json.
+Diagnosis: request.stage_contract is the transport's research-stage-input-v1
+validation envelope (payload hash/bytes and required fields), whereas contract.json
+is the diagnostic resource/assignment contract. They are different contracts.
+No product/probe failure is established. The follow-up verifies envelope binding
+to payload and compares resource limits with the diagnostic contract separately.

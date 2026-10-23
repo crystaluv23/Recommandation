@@ -1,0 +1,8 @@
+{
+  "original": "runs/diagnostics/mining_query_navigation_20261023_v1/first-tests.log",
+  "sha256": "efb2abba7adf790f31aeddbf7650dad473161d204ab392ea43d9dd9ec7e6aefc",
+  "committed_archive": "runs/diagnostics/mining_query_navigation_20261023_v1/first-tests.log.gz",
+  "archive_sha256": "e8c4c766a3ea2b79561972bcaab25d8c94300e5a288bf4a9910d07384dfccf51",
+  "decompressed_bytes_exact": true,
+  "reason": "Preserve original unittest subtest error line with trailing space without rewriting historical evidence."
+}

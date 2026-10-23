@@ -1,0 +1,102 @@
+{
+  "scope": "read-only file/hash/accounting review; probe was not rerun",
+  "status": "pass",
+  "original_receipts": [
+    {
+      "agent_id": "/root/icfr_v3_h001",
+      "request_hash": "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60",
+      "reservation": 90877
+    },
+    {
+      "agent_id": "/root/icfr_v3_h002",
+      "request_hash": "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0",
+      "reservation": 108402
+    },
+    {
+      "agent_id": "/root/icfr_v3_h003",
+      "request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+      "reservation": 111714
+    },
+    {
+      "agent_id": "/root/icfr_v3_h004",
+      "request_hash": "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba",
+      "reservation": 234074
+    },
+    {
+      "agent_id": "/root/icfr_v3_h005",
+      "request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+      "reservation": 246816
+    },
+    {
+      "agent_id": "/root/icfr_v3_h006",
+      "request_hash": "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5",
+      "reservation": 245898
+    },
+    {
+      "agent_id": "/root/icfr_v3_h007",
+      "request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+      "reservation": 247395
+    },
+    {
+      "agent_id": "/root/icfr_v3_h008",
+      "request_hash": "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3",
+      "reservation": 251665
+    },
+    {
+      "agent_id": "/root/icfr_v3_h009",
+      "request_hash": "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+      "reservation": 258996
+    },
+    {
+      "agent_id": "/root/icfr_v3_h010",
+      "request_hash": "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597",
+      "reservation": 260104
+    }
+  ],
+  "original_total_reservation": 2055941,
+  "original_inboxes": 10,
+  "original_outboxes": 10,
+  "requests": [
+    {
+      "file": "after_hypothetical_query-request.json",
+      "file_sha256": "3b2db41a9f2346e99ec13678bc272d8504d68067bb38911709428ccbbd2d825b",
+      "messages_utf8_json_bytes": 228555,
+      "output_reserve": 4000,
+      "bytes_plus_output": 232555,
+      "remaining_if_dispatched": 10294416,
+      "used_preserved": 2055941,
+      "calls_used_preserved": 10,
+      "tool_budget": {
+        "browse_remaining": 19,
+        "heavy_remaining": 10,
+        "light_remaining": 0
+      },
+      "navigation_hints": 4
+    },
+    {
+      "file": "after_hypothetical_read-request.json",
+      "file_sha256": "3f44fddbf5daf04dda13d9f63f053a30c25264790cb77ec175c02b2a3faaf3da",
+      "messages_utf8_json_bytes": 230197,
+      "output_reserve": 4000,
+      "bytes_plus_output": 234197,
+      "remaining_if_dispatched": 10292774,
+      "used_preserved": 2055941,
+      "calls_used_preserved": 10,
+      "tool_budget": {
+        "browse_remaining": 18,
+        "heavy_remaining": 10,
+        "light_remaining": 0
+      },
+      "navigation_hints": 4
+    }
+  ],
+  "sealed_hash_table_entries_verified": 312,
+  "sealed_current_files": 316,
+  "source_bindings_verified": 263,
+  "tested_files_hashes_verified": 182,
+  "original_terminal_status": "terminal_resource_or_control_stop",
+  "fresh_answers": 0,
+  "first_probe_failure_preserved": true,
+  "first_review_harness_failure_preserved": true,
+  "interpretation": "Prospective captures for two hypothetical tool states, each retaining the same original spent prefix. Neither capture was dispatched or consumed. Bytes-plus-output is logical reservation; host tokens and currency cost are not measured. This does not reopen the terminal stage."
+}

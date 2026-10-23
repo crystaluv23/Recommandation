@@ -7889,6 +7889,81 @@ def _h3_content_terms(value: str, *, exclude_generic: bool) -> set[str]:
 def _h3_document_visible_text(document: RawInfoDocument) -> str:
     """Return deterministic reader-visible text for H3 relevance and excerpts."""
 
+    return _h3_document_visible_projection(document, with_origins=False)[0]
+
+
+def _json_string_visible_origins(raw: str, start: int, end: int):
+    """Normalize one decoded JSON string with exact escape/whitespace origins."""
+    chars = []
+    index = start + 1
+    while index < end - 1:
+        stop = index + 1
+        if raw[index] == "\\":
+            stop = index + (6 if raw[index + 1] == "u" else 2)
+            if (raw[index + 1] == "u" and 0xD800 <= int(raw[index + 2:stop], 16) <= 0xDBFF
+                    and raw[stop:stop + 2] == "\\u"
+                    and 0xDC00 <= int(raw[stop + 2:stop + 6], 16) <= 0xDFFF):
+                stop += 6
+            decoded = json.loads('"' + raw[index:stop] + '"')
+        else:
+            decoded = raw[index:stop]
+        for character in decoded:
+            if character.isspace():
+                if chars and chars[-1][0] == " ":
+                    chars[-1] = (" ", chars[-1][1], stop)
+                elif chars:
+                    chars.append((" ", index, stop))
+            else:
+                chars.append((character, index, stop))
+        index = stop
+    if chars and chars[-1][0] == " ":
+        chars.pop()
+    runs = []
+    for at, (_character, raw_start, raw_end) in enumerate(chars):
+        if (runs and runs[-1][1] == at and runs[-1][3] == raw_start
+                and raw_end - raw_start == 1
+                and runs[-1][1] - runs[-1][0] == runs[-1][3] - runs[-1][2]):
+            prior = runs[-1]
+            runs[-1] = (prior[0], at + 1, prior[2], raw_end)
+        else:
+            runs.append((at, at + 1, raw_start, raw_end))
+    return "".join(row[0] for row in chars), tuple(runs)
+
+
+def _json_top_level_string_ranges(raw: str):
+    """Locate last-wins top-level strings after strict whole JSON validation."""
+    # The caller already validated json.loads and Mapping. raw_decode only
+    # supplies exact token boundaries, never a more permissive admission path.
+    decoder = json.JSONDecoder()
+    index = len(raw) - len(raw.lstrip()) + 1
+    fields = {}
+    while True:
+        while raw[index].isspace():
+            index += 1
+        if raw[index] == "}":
+            break
+        key, index = decoder.raw_decode(raw, index)
+        while raw[index].isspace():
+            index += 1
+        index += 1  # colon, already validated by json.loads
+        while raw[index].isspace():
+            index += 1
+        start = index
+        value, index = decoder.raw_decode(raw, index)
+        fields.pop(key, None)
+        if isinstance(value, str):
+            fields[key] = (start, index)
+        while raw[index].isspace():
+            index += 1
+        if raw[index] == "}":
+            break
+        index += 1  # comma
+    return fields
+
+
+def _h3_document_visible_projection(document: RawInfoDocument, *, with_origins: bool):
+    """Keep the existing visible text and optional per-source-component runs."""
+
     title = str(document.metadata.get("title", ""))
     if "news" in document.source_type.casefold():
         try:
@@ -7896,13 +7971,27 @@ def _h3_document_visible_text(document: RawInfoDocument) -> str:
         except (json.JSONDecodeError, TypeError):
             payload = None
         if isinstance(payload, Mapping):
-            fields = [
-                str(payload.get(key) or "")
-                for key in ("title", "summary", "body", "content")
-            ]
-            return " ".join("\n".join((title, *fields)).split())
-    projected, _runs = _normalized_projection_text(document.content)
-    return " ".join(f"{title}\n{projected}".split())
+            text = " ".join(title.split())
+            components = []
+            ranges = _json_top_level_string_ranges(document.content) if with_origins else {}
+            for key in ("title", "summary", "body", "content"):
+                field = payload.get(key) or ""
+                fragment = " ".join(str(field).split())
+                if not fragment:
+                    continue
+                offset = len(text) + int(bool(text))
+                text += (" " if text else "") + fragment
+                if key in ranges:
+                    original, runs = _json_string_visible_origins(document.content, *ranges[key])
+                    if original != fragment:
+                        raise ValidationError("JSON visible query projection lost source lineage")
+                    components.append(tuple((a + offset, b + offset, c, d) for a, b, c, d in runs))
+            return text, tuple(components)
+    projected, runs = _normalized_projection_text(document.content)
+    prefix = " ".join(title.split())
+    offset = len(prefix) + int(bool(prefix and projected))
+    text = prefix + (" " if prefix and projected else "") + projected
+    return text, (tuple((a + offset, b + offset, c, d) for a, b, c, d in runs),) if with_origins else ()
 
 
 def _model_evidence_visible_text(view: Mapping[str, Any]) -> str:
@@ -7957,9 +8046,20 @@ def _query_relevant_excerpt(
 ) -> tuple[str, bool]:
     """Select one bounded visible window around the strongest query match."""
 
-    text_value = _h3_document_visible_text(document)
+    text_value, start, end, clipped = _query_relevant_excerpt_selection(
+        document, query=query, max_chars=max_chars)
+    return text_value[start:end], clipped
+
+
+def _query_relevant_excerpt_selection(
+    document: RawInfoDocument, *, query: str | None, max_chars: int,
+    text_value: str | None = None,
+) -> tuple[str, int, int, bool]:
+    """Retain the exact selected projection coordinates without relocating text."""
+    if text_value is None:
+        text_value = _h3_document_visible_text(document)
     if len(text_value) <= max_chars:
-        return text_value, False
+        return text_value, 0, len(text_value), False
     query_terms = _h3_content_terms(query or "", exclude_generic=True)
     if not query_terms and document.content.lstrip().startswith(("{", "[")):
         # Keep original text/lineage; rank dated leaf records, not JSON headers.
@@ -7984,7 +8084,7 @@ def _query_relevant_excerpt(
                 dated_records.append((max(dates), record.start()))
         if dated_records:
             _latest, anchor = max(dated_records, key=lambda row: (row[0], -row[1]))
-            return _complete_evidence_window(text_value, anchor, max_chars), True
+            return text_value, anchor, anchor + len(_complete_evidence_window(text_value, anchor, max_chars)), True
     anchors = (
         [
             match.start()
@@ -8036,7 +8136,49 @@ def _query_relevant_excerpt(
         )
 
     start = max(adjusted_starts, key=score)
-    return _complete_evidence_window(text_value, start, max_chars), True
+    return text_value, start, start + len(_complete_evidence_window(text_value, start, max_chars)), True
+
+
+def _query_relevant_excerpt_with_origins(
+    document: RawInfoDocument, *, query: str | None, max_chars: int,
+) -> tuple[str, bool, dict[str, Any]]:
+    """Map only the selected visible window into bounded true raw fragments."""
+    text, components = _h3_document_visible_projection(document, with_origins=True)
+    text, start, end, clipped = _query_relevant_excerpt_selection(
+        document, query=query, max_chars=max_chars, text_value=text)
+    fragments = []
+    mapped_nonspace = oversized = 0
+    for runs in components:
+        current = None
+        for a, b, raw_a, raw_b in runs:
+            lo, hi = max(a, start), min(b, end)
+            if lo >= hi:
+                continue
+            piece = text[lo:hi]
+            left = len(piece) - len(piece.lstrip())
+            right = len(piece.rstrip())
+            lo, hi = lo + left, lo + right
+            if lo >= hi:
+                continue  # synthetic/normalized whitespace is never a read anchor
+            if b - a == raw_b - raw_a:
+                raw_a, raw_b = raw_a + lo - a, raw_a + hi - a
+            if raw_b - raw_a > 4000:
+                oversized += 1
+                current = None
+                continue
+            mapped_nonspace += sum(not char.isspace() for char in text[lo:hi])
+            if (current is not None and 0 <= raw_a - current['raw_end'] <= 256
+                    and raw_b - current['raw_start'] <= 4000):
+                current.update(raw_end=raw_b, projection_end=hi)
+            else:
+                current = {'raw_start': raw_a, 'raw_end': raw_b,
+                           'projection_start': lo, 'projection_end': hi}
+                fragments.append(current)
+    total = sum(not char.isspace() for char in text[start:end])
+    return text[start:end], clipped, {'projection_version': 'h3-query-origins-v1',
+        'selected_start': start, 'selected_end': end, 'fragments': fragments,
+        'unmapped_nonspace_chars': total - mapped_nonspace, 'oversized_runs': oversized,
+        'mapping_complete': mapped_nonspace == total and not oversized}
 
 
 def _nested_profile_mappings(value: Any, *, depth: int) -> list[Mapping[str, Any]]:

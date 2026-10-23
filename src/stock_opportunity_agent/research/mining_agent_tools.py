@@ -34,6 +34,7 @@ from stock_opportunity_agent.research.evolution_core import (
     _evidence_source_family,
     _optional_iso_date,
     _query_relevant_excerpt,
+    _query_relevant_excerpt_with_origins,
 )
 
 _FACT_PROJECTION_CHARS = 12_000
@@ -126,6 +127,7 @@ class FetchResult:
     excluded_by_limits: tuple[str, ...] = ()
     query_coverage: Mapping[str, object] = field(default_factory=dict)
     unread_same_source: bool = False
+    query_navigation: tuple[Mapping[str, object], ...] = ()
 
 
 def _case_documents(
@@ -517,6 +519,7 @@ def fetch_case_evidence(
     facts: list[EvidenceFact] = []
     events: list[NarrativeEvent] = []
     matched_terms: set[str] = set()
+    navigation: list[Mapping[str, object]] = []
     for document in selected:
         source_type = document.source_type.casefold()
         structured = "fact" in source_type or "financial" in source_type
@@ -537,9 +540,29 @@ def fetch_case_evidence(
             # provider envelopes) stay fetched documents with ledger
             # coverage; they are never laundered into narrative events.
             continue
-        excerpt, _clipped = _query_relevant_excerpt(
-            document, query=query, max_chars=_NARRATIVE_EXCERPT_CHARS
-        )
+        if query is not None and query.strip():
+            excerpt, _clipped, origins = _query_relevant_excerpt_with_origins(
+                document, query=query, max_chars=_NARRATIVE_EXCERPT_CHARS)
+            common = {'case_ref': ref, 'document_ref': f'document-{document.document_id}',
+                'content_hash': document.content_hash, 'source_type': document.source_type,
+                'published_at': document.published_at.isoformat(),
+                'available_at': document.available_at.isoformat(), 'query': query,
+                **{key: value for key, value in origins.items() if key != 'fragments'},
+                'discovery_only': True, 'source_read_completed': False, 'candidate_citable': False,
+                'query_search_is_exhaustive': False}
+            if document.published_at > case.prediction_time:
+                navigation.append({**common, 'origin_status': 'source_clock_not_qualified'})
+            elif not origins['fragments']:
+                navigation.append({**common, 'origin_status': 'no_mappable_selected_body'})
+            else:
+                for fragment in origins['fragments']:
+                    raw = document.content[fragment['raw_start']:fragment['raw_end']]
+                    navigation.append({**common, **fragment, 'origin_status': 'located',
+                        'read_length': fragment['raw_end'] - fragment['raw_start'],
+                        'raw_span_sha256': hashlib.sha256(raw.encode('utf-8')).hexdigest()})
+        else:
+            excerpt, _clipped = _query_relevant_excerpt(
+                document, query=query, max_chars=_NARRATIVE_EXCERPT_CHARS)
         tokens = set(re.findall(r"[a-z0-9]+", excerpt.casefold()))
         matched_terms.update(term for term in terms if term in tokens)
         exact_span = _verbatim_window(document.content, excerpt)
@@ -575,6 +598,7 @@ def fetch_case_evidence(
             "sufficient": bool(terms) and bool(matched_terms),
         },
         unread_same_source=bool(excluded),
+        query_navigation=tuple(navigation),
     )
 
 

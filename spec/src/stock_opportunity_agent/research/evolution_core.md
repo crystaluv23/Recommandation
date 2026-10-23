@@ -328,6 +328,27 @@ character budget would otherwise split a word or numeric amount. The excerpt
 remains a contiguous source substring; no text is synthesized and the original
 truncation marker remains true. This avoids literal-but-incomplete token evidence.
 
+### Exact query-window navigation lineage
+
+The shared query selector retains its selected start/end in the exact existing
+visible projection. `_query_relevant_excerpt` keeps its prior text/clipped
+return values; callers needing navigation obtain source-owned offset runs from
+the same selection, never relocate a repeated excerpt with `find`.
+Plain/HTML projection reuses the existing normalization/raw runs. News Mapping
+projection keeps the existing metadata-title plus title/summary/body/content
+order and whitespace normalization (including its existing unstripped HTML).
+Only top-level JSON string values with verified decoded keys and last-wins
+semantics supply raw origins. Decode JSON escapes and surrogate pairs with
+their exact raw intervals; nested fields, virtual metadata title and rendered
+non-string values never acquire fabricated raw positions. Invalid/non-Mapping
+JSON retains the existing ordinary projection fallback.
+Navigation separates true source fragments at unmapped regions, reverse raw
+ordering, large hidden/tag gaps and the existing 4000-raw-character read bound.
+Synthetic whitespace over removed markup is not a raw read anchor. Unmapped
+selected characters and oversized indivisible runs remain explicitly disclosed.
+Coordinates identify only this selected window's fragments, not semantic
+relevance, exhaustive query hits, source sufficiency or a completed read.
+
 ## Daily boundary and Basic Info visibility
 
 The fixed five-close baseline uses observation dates strictly before the UTC

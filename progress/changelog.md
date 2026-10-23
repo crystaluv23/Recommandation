@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：spec-first将真实query选窗raw origins沿普通fetch/ledger coverage/12whole8000工作页交付普通read，保JSON转义/重复key/逆序字段、metadata与hidden gap/4000界；canonical Event及真实read引用门不改。首492中491过/1真实case顺序回归，修canonical case与同fetch片段顺序后492过，源码hash稳/网络0；独立原8组漏排序，追加10组及4337旧helper逐字比较通过，首失败/harness错误保留。同263源/18版本/265needs临时原生重建旧10答ledger/evidence同，明确假设query/read两状态零receive232555/234197，不当作新作者或两次消费；保旧10/2055941及316封存、263原件。0外部API/新标签/候选/业务推进，不重入v3/加cap，下一准备保消费新代码验收；MVP open。见[报告](../reports/mining-query-navigation-20261023.md)。
+
 - 2026-10-23：spec-first修Mining大图完整引用表示，超过8192bytes索引使用确定性短handle/完整映射指纹，保全部事实/关系/正文及typed权限/canonical记录，小图wire不改。独立反例抓原件JSON误改、按前缀猜kind、默认目录/manifest重复投影漏项，修后24/24；首失败保留。原native identity/cache/patch回归及481关联过、源码hash稳/网络0；旧v3 frozen合同拒新版正确，测试仅用临时绑定fixture并新增拒新代码断言，原oracle不改。实际blocked全输入4221引用完整往返，零receive精确230052（原264980），保旧消费10/2055941及316封存；0新作者/候选/准入/业务推进。下一修既有query真实origin交付，无预算reset/旧stage续答，MVP open。见[报告](../reports/mining-reference-handles-20261023.md)。
 
 - 2026-10-23：9ae48904实际ICFR v3共10fresh首答/0纠错、2055941逻辑预留；独立固定7答+h008输入核完整18卡、两源三窗/原目录跨步保留及h007直读C，无page0重查，仍非候选。随后正常用nextcursor到case005年度风险正文，未冒充ICFR；第11请求prepare前预算阻断并原生sealed，1候选正控未完成、4消费未试。封存182源码/原件，不重入/补答/改caps；独立只读逐字重建前10wire，下一264980比single262144高2836，累计仍余10526971/10of80；事实/关系handle占43.4599%。源审确认43命中只列24、真实query origin未交付，近似find锚点在TOC反例错误。下一仅spec-first离线修无损表示/既有query定位，不以裁正文/加cap续旧目标；API/网络/新业务标签0。见[报告](../reports/mining-catalog-working-context-20261023.md)。

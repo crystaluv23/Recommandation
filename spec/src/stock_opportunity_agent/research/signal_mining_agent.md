@@ -782,6 +782,40 @@ its current action result. Catalog receipts alone are not evidence access.
 
 ## Controller egress consistency (2026-10-01)
 
+### Query navigation through ordinary fetch/read
+
+For an explicit nonblank query, `fetch_case_evidence` additionally returns exact
+navigation fragments from the shared query selection, separately from unchanged
+NarrativeEvent refs/excerpts/exact spans. Each whole hint binds the original
+case, query, document/hash, source type/published/available clocks, projection
+version/range, exact raw start/end and raw slice hash. A hint's suggested length
+fits the existing 4000-raw-character read bound. Metadata-only/unmappable or
+oversized fragments and incomplete coverage are explicit, never free evidence.
+Empty/whitespace queries add no navigation. Both source clocks must satisfy
+the case cutoff before coordinates are disclosed. No new source is fetched.
+
+The existing heavy fetch still costs one action. Its ordinary ledger coverage
+stores navigation snapshots, from which a most-recent-first working page keeps
+at most12 whole hints/8000 UTF-8 JSON bytes across intervening actions. Repeat
+identical hints reorder/deduplicate; different case/query bindings stay distinct.
+Counts/oversized sizes disclose omitted units; normal narrowed fetch/query or
+source directory remains the revisit path, with ordinary costs.
+Within one fetch, canonical case order makes whole-action coverage independent
+of the input case list order; retain selected-document and projection-fragment
+order within each case. Newest-fetch selection must not reverse these fragments.
+Repeated hints keep only their newest real fetch occurrence. A changed
+document/hash/type/clock/case binding marks old hints historical and unusable.
+No second navigation persistence system or new action/budget category exists.
+
+Every hint is discovery_only, source_read_completed=false and
+candidate_citable=false. It never changes read receipts, modality exploration,
+materialization evidence or candidate citation permissions. Ordinary browse
+read_span using the current document ref and raw coordinates must still return
+actual readable text. A selected query window may contain a TOC or crossref;
+it establishes neither ICFR/other research meaning nor absence/completeness.
+The complete working page and disclosures use existing identity projection and
+full request/case accounting; no auditor locator or answer is supplied to roles.
+
 ### Lossless large-graph reference handles (2026-10-23)
 
 For a fact/relation index whose compact UTF-8 JSON exceeds8,192 bytes, the

@@ -1,0 +1,53 @@
+test_actual_annual_quarter_query_origins_and_old_toc_misanchor_remain_distinct (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_actual_annual_quarter_query_origins_and_old_toc_misanchor_remain_distinct) ... ok
+test_empty_queries_noquery_payload_and_canonical_events_are_unchanged (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_empty_queries_noquery_payload_and_canonical_events_are_unchanged) ... ERROR
+test_fetch_hints_persist_across_actions_with_no_reads_or_materialization (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_fetch_hints_persist_across_actions_with_no_reads_or_materialization) ... ERROR
+test_large_hidden_gap_synthetic_space_and_dense_entities_are_not_read_anchors (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_large_hidden_gap_synthetic_space_and_dense_entities_are_not_read_anchors) ... ok
+test_legacy_excerpt_and_clipped_unchanged_across_formats_and_query_branches (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_legacy_excerpt_and_clipped_unchanged_across_formats_and_query_branches) ... ok
+test_metadata_and_hidden_repetitions_do_not_reanchor_selected_body (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_metadata_and_hidden_repetitions_do_not_reanchor_selected_body) ... ok
+test_news_reverse_fields_duplicate_keys_nested_decoys_and_escapes (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_news_reverse_fields_duplicate_keys_nested_decoys_and_escapes) ... ok
+test_repeated_fetch_deduplicates_queries_do_not_overwrite_and_whole_page_omits (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_repeated_fetch_deduplicates_queries_do_not_overwrite_and_whole_page_omits) ... ERROR
+test_wrong_owner_future_sources_and_future_published_clock_have_no_coordinates (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_wrong_owner_future_sources_and_future_published_clock_have_no_coordinates) ... ok
+
+======================================================================
+ERROR: test_empty_queries_noquery_payload_and_canonical_events_are_unchanged (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_empty_queries_noquery_payload_and_canonical_events_are_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_query_navigation.py", line 145, in test_empty_queries_noquery_payload_and_canonical_events_are_unchanged
+    controller = self.controller([doc]); self.fetch(controller, None)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_query_navigation.py", line 54, in fetch
+    controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1207, in _execute_fetch
+    raise InvalidMiningAction(
+stock_opportunity_agent.research.mining_controller.InvalidMiningAction: fetch_evidence source_families must come from available_source_families in the view; unknown: news, transcript
+
+======================================================================
+ERROR: test_fetch_hints_persist_across_actions_with_no_reads_or_materialization (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_fetch_hints_persist_across_actions_with_no_reads_or_materialization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_query_navigation.py", line 114, in test_fetch_hints_persist_across_actions_with_no_reads_or_materialization
+    controller = self.controller([doc]); self.fetch(controller)
+                                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_query_navigation.py", line 54, in fetch
+    controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1207, in _execute_fetch
+    raise InvalidMiningAction(
+stock_opportunity_agent.research.mining_controller.InvalidMiningAction: fetch_evidence source_families must come from available_source_families in the view; unknown: news, transcript
+
+======================================================================
+ERROR: test_repeated_fetch_deduplicates_queries_do_not_overwrite_and_whole_page_omits (tests.test_mining_query_navigation.MiningQueryNavigationTests.test_repeated_fetch_deduplicates_queries_do_not_overwrite_and_whole_page_omits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_query_navigation.py", line 161, in test_repeated_fetch_deduplicates_queries_do_not_overwrite_and_whole_page_omits
+    controller = self.controller(docs); self.fetch(controller)
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/Project/Recommandation/tests/test_mining_query_navigation.py", line 54, in fetch
+    controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+  File "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py", line 1207, in _execute_fetch
+    raise InvalidMiningAction(
+stock_opportunity_agent.research.mining_controller.InvalidMiningAction: fetch_evidence source_families must come from available_source_families in the view; unknown: news, transcript
+
+----------------------------------------------------------------------
+Ran 9 tests in 2.979s
+
+FAILED (errors=3)

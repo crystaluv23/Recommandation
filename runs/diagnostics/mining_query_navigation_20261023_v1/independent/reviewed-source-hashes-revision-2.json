@@ -1,0 +1,7 @@
+{
+  "src/stock_opportunity_agent/research/evolution_core.py": "1b661a19274579ed5b273c5ab931c4721287a00c71270d5aa00216633a9fc68b",
+  "src/stock_opportunity_agent/research/mining_agent_tools.py": "c58cbd09c3af03e5c65fa9040456f31b10ec6758ea4a0af38cc2959480f06040",
+  "src/stock_opportunity_agent/research/mining_controller.py": "2427275235520d59f2baba7e59b740087ada559685b3ee59b08e4f30293f0550",
+  "src/stock_opportunity_agent/research/mining_role_model.py": "a9c545e5dab37aaa2d6c8487e9f68c49f2aad9cc9b0ccf8084cdcd7e8a05fa70",
+  "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "645842861a83aeb3059aa9486d7297e3828d276b82b5956a157cfa815ffe6955"
+}
