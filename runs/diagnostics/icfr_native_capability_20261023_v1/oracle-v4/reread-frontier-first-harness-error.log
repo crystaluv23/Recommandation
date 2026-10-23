@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-check.py", line 167, in <module>
+    main()
+  File "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-check.py", line 102, in main
+    assert view[field] == later[field], field
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: catalog_observations

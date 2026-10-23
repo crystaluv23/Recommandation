@@ -2029,9 +2029,11 @@
         "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-read-retention-review.md",
         "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json",
         "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-review.md",
-        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json"
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-review.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v4.json"
       ],
-      "result": "Frozen v4 remains a bounded diagnostic, no full successor or new acceptance closure. Checkpoint25 new accepted first answers/0model corrections/5126205 logical reservations; including unchanged old v3 debt35/7182146. h026 pending. Independent fixed-prefix review23 answers,15 actual source windows,65 query origins,18 cards per wire, explicit working-body12/15 and backlog12/265 omission; parent rehashed118 static bindings unchanged. Distinctions among severity/ICFR/DCP/audit procedure/dated opinion/planned versus completed remediation are faithful in that prefix. h025 ordinary charged reread is not independent new coverage and lies outside the23-answer semantic review. No candidate/admission/consumer yet; candidate1/consumer4, original caps/source/semantic oracle unchanged. A classification-meta implementation is committed separately at ba309796 and has not modified frozen original code. Fast/MVP open; no external API/network/new labels/business pointer advance."
+      "result": "Parent stopped repeated-window strategy after26 actual answers/5367457; with old debt36/7423398, remaining44calls/5159514; NOT budget exhaustion. Two exact rereads successively evict next selected old window; source/fact/relation/event/candidate inventories unchanged. h027 raw not submitted/executed; native pending/no completion; candidate1 uncompleted/0passed, consumers0/4, business0/0. No infinite-loop/code-bug/no-pattern or inability-to-synthesize claim. Parent verified25 review bindings/182 code/1481 source before prefix seal. No reentry/immediate v5/cap reset. Approved A and adjacent financial definitions are separate local repair work; Fast/MVP/gain open."
     }
   ],
   "review": {
@@ -2060,7 +2062,6 @@
       "runs/diagnostics/mining_catalog_working_context_20261023_v1/associated-test-bindings-final.json",
       "runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/review.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/equivalence-evidence.json",
-      "reports/mining-catalog-working-context-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
       "runs/diagnostics/mining_catalog_working_context_20261023_v1/actual-deployment/report.md",
       "runs/diagnostics/mining_catalog_working_context_20261023_v1/terminal-runtime-binding.json",
@@ -2086,7 +2087,9 @@
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-read-retention-review.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/manifest.json",
       "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-review.md",
-      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json"
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/actual-later-wires-parent-readback.json",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-review.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v4.json"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2209,17 +2212,17 @@
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "same_budget_fresh_native_candidate_chain_after_representation_repair",
-      "action": "Continue only the prospective frozen v4 native S4/S5/S7/four-consumer diagnostic, serial exact-inbox fresh authors with verified v3 resource debt. Inspect actual sources and outputs before publication; completed/pending/failed old controls remain untouched.",
-      "stop": "Original single/global/Mining/candidate/Fast ceilings; actual subagent limit or a newly confirmed propagation/semantic prerequisite blocker. No hot edit, API fallback, old reentry, imported answer, extra call or full successor.",
-      "question": "Does repaired current code let independent fresh roles find/read original material, generate and faithfully implement a legitimate ICFR measurement, pass technical and source review, and actually consume the exact admitted version in four fixed cases within original remaining resources?",
-      "pass": "A genuine native candidate chain and all four frozen source-semantic consumers meet original obligations with exact artifacts and reopen equality.",
-      "fail": "Any answerable control remains incomplete/incorrect or a real resource/control/semantic boundary stops the native chain.",
+      "kind": "repair",
+      "strategy": "deliver_approved_contracts_after_low_information_stop",
+      "action": "Stop v4 dispatch; preserve pending prefix. Integrate approved meta A and implement approved financial new versions with independent source/boundary checks. No full successor.",
+      "stop": "No v4 reentry/h027 submission, cap reset/v5 or old-version/result rewrite. Stop new work on source/schema/authority contradiction or failed independent controls.",
+      "question": "Do approved contracts preserve exact source, old versions and bounded downstream access?",
+      "pass": "Only independently supported local evidence; full Fast/MVP remain open.",
+      "fail": "Preserve actual counterexamples and unknown source dispositions before further execution.",
       "on_pass": "Record only bounded direction candidate/diagnostic consumption evidence; keep full Fast, magnitude, committed S8, whole-loop recovery and effect milestones open.",
       "on_fail": "Preserve raw failures, original denominators and terminal/pending state; identify the first failed boundary before choosing repair or stopping that strategy.",
-      "new_evidence": "Subagent service actually available; independent implementation counterreview and metadata-only freeze passed. Actual fresh first wires and read-retention/source review now available.",
-      "distinguishing_variable": "Same original inputs/semantic oracle/ceilings with repaired reference/query/navigation and immutable historical consumption, rather than old-answer replay or changed budget."
+      "new_evidence": "26 answers; independent two-reread eviction/inventory proof with unused budget; explicit approval of A and adjacent financial-period definitions.",
+      "distinguishing_variable": "Stop low-information sequence and repair approved contracts with exact-source/legacy controls, not renamed Mining run."
     }
   },
   "successor_prerequisites": [

@@ -1,8 +1,8 @@
 # Mining v4：保原额度的新代码真实验收
 
-当前为**进行中的隔离诊断**，不是 Fast round、完整 Slow 或工程 MVP 通过。
+当前为**因低信息增量而停止的隔离诊断**，不是 Fast round、完整 Slow 或工程 MVP 通过。
 正式状态以 [stage progress](../runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/progress.json)
-及最终可能生成的 completion 为准。所有生产角色走独立 subagent 精确 inbox/outbox；外部 LLM API、网络、provider GET、新业务标签及业务完成指针推进均0。
+和[父控制停止记录](../runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v4.json)为准；native保持pending，不伪造completion。所有生产角色走独立subagent；外部API、网络、新标签和业务指针推进均0。
 
 ## 已关闭的前提
 
@@ -42,9 +42,17 @@ h026为当前新请求，不计已答。其实际输入显示browse7/heavy8/ligh
 
 ## 后续与限制
 
-继续同一冻结合同下的自主 Mining，直至候选实现后原材料独立审查、技术准入和四个实际消费者，或真实资源/控制边界停止。
+本策略现已停止，不再提交h027、重入v4或立即新建v5。源、旧答、原caps、分母和完整182文件归档保持；后续须先处理前提与资源债务，不能改名重置。
 不向作者提供私有 oracle、预写候选、locator或建议动作；新缺陷先定位首次丢失，不能热改冻结代码。
 无结果如实保留，不能把技术/预算终止称 no-pattern，不能追加调用求过。
 
 Fast F1–F10 整体仍未通过；历史正文/时间、完整检索阅读、新代码实际路由、Predictor语义和提交后的Slow消费仍有未关闭项。
 方向/magnitude完整链、committed S8、完整双环与必要恢复尚未验证，独立收益未知。
+
+## 最终停止边界
+
+[独立增量诊断](../runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-review.md)确认h025重复h008、h026重复h010的同源/hash/坐标整窗。每恢复一个旧窗，下一份被选择旧窗恰被挤出12/16工作页；16唯一窗口/9文档、2093facts/947relations/14events和候选0无新增。两回读耗478826逻辑预留。h027拟重复h011，仅raw、无receipt/cache/实际读取。
+
+最终26新答/5367457，加旧债36/7423398，仍余44calls/5159514，**不是预算耗尽**。按AGENTS低信息增量条件停止当前逐窗回读策略；两次观察不证明无限循环、代码bug、第三次不可能综合或领域无模式。候选1未完成/0passed、消费者0/4未试，native pending、业务0/0，不能造no-pattern。
+
+父回读25静态审查绑定、182代码与1481源绑定均同后保存完整前缀快照，随后才整合另行批准的代码。现转向已批准分类meta A及财务期间新定义；不恢复本次搜索或启动完整后继。上述25答为中途检查点。

@@ -6,7 +6,7 @@
 
 ## 最新实证
 
-[真实Mining v4](../reports/mining-native-v4-20261023.md)正在同原额度/语义/分母下验收：subagent本次实际可用，先补独立27既有+17反例实现审查，再冻15语义字段不变的oracle/182源码归档。已核真实前4wire及h004→h007读文保真、完整18卡、query原坐标和历史预算贯穿。检查点25新答/0纠错/5126205，连旧35/7182146；另固定23答/15源窗独立审查及118绑定回读过，正文12/15/backlog12/265遗漏明确；尚无候选/准入/消费，旧三控制不重入。Fast整体和工程MVP仍open，以stage当前progress为准。
+[Mining v4](../reports/mining-native-v4-20261023.md): parent stopped low-information reread strategy;26 new answers/5367457;with debt36/7423398, unused44calls/5159514. Native pending/h027 raw only;no reentry/immediate v5/no-pattern. Candidate1 uncompleted, consumers0/4;MVP open.
 
 [目录跨步与v3终态](../reports/mining-catalog-working-context-20261023.md)：470关联/独立8组过；9ae48904实际两源三窗+原目录/18卡保留，h007直接读C、h008剩light1。v3最终10fresh/0纠错/2055941，第11请求在prepare前预算阻断，1候选未完成/0passed、4消费未试；不重入/续答/改caps。182源码归档同；离线逐字重建下一264980>single262144共2836，累计仍余10526971/10of80。独立核43命中只列24、query真实origin未交付。旧v1/v2仍pending，各12/2001316与11/1837419、h013/h012未派未答，不造no-pattern；MVP open。
 [能力材料/S4→S5交接](../reports/mining-materialization-evidence-frontier-20261023.md)：263份dev8源/stable18独立核过；ICFR有实际/相反/假设/歧义材料，价格窗口7/8但调整未知/有100天缺口，财务新组合无对应函数，不改定义求过。

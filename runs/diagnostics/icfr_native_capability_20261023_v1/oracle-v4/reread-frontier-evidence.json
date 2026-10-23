@@ -1,0 +1,296 @@
+{
+  "reviewer": "/root/budget_counterreview",
+  "at_utc": "2026-10-23T08:25:26.594674+00:00",
+  "question": "Recent reread information increment and rolling working-page omissions",
+  "actual_two_rereads": [
+    {
+      "new_answer": 25,
+      "original_answer": 8,
+      "raw_action": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0008]:000121390024092156",
+        "offset": 267000,
+        "length": 4000,
+        "rationale": [
+          "Revisit the previously read case-001 ICFR window whose actual text is omitted from the retained evidence page.",
+          "Case-005 explicitly reports unremediated material weakness, while case-002 has an effective ICFR audit opinion and case-007 also has effective ICFR; recover case-001 raw meaning before judging recurrence or proposing a reusable measurement.",
+          "This is an ordinary charged reread, not new coverage; no conclusion about omitted source content is assumed."
+        ]
+      },
+      "new_raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b.txt",
+        "sha256": "f90867ab7ebbc99b81a9879aac7b611a01f15a2b0a195996764800dfcab5ea0d"
+      },
+      "old_raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/21f3f7fa108b9f1774ed73619b0fec4ed53fd4e1e65e2307261e1ddb2dafed70.txt",
+        "sha256": "ef5cfdf0ece23140e46392c494786c0657ff1ea0410951d87c5024673a67a3ec"
+      },
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+        "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+      },
+      "content_hash": "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+      "raw_span_sha256": "061180328505cb4a8187910dd13c2c813cb6d7c5428f04cdb7ee2f0f34d847bd",
+      "prior_read_count": 1,
+      "is_currently_omitted": true,
+      "submitted": true,
+      "restored": [
+        [
+          "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+          267000,
+          4000
+        ]
+      ],
+      "evicted": [
+        [
+          "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          1148801,
+          4000
+        ]
+      ],
+      "next_authored_read_selects_evicted_unit": true,
+      "visible_text_and_source_fields_equal": true,
+      "reservation": 237574
+    },
+    {
+      "new_answer": 26,
+      "original_answer": 10,
+      "raw_action": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0003]:000149315225011966",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Revisit the omitted case-003 controls assessment at its recorded coordinates to verify whether ICFR weakness recurs across independent positive cases.",
+          "The retained no-changes statement does not establish effective ICFR; case-001 significant deficiencies must remain distinct from case-005 material weakness.",
+          "Seven browse units remain, and this source read can sharpen a reusable severity measurement without claiming predictive benefit or cohort-wide coverage."
+        ]
+      },
+      "new_raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/24c573fe4cbfaaed1d5ee1d828e10fbc7a8db6a2b4b9a7cd1e9b2b9c87c9729e.txt",
+        "sha256": "ae15fa4ef10d1821399916cb09af2f2d8f1a99ccb4d4e3d752cc7dce4123592c"
+      },
+      "old_raw": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/b68e3e72a36c8d4fac087af37ead4548bacd38c413c2e29f6b3d9c8f66b073a2.txt",
+        "sha256": "31623df40759a391755e0c622473c80383652bedcb32536a22d658f13bb4be63"
+      },
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+        "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+      },
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "raw_span_sha256": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+      "prior_read_count": 1,
+      "is_currently_omitted": true,
+      "submitted": true,
+      "restored": [
+        [
+          "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          1148801,
+          4000
+        ]
+      ],
+      "evicted": [
+        [
+          "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          1152908,
+          4000
+        ]
+      ],
+      "next_authored_read_selects_evicted_unit": true,
+      "visible_text_and_source_fields_equal": true,
+      "reservation": 241252
+    }
+  ],
+  "prepared_unsubmitted_third_reread": {
+    "new_answer": 27,
+    "original_answer": 11,
+    "raw_action": {
+      "action": "read_span",
+      "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+      "offset": 1152908,
+      "length": 4000,
+      "rationale": [
+        "Revisit the previously read ICFR continuation because its raw text is omitted from the current retained evidence page.",
+        "The visible window establishes effective disclosure controls, which does not by itself establish effective ICFR or absence of material weaknesses.",
+        "Compare the exact ICFR language with the observed significant deficiencies, unremediated material weakness, and explicit auditor ICFR opinions before defining the reusable measurement."
+      ]
+    },
+    "new_raw": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7.txt",
+      "sha256": "588fb3e12590d270d77b01ef8ea68174344450fbb4cb329049a11cc051465690"
+    },
+    "old_raw": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/ec6379a99d80ac60cf084d79cc0e9b7c1e61649a444269752770212eb258d035.txt",
+      "sha256": "e09c474d9f7986765e0dea83e826940d11a7ce64a74eea0009c1a17b8f3ec4a4"
+    },
+    "source": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+    },
+    "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+    "raw_span_sha256": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+    "prior_read_count": 1,
+    "is_currently_omitted": true,
+    "submitted": false
+  },
+  "static_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/bbffb92ad295e231f8d2f4cd5c7701d59696bbc4d761a716f216f9566a432e55.json",
+      "sha256": "1937288ceca0aa39083a984e878ad651b0792904f1e3d8abde32898f6b8cca5b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/d96019f662356772ef28d9c522256ff6e742ad9185617ce5cf5a74c596b1cf7f.json",
+      "sha256": "af149bc8fac7f1d877e342b6aa1ba0bad5bc71703bdf6ac4dd819dfdffd5e4aa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/21f3f7fa108b9f1774ed73619b0fec4ed53fd4e1e65e2307261e1ddb2dafed70.json",
+      "sha256": "b329b5c40a3cdba25101e1607daa1cc0942bae92fad429d17b0bb34907107dda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7.json",
+      "sha256": "329293c313521501f6a9137bbe308e81cbf13551da70b3bc573afaf495ab4c79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/24c573fe4cbfaaed1d5ee1d828e10fbc7a8db6a2b4b9a7cd1e9b2b9c87c9729e.json",
+      "sha256": "315e3cd77a60ac0f7f51cd21752045933ae7166b8da093008976dc0727237cbd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/ec6379a99d80ac60cf084d79cc0e9b7c1e61649a444269752770212eb258d035.json",
+      "sha256": "bc47b472cd1f1717dca34e925b0cfa646042270763fa0ef9d1ef53c32bc38cb0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/b68e3e72a36c8d4fac087af37ead4548bacd38c413c2e29f6b3d9c8f66b073a2.json",
+      "sha256": "9ac84c6f29afd10b977a6e402bd3e0a021d035bae29a356c9f7a81a26a68e6a3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b.json",
+      "sha256": "4431a08cc68eed0a04fb98eb527559ee2137352ba87e9bc779d44d9c56493d07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/seeds/hypothesis/observations/4a93051994060a4008e4a40f87d33ae9a2b5a76d2be3ca29e08a02d55fca84c5.json",
+      "sha256": "137059c2b806a417b65944bbc2e60f6be39f592235e45abbea094430ce0ced8b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/seeds/hypothesis/observations/90d5dd71d3a4583e41224e1e834482d50896f7e2f75def4d3fa600b29b77108d.json",
+      "sha256": "338c98315599835798c74f225973fb46c3684b691e0655a2a7cc21cdfaccd1db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/seeds/hypothesis/observations/e3425e3e71c3b0104366b992450efe8980a88e2a0210f4a15f0dd169b33a095d.json",
+      "sha256": "241760c65b966e63a8873b1fba5451afb123fac307784be21475fb2011368fe1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b.txt",
+      "sha256": "f90867ab7ebbc99b81a9879aac7b611a01f15a2b0a195996764800dfcab5ea0d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/21f3f7fa108b9f1774ed73619b0fec4ed53fd4e1e65e2307261e1ddb2dafed70.txt",
+      "sha256": "ef5cfdf0ece23140e46392c494786c0657ff1ea0410951d87c5024673a67a3ec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+      "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b.json",
+      "sha256": "6c8dce022a0aa40f84dc9a491bf2c44faa252dad0e8952c0309aa3feb28990f2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/922abec82c34b46ed7c2b2a3661f85a769b3957c2811553434e316303874f19b.json",
+      "sha256": "d2565669378054cb7988cf3d106b1c3804732ee2ed73fa25437cb0399cd354a7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/24c573fe4cbfaaed1d5ee1d828e10fbc7a8db6a2b4b9a7cd1e9b2b9c87c9729e.txt",
+      "sha256": "ae15fa4ef10d1821399916cb09af2f2d8f1a99ccb4d4e3d752cc7dce4123592c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/b68e3e72a36c8d4fac087af37ead4548bacd38c413c2e29f6b3d9c8f66b073a2.txt",
+      "sha256": "31623df40759a391755e0c622473c80383652bedcb32536a22d658f13bb4be63"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/receipts/24c573fe4cbfaaed1d5ee1d828e10fbc7a8db6a2b4b9a7cd1e9b2b9c87c9729e.json",
+      "sha256": "c2631f3e46de0572e1d65281f647d6f1b0fdd5f3b19df753e6dce90cc328c469"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/transport/cache/responses/24c573fe4cbfaaed1d5ee1d828e10fbc7a8db6a2b4b9a7cd1e9b2b9c87c9729e.json",
+      "sha256": "becc217d7bf146b7c01ff01bbfd5514c289ec991be9bf776759bc29336ee7885"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7.txt",
+      "sha256": "588fb3e12590d270d77b01ef8ea68174344450fbb4cb329049a11cc051465690"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/ec6379a99d80ac60cf084d79cc0e9b7c1e61649a444269752770212eb258d035.txt",
+      "sha256": "e09c474d9f7986765e0dea83e826940d11a7ce64a74eea0009c1a17b8f3ec4a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/progress.json",
+      "sha256": "928c126ad83440c368ca2f58629b7ca0fe5256ba3564dc08feee11028b650882"
+    }
+  ],
+  "consumption": {
+    "historical": [
+      10,
+      2055941
+    ],
+    "newly_answered": [
+      26,
+      5367457
+    ],
+    "combined": [
+      36,
+      7423398
+    ]
+  },
+  "two_reread_reservations": 478826,
+  "unique_read_units_before_after": [
+    16,
+    16,
+    16
+  ],
+  "source_read_document_count": 9,
+  "fact_count": 2093,
+  "relation_count": 947,
+  "event_count": 14,
+  "facts_relations_events_backlog_catalog_and_source_units_unchanged": true,
+  "new_candidate_count": 0,
+  "new_independent_sources_from_two_rereads": 0,
+  "new_source_facts_from_two_rereads": 0,
+  "current_working_page_restored": true,
+  "parent_stop_evidence_supported": true,
+  "stop_meaning": "Discretionary low-information-increment stop for this repeated-read strategy; retain exact native pending status and original fixed denominators.",
+  "not_established": [
+    "infinite loop",
+    "a code defect",
+    "unavoidable failure",
+    "author mental state",
+    "third read cannot enable synthesis",
+    "no pattern exists",
+    "budget exhaustion",
+    "candidate capability passed"
+  ],
+  "native_state": {
+    "pending": {
+      "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/inbox/a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7.json",
+      "inbox_sha256": "329293c313521501f6a9137bbe308e81cbf13551da70b3bc573afaf495ab4c79",
+      "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4/exchange/outbox/a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7.txt",
+      "request_hash": "a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7",
+      "stage": "mining_controller_step"
+    },
+    "status": "pending_independent_role"
+  },
+  "completed_business_pointers": [
+    0,
+    0
+  ],
+  "stage_product_or_oracle_writes": 0,
+  "answer_submissions_network_or_research_actions": 0
+}

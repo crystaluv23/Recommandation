@@ -1,0 +1,45 @@
+{
+  "schema_version": "parent-diagnostic-control-stop-v1",
+  "recorded_at": "2026-10-23T08:31:15.352382+00:00",
+  "decision": "stop_current_repeated_window_search_for_low_information_increment",
+  "reason": "Two exact old-window rereads restore current visibility but successively evict the next chosen old window; no new independent source/known fact/relation/event/candidate. Third raw action proposes another exact reread. Discretionary stop under AGENTS information-increment rule; not a code-defect or impossibility finding. No immediate v5, cap increase or reset.",
+  "stage_path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v4",
+  "native_stage_status": "pending_independent_role",
+  "native_completion_exists": false,
+  "pending_request_hash": "a7c5f884f8ca9c6f9b605b30c94242808fe095f6ad42e958b1edd3a373eb4de7",
+  "pending_answer_status": "raw_generated_not_submitted_not_executed",
+  "answered_unique_requests": 26,
+  "new_logical_reservations": 5367457,
+  "historical_debt": {
+    "calls": 10,
+    "logical_reservations": 2055941
+  },
+  "combined_calls": 36,
+  "combined_logical_reservations": 7423398,
+  "remaining_calls": 44,
+  "remaining_logical_reservations": 5159514,
+  "budget_exhaustion": false,
+  "candidate_denominator": 1,
+  "candidate_passed": 0,
+  "candidate_acceptance": "uncompleted_not_no_pattern",
+  "consumer_denominator": 4,
+  "consumer_attempted": 0,
+  "business_commit": false,
+  "external_llm_api_calls": 0,
+  "network_get_calls": 0,
+  "host_tokens_and_cost": "unmeasured",
+  "evidence": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/reread-frontier-review.md",
+  "parent_static_bindings_verified": 25,
+  "frozen_code_bindings_verified": 182,
+  "source_bindings_verified": 1481,
+  "runtime_archive": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-5fcf473b.tar.gz",
+    "sha256": "8aa1f7c780fb821592332ded1a572389c2b045b27643882d40d02d6b465a1315"
+  },
+  "stage_snapshot": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v4/stopped-prefix26-snapshot.json",
+    "sha256": "1136840abf29ec6e3c0df0a90a7d981baca682d06ead19ea36ea5326242cf657",
+    "files": 445
+  },
+  "reentry_policy": "Do not resume this stopped strategy or consume its pending raw answer; preserve exact frozen prefix and code archive. Any distinct future strategy needs prerequisite review and authorization without resetting historical debt."
+}
