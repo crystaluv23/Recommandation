@@ -1,0 +1,22 @@
+[
+  {
+    "document_id": "sec:cik_0001746129:000114036125018373",
+    "source_sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+    "native_source_card_fields_equal": [
+      "raw_chars",
+      "readable_start",
+      "sections",
+      "section_count"
+    ]
+  },
+  {
+    "document_id": "sec:cik_0002009312:000149315225011966",
+    "source_sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+    "native_source_card_fields_equal": [
+      "raw_chars",
+      "readable_start",
+      "sections",
+      "section_count"
+    ]
+  }
+]

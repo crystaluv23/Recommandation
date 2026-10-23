@@ -1,0 +1,15 @@
+{
+  "stage_all_316_files_still_equal_at_final_readback": true,
+  "result_scope": "offline frozen-answer replay exactly matched all ten actual native messages/costs; no h011 preparation or fresh answer",
+  "files": {
+    "blocked-cost-decomposition.json": "eb948baa9070fb041bf68b99f93f7f30e85862c08f2fd2ecd4b6e015e6d5f3cb",
+    "blocked-offline-native-estimate.json": "0fc9f3519692c15792cdb41ca9100a6c1dbb2bf8b6e4b222bfbd664c289a3c99",
+    "cost-field-shares.json": "44f0501b270c643fdcdaa066a7b9bcd11a9bd07099c75f7e1acb2d35f7debcc0",
+    "external-bindings.json": "247dcb267c027a2c6f869cd4522e1575a5ffdec08f3d6aeb20bdc89e3c91bcf8",
+    "reconstruct.py": "999a60e5e49fd22b070c76867c34890de5214dd5d995b168579561e372daea2a",
+    "report.md": "b76f81049be2781b6c7cf800a6ca577aa0feb182db568993e00bda073dbfad59",
+    "result.json": "faf3f60e30582f3610bdc4a3554676691e5c5bcefba505d1bd0be9cf23bfc1ac",
+    "stage-after.json": "1662d1b1f5df4425a8763e8674bdde5f7f819e60c3f2882c17cfc2804d81c688",
+    "stage-before.json": "1662d1b1f5df4425a8763e8674bdde5f7f819e60c3f2882c17cfc2804d81c688"
+  }
+}

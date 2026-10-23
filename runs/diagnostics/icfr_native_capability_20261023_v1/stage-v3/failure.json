@@ -1,0 +1,7 @@
+{
+  "error": "Mining scoped request budget exhausted before prepare",
+  "error_type": "MiningRequestBudgetExhausted",
+  "fixed_candidate_denominator": 1,
+  "fixed_consumer_denominator": 4,
+  "status": "terminal_resource_or_control_stop"
+}

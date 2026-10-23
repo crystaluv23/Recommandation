@@ -1,0 +1,1 @@
+{"action": "inspect_catalog", "scope": "signals", "cursor": 14, "rationale": ["The preceding signals page supplies next_cursor 14 with four remaining entries.", "Inspect the remaining catalog capabilities before selecting a new ICFR measurement and avoid claiming uniqueness from an incomplete catalog."]}

@@ -1,0 +1,1030 @@
+{
+  "scope": "exact h001-h007 inbox/raw answer/receipt; h008 inbox, transport request and request scope ONLY; no h008 answer or receipt read",
+  "requests": [
+    {
+      "h": 1,
+      "request_hash": "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60",
+      "native_complete_messages_plus_output": 90877,
+      "estimator_this_request": 90877,
+      "scope_reservation": 90877,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 79,
+        "calls_used": 0,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012492035",
+        "single_limit": 262144,
+        "this_request": "00000000000000090877",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 0
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 4
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 0,
+      "known_relations": 0,
+      "narrative_units": 0,
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 7,
+        "rationale": [
+          "Inspect the next existing Signal catalog page before selecting an ICFR measurement to check for overlap and preserve uniqueness.",
+          "The initial catalog exposes only 7 of 18 Signals; omitted capabilities remain unknown."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h001",
+        "inbox_sha256": "7c60cf1e873c824550ae876ccd921165cc7d11470e94b0943123d793b9ac7b17",
+        "raw_output_sha256": "e13d535d5f0a67a53013466c66e24deb54c352794bb5fb30a81b8152f1e6286c",
+        "request_hash": "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60"
+      }
+    },
+    {
+      "h": 2,
+      "request_hash": "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0",
+      "native_complete_messages_plus_output": 108402,
+      "estimator_this_request": 108402,
+      "scope_reservation": 108402,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 78,
+        "calls_used": 1,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012383633",
+        "single_limit": 262144,
+        "this_request": "00000000000000108402",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 90877
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 3
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 0,
+      "known_relations": 0,
+      "narrative_units": 0,
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 14,
+        "rationale": [
+          "The preceding signals page supplies next_cursor 14 with four remaining entries.",
+          "Inspect the remaining catalog capabilities before selecting a new ICFR measurement and avoid claiming uniqueness from an incomplete catalog."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h002",
+        "inbox_sha256": "ac260e8d242f5366c2a4fdfbb6b523e522d1dd00afe1ae05178e9d81af08af34",
+        "raw_output_sha256": "160a0913c6a2db4acf0bb1413815b3d78476d712293c811b02f4b00a131723d0",
+        "request_hash": "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0"
+      }
+    },
+    {
+      "h": 3,
+      "request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+      "native_complete_messages_plus_output": 111714,
+      "estimator_this_request": 111714,
+      "scope_reservation": 111714,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 77,
+        "calls_used": 2,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012271919",
+        "single_limit": 262144,
+        "this_request": "00000000000000111714",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 199279
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 2
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 0,
+      "known_relations": 0,
+      "narrative_units": 0,
+      "answer": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "source_families": [
+          "filing",
+          "10-k",
+          "sec_filing",
+          "financial",
+          "sec_company_facts"
+        ],
+        "max_documents": 32,
+        "query": null,
+        "rationale": [
+          "The complete eighteen-card catalog is visible across current and retained pages; no disclosed card directly measures public ICFR disclosure status.",
+          "Fetch authorized filing narratives and structured financial evidence together across both runtime label groups before choosing a reusable ICFR measurement.",
+          "Use raw source reads to distinguish explicit current control conclusions, unresolved weaknesses, remediation and exemptions; predictive effect remains unverified."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h003",
+        "inbox_sha256": "e26e181ef8daca869934efe091d5f63ab2e6c6e7c30d19060f43c6870dafcc4c",
+        "raw_output_sha256": "21fa9dfdd788d534581ee73757b6398e0422c43374b66eb6fe127249e938def1",
+        "request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5"
+      }
+    },
+    {
+      "h": 4,
+      "request_hash": "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba",
+      "native_complete_messages_plus_output": 234074,
+      "estimator_this_request": 234074,
+      "scope_reservation": 234074,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 76,
+        "calls_used": 3,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012037845",
+        "single_limit": 262144,
+        "this_request": "00000000000000234074",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 310993
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 2
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 2879,
+      "known_relations": 1342,
+      "narrative_units": 0,
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "cursor": 0,
+        "rationale": [
+          "The complete disclosed Signal catalog has no ICFR measurement; the public ICFR family requires grounded narrative investigation.",
+          "The broad PIT fetch already covers all eight cases; inspect the titled document directory and section coordinates before selecting raw ICFR spans.",
+          "Narrative evidence remains unexplored, and directory entries alone will not establish the disclosure state."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h004",
+        "inbox_sha256": "81ddbbb4db4c409131b3e37483ee3fa675eeb8db087d02f1bce43b454c187ee0",
+        "raw_output_sha256": "b5d8a6d1669a087469d89c229f79cecb8b47202f7589d371c527b238b6b1fa4f",
+        "request_hash": "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba"
+      }
+    },
+    {
+      "h": 5,
+      "request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+      "native_complete_messages_plus_output": 246816,
+      "estimator_this_request": 246816,
+      "scope_reservation": 246816,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 75,
+        "calls_used": 4,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011791029",
+        "single_limit": 262144,
+        "this_request": "00000000000000246816",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 545067
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 2879,
+      "known_relations": 1342,
+      "narrative_units": 0,
+      "answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Read the actual controls-and-procedures section for case-003, a runtime-labelled positive case, to investigate a reusable ICFR measurement.",
+          "The directory identifies the raw section coordinate but provides no semantic evidence; a bounded source read is required before interpreting or proposing a predicate."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h005",
+        "inbox_sha256": "2cb1c9135979efafc76f2f05428992cea6b85821340fa5359ec4e68d2170597c",
+        "raw_output_sha256": "c808969d0122408458afcabd04c7ddee52f33a3672c741ecf4e3577f40fdf354",
+        "request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727"
+      }
+    },
+    {
+      "h": 6,
+      "request_hash": "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5",
+      "native_complete_messages_plus_output": 245898,
+      "estimator_this_request": 245898,
+      "scope_reservation": 245898,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 74,
+        "calls_used": 5,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011545131",
+        "single_limit": 262144,
+        "this_request": "00000000000000245898",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 791883
+      },
+      "tool_budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 2879,
+      "known_relations": 1342,
+      "narrative_units": 1,
+      "answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1152908,
+        "length": 4000,
+        "rationale": [
+          "Continue the already-read case-003 controls section at its supplied next readable position to inspect the ICFR changes statement.",
+          "The visible effectiveness conclusion concerns disclosure controls and procedures; it does not alone establish ICFR effectiveness, remediation, or absence of a material weakness.",
+          "Read the adjacent ICFR text before defining a reusable measurement or contrasting it with control-case disclosures."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h006",
+        "inbox_sha256": "3c490d803a4836142ef67f0936927def01d1357a9362a0c82f28ac3b79ee045d",
+        "raw_output_sha256": "e147c19a8814713eadfb3e7380d1340d6bc3d8c715d349882500d0e80caca678",
+        "request_hash": "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5"
+      }
+    },
+    {
+      "h": 7,
+      "request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+      "native_complete_messages_plus_output": 247395,
+      "estimator_this_request": 247395,
+      "scope_reservation": 247395,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 73,
+        "calls_used": 6,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011297736",
+        "single_limit": 262144,
+        "this_request": "00000000000000247395",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1037781
+      },
+      "tool_budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "answered_in_fixed_set": true,
+      "known_facts": 2879,
+      "known_relations": 1342,
+      "narrative_units": 2,
+      "answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+        "offset": 3969625,
+        "length": 4000,
+        "rationale": [
+          "Read the actual controls-and-procedures disclosure for control case-002 at its supplied section coordinate.",
+          "The positive case-003 window reports effective disclosure controls and no material ICFR changes; it does not establish ICFR effectiveness or a material-weakness contrast.",
+          "Compare source-defined control concepts across PIT cases before choosing a reusable ICFR measurement."
+        ]
+      },
+      "receipt": {
+        "agent_id": "/root/icfr_v3_h007",
+        "inbox_sha256": "a312f2e9d075adb6873733203afd31126f9a5a9cd04da274112918d268f19a8b",
+        "raw_output_sha256": "5569a2128800e5b3cf995c2b45f8bd3bb813b0def385b0b0c01cecc3cadccb31",
+        "request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a"
+      }
+    },
+    {
+      "h": 8,
+      "request_hash": "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3",
+      "native_complete_messages_plus_output": 251665,
+      "estimator_this_request": 251665,
+      "scope_reservation": 251665,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 72,
+        "calls_used": 7,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011046071",
+        "single_limit": 262144,
+        "this_request": "00000000000000251665",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1285176
+      },
+      "tool_budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "answered_in_fixed_set": false,
+      "known_facts": 2879,
+      "known_relations": 1342,
+      "narrative_units": 3
+    }
+  ],
+  "answered_complete_cost": 1285176,
+  "h008_input_only_reservation": 251665,
+  "source_binding_count": 1163,
+  "source_bindings_used": [
+    {
+      "available_at": "2025-05-12T20:05:53+00:00",
+      "case_id": "cik_0001746129:20250731",
+      "case_ref": "case-002",
+      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+      "content_hash_matches": true,
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "document_id": "sec:cik_0001746129:000114036125018373",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json",
+      "pit_eligible": true,
+      "requires_primary_filing_audit": null,
+      "sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+      "snapshot_sha256_matches": true,
+      "source_type": "filing"
+    },
+    {
+      "available_at": "2025-08-14T20:01:09+00:00",
+      "case_id": "cik_0002009312:20250930",
+      "case_ref": "case-003",
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "content_hash_matches": true,
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "document_id": "sec:cik_0002009312:000149315225011966",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "pit_eligible": true,
+      "requires_primary_filing_audit": null,
+      "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "snapshot_sha256_matches": true,
+      "source_type": "filing"
+    }
+  ],
+  "complete_card_retention": [
+    {
+      "h": 1,
+      "count": 7,
+      "complete_18_equal_h003": false,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8"
+      }
+    },
+    {
+      "h": 2,
+      "count": 14,
+      "complete_18_equal_h003": false,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    },
+    {
+      "h": 3,
+      "count": 18,
+      "complete_18_equal_h003": true,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "order_confirmation_disclosed:v3": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+        "order_quality:v2": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+        "commercialization_status:v2": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+        "customer_concentration:v2": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    },
+    {
+      "h": 4,
+      "count": 18,
+      "complete_18_equal_h003": true,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "order_confirmation_disclosed:v3": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+        "order_quality:v2": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+        "commercialization_status:v2": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+        "customer_concentration:v2": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    },
+    {
+      "h": 5,
+      "count": 18,
+      "complete_18_equal_h003": true,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "order_confirmation_disclosed:v3": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+        "order_quality:v2": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+        "commercialization_status:v2": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+        "customer_concentration:v2": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    },
+    {
+      "h": 6,
+      "count": 18,
+      "complete_18_equal_h003": true,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "order_confirmation_disclosed:v3": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+        "order_quality:v2": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+        "commercialization_status:v2": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+        "customer_concentration:v2": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    },
+    {
+      "h": 7,
+      "count": 18,
+      "complete_18_equal_h003": true,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "order_confirmation_disclosed:v3": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+        "order_quality:v2": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+        "commercialization_status:v2": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+        "customer_concentration:v2": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    },
+    {
+      "h": 8,
+      "count": 18,
+      "complete_18_equal_h003": true,
+      "card_hashes": {
+        "financing_listing_action:v5": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+        "cash_burn_rate_elevated:v2": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+        "cash_reserves:v2": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+        "cash_to_current_liabilities_ratio:v2": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+        "gross_margin_change:v3": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+        "liquidity_runway_months:v3": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+        "net_share_retirement_yoy:v3": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+        "order_confirmation_disclosed:v3": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+        "order_quality:v2": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+        "commercialization_status:v2": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+        "customer_concentration:v2": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+        "operating_cash_flow_margin:v2": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+        "revenue_acceleration:v2": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+        "revenue_growth_yoy:v3": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+        "guidance_acceleration:v3": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+        "max_drawdown_1y:v2": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+        "price_momentum_126d:v2": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+        "negative_word_count:v2": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c"
+      }
+    }
+  ],
+  "evidence_directory_retention": [
+    {
+      "h": 5,
+      "observation_ref": "b9446cd04e741a6310dbecb1426a8ad7b4d4f08acd28c1772a9c5873220259cd",
+      "response_hash": "1c39f92c1aa0056bf3c808bdb00d5a12b2a0ac7d7af137f511ffd26b994ffb4c",
+      "source_snapshot_hash": "6d185a19277ee34377e8ec09bb6c342abd3f160c694cdac53ecb810a3ec252a3",
+      "source_snapshot_matches": true,
+      "counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "next_cursor": 2,
+      "whole_result_hash_normalized_wire_ids": "03a1f02a04b77e747cb93213f0750ffbe990c87d507197e671dca8d366fd5e4d"
+    },
+    {
+      "h": 6,
+      "observation_ref": "b9446cd04e741a6310dbecb1426a8ad7b4d4f08acd28c1772a9c5873220259cd",
+      "response_hash": "1c39f92c1aa0056bf3c808bdb00d5a12b2a0ac7d7af137f511ffd26b994ffb4c",
+      "source_snapshot_hash": "6d185a19277ee34377e8ec09bb6c342abd3f160c694cdac53ecb810a3ec252a3",
+      "source_snapshot_matches": true,
+      "counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "next_cursor": 2,
+      "whole_result_hash_normalized_wire_ids": "03a1f02a04b77e747cb93213f0750ffbe990c87d507197e671dca8d366fd5e4d"
+    },
+    {
+      "h": 7,
+      "observation_ref": "b9446cd04e741a6310dbecb1426a8ad7b4d4f08acd28c1772a9c5873220259cd",
+      "response_hash": "1c39f92c1aa0056bf3c808bdb00d5a12b2a0ac7d7af137f511ffd26b994ffb4c",
+      "source_snapshot_hash": "6d185a19277ee34377e8ec09bb6c342abd3f160c694cdac53ecb810a3ec252a3",
+      "source_snapshot_matches": true,
+      "counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "next_cursor": 2,
+      "whole_result_hash_normalized_wire_ids": "03a1f02a04b77e747cb93213f0750ffbe990c87d507197e671dca8d366fd5e4d"
+    },
+    {
+      "h": 8,
+      "observation_ref": "b9446cd04e741a6310dbecb1426a8ad7b4d4f08acd28c1772a9c5873220259cd",
+      "response_hash": "1c39f92c1aa0056bf3c808bdb00d5a12b2a0ac7d7af137f511ffd26b994ffb4c",
+      "source_snapshot_hash": "6d185a19277ee34377e8ec09bb6c342abd3f160c694cdac53ecb810a3ec252a3",
+      "source_snapshot_matches": true,
+      "counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "next_cursor": 2,
+      "whole_result_hash_normalized_wire_ids": "03a1f02a04b77e747cb93213f0750ffbe990c87d507197e671dca8d366fd5e4d"
+    }
+  ],
+  "original_directory": {
+    "action_id": 4,
+    "arguments": {
+      "action": "inspect_catalog",
+      "cursor": 0,
+      "scope": "evidence"
+    },
+    "observation_ref": "b9446cd04e741a6310dbecb1426a8ad7b4d4f08acd28c1772a9c5873220259cd",
+    "response_hash": "1c39f92c1aa0056bf3c808bdb00d5a12b2a0ac7d7af137f511ffd26b994ffb4c",
+    "result": {
+      "counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "items": [
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_bindings": [
+            {
+              "case_ref": "case-003",
+              "event_ref": "event-99d2c1094c6984b5"
+            }
+          ],
+          "discovery_only": true,
+          "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+          "event_ref": "event-99d2c1094c6984b5",
+          "family": "filing",
+          "raw_chars": 1191914,
+          "readable_start": 160442,
+          "section_count": 17,
+          "sections": [
+            {
+              "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+              "raw_end": 184115,
+              "raw_start": 183640,
+              "section_id": "sec00"
+            },
+            {
+              "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+              "raw_end": 184602,
+              "raw_start": 184516,
+              "section_id": "sec01"
+            },
+            {
+              "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+              "raw_end": 185470,
+              "raw_start": 184996,
+              "section_id": "sec02"
+            },
+            {
+              "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+              "raw_end": 187105,
+              "raw_start": 185865,
+              "section_id": "sec03"
+            },
+            {
+              "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+              "raw_end": 188402,
+              "raw_start": 187551,
+              "section_id": "sec04"
+            },
+            {
+              "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+              "raw_end": 190904,
+              "raw_start": 188811,
+              "section_id": "sec05"
+            },
+            {
+              "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+              "raw_end": 210430,
+              "raw_start": 209861,
+              "section_id": "sec06"
+            },
+            {
+              "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+              "raw_end": 215508,
+              "raw_start": 214365,
+              "section_id": "sec07"
+            },
+            {
+              "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+              "raw_end": 912522,
+              "raw_start": 912261,
+              "section_id": "sec08"
+            },
+            {
+              "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+              "raw_end": 1148005,
+              "raw_start": 1147325,
+              "section_id": "sec09"
+            },
+            {
+              "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+              "raw_end": 1149505,
+              "raw_start": 1148801,
+              "section_id": "sec10"
+            },
+            {
+              "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+              "raw_end": 1156322,
+              "raw_start": 1155063,
+              "section_id": "sec11"
+            },
+            {
+              "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+              "raw_end": 1158900,
+              "raw_start": 1158223,
+              "section_id": "sec12"
+            },
+            {
+              "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+              "raw_end": 1160102,
+              "raw_start": 1159422,
+              "section_id": "sec13"
+            },
+            {
+              "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+              "raw_end": 1162286,
+              "raw_start": 1160835,
+              "section_id": "sec14"
+            },
+            {
+              "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+              "raw_end": 1163981,
+              "raw_start": 1163299,
+              "section_id": "sec15"
+            },
+            {
+              "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+              "raw_end": 1169506,
+              "raw_start": 1167485,
+              "section_id": "sec16"
+            }
+          ],
+          "title": "10-Q 2025-08-14",
+          "window": "2025Q3"
+        },
+        {
+          "available_at": "2025-05-12T20:05:53+00:00",
+          "case_bindings": [
+            {
+              "case_ref": "case-002",
+              "event_ref": "event-24747d604f79cfb5"
+            }
+          ],
+          "discovery_only": true,
+          "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+          "event_ref": "event-24747d604f79cfb5",
+          "family": "filing",
+          "raw_chars": 3988651,
+          "readable_start": 251090,
+          "section_count": 15,
+          "sections": [
+            {
+              "heading": "PART I. FINANCIAL INFORMATION Item 1. Financial Statements",
+              "raw_end": 273510,
+              "raw_start": 272259,
+              "section_id": "sec00"
+            },
+            {
+              "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+              "raw_end": 277409,
+              "raw_start": 277081,
+              "section_id": "sec01"
+            },
+            {
+              "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 49 Item 4. Controls",
+              "raw_end": 278891,
+              "raw_start": 277870,
+              "section_id": "sec02"
+            },
+            {
+              "heading": "PART II. OTHER INFORMATION 51 Item 1. Legal Proceedings 51 Item 1A",
+              "raw_end": 281623,
+              "raw_start": 279650,
+              "section_id": "sec03"
+            },
+            {
+              "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 51 Item 3. Default",
+              "raw_end": 283522,
+              "raw_start": 282419,
+              "section_id": "sec04"
+            },
+            {
+              "heading": "Item 4. Mine Safety Disclosures 51 Item 5. Other Information 51 Item 6. Exhibits 52 &#",
+              "raw_end": 286295,
+              "raw_start": 284134,
+              "section_id": "sec05"
+            },
+            {
+              "heading": "ITEM 2. Management&#8217;s Discussion and Analysis of Financial Condition and R",
+              "raw_end": 3083736,
+              "raw_start": 3083467,
+              "section_id": "sec06"
+            },
+            {
+              "heading": "ITEM 3. Quantitative and Qualitative Disclosures about Market Risk Interest Rate Sensi",
+              "raw_end": 3944282,
+              "raw_start": 3944092,
+              "section_id": "sec07"
+            },
+            {
+              "heading": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Ex",
+              "raw_end": 3969896,
+              "raw_start": 3969625,
+              "section_id": "sec08"
+            },
+            {
+              "heading": "PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions th",
+              "raw_end": 3972577,
+              "raw_start": 3972224,
+              "section_id": "sec09"
+            },
+            {
+              "heading": "ITEM 1A. Risk Factors In addition to the other information set forth in this Report, we",
+              "raw_end": 3973673,
+              "raw_start": 3973501,
+              "section_id": "sec10"
+            },
+            {
+              "heading": "Item 1A. &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the year ende",
+              "raw_end": 3973774,
+              "raw_start": 3973687,
+              "section_id": "sec11"
+            },
+            {
+              "heading": "ITEM 2. Unregistered Sales of Equity Securities and Use of Proceeds On October 30, 202",
+              "raw_end": 3974359,
+              "raw_start": 3974188,
+              "section_id": "sec12"
+            },
+            {
+              "heading": "ITEM 3. Defaults Upon Senior Securities None ITEM 4. Mine Safety Disclosures None ITEM",
+              "raw_end": 3976187,
+              "raw_start": 3975564,
+              "section_id": "sec13"
+            },
+            {
+              "heading": "Item 408(a) of Regulation S-K. 51 Table of Contents ITEM 6. Exhibits 31.1 Certification",
+              "raw_end": 3978788,
+              "raw_start": 3977182,
+              "section_id": "sec14"
+            }
+          ],
+          "title": "10-Q 2025-05-12",
+          "window": "2025Q2"
+        }
+      ],
+      "max_entry_bytes": 8000,
+      "next_cursor": 2,
+      "oversized_entries": [],
+      "selection_is_exhaustive": false
+    },
+    "scope": "evidence",
+    "source_snapshot_hash": "6d185a19277ee34377e8ec09bb6c342abd3f160c694cdac53ecb810a3ec252a3",
+    "source_snapshot_matches": true
+  },
+  "actual_read_units_h008": [
+    {
+      "available_at": "2025-05-12T20:05:53+00:00",
+      "case_refs": [
+        "case-002"
+      ],
+      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+      "document_ref": "document-sec:[ANON_ID_0000]:000114036125018373",
+      "has_readable_text": true,
+      "length": 4000,
+      "next_readable_start": 3973625,
+      "offset": 3969625,
+      "published_at": "2025-05-12T20:05:53+00:00",
+      "raw_window_chars": 4000,
+      "read_count": 1,
+      "read_targets": [
+        {
+          "case_refs": [
+            "case-002"
+          ],
+          "ref": "document-sec:[ANON_ID_0000]:000114036125018373",
+          "target": "document_ref"
+        }
+      ],
+      "readable_chars": 2094,
+      "readable_text": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, conducted an evaluation of the effectiveness as of March 31, 2025 of our disclosure controls and procedures, as defined Rules 13a-15(e) and 15d-15(e) under the Exchange Act.&#160; In designing and evaluating the disclosure controls and procedures, management recognizes that any controls and procedures, no matter how well designed and operated, can provide only reasonable assurance of achieving the desired control objectives, and management was required to apply judgment in evaluating its controls and procedures.&#160; Based on this evaluation, our Chief Executive Officer and Chief Financial Officer concluded that our disclosure controls and procedures were effective as of the end of the fiscal quarter covered by this Form 10-Q. Changes in Internal Control over Financial Reporting There was no change in our internal control over financial reporting (as such term is defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act) that occurred during the three months ended March 31, 2025 that has materially affected, or is reasonably likely to materially affect, such controls. 50 Table of Contents PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions that are routine and incidental to our business. Given the nature, scope and complexity of the extensive legal and regulatory landscape applicable to our business, including laws and regulations governing consumer protections, fair lending, fair labor, privacy, information security and anti-money laundering and anti-terrorism laws, we, like all banking organizations, are subject to heightened legal and regulatory compliance and litigation risk. However, based upon available information and in consultation with legal counsel, management is of the opinion that no proceedings exist, either individually or in the aggregate, which, if determined adversely, would have a material adverse effect on our financial statements. ITEM 1A. Risk Factors In addition to th",
+      "source_type": "filing",
+      "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+      "readable_sha256": "5287a19c3b2fe2482b0861aa84d36af449f503d7435a8aeeffc043a9f890a7d4",
+      "source_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json",
+      "source_file_sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+      "source_document_id": "sec:cik_0001746129:000114036125018373"
+    },
+    {
+      "available_at": "2025-08-14T20:01:09+00:00",
+      "case_refs": [
+        "case-003"
+      ],
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "has_readable_text": true,
+      "length": 4000,
+      "next_readable_start": 1156908,
+      "offset": 1152908,
+      "published_at": "2025-08-14T20:01:09+00:00",
+      "raw_window_chars": 4000,
+      "read_count": 1,
+      "read_targets": [
+        {
+          "case_refs": [
+            "case-003"
+          ],
+          "ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+          "target": "document_ref"
+        }
+      ],
+      "readable_chars": 1015,
+      "readable_text": "&#160; There were no changes in our internal control over financial reporting during the period covered by this Quarterly Report that materially affected, or are reasonably likely to materially affect, our internal control over financial reporting (as defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act). &#160; 42 &#160; &#160; PART II&#8212;OTHER INFORMATION &#160; ITEM 1. LEGAL PROCEEDINGS &#160; The Company may be involved in various legal proceedings, claims and other disputes arising from the commercial operations, projects, employees and other matters which, in general, are subject to uncertainties and in which the outcomes are not predictable. The Company determines whether an estimated loss from a contingency should be accrued by assessing whether a loss is deemed probable and can be reasonably estimated. Although the outcomes of these legal proceedings cannot be predicted, the Company does not believe these actions, in the aggregate, will have a material adverse impact on its fin",
+      "source_type": "filing",
+      "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+      "readable_sha256": "366f7024d5a41d94c7a5de0d523e5cff126c4b39c6d87d385c71e9f6dd97fcb9",
+      "source_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "source_file_sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "source_document_id": "sec:cik_0002009312:000149315225011966"
+    },
+    {
+      "available_at": "2025-08-14T20:01:09+00:00",
+      "case_refs": [
+        "case-003"
+      ],
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+      "has_readable_text": true,
+      "length": 4000,
+      "next_readable_start": 1152908,
+      "offset": 1148801,
+      "published_at": "2025-08-14T20:01:09+00:00",
+      "raw_window_chars": 4000,
+      "read_count": 1,
+      "read_targets": [
+        {
+          "case_refs": [
+            "case-003"
+          ],
+          "ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+          "target": "document_ref"
+        }
+      ],
+      "readable_chars": 1631,
+      "readable_text": "ITEM 4. CONTROLS AND PROCEDURES &#160; Evaluation of Disclosure Controls and Procedures &#160; Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, evaluated the effectiveness of our disclosure controls and procedures (as defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act at the end of the period covered by this quarterly report. &#160; Based on this evaluation, the Chief Executive Officer and Chief Financial Officer concluded that, as of end of the period covered by this Quarterly Report, our disclosure controls and procedures (as defined in &#167; 240.13a-15(e) or 240.15d-15(e) of Regulation S-K) were effective to provide reasonable assurance that the information required to be disclosed by us in the reports we file or submit under the Exchange Act is recorded, processed, summarized and reported within the time periods specified in the SEC&#8217;s rules and forms, and that such information (i) is accumulated and communicated to management, including our Chief Executive Officer and Chief Financial Officer, as appropriate to allow timely decisions regarding required disclosures and (2) recorded, processed, summarized and reported within the time periods specified in the SEC&#8217;s rules and forms. &#160; We recognize that any controls system, no matter how well designed and operated, can provide only reasonable assurance of achieving its objectives, and our management necessarily applies its judgment in evaluating the benefits of possible controls and procedures relative to their costs. &#160; Changes in Internal Control over Financial Reporting",
+      "source_type": "filing",
+      "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+      "readable_sha256": "264e23a354326255e2045ec7b437654beee01f7d2101f12ee875a95dda12218e",
+      "source_path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "source_file_sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "source_document_id": "sec:cik_0002009312:000149315225011966"
+    }
+  ],
+  "h007_answer": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+    "offset": 3969625,
+    "length": 4000,
+    "rationale": [
+      "Read the actual controls-and-procedures disclosure for control case-002 at its supplied section coordinate.",
+      "The positive case-003 window reports effective disclosure controls and no material ICFR changes; it does not establish ICFR effectiveness or a material-weakness contrast.",
+      "Compare source-defined control concepts across PIT cases before choosing a reusable ICFR measurement."
+    ]
+  },
+  "source_selection_difference": {
+    "v3": {
+      "facts": 2879,
+      "relations": 1342,
+      "fetch_max_documents": 32,
+      "query": null
+    },
+    "v2_prior_fixed_evidence": {
+      "facts": 2088,
+      "relations": 952,
+      "query": "targeted ICFR"
+    },
+    "causal_efficiency_or_total_cost_claim": false
+  }
+}

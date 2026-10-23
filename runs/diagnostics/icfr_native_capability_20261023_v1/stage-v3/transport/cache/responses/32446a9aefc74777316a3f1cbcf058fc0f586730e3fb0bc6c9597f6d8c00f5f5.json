@@ -1,0 +1,45 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "fetch_evidence",
+    "case_refs": [
+      "case-001",
+      "case-002",
+      "case-003",
+      "case-004",
+      "case-005",
+      "case-006",
+      "case-007",
+      "case-008"
+    ],
+    "max_documents": 32,
+    "query": null,
+    "rationale": [
+      "The complete eighteen-card catalog is visible across current and retained pages; no disclosed card directly measures public ICFR disclosure status.",
+      "Fetch authorized filing narratives and structured financial evidence together across both runtime label groups before choosing a reusable ICFR measurement.",
+      "Use raw source reads to distinguish explicit current control conclusions, unresolved weaknesses, remediation and exemptions; predictive effect remains unverified."
+    ],
+    "source_families": [
+      "filing",
+      "10-k",
+      "sec_filing",
+      "financial",
+      "sec_company_facts"
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"fetch_evidence\", \"case_refs\": [\"case-001\", \"case-002\", \"case-003\", \"case-004\", \"case-005\", \"case-006\", \"case-007\", \"case-008\"], \"source_families\": [\"filing\", \"10-k\", \"sec_filing\", \"financial\", \"sec_company_facts\"], \"max_documents\": 32, \"query\": null, \"rationale\": [\"The complete eighteen-card catalog is visible across current and retained pages; no disclosed card directly measures public ICFR disclosure status.\", \"Fetch authorized filing narratives and structured financial evidence together across both runtime label groups before choosing a reusable ICFR measurement.\", \"Use raw source reads to distinguish explicit current control conclusions, unresolved weaknesses, remediation and exemptions; predictive effect remains unverified.\"]}",
+  "request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+  "response_id": "local-32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+  "usage": {
+    "accounting_tokens": 111714,
+    "agent_id": "/root/icfr_v3_h003",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "e26e181ef8daca869934efe091d5f63ab2e6c6e7c30d19060f43c6870dafcc4c",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "21fa9dfdd788d534581ee73757b6398e0422c43374b66eb6fe127249e938def1",
+    "request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+    "token_usage": null
+  }
+}

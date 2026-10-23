@@ -1,0 +1,4 @@
+First read-only audit stopped before reading any wire or producing evidence:
+KeyError: 'document_id' in source_bindings selector.
+Cause: source_bindings also includes non-document records. Correct selector to x.get('document_id', '').endswith(...). No sample or product change.
+Second audit stopped at source-readable equality. Source/verbatim hash already matched, but strip_document_artifacts(raw substring) omits the actual raw_span_view whole-document visibility projection. Correct baseline uses RawInfoDocument.from_dict + raw_span_view + existing strip_document_artifacts, exactly as the producer. This is a harness projection correction, not a changed sample or source.

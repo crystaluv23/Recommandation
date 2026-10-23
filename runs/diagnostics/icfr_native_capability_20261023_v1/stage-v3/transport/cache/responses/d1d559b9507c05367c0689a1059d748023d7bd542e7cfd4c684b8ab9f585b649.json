@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+    "length": 4000,
+    "offset": 377224,
+    "rationale": [
+      "The read positive case-003 and control case-002 disclose effective disclosure controls and no material ICFR changes; these alone do not establish a distinguishing ICFR measurement.",
+      "Read the newly located positive case-005 annual-report risk section at its disclosed body coordinate to investigate a different ICFR disclosure, retaining unknowns for unread sections and cases."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0000]:000095017025054321\", \"offset\": 377224, \"length\": 4000, \"rationale\": [\"The read positive case-003 and control case-002 disclose effective disclosure controls and no material ICFR changes; these alone do not establish a distinguishing ICFR measurement.\", \"Read the newly located positive case-005 annual-report risk section at its disclosed body coordinate to investigate a different ICFR disclosure, retaining unknowns for unread sections and cases.\"]}",
+  "request_hash": "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+  "response_id": "local-d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+  "usage": {
+    "accounting_tokens": 258996,
+    "agent_id": "/root/icfr_v3_h009",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "9ec7bc19e44608ff227ec925be5a653b1f9c19e96d833b2ce59ac64a88ec170a",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "e8959647f083c911c1e116db7f86487724708e75c6ae04ca397f644b673b349f",
+    "request_hash": "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+    "token_usage": null
+  }
+}

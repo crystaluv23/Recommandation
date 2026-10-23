@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+    "length": 4000,
+    "offset": 1148801,
+    "rationale": [
+      "Read the actual controls-and-procedures section for case-003, a runtime-labelled positive case, to investigate a reusable ICFR measurement.",
+      "The directory identifies the raw section coordinate but provides no semantic evidence; a bounded source read is required before interpreting or proposing a predicate."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0000]:000149315225011966\", \"offset\": 1148801, \"length\": 4000, \"rationale\": [\"Read the actual controls-and-procedures section for case-003, a runtime-labelled positive case, to investigate a reusable ICFR measurement.\", \"The directory identifies the raw section coordinate but provides no semantic evidence; a bounded source read is required before interpreting or proposing a predicate.\"]}",
+  "request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+  "response_id": "local-fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+  "usage": {
+    "accounting_tokens": 246816,
+    "agent_id": "/root/icfr_v3_h005",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "2cb1c9135979efafc76f2f05428992cea6b85821340fa5359ec4e68d2170597c",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "c808969d0122408458afcabd04c7ddee52f33a3672c741ecf4e3577f40fdf354",
+    "request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+    "token_usage": null
+  }
+}

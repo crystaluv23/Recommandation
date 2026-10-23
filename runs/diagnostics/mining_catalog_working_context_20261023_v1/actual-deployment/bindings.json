@@ -1,0 +1,1143 @@
+{
+  "fixed_artifacts_stable_before_after": true,
+  "files": {
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/manifest.json": "3768394d90e0c2715f25f0f5653377de99d1c5a3555a51c5e473d0150b336a1a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json": "7c60cf1e873c824550ae876ccd921165cc7d11470e94b0943123d793b9ac7b17",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json": "987066e5e39fec92e94620f9b649092122f79c2b633a90d038051de3a444fb83",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json": "a49d3f8ac6ce4f5a9edb5fc558fcaea2019e370e5a6213759df83dd1629b50b0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.txt": "e13d535d5f0a67a53013466c66e24deb54c352794bb5fb30a81b8152f1e6286c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60.json": "b67509aae9c0d381b9124a5fe1ece49204524124da26e6663de0bfbf3ae16e2b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json": "ac260e8d242f5366c2a4fdfbb6b523e522d1dd00afe1ae05178e9d81af08af34",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json": "05bffb2073b5b53ad95692fc6dc02a0b102b984ff09ac6cae7df39634683ad4a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json": "3968901851ac898970b3adbbd5db82cb20adc9679ddc579501a616efdf131144",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.txt": "160a0913c6a2db4acf0bb1413815b3d78476d712293c811b02f4b00a131723d0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0.json": "9bf8fa6690479eaf048af3846dabbfef6432bae7bc73df93bf31bf342d4a4dc4",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json": "e26e181ef8daca869934efe091d5f63ab2e6c6e7c30d19060f43c6870dafcc4c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json": "111f93c8ee35cc67682d5a41480d8115546d86f59fbdc08bc82185c159885789",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json": "6f25bb1dd49457e0c7d0d9dce59bf30d16618ae4abdcdffb8909068f7c2c2662",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.txt": "21fa9dfdd788d534581ee73757b6398e0422c43374b66eb6fe127249e938def1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5.json": "d058eca46159e17563bacee886a5d3b142881729e9378373c7c1816e2f677a1c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json": "81ddbbb4db4c409131b3e37483ee3fa675eeb8db087d02f1bce43b454c187ee0",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json": "d694d5b9c9cfc83aa98befeeb7c95a902885b43bbc3a554d49baa295b5455e9e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json": "10f55fd4a5500cdc0e5aa5e1e322b260603689a2cebbe93e40d6dfe2ba10eef5",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.txt": "b5d8a6d1669a087469d89c229f79cecb8b47202f7589d371c527b238b6b1fa4f",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba.json": "36f619eac8ed3c41b94ab4a4ab12ceec1dab57391665ce05a4c4460c2ead5107",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json": "2cb1c9135979efafc76f2f05428992cea6b85821340fa5359ec4e68d2170597c",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json": "9d9ffeb010cd01792a9b6310b3ecee4f4d0ffefd0bfa1b7657cce76e40093e7a",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json": "01ec99237af88f3a89d5bafa73c98b36badb5a4ead64af7d60a29c5427a88217",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.txt": "c808969d0122408458afcabd04c7ddee52f33a3672c741ecf4e3577f40fdf354",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727.json": "c5ed6ae909a8abad2e3a3115ffac7a81e82c35cb3ccaeae2ce95fa22482f615e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json": "3c490d803a4836142ef67f0936927def01d1357a9362a0c82f28ac3b79ee045d",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json": "7c764237e6f203ea8b6d00f2cc4d3902b8548063dc0a1cdd28085d953bd15fc8",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json": "d179e333e4f4c3a0313a16cb32435ae1bb96c82f3e23b20e00da77272611422e",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.txt": "e147c19a8814713eadfb3e7380d1340d6bc3d8c715d349882500d0e80caca678",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5.json": "cc8627a4c172843b4dae3f083bdaa42bacb99c1ff7b864161e9361a1a795ca14",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json": "a312f2e9d075adb6873733203afd31126f9a5a9cd04da274112918d268f19a8b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json": "cd5972e94991fb0deef546fec9b4da28cebfbbb475ff586dfd31929d05056470",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json": "c6bfba89fe1020b0d162d5ffa65ab0ae8353667b5c63865612281efe60e9ed35",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.txt": "5569a2128800e5b3cf995c2b45f8bd3bb813b0def385b0b0c01cecc3cadccb31",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/receipts/1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a.json": "c8b346aee0a61bf8516c6554cc0c5c75f7dfd29eb67d05d25335962b681fd0b1",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json": "8a24db2236093ea73eb74f72f6c4660e5ce94ac542b80f970466000b38f58bf9",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/transport/requests/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json": "1bcb71cbb27a29fc2064db3c2a8b78e20032b09010aad7d2160ee9803a778a1b",
+    "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/request-scopes/96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3.json": "a1340467a4dee89d36cdf07afe430494d4074138eaa9b4f9aba2158c6ebaadb1",
+    "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py": "6d5c9941e8b64f13eda7db754292ce6629fbbe105dce4ee2697c51419f3e956a",
+    "/Users/l/Project/Recommandation/scripts/run_icfr_native_capability_stage.py": "32927a48b1b16ac8397ae89bf36257f7270115084562c7956780e56fb861389a",
+    "/Users/l/Project/Recommandation/spec/architecture.md": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+    "/Users/l/Project/Recommandation/spec/engineering-mvp.md": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947",
+    "/Users/l/Project/Recommandation/spec/scripts/run_icfr_native_capability_stage.md": "e8ceb257900f9da8b9a8e85753fb48e9e82a9d018f3b6e32d8c1c09b025af331",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/README.md": "9687b05af9b6317474f02cfd24294c0143840fc2ec4cfd39bd2c4b24cc1ac4e0",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/artifacts.md": "b80a1b8318ffd576b6115c6e7da42657c9e477f6966f405f2cd1ae677df71af6",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/inflections.md": "f0d6a9d3445f499e7509973a3a0cf0eb8c9065d9bdfff938e362fe36d97cd3e0",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/matching.md": "ce7ceaaee9f33b808a82b4f305bd5b785113d66bc2c8b809186278ec963ed8b4",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/outcomes.md": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/packets.md": "481a0468c2ab9a883fd93acdefca38565ed4321f8a8f0723613d25e1a3237ac1",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/selection.md": "162590da8409522831570a071bd38a863fbc5bb6faf58a7454b9e0cc32b808ff",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases.md": "a7d06d728d55b6a43c8a8a49f0274eab10e0f3a597dbeeb6b3c94377d4cfd522",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/config.md": "19f986a97fb172d0ec9f8eaf6c29daec636ecdb794dfa5057c9e925dbd968df2",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/backfill.md": "3708943f056598a4270622667da29fb4d3b4f4564858f1a2a0ec2973304858db",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/disclosure.md": "0d6243c8cacc671f0656bde8518bbc0d992a83547093de9530cc5514b9be6a8d",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/documents.md": "27f392775f0ba763d711b99c62f79dbc1b53d658652f6e62bcca38e4a3956f26",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/filing_orientation.md": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/historical_news.md": "a85baf0a33f7b5cc22e2d1931ee295dc5822d57531217faa1665427c6c6aa7af",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/json_stream.md": "84defdbef4bb66a961feae72d55468c15355df61fed88aa45282ef37e3d668ff",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/markup.md": "84a9e9ba3ad74343e3f0c88d04766808023b5decb346d4043178d539a67c064c",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/point_in_time.md": "1dd6b06704e08856f3096b4b1f443223730b1f02f5334839f1be767cc8879679",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/raw_info.md": "b026c33554eb0c51282509e8e773c179736ed92360235e38f82d441e1c10a72e",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md": "2abc386ef4a940b3c0c9ccd19debebb3198bcc1bacad31695e5f017d31d00129",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_companyfacts_profile.md": "de50c8f81c0fd9dfb2a8f4542feb5d23436a2ac64dac0d6ffea565975e6e6330",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md": "ef413dc6c4e7c0b4aceec5a705d785d89dcd9a90506307ddde5d7720980d72b6",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md": "8ec3e444bb495e835fc67f85302bcfe60e2457042dced233149e0bb5d8e3f242",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/structured.md": "940b8954cd4152e563f11f95e81111be914402aa4dc466062d94f07e577e094b",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data.md": "a787cb39822a20d130842675564807f2bdd5e963d7fc866deb6951ae6850cbb3",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/llm.md": "c905fa99b4012094958684b25059e15ae22ce7ed97660e1f80b6373bbaab0e28",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/knowledge.md": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/playbooks.md": "4d90287670992ab71997c56e9fcc14a8a22bf9caf9c78fe64e15b790ca3c353b",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/signals.md": "3556bee9fa6a8dfb16baa650dbd2376f8bfc399e6c439dc0608f5675f1e2473c",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/themes.md": "fe3dc35d9ee3cd6bb3f5ec4da00265a95827c909e366f0096b4485debfd21097",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory.md": "ce20c743f16ac65ddfbba542c71e1c864913d4145a0e63294ad0faf0168c4cbe",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/meta_learning.md": "b6d3f75bf8d165ec1aa8f3c4c82b63aa8df344783de23f3b43ec97792c358626",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/models.md": "fe334c7256ea9f17e97e401e6eb24e2296da393465763685068753cf78921f02",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/monitoring.md": "52fa8798f36e64b5867a7384e2f5004c6394bdc53619a2023b05ad98ea533dd8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/orchestration.md": "6d1938fce5874bece1e823142e8f4c7795957fcb91a1ff08ef79b3efb48413f6",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/ranking.md": "cdb5f0d34a407d60ab475f28c586270e538e155ebfae36133bf42bc0e39a5094",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/reports.md": "0acb77425bb5e1e5ed52f6c7177cc1cb752041bad38ef4bb1df97de7c95fc6d9",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/basic_info_orientation.md": "418ac2ae8e2f87a872ac1dc325541a2a33abc98e303d06f77fb65e18bd4d843d",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/basic_info_visibility.md": "e8c29045efc2f2dc421a656d7f2ea6bce5cbf572ada7c1cb420b4b7249740ece",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/cold_start.md": "dafa28d6a0e3d4922bcb106a5d5f59c10bbfa77d459a5dc90d5bb4ef50b3f36d",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/compute_tools.md": "a9a750433fff13c9f83a8a539b3409642e36f0698f68b526afd712249269f0f6",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/cross_round_reflection.md": "fe530f2235d10dbc173809a68b4a7ee443cdbf03bcd08ee4da1f9c3cc88f66d2",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evidence_acquisition.md": "2b34ff3fb37ba138b41ff13b219359a66965073b53cdaaf2a8b38063df495c83",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_benefit.md": "7b276608c18b9c3b1ca150ae5b34437fa0a4ba74b71183f8463c1768852c728b",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_control.md": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_core.md": "317d0b4f51c31b6c1f4b27e8efa2ff9e8aeecd22c7afe7aebcf3fbfbf39593ec",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dashboard.md": "73a28a111a47581de43d7c1ac8706269fed6ce8b39fd1cf01d718882edc2ddab",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dataset.md": "acde59ac181b16226b536b1e82ae48cd3e1d9b57b08a88872e9035e8896b2a66",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_output_validation.md": "de6beaa77c78f0522523c44d9c40787d50f36d178a028dd09769c2e78caa0cbc",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_runtime.md": "8113d663efb7d800cb04b866e6eae1e9a2f40f434aef01ef91ae5fd49c032e85",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_settings.md": "4680d20104404e0cce6be02ec8722ced093c103d30fce7b5eab1fa9eba1abc03",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_state_patch.md": "2e16a9c893ac6c78274835496abdc07271e27ac51c182c30dbc2a10e49c051bc",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_transport.md": "cf16432574beb010ac34b89b9237f4c48a4bb138d45555c605fdf6f28cefc80d",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/inflection_discovery.md": "ed72ba45656394e28b2aa6cc1b313e70fef0b5d4da570caf028b089673613b46",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/information_plan.md": "ec3b83310efaff961a57f2162aa418c51cb9c7736d70c9b5b8e500cba23b2d9c",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/local_role_exchange.md": "331960f85ff7721198c73897a61b4d4bb97d87c23b1f8628f56bd1692c4a1d09",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/plan_evolution.md": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/playbooks.md": "8d8cb892491bfea418bbdb5adebb872a6b7caa1cc0a0702a6aff1302f04af7d4",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/ralph_loop.md": "5070a1afe22dcf215b80e7a0123cbc2373a8b92443be89c16d38cbdac5738a5a",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/repair.md": "d06c41b195636f494c029fa7628406a4638abf9e613e091fe2f8c32ef1598263",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/scheme_evolution.md": "8a72daa75add0e23ab6ae58e1883b1bdbff9270a1a6e720361113b515ece47f7",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_source_reading.md": "367094515285f365d79b5de225ef23a396401a15493994f884348214826ab54c",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_tracking.md": "0e0a471349262d026b4f1f4e1f3e5af96f1e2025d8c1b87c4371f6716bd365e5",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md": "f312802d6e81d012cd9cf91c51a4234b347b76fe3c9e551c2e9cce8db1a3bcb8",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research.md": "4cf80366ff45712f5149aadea5f91b4b5892778883f0db09a2abb206b3ac7960",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/review.md": "74b6e1e9c61248e2c2b4520cfe7f1edc22c6e3fcf4b91c30324f2fc7ba34d689",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/scanner.md": "f0251796566663b193b66f349582fd8fa7cf1952c5f498dbaee9a56262ec5897",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/scoring.md": "c2ae8168a4b62510c91fb089b590c012af678e5f3b7f616fb2c366754e621699",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signals.md": "52fa2f6acdb6b44eedbf221fb547c24e1a058146c5dce9bd8aa2fd28abd612cc",
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/themes.md": "cd85caef708c6c23ec274966bfc742284c6e8bb18fe1f36fb6ed41a3c5f7aa29",
+    "/Users/l/Project/Recommandation/spec/vision.md": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py": "dc2a24c345e1abee9c5618312283ab1b22a368fafc2247ddc0f3acedd35d8f36",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py": "733e2f305a25cebb60e136cf1b1e21a2ae219ddaefd9a2636bc39b40944c31e7",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py": "f8715584e1b66fb7482331a909a3e219a502e2653fade5bdd5733665e6b5df91",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py": "5dec23847a4aeefc71bbee1a36adf45181658ffe63f564f03879c45381468033",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed",
+    "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py": "bf708ed18142e8567bd6c73d93afcdc73424a1cfdf7b5ffe2c04ea97dc498375"
+  },
+  "native_code_manifest_match": true,
+  "code_manifest_verification": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/diagnose_executed_answer_scope.py",
+      "manifest_sha256": "6d5c9941e8b64f13eda7db754292ce6629fbbe105dce4ee2697c51419f3e956a",
+      "actual_sha256": "6d5c9941e8b64f13eda7db754292ce6629fbbe105dce4ee2697c51419f3e956a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_icfr_native_capability_stage.py",
+      "manifest_sha256": "32927a48b1b16ac8397ae89bf36257f7270115084562c7956780e56fb861389a",
+      "actual_sha256": "32927a48b1b16ac8397ae89bf36257f7270115084562c7956780e56fb861389a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "manifest_sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1",
+      "actual_sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/engineering-mvp.md",
+      "manifest_sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947",
+      "actual_sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_icfr_native_capability_stage.md",
+      "manifest_sha256": "e8ceb257900f9da8b9a8e85753fb48e9e82a9d018f3b6e32d8c1c09b025af331",
+      "actual_sha256": "e8ceb257900f9da8b9a8e85753fb48e9e82a9d018f3b6e32d8c1c09b025af331"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/README.md",
+      "manifest_sha256": "9687b05af9b6317474f02cfd24294c0143840fc2ec4cfd39bd2c4b24cc1ac4e0",
+      "actual_sha256": "9687b05af9b6317474f02cfd24294c0143840fc2ec4cfd39bd2c4b24cc1ac4e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/artifacts.md",
+      "manifest_sha256": "b80a1b8318ffd576b6115c6e7da42657c9e477f6966f405f2cd1ae677df71af6",
+      "actual_sha256": "b80a1b8318ffd576b6115c6e7da42657c9e477f6966f405f2cd1ae677df71af6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/inflections.md",
+      "manifest_sha256": "f0d6a9d3445f499e7509973a3a0cf0eb8c9065d9bdfff938e362fe36d97cd3e0",
+      "actual_sha256": "f0d6a9d3445f499e7509973a3a0cf0eb8c9065d9bdfff938e362fe36d97cd3e0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/matching.md",
+      "manifest_sha256": "ce7ceaaee9f33b808a82b4f305bd5b785113d66bc2c8b809186278ec963ed8b4",
+      "actual_sha256": "ce7ceaaee9f33b808a82b4f305bd5b785113d66bc2c8b809186278ec963ed8b4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/outcomes.md",
+      "manifest_sha256": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016",
+      "actual_sha256": "da3334ceaba824a89ea7056d0e631631ba1f2545581382908d0d711cce5ea016"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/packets.md",
+      "manifest_sha256": "481a0468c2ab9a883fd93acdefca38565ed4321f8a8f0723613d25e1a3237ac1",
+      "actual_sha256": "481a0468c2ab9a883fd93acdefca38565ed4321f8a8f0723613d25e1a3237ac1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases/selection.md",
+      "manifest_sha256": "162590da8409522831570a071bd38a863fbc5bb6faf58a7454b9e0cc32b808ff",
+      "actual_sha256": "162590da8409522831570a071bd38a863fbc5bb6faf58a7454b9e0cc32b808ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/cases.md",
+      "manifest_sha256": "a7d06d728d55b6a43c8a8a49f0274eab10e0f3a597dbeeb6b3c94377d4cfd522",
+      "actual_sha256": "a7d06d728d55b6a43c8a8a49f0274eab10e0f3a597dbeeb6b3c94377d4cfd522"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/config.md",
+      "manifest_sha256": "19f986a97fb172d0ec9f8eaf6c29daec636ecdb794dfa5057c9e925dbd968df2",
+      "actual_sha256": "19f986a97fb172d0ec9f8eaf6c29daec636ecdb794dfa5057c9e925dbd968df2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/backfill.md",
+      "manifest_sha256": "3708943f056598a4270622667da29fb4d3b4f4564858f1a2a0ec2973304858db",
+      "actual_sha256": "3708943f056598a4270622667da29fb4d3b4f4564858f1a2a0ec2973304858db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/disclosure.md",
+      "manifest_sha256": "0d6243c8cacc671f0656bde8518bbc0d992a83547093de9530cc5514b9be6a8d",
+      "actual_sha256": "0d6243c8cacc671f0656bde8518bbc0d992a83547093de9530cc5514b9be6a8d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/documents.md",
+      "manifest_sha256": "27f392775f0ba763d711b99c62f79dbc1b53d658652f6e62bcca38e4a3956f26",
+      "actual_sha256": "27f392775f0ba763d711b99c62f79dbc1b53d658652f6e62bcca38e4a3956f26"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/filing_orientation.md",
+      "manifest_sha256": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a",
+      "actual_sha256": "2b290ec3e606fcffde5fe63f926c297173b6eade6d576900377ae1c0574b8f3a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/historical_news.md",
+      "manifest_sha256": "a85baf0a33f7b5cc22e2d1931ee295dc5822d57531217faa1665427c6c6aa7af",
+      "actual_sha256": "a85baf0a33f7b5cc22e2d1931ee295dc5822d57531217faa1665427c6c6aa7af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/json_stream.md",
+      "manifest_sha256": "84defdbef4bb66a961feae72d55468c15355df61fed88aa45282ef37e3d668ff",
+      "actual_sha256": "84defdbef4bb66a961feae72d55468c15355df61fed88aa45282ef37e3d668ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/markup.md",
+      "manifest_sha256": "84a9e9ba3ad74343e3f0c88d04766808023b5decb346d4043178d539a67c064c",
+      "actual_sha256": "84a9e9ba3ad74343e3f0c88d04766808023b5decb346d4043178d539a67c064c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/point_in_time.md",
+      "manifest_sha256": "1dd6b06704e08856f3096b4b1f443223730b1f02f5334839f1be767cc8879679",
+      "actual_sha256": "1dd6b06704e08856f3096b4b1f443223730b1f02f5334839f1be767cc8879679"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/raw_info.md",
+      "manifest_sha256": "b026c33554eb0c51282509e8e773c179736ed92360235e38f82d441e1c10a72e",
+      "actual_sha256": "b026c33554eb0c51282509e8e773c179736ed92360235e38f82d441e1c10a72e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/resolution.md",
+      "manifest_sha256": "2abc386ef4a940b3c0c9ccd19debebb3198bcc1bacad31695e5f017d31d00129",
+      "actual_sha256": "2abc386ef4a940b3c0c9ccd19debebb3198bcc1bacad31695e5f017d31d00129"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_companyfacts_profile.md",
+      "manifest_sha256": "de50c8f81c0fd9dfb2a8f4542feb5d23436a2ac64dac0d6ffea565975e6e6330",
+      "actual_sha256": "de50c8f81c0fd9dfb2a8f4542feb5d23436a2ac64dac0d6ffea565975e6e6330"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_market_profile.md",
+      "manifest_sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3",
+      "actual_sha256": "4609cf645b21cff755c7f50b5b680ef32b65bed1c3f76ec89e2602e205d41be3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_sec_response_profile.md",
+      "manifest_sha256": "ef413dc6c4e7c0b4aceec5a705d785d89dcd9a90506307ddde5d7720980d72b6",
+      "actual_sha256": "ef413dc6c4e7c0b4aceec5a705d785d89dcd9a90506307ddde5d7720980d72b6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/reviewed_snapshot.md",
+      "manifest_sha256": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697",
+      "actual_sha256": "66d950b0832fcc188e9169449b98188e5135c06353fd621fd41a964ebc40c697"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sec_company_facts.md",
+      "manifest_sha256": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859",
+      "actual_sha256": "3991e621dedc7b719aed86289b744f96ff1a9d1bee093c881b5dfb7969aaf859"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/sources.md",
+      "manifest_sha256": "8ec3e444bb495e835fc67f85302bcfe60e2457042dced233149e0bb5d8e3f242",
+      "actual_sha256": "8ec3e444bb495e835fc67f85302bcfe60e2457042dced233149e0bb5d8e3f242"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data/structured.md",
+      "manifest_sha256": "940b8954cd4152e563f11f95e81111be914402aa4dc466062d94f07e577e094b",
+      "actual_sha256": "940b8954cd4152e563f11f95e81111be914402aa4dc466062d94f07e577e094b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/data.md",
+      "manifest_sha256": "a787cb39822a20d130842675564807f2bdd5e963d7fc866deb6951ae6850cbb3",
+      "actual_sha256": "a787cb39822a20d130842675564807f2bdd5e963d7fc866deb6951ae6850cbb3"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/llm.md",
+      "manifest_sha256": "c905fa99b4012094958684b25059e15ae22ce7ed97660e1f80b6373bbaab0e28",
+      "actual_sha256": "c905fa99b4012094958684b25059e15ae22ce7ed97660e1f80b6373bbaab0e28"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/knowledge.md",
+      "manifest_sha256": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba",
+      "actual_sha256": "ef14e1ba12534fad1162ca7cef93b7070501c4d4ddefb02e110e942cf6aa54ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/playbooks.md",
+      "manifest_sha256": "4d90287670992ab71997c56e9fcc14a8a22bf9caf9c78fe64e15b790ca3c353b",
+      "actual_sha256": "4d90287670992ab71997c56e9fcc14a8a22bf9caf9c78fe64e15b790ca3c353b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/signals.md",
+      "manifest_sha256": "3556bee9fa6a8dfb16baa650dbd2376f8bfc399e6c439dc0608f5675f1e2473c",
+      "actual_sha256": "3556bee9fa6a8dfb16baa650dbd2376f8bfc399e6c439dc0608f5675f1e2473c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory/themes.md",
+      "manifest_sha256": "fe3dc35d9ee3cd6bb3f5ec4da00265a95827c909e366f0096b4485debfd21097",
+      "actual_sha256": "fe3dc35d9ee3cd6bb3f5ec4da00265a95827c909e366f0096b4485debfd21097"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/memory.md",
+      "manifest_sha256": "ce20c743f16ac65ddfbba542c71e1c864913d4145a0e63294ad0faf0168c4cbe",
+      "actual_sha256": "ce20c743f16ac65ddfbba542c71e1c864913d4145a0e63294ad0faf0168c4cbe"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/meta_learning.md",
+      "manifest_sha256": "b6d3f75bf8d165ec1aa8f3c4c82b63aa8df344783de23f3b43ec97792c358626",
+      "actual_sha256": "b6d3f75bf8d165ec1aa8f3c4c82b63aa8df344783de23f3b43ec97792c358626"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/models.md",
+      "manifest_sha256": "fe334c7256ea9f17e97e401e6eb24e2296da393465763685068753cf78921f02",
+      "actual_sha256": "fe334c7256ea9f17e97e401e6eb24e2296da393465763685068753cf78921f02"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/monitoring.md",
+      "manifest_sha256": "52fa8798f36e64b5867a7384e2f5004c6394bdc53619a2023b05ad98ea533dd8",
+      "actual_sha256": "52fa8798f36e64b5867a7384e2f5004c6394bdc53619a2023b05ad98ea533dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/orchestration.md",
+      "manifest_sha256": "6d1938fce5874bece1e823142e8f4c7795957fcb91a1ff08ef79b3efb48413f6",
+      "actual_sha256": "6d1938fce5874bece1e823142e8f4c7795957fcb91a1ff08ef79b3efb48413f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/ranking.md",
+      "manifest_sha256": "cdb5f0d34a407d60ab475f28c586270e538e155ebfae36133bf42bc0e39a5094",
+      "actual_sha256": "cdb5f0d34a407d60ab475f28c586270e538e155ebfae36133bf42bc0e39a5094"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/reports.md",
+      "manifest_sha256": "0acb77425bb5e1e5ed52f6c7177cc1cb752041bad38ef4bb1df97de7c95fc6d9",
+      "actual_sha256": "0acb77425bb5e1e5ed52f6c7177cc1cb752041bad38ef4bb1df97de7c95fc6d9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/basic_info_orientation.md",
+      "manifest_sha256": "418ac2ae8e2f87a872ac1dc325541a2a33abc98e303d06f77fb65e18bd4d843d",
+      "actual_sha256": "418ac2ae8e2f87a872ac1dc325541a2a33abc98e303d06f77fb65e18bd4d843d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/basic_info_visibility.md",
+      "manifest_sha256": "e8c29045efc2f2dc421a656d7f2ea6bce5cbf572ada7c1cb420b4b7249740ece",
+      "actual_sha256": "e8c29045efc2f2dc421a656d7f2ea6bce5cbf572ada7c1cb420b4b7249740ece"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/cold_start.md",
+      "manifest_sha256": "dafa28d6a0e3d4922bcb106a5d5f59c10bbfa77d459a5dc90d5bb4ef50b3f36d",
+      "actual_sha256": "dafa28d6a0e3d4922bcb106a5d5f59c10bbfa77d459a5dc90d5bb4ef50b3f36d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/compute_tools.md",
+      "manifest_sha256": "a9a750433fff13c9f83a8a539b3409642e36f0698f68b526afd712249269f0f6",
+      "actual_sha256": "a9a750433fff13c9f83a8a539b3409642e36f0698f68b526afd712249269f0f6"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/cross_round_reflection.md",
+      "manifest_sha256": "fe530f2235d10dbc173809a68b4a7ee443cdbf03bcd08ee4da1f9c3cc88f66d2",
+      "actual_sha256": "fe530f2235d10dbc173809a68b4a7ee443cdbf03bcd08ee4da1f9c3cc88f66d2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evidence_acquisition.md",
+      "manifest_sha256": "2b34ff3fb37ba138b41ff13b219359a66965073b53cdaaf2a8b38063df495c83",
+      "actual_sha256": "2b34ff3fb37ba138b41ff13b219359a66965073b53cdaaf2a8b38063df495c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_benefit.md",
+      "manifest_sha256": "7b276608c18b9c3b1ca150ae5b34437fa0a4ba74b71183f8463c1768852c728b",
+      "actual_sha256": "7b276608c18b9c3b1ca150ae5b34437fa0a4ba74b71183f8463c1768852c728b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_control.md",
+      "manifest_sha256": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83",
+      "actual_sha256": "6551ca4ccffe2aaedb72d967d1905a40bd214206d93f794f3b73720c89222c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_core.md",
+      "manifest_sha256": "317d0b4f51c31b6c1f4b27e8efa2ff9e8aeecd22c7afe7aebcf3fbfbf39593ec",
+      "actual_sha256": "317d0b4f51c31b6c1f4b27e8efa2ff9e8aeecd22c7afe7aebcf3fbfbf39593ec"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dashboard.md",
+      "manifest_sha256": "73a28a111a47581de43d7c1ac8706269fed6ce8b39fd1cf01d718882edc2ddab",
+      "actual_sha256": "73a28a111a47581de43d7c1ac8706269fed6ce8b39fd1cf01d718882edc2ddab"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_dataset.md",
+      "manifest_sha256": "acde59ac181b16226b536b1e82ae48cd3e1d9b57b08a88872e9035e8896b2a66",
+      "actual_sha256": "acde59ac181b16226b536b1e82ae48cd3e1d9b57b08a88872e9035e8896b2a66"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_output_validation.md",
+      "manifest_sha256": "de6beaa77c78f0522523c44d9c40787d50f36d178a028dd09769c2e78caa0cbc",
+      "actual_sha256": "de6beaa77c78f0522523c44d9c40787d50f36d178a028dd09769c2e78caa0cbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_plan_roles.md",
+      "manifest_sha256": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4",
+      "actual_sha256": "eeb48246c474a638c5be12621084f928863e48164137a52723f12069931cd9f4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_reflection_memory.md",
+      "manifest_sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b",
+      "actual_sha256": "4fb3fb77a675dc59096302e06d8eeb1a7fe20d5e884319661cfa2c4e94a0155b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_research_validation.md",
+      "manifest_sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc",
+      "actual_sha256": "9453679f3e3970340f72a8ba066507433a8a3b6729b8173ab19610d8956b56dc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_runtime.md",
+      "manifest_sha256": "8113d663efb7d800cb04b866e6eae1e9a2f40f434aef01ef91ae5fd49c032e85",
+      "actual_sha256": "8113d663efb7d800cb04b866e6eae1e9a2f40f434aef01ef91ae5fd49c032e85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_settings.md",
+      "manifest_sha256": "4680d20104404e0cce6be02ec8722ced093c103d30fce7b5eab1fa9eba1abc03",
+      "actual_sha256": "4680d20104404e0cce6be02ec8722ced093c103d30fce7b5eab1fa9eba1abc03"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "manifest_sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8",
+      "actual_sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_state_patch.md",
+      "manifest_sha256": "2e16a9c893ac6c78274835496abdc07271e27ac51c182c30dbc2a10e49c051bc",
+      "actual_sha256": "2e16a9c893ac6c78274835496abdc07271e27ac51c182c30dbc2a10e49c051bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_transport.md",
+      "manifest_sha256": "cf16432574beb010ac34b89b9237f4c48a4bb138d45555c605fdf6f28cefc80d",
+      "actual_sha256": "cf16432574beb010ac34b89b9237f4c48a4bb138d45555c605fdf6f28cefc80d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/inflection_discovery.md",
+      "manifest_sha256": "ed72ba45656394e28b2aa6cc1b313e70fef0b5d4da570caf028b089673613b46",
+      "actual_sha256": "ed72ba45656394e28b2aa6cc1b313e70fef0b5d4da570caf028b089673613b46"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/information_plan.md",
+      "manifest_sha256": "ec3b83310efaff961a57f2162aa418c51cb9c7736d70c9b5b8e500cba23b2d9c",
+      "actual_sha256": "ec3b83310efaff961a57f2162aa418c51cb9c7736d70c9b5b8e500cba23b2d9c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/local_role_exchange.md",
+      "manifest_sha256": "331960f85ff7721198c73897a61b4d4bb97d87c23b1f8628f56bd1692c4a1d09",
+      "actual_sha256": "331960f85ff7721198c73897a61b4d4bb97d87c23b1f8628f56bd1692c4a1d09"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/plan_evolution.md",
+      "manifest_sha256": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e",
+      "actual_sha256": "4719e40ae9d4cecf3b9b99554e7de3aba3421f5f725e74dd7e4868547b4a396e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/playbooks.md",
+      "manifest_sha256": "8d8cb892491bfea418bbdb5adebb872a6b7caa1cc0a0702a6aff1302f04af7d4",
+      "actual_sha256": "8d8cb892491bfea418bbdb5adebb872a6b7caa1cc0a0702a6aff1302f04af7d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/ralph_loop.md",
+      "manifest_sha256": "5070a1afe22dcf215b80e7a0123cbc2373a8b92443be89c16d38cbdac5738a5a",
+      "actual_sha256": "5070a1afe22dcf215b80e7a0123cbc2373a8b92443be89c16d38cbdac5738a5a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/repair.md",
+      "manifest_sha256": "d06c41b195636f494c029fa7628406a4638abf9e613e091fe2f8c32ef1598263",
+      "actual_sha256": "d06c41b195636f494c029fa7628406a4638abf9e613e091fe2f8c32ef1598263"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/scheme_evolution.md",
+      "manifest_sha256": "8a72daa75add0e23ab6ae58e1883b1bdbff9270a1a6e720361113b515ece47f7",
+      "actual_sha256": "8a72daa75add0e23ab6ae58e1883b1bdbff9270a1a6e720361113b515ece47f7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_evolution.md",
+      "manifest_sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08",
+      "actual_sha256": "5e45f9395506eefc888b1d89224b94593af38e51a879bc19ca862bef58259a08"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "manifest_sha256": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+      "actual_sha256": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_source_reading.md",
+      "manifest_sha256": "367094515285f365d79b5de225ef23a396401a15493994f884348214826ab54c",
+      "actual_sha256": "367094515285f365d79b5de225ef23a396401a15493994f884348214826ab54c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_tracking.md",
+      "manifest_sha256": "0e0a471349262d026b4f1f4e1f3e5af96f1e2025d8c1b87c4371f6716bd365e5",
+      "actual_sha256": "0e0a471349262d026b4f1f4e1f3e5af96f1e2025d8c1b87c4371f6716bd365e5"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/stage_contracts.md",
+      "manifest_sha256": "f312802d6e81d012cd9cf91c51a4234b347b76fe3c9e551c2e9cce8db1a3bcb8",
+      "actual_sha256": "f312802d6e81d012cd9cf91c51a4234b347b76fe3c9e551c2e9cce8db1a3bcb8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research.md",
+      "manifest_sha256": "4cf80366ff45712f5149aadea5f91b4b5892778883f0db09a2abb206b3ac7960",
+      "actual_sha256": "4cf80366ff45712f5149aadea5f91b4b5892778883f0db09a2abb206b3ac7960"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/review.md",
+      "manifest_sha256": "74b6e1e9c61248e2c2b4520cfe7f1edc22c6e3fcf4b91c30324f2fc7ba34d689",
+      "actual_sha256": "74b6e1e9c61248e2c2b4520cfe7f1edc22c6e3fcf4b91c30324f2fc7ba34d689"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/scanner.md",
+      "manifest_sha256": "f0251796566663b193b66f349582fd8fa7cf1952c5f498dbaee9a56262ec5897",
+      "actual_sha256": "f0251796566663b193b66f349582fd8fa7cf1952c5f498dbaee9a56262ec5897"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/scoring.md",
+      "manifest_sha256": "c2ae8168a4b62510c91fb089b590c012af678e5f3b7f616fb2c366754e621699",
+      "actual_sha256": "c2ae8168a4b62510c91fb089b590c012af678e5f3b7f616fb2c366754e621699"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "manifest_sha256": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045",
+      "actual_sha256": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signals.md",
+      "manifest_sha256": "52fa2f6acdb6b44eedbf221fb547c24e1a058146c5dce9bd8aa2fd28abd612cc",
+      "actual_sha256": "52fa2f6acdb6b44eedbf221fb547c24e1a058146c5dce9bd8aa2fd28abd612cc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/themes.md",
+      "manifest_sha256": "cd85caef708c6c23ec274966bfc742284c6e8bb18fe1f36fb6ed41a3c5f7aa29",
+      "actual_sha256": "cd85caef708c6c23ec274966bfc742284c6e8bb18fe1f36fb6ed41a3c5f7aa29"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "manifest_sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4",
+      "actual_sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py",
+      "manifest_sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0",
+      "actual_sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "manifest_sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75",
+      "actual_sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py",
+      "manifest_sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb",
+      "actual_sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py",
+      "manifest_sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed",
+      "actual_sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "manifest_sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af",
+      "actual_sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py",
+      "manifest_sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db",
+      "actual_sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py",
+      "manifest_sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728",
+      "actual_sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "manifest_sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff",
+      "actual_sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py",
+      "manifest_sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c",
+      "actual_sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py",
+      "manifest_sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07",
+      "actual_sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py",
+      "manifest_sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50",
+      "actual_sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "manifest_sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79",
+      "actual_sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "manifest_sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270",
+      "actual_sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "manifest_sha256": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d",
+      "actual_sha256": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "manifest_sha256": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b",
+      "actual_sha256": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "manifest_sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9",
+      "actual_sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "manifest_sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db",
+      "actual_sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "manifest_sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2",
+      "actual_sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "manifest_sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea",
+      "actual_sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "manifest_sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8",
+      "actual_sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "manifest_sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642",
+      "actual_sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "manifest_sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf",
+      "actual_sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "manifest_sha256": "dc2a24c345e1abee9c5618312283ab1b22a368fafc2247ddc0f3acedd35d8f36",
+      "actual_sha256": "dc2a24c345e1abee9c5618312283ab1b22a368fafc2247ddc0f3acedd35d8f36"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "manifest_sha256": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b",
+      "actual_sha256": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "manifest_sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562",
+      "actual_sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "manifest_sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590",
+      "actual_sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "manifest_sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0",
+      "actual_sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "manifest_sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022",
+      "actual_sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "manifest_sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2",
+      "actual_sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "manifest_sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2",
+      "actual_sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "manifest_sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee",
+      "actual_sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "manifest_sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b",
+      "actual_sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "manifest_sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85",
+      "actual_sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "manifest_sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526",
+      "actual_sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "manifest_sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c",
+      "actual_sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "manifest_sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134",
+      "actual_sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "manifest_sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e",
+      "actual_sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "manifest_sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0",
+      "actual_sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py",
+      "manifest_sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e",
+      "actual_sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py",
+      "manifest_sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8",
+      "actual_sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "manifest_sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d",
+      "actual_sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py",
+      "manifest_sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4",
+      "actual_sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py",
+      "manifest_sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51",
+      "actual_sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py",
+      "manifest_sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291",
+      "actual_sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py",
+      "manifest_sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b",
+      "actual_sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "manifest_sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca",
+      "actual_sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py",
+      "manifest_sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a",
+      "actual_sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py",
+      "manifest_sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b",
+      "actual_sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py",
+      "manifest_sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498",
+      "actual_sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "manifest_sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb",
+      "actual_sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py",
+      "manifest_sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f",
+      "actual_sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py",
+      "manifest_sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace",
+      "actual_sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "manifest_sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23",
+      "actual_sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "manifest_sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd",
+      "actual_sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py",
+      "manifest_sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603",
+      "actual_sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "manifest_sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc",
+      "actual_sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py",
+      "manifest_sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347",
+      "actual_sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py",
+      "manifest_sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0",
+      "actual_sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py",
+      "manifest_sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d",
+      "actual_sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py",
+      "manifest_sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1",
+      "actual_sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "manifest_sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d",
+      "actual_sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "manifest_sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617",
+      "actual_sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py",
+      "manifest_sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83",
+      "actual_sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "manifest_sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9",
+      "actual_sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "manifest_sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8",
+      "actual_sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "manifest_sha256": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa",
+      "actual_sha256": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "manifest_sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556",
+      "actual_sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "manifest_sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+      "actual_sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "manifest_sha256": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386",
+      "actual_sha256": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py",
+      "manifest_sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2",
+      "actual_sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py",
+      "manifest_sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc",
+      "actual_sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "manifest_sha256": "733e2f305a25cebb60e136cf1b1e21a2ae219ddaefd9a2636bc39b40944c31e7",
+      "actual_sha256": "733e2f305a25cebb60e136cf1b1e21a2ae219ddaefd9a2636bc39b40944c31e7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "manifest_sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0",
+      "actual_sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "manifest_sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+      "actual_sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py",
+      "manifest_sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4",
+      "actual_sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py",
+      "manifest_sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636",
+      "actual_sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "manifest_sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d",
+      "actual_sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "manifest_sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+      "actual_sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "manifest_sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2",
+      "actual_sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "manifest_sha256": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+      "actual_sha256": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "manifest_sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348",
+      "actual_sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "manifest_sha256": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+      "actual_sha256": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "manifest_sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a",
+      "actual_sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py",
+      "manifest_sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23",
+      "actual_sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py",
+      "manifest_sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86",
+      "actual_sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py",
+      "manifest_sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513",
+      "actual_sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "manifest_sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea",
+      "actual_sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py",
+      "manifest_sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925",
+      "actual_sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py",
+      "manifest_sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184",
+      "actual_sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "manifest_sha256": "f8715584e1b66fb7482331a909a3e219a502e2653fade5bdd5733665e6b5df91",
+      "actual_sha256": "f8715584e1b66fb7482331a909a3e219a502e2653fade5bdd5733665e6b5df91"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "manifest_sha256": "5dec23847a4aeefc71bbee1a36adf45181658ffe63f564f03879c45381468033",
+      "actual_sha256": "5dec23847a4aeefc71bbee1a36adf45181658ffe63f564f03879c45381468033"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py",
+      "manifest_sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b",
+      "actual_sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "manifest_sha256": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+      "actual_sha256": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "manifest_sha256": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60",
+      "actual_sha256": "35be3d0546d1e19f9ddeb76ae89ebf0f1e35bc809c81f5b7af169d4d7e62ad60"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py",
+      "manifest_sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97",
+      "actual_sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py",
+      "manifest_sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed",
+      "actual_sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py",
+      "manifest_sha256": "bf708ed18142e8567bd6c73d93afcdc73424a1cfdf7b5ffe2c04ea97dc498375",
+      "actual_sha256": "bf708ed18142e8567bd6c73d93afcdc73424a1cfdf7b5ffe2c04ea97dc498375"
+    }
+  ],
+  "scope": "only fixed artifact set; changing stage progress/future actors excluded",
+  "network_or_api_calls": 0
+}

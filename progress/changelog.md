@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：9ae48904实际ICFR v3共10fresh首答/0纠错、2055941逻辑预留；独立固定7答+h008输入核完整18卡、两源三窗/原目录跨步保留及h007直读C，无page0重查，仍非候选。随后正常用nextcursor到case005年度风险正文，未冒充ICFR；第11请求prepare前预算阻断并原生sealed，1候选正控未完成、4消费未试。封存182源码/原件，不重入/补答/改caps；独立只读逐字重建前10wire，下一264980比single262144高2836，累计仍余10526971/10of80；事实/关系handle占43.4599%。源审确认43命中只列24、真实query origin未交付，近似find锚点在TOC反例错误。下一仅spec-first离线修无损表示/既有query定位，不以裁正文/加cap续旧目标；API/网络/新业务标签0。见[报告](../reports/mining-catalog-working-context-20261023.md)。
+
 - 2026-10-23：98147bc1真实v2的11fresh首答/0纠错、1837419逻辑预留；独立核两源三正文跨步保留及有限DCP/ICFR表述忠实，但目录section/cursor与Signal后页仍被后续动作覆盖。h012未派未答、323文件/182源码归档、原1/4未完成分母保留，非no-pattern或预算耗尽。spec-first以四scope实际whole响应8/32000工作页修复，同步当前backlog权限/历史快照；补既有ledger派生计算页、失效引用typed拒及原价重算坐标。最终470关联过/测试hash稳；独立8组首5过、3个harness纠正后补3过，原件保留；v3oracle原15字段deep-equal、两旧pending另精确绑定，新实际链仍待，0外部API/网络，不关闭MVP。见[报告](../reports/mining-catalog-working-context-20261023.md)。
 
 - 2026-10-23：spec-first修S4已读叙事正文跨步丢失：同既有source-owned read单位派生12unit/40000bytes完整工作页，保真实case/target/source/hash/时钟、omission与charged revisit，原S5/ledger/权限保持。452关联过、版本稳定/网络0；原A/B/C窗口回归只证离线投影。v2隔离旧pending stage并核原336文件/12receipt成本/h013无答，oracle语义不变、资源不增；未据此关闭fresh候选/准入/消费或MVP。见[报告](../reports/mining-narrative-read-evidence-20261023.md)。

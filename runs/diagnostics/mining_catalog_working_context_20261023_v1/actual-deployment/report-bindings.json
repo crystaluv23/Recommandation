@@ -1,0 +1,14 @@
+{
+  "all_223_fixed_files_still_equal_at_packaging": true,
+  "files": {
+    "evidence.json": "103266b6d4fa2c187dd95574c33535310acc46046c49f17d2dd1b2ab1132f364",
+    "bindings.json": "e89f7336e854c7e5e24287e98b7faae2312ba73fe37d2b21d1cb9aac2697291b",
+    "audit.py": "d03ae3822073ac3da95ea89c47ea250ad67507b21904ac1ef6342b509ecc12d3",
+    "report.md": "adb0d53684927865c78c6ac19f8f13c668a1a75d4f5bab63054c374a3f2b4b2a",
+    "source-directory-check.json": "967478c300cb0671af57b75cc4c2be4cba44226603c042f398e6c8873212f63f",
+    "initial-harness-error.txt": "95eabdedd1484c601dfc6194daf18fef1a4f4cc673bdb7b8016476b9a63b5387",
+    "audit-second.py.txt": "b50799cdde267328fb49f03a2f845fa81c943914b6b7b1ee300a0ba80cdb7733",
+    "audit-first.py.txt": "91f8002c5ac8bddd2a7d5d212a14b8a30360c1e20fdd4384575578c6120c2fbb"
+  },
+  "scope": "seven answered requests only, eighth input only; no actor/future output inspection"
+}

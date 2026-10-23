@@ -1,0 +1,416 @@
+{
+  "offline_frozen_answer_replay_only": true,
+  "stage_entry_called": false,
+  "new_prepare_calls": 0,
+  "receive_calls": 0,
+  "wire_accounting": [
+    {
+      "h": 1,
+      "request_hash": "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60",
+      "cost": 90877,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 79,
+        "calls_used": 0,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012492035",
+        "single_limit": 262144,
+        "this_request": "00000000000000090877",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 0
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 7,
+        "rationale": [
+          "Inspect the next existing Signal catalog page before selecting an ICFR measurement to check for overlap and preserve uniqueness.",
+          "The initial catalog exposes only 7 of 18 Signals; omitted capabilities remain unknown."
+        ]
+      }
+    },
+    {
+      "h": 2,
+      "request_hash": "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0",
+      "cost": 108402,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 78,
+        "calls_used": 1,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012383633",
+        "single_limit": 262144,
+        "this_request": "00000000000000108402",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 90877
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 14,
+        "rationale": [
+          "The preceding signals page supplies next_cursor 14 with four remaining entries.",
+          "Inspect the remaining catalog capabilities before selecting a new ICFR measurement and avoid claiming uniqueness from an incomplete catalog."
+        ]
+      }
+    },
+    {
+      "h": 3,
+      "request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+      "cost": 111714,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 77,
+        "calls_used": 2,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012271919",
+        "single_limit": 262144,
+        "this_request": "00000000000000111714",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 199279
+      },
+      "raw_answer": {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "source_families": [
+          "filing",
+          "10-k",
+          "sec_filing",
+          "financial",
+          "sec_company_facts"
+        ],
+        "max_documents": 32,
+        "query": null,
+        "rationale": [
+          "The complete eighteen-card catalog is visible across current and retained pages; no disclosed card directly measures public ICFR disclosure status.",
+          "Fetch authorized filing narratives and structured financial evidence together across both runtime label groups before choosing a reusable ICFR measurement.",
+          "Use raw source reads to distinguish explicit current control conclusions, unresolved weaknesses, remediation and exemptions; predictive effect remains unverified."
+        ]
+      }
+    },
+    {
+      "h": 4,
+      "request_hash": "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba",
+      "cost": 234074,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 76,
+        "calls_used": 3,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000012037845",
+        "single_limit": 262144,
+        "this_request": "00000000000000234074",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 310993
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "cursor": 0,
+        "rationale": [
+          "The complete disclosed Signal catalog has no ICFR measurement; the public ICFR family requires grounded narrative investigation.",
+          "The broad PIT fetch already covers all eight cases; inspect the titled document directory and section coordinates before selecting raw ICFR spans.",
+          "Narrative evidence remains unexplored, and directory entries alone will not establish the disclosure state."
+        ]
+      }
+    },
+    {
+      "h": 5,
+      "request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+      "cost": 246816,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 75,
+        "calls_used": 4,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011791029",
+        "single_limit": 262144,
+        "this_request": "00000000000000246816",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 545067
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Read the actual controls-and-procedures section for case-003, a runtime-labelled positive case, to investigate a reusable ICFR measurement.",
+          "The directory identifies the raw section coordinate but provides no semantic evidence; a bounded source read is required before interpreting or proposing a predicate."
+        ]
+      }
+    },
+    {
+      "h": 6,
+      "request_hash": "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5",
+      "cost": 245898,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 74,
+        "calls_used": 5,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011545131",
+        "single_limit": 262144,
+        "this_request": "00000000000000245898",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 791883
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "offset": 1152908,
+        "length": 4000,
+        "rationale": [
+          "Continue the already-read case-003 controls section at its supplied next readable position to inspect the ICFR changes statement.",
+          "The visible effectiveness conclusion concerns disclosure controls and procedures; it does not alone establish ICFR effectiveness, remediation, or absence of a material weakness.",
+          "Read the adjacent ICFR text before defining a reusable measurement or contrasting it with control-case disclosures."
+        ]
+      }
+    },
+    {
+      "h": 7,
+      "request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+      "cost": 247395,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 73,
+        "calls_used": 6,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011297736",
+        "single_limit": 262144,
+        "this_request": "00000000000000247395",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1037781
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+        "offset": 3969625,
+        "length": 4000,
+        "rationale": [
+          "Read the actual controls-and-procedures disclosure for control case-002 at its supplied section coordinate.",
+          "The positive case-003 window reports effective disclosure controls and no material ICFR changes; it does not establish ICFR effectiveness or a material-weakness contrast.",
+          "Compare source-defined control concepts across PIT cases before choosing a reusable ICFR measurement."
+        ]
+      }
+    },
+    {
+      "h": 8,
+      "request_hash": "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3",
+      "cost": 251665,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 72,
+        "calls_used": 7,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000011046071",
+        "single_limit": 262144,
+        "this_request": "00000000000000251665",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1285176
+      },
+      "raw_answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "cursor": 2,
+        "rationale": [
+          "The case-003 positive and case-002 control raw windows both report effective disclosure controls and no material ICFR change, so these reads establish no distinguishing ICFR condition.",
+          "Continue from the saved next_cursor=2 to locate additional PIT ICFR disclosures; the twelve unread directory entries are not evidence of absence."
+        ]
+      }
+    },
+    {
+      "h": 9,
+      "request_hash": "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+      "cost": 258996,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 71,
+        "calls_used": 8,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000010787075",
+        "single_limit": 262144,
+        "this_request": "00000000000000258996",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1536841
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "offset": 377224,
+        "length": 4000,
+        "rationale": [
+          "The read positive case-003 and control case-002 disclose effective disclosure controls and no material ICFR changes; these alone do not establish a distinguishing ICFR measurement.",
+          "Read the newly located positive case-005 annual-report risk section at its disclosed body coordinate to investigate a different ICFR disclosure, retaining unknowns for unread sections and cases."
+        ]
+      }
+    },
+    {
+      "h": 10,
+      "request_hash": "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597",
+      "cost": 260104,
+      "scope_memberships": [
+        "mining"
+      ],
+      "budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 70,
+        "calls_used": 9,
+        "next_minimum": 19844,
+        "remaining_after": "00000000000010526971",
+        "single_limit": 262144,
+        "this_request": "00000000000000260104",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1795837
+      },
+      "raw_answer": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "offset": 381224,
+        "length": 4000,
+        "rationale": [
+          "The retained case-005 risk-factor window discusses losses and going-concern risk; it does not establish an ICFR weakness or its absence.",
+          "Continue at its supplied next_readable_start to inspect fresh source text while preserving the effective-controls and no-material-change counterevidence from case-003 and case-002."
+        ]
+      }
+    }
+  ],
+  "unique_answered": [
+    10,
+    2055941
+  ],
+  "mining_remaining": 10526971,
+  "terminal_result": {
+    "error": "Mining scoped request budget exhausted before prepare",
+    "error_type": "MiningRequestBudgetExhausted",
+    "fixed_candidate_denominator": 1,
+    "fixed_consumer_denominator": 4,
+    "status": "terminal_resource_or_control_stop"
+  },
+  "replayed_stop": {
+    "type": "MiningRequestBudgetExhausted",
+    "message": "Mining scoped request budget exhausted before prepare"
+  },
+  "aligned_actual_requests": [
+    {
+      "h": 1,
+      "actual_request_hash": "6d37fd3d13e6da8aabf61030a88ec08ab85b31e18a9f55d54c800b1027fc3b60",
+      "native_projected_messages_exact": true,
+      "complete_cost": 90877
+    },
+    {
+      "h": 2,
+      "actual_request_hash": "d4b9431fdd8f27b0ac11b4c19d5c330a5309330df54619c824739b2d943aadb0",
+      "native_projected_messages_exact": true,
+      "complete_cost": 108402
+    },
+    {
+      "h": 3,
+      "actual_request_hash": "32446a9aefc74777316a3f1cbcf058fc0f586730e3fb0bc6c9597f6d8c00f5f5",
+      "native_projected_messages_exact": true,
+      "complete_cost": 111714
+    },
+    {
+      "h": 4,
+      "actual_request_hash": "0b7d07f3208432da825fff0a8b4d153e674353110d0cd1ab937855c95ddb0cba",
+      "native_projected_messages_exact": true,
+      "complete_cost": 234074
+    },
+    {
+      "h": 5,
+      "actual_request_hash": "fa1029c16c0407a965d3262400b8270e539d47dcb7aaa705fdaa4803afeac727",
+      "native_projected_messages_exact": true,
+      "complete_cost": 246816
+    },
+    {
+      "h": 6,
+      "actual_request_hash": "3925a5cc09bd6c17dba125fdd143404440aff73efdb710a60cb3dd2681c7e0e5",
+      "native_projected_messages_exact": true,
+      "complete_cost": 245898
+    },
+    {
+      "h": 7,
+      "actual_request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+      "native_projected_messages_exact": true,
+      "complete_cost": 247395
+    },
+    {
+      "h": 8,
+      "actual_request_hash": "96b5bb86fe99e160211de37912921eeea8f7edfc6f7036448d4848f1b030aeb3",
+      "native_projected_messages_exact": true,
+      "complete_cost": 251665
+    },
+    {
+      "h": 9,
+      "actual_request_hash": "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+      "native_projected_messages_exact": true,
+      "complete_cost": 258996
+    },
+    {
+      "h": 10,
+      "actual_request_hash": "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597",
+      "native_projected_messages_exact": true,
+      "complete_cost": 260104
+    }
+  ],
+  "exact_blocked_required": 264980,
+  "single_limit": 262144,
+  "over_single_by": 2836,
+  "aggregate_or_calls_exhausted": false,
+  "native_first_ten_all_messages_aligned": true,
+  "model_reserved_tokens": 2055941,
+  "model_reserved_calls": 10,
+  "blocked_payload_top_fields": 31,
+  "stage_full_files_stable": true,
+  "stage_file_count": 316,
+  "sealed_file_count": 312,
+  "completion_sha256": "9f79f2d634fd9b07a3e9e90a334c28c2e187685d39d7ceae161ee5a81c9eb32b",
+  "business_state_sha256": "6c497dda1ea81ff19e044e7cdd57db1e0b7fab237d3a494e2e8a7b5016c989f0",
+  "business_cycle_state_sha256": "5882487b9b534d6ce2c977d55711e41916785aaee2bfe5e039f2a6cb1c227cac"
+}

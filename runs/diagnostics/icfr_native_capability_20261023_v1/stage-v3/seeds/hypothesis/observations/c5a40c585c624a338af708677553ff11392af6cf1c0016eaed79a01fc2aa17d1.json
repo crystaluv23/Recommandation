@@ -1,0 +1,9 @@
+{
+  "evidence": {},
+  "last_action_result": null,
+  "ledger": {
+    "cycle_id": 1,
+    "entries": [],
+    "seed_id": "seed-hypothesis"
+  }
+}

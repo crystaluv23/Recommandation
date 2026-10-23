@@ -1,0 +1,9 @@
+{
+  "schema_version": "navigation-boundary-readonly-invariance-v1",
+  "protected_files": 1444,
+  "authorized_source_documents": 263,
+  "frozen_code_files": 182,
+  "all_bytes_unchanged": true,
+  "source_baseline_sha256": "b773c6881d0b797728c2227f1fa446f7ae72b6820a6cc5a87f1c705bd3406c1a",
+  "cost_audit_performed": false
+}

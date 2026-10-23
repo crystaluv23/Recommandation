@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+    "length": 4000,
+    "offset": 3969625,
+    "rationale": [
+      "Read the actual controls-and-procedures disclosure for control case-002 at its supplied section coordinate.",
+      "The positive case-003 window reports effective disclosure controls and no material ICFR changes; it does not establish ICFR effectiveness or a material-weakness contrast.",
+      "Compare source-defined control concepts across PIT cases before choosing a reusable ICFR measurement."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"document_ref\": \"document-sec:[ANON_ID_0001]:000114036125018373\", \"offset\": 3969625, \"length\": 4000, \"rationale\": [\"Read the actual controls-and-procedures disclosure for control case-002 at its supplied section coordinate.\", \"The positive case-003 window reports effective disclosure controls and no material ICFR changes; it does not establish ICFR effectiveness or a material-weakness contrast.\", \"Compare source-defined control concepts across PIT cases before choosing a reusable ICFR measurement.\"]}",
+  "request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+  "response_id": "local-1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+  "usage": {
+    "accounting_tokens": 247395,
+    "agent_id": "/root/icfr_v3_h007",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "a312f2e9d075adb6873733203afd31126f9a5a9cd04da274112918d268f19a8b",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "5569a2128800e5b3cf995c2b45f8bd3bb813b0def385b0b0c01cecc3cadccb31",
+    "request_hash": "1798558f904fa0e56dbb2ab7bd0b01c3e03b05a54d74c58aa2712cdf7d35762a",
+    "token_usage": null
+  }
+}

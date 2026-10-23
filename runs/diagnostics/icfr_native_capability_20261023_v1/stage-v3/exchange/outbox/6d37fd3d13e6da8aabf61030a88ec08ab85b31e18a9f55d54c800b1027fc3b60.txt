@@ -1,0 +1,1 @@
+{"action": "inspect_catalog", "scope": "signals", "cursor": 7, "rationale": ["Inspect the next existing Signal catalog page before selecting an ICFR measurement to check for overlap and preserve uniqueness.", "The initial catalog exposes only 7 of 18 Signals; omitted capabilities remain unknown."]}

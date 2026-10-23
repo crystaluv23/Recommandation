@@ -1,0 +1,61 @@
+{
+  "category": "order_confirmation",
+  "definition": {
+    "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "order_confirmation_disclosed.md",
+    "type": "llm"
+  },
+  "modality": "narrative",
+  "parameters": {},
+  "raw_retrieval": {
+    "lookback_days": 180,
+    "query_terms": [
+      "order",
+      "contract",
+      "offtake",
+      "binding award",
+      "customer order",
+      "delivery schedule",
+      "named counterparty",
+      "purchase agreement",
+      "supply agreement",
+      "new order",
+      "offtake agreement",
+      "binding contract"
+    ],
+    "source_types": [
+      "filing",
+      "news",
+      "transcript",
+      "10-k",
+      "10-q",
+      "8-k",
+      "company_news",
+      "sec_filing",
+      "earnings_call"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "order_confirmation_disclosed",
+  "version": 3
+}

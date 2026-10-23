@@ -1,0 +1,2135 @@
+{
+  "schema_version": "private-source-navigation-boundary-v1",
+  "privacy": "Independent audit only; no source hints, offsets or conclusions to authors/candidates.",
+  "exact_inboxes": [
+    {
+      "name": "h009",
+      "inbox": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.json",
+        "sha256": "9ec7bc19e44608ff227ec925be5a653b1f9c19e96d833b2ce59ac64a88ec170a"
+      },
+      "request_hash": "d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649",
+      "annual_card": {
+        "available_at": "2025-04-15T21:15:29+00:00",
+        "case_bindings": [
+          {
+            "case_ref": "case-005",
+            "event_ref": "event-1329aa913b56a3b2"
+          }
+        ],
+        "discovery_only": true,
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "event_ref": "event-1329aa913b56a3b2",
+        "family": "filing",
+        "raw_chars": 4049846,
+        "readable_start": 175257,
+        "section_count": 43,
+        "sections": [
+          {
+            "heading": "Part III hereof. Table of Contents &#8203; TABLE OF CONTENTS",
+            "raw_end": 231320,
+            "raw_start": 228819,
+            "section_id": "sec00"
+          },
+          {
+            "heading": "PART I 3 ITEM 1. BUSINESS 3 ITEM 1A. RISK FACTORS 9 ITEM 1B. UNRESOLVED STAFF COMMENTS",
+            "raw_end": 237238,
+            "raw_start": 233828,
+            "section_id": "sec01"
+          },
+          {
+            "heading": "ITEM 1C. CYBERSECURITY 20 ITEM 2. PROPERTIES 20 ITEM 3. LEGAL PROCEEDINGS 20 ITEM 4. MI",
+            "raw_end": 241862,
+            "raw_start": 237975,
+            "section_id": "sec02"
+          },
+          {
+            "heading": "PART II 21 ITEM 5. MARKET FOR REGISTRANT&#8217;S COMMON EQUITY, RELATED STOCKHOLDER MAT",
+            "raw_end": 244981,
+            "raw_start": 243751,
+            "section_id": "sec03"
+          },
+          {
+            "heading": "ITEM 6. [RESERVED] 21 ITEM 7. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL",
+            "raw_end": 247381,
+            "raw_start": 245764,
+            "section_id": "sec04"
+          },
+          {
+            "heading": "ITEM 7A. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK 32 ITEM 8. FINANCIA",
+            "raw_end": 249771,
+            "raw_start": 248153,
+            "section_id": "sec05"
+          },
+          {
+            "heading": "ITEM 9. CHANGES IN AND DISAGREEMENTS WITH ACCOUNTANTS ON ACCOUNTING AND FINANCIAL DISC",
+            "raw_end": 251014,
+            "raw_start": 250540,
+            "section_id": "sec06"
+          },
+          {
+            "heading": "ITEM 9A. CONTROLS AND PROCEDURES 33 ITEM 9B. OTHER INFORMATION 33 ITEM 9C. DISCLOSURE R",
+            "raw_end": 254478,
+            "raw_start": 251757,
+            "section_id": "sec07"
+          },
+          {
+            "heading": "PART III 35 ITEM 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE 35 ITEM 11.",
+            "raw_end": 258349,
+            "raw_start": 256404,
+            "section_id": "sec08"
+          },
+          {
+            "heading": "ITEM 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STO",
+            "raw_end": 259945,
+            "raw_start": 259490,
+            "section_id": "sec09"
+          },
+          {
+            "heading": "ITEM 13. CERTAIN RELATIONSHIPS AND RELATED TRANSACTIONS, AND DIRECTOR INDEPENDENCE 35 I",
+            "raw_end": 261886,
+            "raw_start": 260698,
+            "section_id": "sec10"
+          },
+          {
+            "heading": "ITEM 15. EXHIBITS, FINANCIAL STATEMENTS SCHEDULES 36 ITEM 16. FORM 10-K SUMMARY 40 &#82",
+            "raw_end": 267173,
+            "raw_start": 264929,
+            "section_id": "sec11"
+          },
+          {
+            "heading": "ITEM 1. BUS INESS Unless the context requires otherwise, references to &#8220;[ANON_ID_0001],&",
+            "raw_end": 308366,
+            "raw_start": 307859,
+            "section_id": "sec12"
+          },
+          {
+            "heading": "ITEM 1A. RIS K FACTORS An investment in our Common Stock or Preferred Stock involves ri",
+            "raw_end": 377889,
+            "raw_start": 377224,
+            "section_id": "sec13"
+          },
+          {
+            "heading": "ITEM 1B. UN RESOLVED STAFF COMMENTS None. 19 Table of Contents ITEM 1C. C",
+            "raw_end": 518576,
+            "raw_start": 516077,
+            "section_id": "sec14"
+          },
+          {
+            "heading": "Item 1A. \" Risk Factors\" of this Annual Report on Form 10-K, which disclosures are inco",
+            "raw_end": 526832,
+            "raw_start": 526450,
+            "section_id": "sec15"
+          },
+          {
+            "heading": "ITEM 2. PR OPERTIES Our corporate headquarters are located in Centennial, Colorado whe",
+            "raw_end": 532930,
+            "raw_start": 532442,
+            "section_id": "sec16"
+          },
+          {
+            "heading": "ITEM 3. LEGAL PROCEE DINGS [ANON_ID_0001] has been and expects to continue to become involved",
+            "raw_end": 533961,
+            "raw_start": 533473,
+            "section_id": "sec17"
+          },
+          {
+            "heading": "ITEM 4. MINE SAF ETY DISCLOSURES Not applicable. 20 Table of Contents &#8203;PA",
+            "raw_end": 537559,
+            "raw_start": 535387,
+            "section_id": "sec18"
+          },
+          {
+            "heading": "ITEM 5. MARKET FOR REGISTRANT&#8217;S COMM ON EQUITY, RELATED STOCKHOLDER MATTERS AND",
+            "raw_end": 538269,
+            "raw_start": 538028,
+            "section_id": "sec19"
+          },
+          {
+            "heading": "Item 5 by reference. Such transactions were conducted as private placements to accredi",
+            "raw_end": 545544,
+            "raw_start": 545458,
+            "section_id": "sec20"
+          },
+          {
+            "heading": "ITEM 6. RESERVED Not applicable. 21 Table of Contents ITEM 7. MANAGEMENT&#8217;",
+            "raw_end": 549169,
+            "raw_start": 547264,
+            "section_id": "sec21"
+          },
+          {
+            "heading": "Item 8. Financial Statements and Supplementary Data &#8221; of this Annual Report on F",
+            "raw_end": 550869,
+            "raw_start": 550645,
+            "section_id": "sec22"
+          },
+          {
+            "heading": "Item 1A. Risk Factors &#8221; and elsewhere in this Annual Report on Form 10-K. A compa",
+            "raw_end": 552151,
+            "raw_start": 551679,
+            "section_id": "sec23"
+          }
+        ],
+        "title": "10-K 2025-04-15",
+        "window": "2025Q2"
+      },
+      "available_actions": [
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ],
+      "budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "memory"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "catalog_observations": [
+        {
+          "scope": "evidence",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 2,
+            "scope": "evidence"
+          },
+          "response_page": {
+            "counts": {
+              "available": 14,
+              "included": 1,
+              "omitted_after": 11,
+              "omitted_before": 2,
+              "oversized": 0
+            },
+            "cursor": 2,
+            "max_entry_bytes": 8000,
+            "next_cursor": 3,
+            "oversized_entries": [],
+            "selection_is_exhaustive": false
+          }
+        },
+        {
+          "scope": "evidence",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 0,
+            "scope": "evidence"
+          },
+          "response_page": {
+            "counts": {
+              "available": 14,
+              "included": 2,
+              "omitted_after": 12,
+              "omitted_before": 0,
+              "oversized": 0
+            },
+            "cursor": 0,
+            "max_entry_bytes": 8000,
+            "next_cursor": 2,
+            "oversized_entries": [],
+            "selection_is_exhaustive": false
+          }
+        },
+        {
+          "scope": "signals",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 14,
+            "scope": "signals"
+          },
+          "response_page": {
+            "counts": {
+              "available": 18,
+              "included": 4,
+              "omitted_after": 0,
+              "omitted_before": 14,
+              "oversized": 0
+            },
+            "cursor": 14,
+            "max_entry_bytes": 8000,
+            "next_cursor": null,
+            "oversized_entries": [],
+            "read_action": "inspect_catalog scope=signals item_refs",
+            "read_byte_limit": 16000,
+            "selection_is_exhaustive": false
+          }
+        },
+        {
+          "scope": "signals",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 7,
+            "scope": "signals"
+          },
+          "response_page": {
+            "counts": {
+              "available": 18,
+              "included": 7,
+              "omitted_after": 4,
+              "omitted_before": 7,
+              "oversized": 0
+            },
+            "cursor": 7,
+            "max_entry_bytes": 8000,
+            "next_cursor": 14,
+            "oversized_entries": [],
+            "read_action": "inspect_catalog scope=signals item_refs",
+            "read_byte_limit": 16000,
+            "selection_is_exhaustive": false
+          }
+        }
+      ],
+      "last_action_result": {
+        "action": "inspect_catalog",
+        "result": {
+          "counts": {
+            "available": 14,
+            "included": 1,
+            "omitted_after": 11,
+            "omitted_before": 2,
+            "oversized": 0
+          },
+          "cursor": 2,
+          "items": [
+            {
+              "available_at": "2025-04-15T21:15:29+00:00",
+              "case_bindings": [
+                {
+                  "case_ref": "case-005",
+                  "event_ref": "event-1329aa913b56a3b2"
+                }
+              ],
+              "discovery_only": true,
+              "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+              "event_ref": "event-1329aa913b56a3b2",
+              "family": "filing",
+              "raw_chars": 4049846,
+              "readable_start": 175257,
+              "section_count": 43,
+              "sections": [
+                {
+                  "heading": "Part III hereof. Table of Contents &#8203; TABLE OF CONTENTS",
+                  "raw_end": 231320,
+                  "raw_start": 228819,
+                  "section_id": "sec00"
+                },
+                {
+                  "heading": "PART I 3 ITEM 1. BUSINESS 3 ITEM 1A. RISK FACTORS 9 ITEM 1B. UNRESOLVED STAFF COMMENTS",
+                  "raw_end": 237238,
+                  "raw_start": 233828,
+                  "section_id": "sec01"
+                },
+                {
+                  "heading": "ITEM 1C. CYBERSECURITY 20 ITEM 2. PROPERTIES 20 ITEM 3. LEGAL PROCEEDINGS 20 ITEM 4. MI",
+                  "raw_end": 241862,
+                  "raw_start": 237975,
+                  "section_id": "sec02"
+                },
+                {
+                  "heading": "PART II 21 ITEM 5. MARKET FOR REGISTRANT&#8217;S COMMON EQUITY, RELATED STOCKHOLDER MAT",
+                  "raw_end": 244981,
+                  "raw_start": 243751,
+                  "section_id": "sec03"
+                },
+                {
+                  "heading": "ITEM 6. [RESERVED] 21 ITEM 7. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL",
+                  "raw_end": 247381,
+                  "raw_start": 245764,
+                  "section_id": "sec04"
+                },
+                {
+                  "heading": "ITEM 7A. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK 32 ITEM 8. FINANCIA",
+                  "raw_end": 249771,
+                  "raw_start": 248153,
+                  "section_id": "sec05"
+                },
+                {
+                  "heading": "ITEM 9. CHANGES IN AND DISAGREEMENTS WITH ACCOUNTANTS ON ACCOUNTING AND FINANCIAL DISC",
+                  "raw_end": 251014,
+                  "raw_start": 250540,
+                  "section_id": "sec06"
+                },
+                {
+                  "heading": "ITEM 9A. CONTROLS AND PROCEDURES 33 ITEM 9B. OTHER INFORMATION 33 ITEM 9C. DISCLOSURE R",
+                  "raw_end": 254478,
+                  "raw_start": 251757,
+                  "section_id": "sec07"
+                },
+                {
+                  "heading": "PART III 35 ITEM 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE 35 ITEM 11.",
+                  "raw_end": 258349,
+                  "raw_start": 256404,
+                  "section_id": "sec08"
+                },
+                {
+                  "heading": "ITEM 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STO",
+                  "raw_end": 259945,
+                  "raw_start": 259490,
+                  "section_id": "sec09"
+                },
+                {
+                  "heading": "ITEM 13. CERTAIN RELATIONSHIPS AND RELATED TRANSACTIONS, AND DIRECTOR INDEPENDENCE 35 I",
+                  "raw_end": 261886,
+                  "raw_start": 260698,
+                  "section_id": "sec10"
+                },
+                {
+                  "heading": "ITEM 15. EXHIBITS, FINANCIAL STATEMENTS SCHEDULES 36 ITEM 16. FORM 10-K SUMMARY 40 &#82",
+                  "raw_end": 267173,
+                  "raw_start": 264929,
+                  "section_id": "sec11"
+                },
+                {
+                  "heading": "ITEM 1. BUS INESS Unless the context requires otherwise, references to &#8220;[ANON_ID_0001],&",
+                  "raw_end": 308366,
+                  "raw_start": 307859,
+                  "section_id": "sec12"
+                },
+                {
+                  "heading": "ITEM 1A. RIS K FACTORS An investment in our Common Stock or Preferred Stock involves ri",
+                  "raw_end": 377889,
+                  "raw_start": 377224,
+                  "section_id": "sec13"
+                },
+                {
+                  "heading": "ITEM 1B. UN RESOLVED STAFF COMMENTS None. 19 Table of Contents ITEM 1C. C",
+                  "raw_end": 518576,
+                  "raw_start": 516077,
+                  "section_id": "sec14"
+                },
+                {
+                  "heading": "Item 1A. \" Risk Factors\" of this Annual Report on Form 10-K, which disclosures are inco",
+                  "raw_end": 526832,
+                  "raw_start": 526450,
+                  "section_id": "sec15"
+                },
+                {
+                  "heading": "ITEM 2. PR OPERTIES Our corporate headquarters are located in Centennial, Colorado whe",
+                  "raw_end": 532930,
+                  "raw_start": 532442,
+                  "section_id": "sec16"
+                },
+                {
+                  "heading": "ITEM 3. LEGAL PROCEE DINGS [ANON_ID_0001] has been and expects to continue to become involved",
+                  "raw_end": 533961,
+                  "raw_start": 533473,
+                  "section_id": "sec17"
+                },
+                {
+                  "heading": "ITEM 4. MINE SAF ETY DISCLOSURES Not applicable. 20 Table of Contents &#8203;PA",
+                  "raw_end": 537559,
+                  "raw_start": 535387,
+                  "section_id": "sec18"
+                },
+                {
+                  "heading": "ITEM 5. MARKET FOR REGISTRANT&#8217;S COMM ON EQUITY, RELATED STOCKHOLDER MATTERS AND",
+                  "raw_end": 538269,
+                  "raw_start": 538028,
+                  "section_id": "sec19"
+                },
+                {
+                  "heading": "Item 5 by reference. Such transactions were conducted as private placements to accredi",
+                  "raw_end": 545544,
+                  "raw_start": 545458,
+                  "section_id": "sec20"
+                },
+                {
+                  "heading": "ITEM 6. RESERVED Not applicable. 21 Table of Contents ITEM 7. MANAGEMENT&#8217;",
+                  "raw_end": 549169,
+                  "raw_start": 547264,
+                  "section_id": "sec21"
+                },
+                {
+                  "heading": "Item 8. Financial Statements and Supplementary Data &#8221; of this Annual Report on F",
+                  "raw_end": 550869,
+                  "raw_start": 550645,
+                  "section_id": "sec22"
+                },
+                {
+                  "heading": "Item 1A. Risk Factors &#8221; and elsewhere in this Annual Report on Form 10-K. A compa",
+                  "raw_end": 552151,
+                  "raw_start": 551679,
+                  "section_id": "sec23"
+                }
+              ],
+              "title": "10-K 2025-04-15",
+              "window": "2025Q2"
+            }
+          ],
+          "max_entry_bytes": 8000,
+          "next_cursor": 3,
+          "oversized_entries": [],
+          "selection_is_exhaustive": false
+        },
+        "scope": "evidence"
+      },
+      "read_progress": {
+        "counts": {
+          "available": 3,
+          "included": 3,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-002"
+            ],
+            "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+            "document_ref": "document-sec:[ANON_ID_0003]:000114036125018373",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 3973625,
+            "offset": 3969625,
+            "read_count": 1,
+            "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0002]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0002]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 1,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      }
+    },
+    {
+      "name": "h010",
+      "inbox": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/inbox/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.json",
+        "sha256": "640630a3c92d220b8129e896d5f1d809d960cb9a6329ffdf5deedab661bbdaaa"
+      },
+      "request_hash": "6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597",
+      "annual_card": {
+        "available_at": "2025-04-15T21:15:29+00:00",
+        "case_bindings": [
+          {
+            "case_ref": "case-005",
+            "event_ref": "event-1329aa913b56a3b2"
+          }
+        ],
+        "discovery_only": true,
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "event_ref": "event-1329aa913b56a3b2",
+        "family": "filing",
+        "raw_chars": 4049846,
+        "readable_start": 175257,
+        "section_count": 43,
+        "sections": [
+          {
+            "heading": "Part III hereof. Table of Contents &#8203; TABLE OF CONTENTS",
+            "raw_end": 231320,
+            "raw_start": 228819,
+            "section_id": "sec00"
+          },
+          {
+            "heading": "PART I 3 ITEM 1. BUSINESS 3 ITEM 1A. RISK FACTORS 9 ITEM 1B. UNRESOLVED STAFF COMMENTS",
+            "raw_end": 237238,
+            "raw_start": 233828,
+            "section_id": "sec01"
+          },
+          {
+            "heading": "ITEM 1C. CYBERSECURITY 20 ITEM 2. PROPERTIES 20 ITEM 3. LEGAL PROCEEDINGS 20 ITEM 4. MI",
+            "raw_end": 241862,
+            "raw_start": 237975,
+            "section_id": "sec02"
+          },
+          {
+            "heading": "PART II 21 ITEM 5. MARKET FOR REGISTRANT&#8217;S COMMON EQUITY, RELATED STOCKHOLDER MAT",
+            "raw_end": 244981,
+            "raw_start": 243751,
+            "section_id": "sec03"
+          },
+          {
+            "heading": "ITEM 6. [RESERVED] 21 ITEM 7. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL",
+            "raw_end": 247381,
+            "raw_start": 245764,
+            "section_id": "sec04"
+          },
+          {
+            "heading": "ITEM 7A. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK 32 ITEM 8. FINANCIA",
+            "raw_end": 249771,
+            "raw_start": 248153,
+            "section_id": "sec05"
+          },
+          {
+            "heading": "ITEM 9. CHANGES IN AND DISAGREEMENTS WITH ACCOUNTANTS ON ACCOUNTING AND FINANCIAL DISC",
+            "raw_end": 251014,
+            "raw_start": 250540,
+            "section_id": "sec06"
+          },
+          {
+            "heading": "ITEM 9A. CONTROLS AND PROCEDURES 33 ITEM 9B. OTHER INFORMATION 33 ITEM 9C. DISCLOSURE R",
+            "raw_end": 254478,
+            "raw_start": 251757,
+            "section_id": "sec07"
+          },
+          {
+            "heading": "PART III 35 ITEM 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE 35 ITEM 11.",
+            "raw_end": 258349,
+            "raw_start": 256404,
+            "section_id": "sec08"
+          },
+          {
+            "heading": "ITEM 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STO",
+            "raw_end": 259945,
+            "raw_start": 259490,
+            "section_id": "sec09"
+          },
+          {
+            "heading": "ITEM 13. CERTAIN RELATIONSHIPS AND RELATED TRANSACTIONS, AND DIRECTOR INDEPENDENCE 35 I",
+            "raw_end": 261886,
+            "raw_start": 260698,
+            "section_id": "sec10"
+          },
+          {
+            "heading": "ITEM 15. EXHIBITS, FINANCIAL STATEMENTS SCHEDULES 36 ITEM 16. FORM 10-K SUMMARY 40 &#82",
+            "raw_end": 267173,
+            "raw_start": 264929,
+            "section_id": "sec11"
+          },
+          {
+            "heading": "ITEM 1. BUS INESS Unless the context requires otherwise, references to &#8220;[ANON_ID_0001],&",
+            "raw_end": 308366,
+            "raw_start": 307859,
+            "section_id": "sec12"
+          },
+          {
+            "heading": "ITEM 1A. RIS K FACTORS An investment in our Common Stock or Preferred Stock involves ri",
+            "raw_end": 377889,
+            "raw_start": 377224,
+            "section_id": "sec13"
+          },
+          {
+            "heading": "ITEM 1B. UN RESOLVED STAFF COMMENTS None. 19 Table of Contents ITEM 1C. C",
+            "raw_end": 518576,
+            "raw_start": 516077,
+            "section_id": "sec14"
+          },
+          {
+            "heading": "Item 1A. \" Risk Factors\" of this Annual Report on Form 10-K, which disclosures are inco",
+            "raw_end": 526832,
+            "raw_start": 526450,
+            "section_id": "sec15"
+          },
+          {
+            "heading": "ITEM 2. PR OPERTIES Our corporate headquarters are located in Centennial, Colorado whe",
+            "raw_end": 532930,
+            "raw_start": 532442,
+            "section_id": "sec16"
+          },
+          {
+            "heading": "ITEM 3. LEGAL PROCEE DINGS [ANON_ID_0001] has been and expects to continue to become involved",
+            "raw_end": 533961,
+            "raw_start": 533473,
+            "section_id": "sec17"
+          },
+          {
+            "heading": "ITEM 4. MINE SAF ETY DISCLOSURES Not applicable. 20 Table of Contents &#8203;PA",
+            "raw_end": 537559,
+            "raw_start": 535387,
+            "section_id": "sec18"
+          },
+          {
+            "heading": "ITEM 5. MARKET FOR REGISTRANT&#8217;S COMM ON EQUITY, RELATED STOCKHOLDER MATTERS AND",
+            "raw_end": 538269,
+            "raw_start": 538028,
+            "section_id": "sec19"
+          },
+          {
+            "heading": "Item 5 by reference. Such transactions were conducted as private placements to accredi",
+            "raw_end": 545544,
+            "raw_start": 545458,
+            "section_id": "sec20"
+          },
+          {
+            "heading": "ITEM 6. RESERVED Not applicable. 21 Table of Contents ITEM 7. MANAGEMENT&#8217;",
+            "raw_end": 549169,
+            "raw_start": 547264,
+            "section_id": "sec21"
+          },
+          {
+            "heading": "Item 8. Financial Statements and Supplementary Data &#8221; of this Annual Report on F",
+            "raw_end": 550869,
+            "raw_start": 550645,
+            "section_id": "sec22"
+          },
+          {
+            "heading": "Item 1A. Risk Factors &#8221; and elsewhere in this Annual Report on Form 10-K. A compa",
+            "raw_end": 552151,
+            "raw_start": 551679,
+            "section_id": "sec23"
+          }
+        ],
+        "title": "10-K 2025-04-15",
+        "window": "2025Q2"
+      },
+      "available_actions": [
+        "inspect_catalog",
+        "fetch_evidence",
+        "compute_statistic",
+        "read_span",
+        "compare_groups",
+        "propose_candidate",
+        "record_need_dispositions",
+        "record_deferred",
+        "record_no_pattern"
+      ],
+      "budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "tool_contracts": {
+        "compute_statistic": {
+          "numeric_requirements": "finite operands and result; non-zero denominator for ratios",
+          "operand_count": 2,
+          "operand_order": "numerator_then_denominator_or_latest_then_prior",
+          "operand_scope": "same_case",
+          "rules": [
+            "latest_minus_comparable_prior",
+            "latest_over_comparable_prior",
+            "latest_over_latest"
+          ]
+        },
+        "inspect_catalog": {
+          "allowed_scopes": [
+            "memory"
+          ],
+          "budget_by_scope": {
+            "backlog": "light",
+            "evidence": "light",
+            "memory": "browse",
+            "signals": "light"
+          },
+          "default_scope": "signals"
+        },
+        "read_span": {
+          "budget_by_target": {
+            "document_ref": "browse",
+            "event_ref": "browse",
+            "fact_ref": "heavy"
+          },
+          "length_max": 4000,
+          "length_min": 1,
+          "offset_min": 0,
+          "target_count": 1,
+          "target_fields": [
+            "fact_ref",
+            "event_ref",
+            "document_ref"
+          ],
+          "window_applies_to": [
+            "event_ref",
+            "document_ref"
+          ]
+        }
+      },
+      "catalog_observations": [
+        {
+          "scope": "evidence",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 2,
+            "scope": "evidence"
+          },
+          "response_page": {
+            "counts": {
+              "available": 14,
+              "included": 1,
+              "omitted_after": 11,
+              "omitted_before": 2,
+              "oversized": 0
+            },
+            "cursor": 2,
+            "max_entry_bytes": 8000,
+            "next_cursor": 3,
+            "oversized_entries": [],
+            "selection_is_exhaustive": false
+          }
+        },
+        {
+          "scope": "evidence",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 0,
+            "scope": "evidence"
+          },
+          "response_page": {
+            "counts": {
+              "available": 14,
+              "included": 2,
+              "omitted_after": 12,
+              "omitted_before": 0,
+              "oversized": 0
+            },
+            "cursor": 0,
+            "max_entry_bytes": 8000,
+            "next_cursor": 2,
+            "oversized_entries": [],
+            "selection_is_exhaustive": false
+          }
+        },
+        {
+          "scope": "signals",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 14,
+            "scope": "signals"
+          },
+          "response_page": {
+            "counts": {
+              "available": 18,
+              "included": 4,
+              "omitted_after": 0,
+              "omitted_before": 14,
+              "oversized": 0
+            },
+            "cursor": 14,
+            "max_entry_bytes": 8000,
+            "next_cursor": null,
+            "oversized_entries": [],
+            "read_action": "inspect_catalog scope=signals item_refs",
+            "read_byte_limit": 16000,
+            "selection_is_exhaustive": false
+          }
+        },
+        {
+          "scope": "signals",
+          "arguments": {
+            "action": "inspect_catalog",
+            "cursor": 7,
+            "scope": "signals"
+          },
+          "response_page": {
+            "counts": {
+              "available": 18,
+              "included": 7,
+              "omitted_after": 4,
+              "omitted_before": 7,
+              "oversized": 0
+            },
+            "cursor": 7,
+            "max_entry_bytes": 8000,
+            "next_cursor": 14,
+            "oversized_entries": [],
+            "read_action": "inspect_catalog scope=signals item_refs",
+            "read_byte_limit": 16000,
+            "selection_is_exhaustive": false
+          }
+        }
+      ],
+      "last_action_result": {
+        "action": "read_span",
+        "case_refs": [
+          "case-005"
+        ],
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "has_readable_text": true,
+        "length": 4000,
+        "masked": "ITEM 1A. RIS K FACTORS An investment in our Common Stock or Preferred Stock involves risks. Prior to making a decision about investing in our Common Stock or Preferred Stock, you should consider carefully the risks together with all of the other information contained in this Annual Report on Form 10-K, including any risks described below. Each of the referenced risks and uncertainties could adversely affect our business, operating results, and financial condition, as well as adversely affect the value of an investment in our securities. Additional risks not known to us or that we believe are immaterial may also adversely affect our business, operating results, and financial condition and the value of an investment in our securities. &#160; Risks Relating to Our Business and Operations We are an early-stage company with a history of losses. We have not been profitable historically and may not be able to achieve profitability in the future. Our financial statements as of and for the year ended December 31, 2024 included elsewhere in this Annual Report on Form 10-K have been prepared assuming we will continue as a going concern. If we are unable to generate sufficient cash flow to sustain our operations or raise additional capital in the form of debt or equity financing, this could affect our ability to continue as a going concern in the future. Since its inception in 2015, [ANON_ID_0001] has incurred significant net losses and has used significant cash in its business. As of December 31, 2024, [ANON_ID_0001] had an accumulated deficit of approximately $131.8 million, and for the year ended December 31, 2024, [ANON_ID_0001] had a net loss of approximately $34.5 million. We anticipate that we will incur net losses for the foreseeable future and, even if we increase our revenues, there is no guarantee that we will ever become profitable. Our ability to achieve profitability in the future will depend on a number of factors, many of which are beyond our control. Even if we do achieve profitability, we may be unable to sustain or increase our profitability in the long term. Our business may be disrupted at any time due to numerous factors out",
+        "next_readable_start": 381224,
+        "offset": 377224,
+        "raw_window_chars": 4000,
+        "readable_chars": 2148,
+        "ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "target": "document_ref",
+        "verbatim_hash": "bd50e80921ec579e803ca9e7cb54352d14d71cd57469bf783a454a9cf3c71486"
+      },
+      "read_progress": {
+        "counts": {
+          "available": 4,
+          "included": 4,
+          "omitted_after": 0,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "items": [
+          {
+            "case_refs": [
+              "case-005"
+            ],
+            "content_hash": "58029c3b61f15a6aae473e3ffd96ab651da1299ce47e32e5b0e6dfccb4e9014b",
+            "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 381224,
+            "offset": 377224,
+            "read_count": 1,
+            "verbatim_hash": "bd50e80921ec579e803ca9e7cb54352d14d71cd57469bf783a454a9cf3c71486"
+          },
+          {
+            "case_refs": [
+              "case-002"
+            ],
+            "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+            "document_ref": "document-sec:[ANON_ID_0003]:000114036125018373",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 3973625,
+            "offset": 3969625,
+            "read_count": 1,
+            "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0002]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+            "document_ref": "document-sec:[ANON_ID_0002]:000149315225011966",
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 1,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          }
+        ],
+        "max_entry_bytes": 8000,
+        "next_cursor": null,
+        "oversized_entries": [],
+        "selection_is_exhaustive": true
+      }
+    }
+  ],
+  "sources": [
+    {
+      "source_number": 1506,
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1506.json",
+        "sha256": "5c9a07362c8ef42650f99a5f1dcb13f969a6b9e42335c5cc1120024c0ad3bd6f"
+      },
+      "metadata": {
+        "available_at": "2025-04-15T21:15:29+00:00",
+        "company_id": "cik_0001814215",
+        "content_hash": "58029c3b61f15a6aae473e3ffd96ab651da1299ce47e32e5b0e6dfccb4e9014b",
+        "document_id": "sec:cik_0001814215:000095017025054321",
+        "metadata": {
+          "accession_number": "0000950170-25-054321",
+          "cik": "0001814215",
+          "form": "10-K",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025054321/buru-20241231.htm"
+        },
+        "published_at": "2025-04-15T21:15:29+00:00",
+        "source_type": "filing"
+      },
+      "raw_chars": 4049846,
+      "visible_chars": 385045,
+      "all_matcher_sections": [
+        {
+          "section_id": "sec00",
+          "heading": "Part III hereof. Table of Contents &#8203; TABLE OF CONTENTS",
+          "raw_start": 228819,
+          "raw_end": 231320
+        },
+        {
+          "section_id": "sec01",
+          "heading": "PART I 3 ITEM 1. BUSINESS 3 ITEM 1A. RISK FACTORS 9 ITEM 1B. UNRESOLVED STAFF COMMENTS",
+          "raw_start": 233828,
+          "raw_end": 237238
+        },
+        {
+          "section_id": "sec02",
+          "heading": "ITEM 1C. CYBERSECURITY 20 ITEM 2. PROPERTIES 20 ITEM 3. LEGAL PROCEEDINGS 20 ITEM 4. MI",
+          "raw_start": 237975,
+          "raw_end": 241862
+        },
+        {
+          "section_id": "sec03",
+          "heading": "PART II 21 ITEM 5. MARKET FOR REGISTRANT&#8217;S COMMON EQUITY, RELATED STOCKHOLDER MAT",
+          "raw_start": 243751,
+          "raw_end": 244981
+        },
+        {
+          "section_id": "sec04",
+          "heading": "ITEM 6. [RESERVED] 21 ITEM 7. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL",
+          "raw_start": 245764,
+          "raw_end": 247381
+        },
+        {
+          "section_id": "sec05",
+          "heading": "ITEM 7A. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK 32 ITEM 8. FINANCIA",
+          "raw_start": 248153,
+          "raw_end": 249771
+        },
+        {
+          "section_id": "sec06",
+          "heading": "ITEM 9. CHANGES IN AND DISAGREEMENTS WITH ACCOUNTANTS ON ACCOUNTING AND FINANCIAL DISC",
+          "raw_start": 250540,
+          "raw_end": 251014
+        },
+        {
+          "section_id": "sec07",
+          "heading": "ITEM 9A. CONTROLS AND PROCEDURES 33 ITEM 9B. OTHER INFORMATION 33 ITEM 9C. DISCLOSURE R",
+          "raw_start": 251757,
+          "raw_end": 254478
+        },
+        {
+          "section_id": "sec08",
+          "heading": "PART III 35 ITEM 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE 35 ITEM 11.",
+          "raw_start": 256404,
+          "raw_end": 258349
+        },
+        {
+          "section_id": "sec09",
+          "heading": "ITEM 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STO",
+          "raw_start": 259490,
+          "raw_end": 259945
+        },
+        {
+          "section_id": "sec10",
+          "heading": "ITEM 13. CERTAIN RELATIONSHIPS AND RELATED TRANSACTIONS, AND DIRECTOR INDEPENDENCE 35 I",
+          "raw_start": 260698,
+          "raw_end": 261886
+        },
+        {
+          "section_id": "sec11",
+          "heading": "ITEM 15. EXHIBITS, FINANCIAL STATEMENTS SCHEDULES 36 ITEM 16. FORM 10-K SUMMARY 40 &#82",
+          "raw_start": 264929,
+          "raw_end": 267173
+        },
+        {
+          "section_id": "sec12",
+          "heading": "ITEM 1. BUS INESS Unless the context requires otherwise, references to &#8220;Nuburu,&",
+          "raw_start": 307859,
+          "raw_end": 308366
+        },
+        {
+          "section_id": "sec13",
+          "heading": "ITEM 1A. RIS K FACTORS An investment in our Common Stock or Preferred Stock involves ri",
+          "raw_start": 377224,
+          "raw_end": 377889
+        },
+        {
+          "section_id": "sec14",
+          "heading": "ITEM 1B. UN RESOLVED STAFF COMMENTS None. 19 Table of Contents ITEM 1C. C",
+          "raw_start": 516077,
+          "raw_end": 518576
+        },
+        {
+          "section_id": "sec15",
+          "heading": "Item 1A. \" Risk Factors\" of this Annual Report on Form 10-K, which disclosures are inco",
+          "raw_start": 526450,
+          "raw_end": 526832
+        },
+        {
+          "section_id": "sec16",
+          "heading": "ITEM 2. PR OPERTIES Our corporate headquarters are located in Centennial, Colorado whe",
+          "raw_start": 532442,
+          "raw_end": 532930
+        },
+        {
+          "section_id": "sec17",
+          "heading": "ITEM 3. LEGAL PROCEE DINGS Nuburu has been and expects to continue to become involved",
+          "raw_start": 533473,
+          "raw_end": 533961
+        },
+        {
+          "section_id": "sec18",
+          "heading": "ITEM 4. MINE SAF ETY DISCLOSURES Not applicable. 20 Table of Contents &#8203;PA",
+          "raw_start": 535387,
+          "raw_end": 537559
+        },
+        {
+          "section_id": "sec19",
+          "heading": "ITEM 5. MARKET FOR REGISTRANT&#8217;S COMM ON EQUITY, RELATED STOCKHOLDER MATTERS AND",
+          "raw_start": 538028,
+          "raw_end": 538269
+        },
+        {
+          "section_id": "sec20",
+          "heading": "Item 5 by reference. Such transactions were conducted as private placements to accredi",
+          "raw_start": 545458,
+          "raw_end": 545544
+        },
+        {
+          "section_id": "sec21",
+          "heading": "ITEM 6. RESERVED Not applicable. 21 Table of Contents ITEM 7. MANAGEMENT&#8217;",
+          "raw_start": 547264,
+          "raw_end": 549169
+        },
+        {
+          "section_id": "sec22",
+          "heading": "Item 8. Financial Statements and Supplementary Data &#8221; of this Annual Report on F",
+          "raw_start": 550645,
+          "raw_end": 550869
+        },
+        {
+          "section_id": "sec23",
+          "heading": "Item 1A. Risk Factors &#8221; and elsewhere in this Annual Report on Form 10-K. A compa",
+          "raw_start": 551679,
+          "raw_end": 552151
+        },
+        {
+          "section_id": "sec24",
+          "heading": "Part II, Item 7. \"Management's Discussion and Analysis of Financial Condition and Resul",
+          "raw_start": 552530,
+          "raw_end": 552617
+        },
+        {
+          "section_id": "sec25",
+          "heading": "Item 8. Financial Statements and Supplementary Data &#8221; of this Annual Report on F",
+          "raw_start": 610839,
+          "raw_end": 611063
+        },
+        {
+          "section_id": "sec26",
+          "heading": "Item 8. Financial Statements and Supplementary Data\" of this Annual Report on Form 10-",
+          "raw_start": 824927,
+          "raw_end": 825152
+        },
+        {
+          "section_id": "sec27",
+          "heading": "Item 8. Financial Statements and Supplementary Data\" of this Annual Report on Form 10-",
+          "raw_start": 826807,
+          "raw_end": 827032
+        },
+        {
+          "section_id": "sec28",
+          "heading": "Item 8 of this Annual Report on Form 10-K) in accordance with the guidance contained i",
+          "raw_start": 833379,
+          "raw_end": 833465
+        },
+        {
+          "section_id": "sec29",
+          "heading": "Item 8. Financial Statements and Supplementary Data\" in this Annual Report on Form 10-",
+          "raw_start": 849468,
+          "raw_end": 849693
+        },
+        {
+          "section_id": "sec30",
+          "heading": "Item 8. Financial Statements and Supplementary Data\" in this Annual Report on Form 10-",
+          "raw_start": 850786,
+          "raw_end": 851011
+        },
+        {
+          "section_id": "sec31",
+          "heading": "ITEM 7A. QUANTITATIVE AND QUA LITATIVE DISCLOSURES ABOUT MARKET RISK We are a smaller r",
+          "raw_start": 851465,
+          "raw_end": 851954
+        },
+        {
+          "section_id": "sec32",
+          "heading": "ITEM 8. FINANCIAL STATEMENT S AND SUPPLEMENTARY DATA This information appears followin",
+          "raw_start": 852409,
+          "raw_end": 852897
+        },
+        {
+          "section_id": "sec33",
+          "heading": "Item 15 of this Annual Report on Form 10-K and is included herein by reference. ITEM 9.",
+          "raw_start": 852899,
+          "raw_end": 853285
+        },
+        {
+          "section_id": "sec34",
+          "heading": "ITEM 9A. CONTROLS A ND PROCEDURES Evaluation of Disclosure Controls and Procedures Disc",
+          "raw_start": 855371,
+          "raw_end": 856124
+        },
+        {
+          "section_id": "sec35",
+          "heading": "Item 9B. Other Information None . 33 Table of Contents Item 9C. Disclosure Regar",
+          "raw_start": 866963,
+          "raw_end": 869819
+        },
+        {
+          "section_id": "sec36",
+          "heading": "Item 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE Item 11.",
+          "raw_start": 876082,
+          "raw_end": 877643
+        },
+        {
+          "section_id": "sec37",
+          "heading": "Item 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STO",
+          "raw_start": 879142,
+          "raw_end": 879562
+        },
+        {
+          "section_id": "sec38",
+          "heading": "Item 13. CERTAIN RELATIONSHIPS AND RELATED TRANSACTIONS, AND DIRECTOR INDEPENDENCE &#16",
+          "raw_start": 880728,
+          "raw_end": 881549
+        },
+        {
+          "section_id": "sec39",
+          "heading": "Item 14. PRINCIPAL ACCOUNTANT FEES AND SERVICES Our independent re",
+          "raw_start": 882293,
+          "raw_end": 884167
+        },
+        {
+          "section_id": "sec40",
+          "heading": "ITEM 15. EXHIBITS, FINANCIAL S TATEMENTS SCHEDULES a) The following documents are filed",
+          "raw_start": 886983,
+          "raw_end": 887841
+        },
+        {
+          "section_id": "sec41",
+          "heading": "Item 601(a)(5). The registrant agrees to furnish a copy of all omitted exhibits and sche",
+          "raw_start": 1408879,
+          "raw_end": 1408967
+        },
+        {
+          "section_id": "sec42",
+          "heading": "ITEM 16. FORM 10-K SUMMA RY &#8203; Not applicable. 40 Table of Contents SI GNAT",
+          "raw_start": 1410837,
+          "raw_end": 1413165
+        }
+      ],
+      "card": {
+        "document_id": "sec:cik_0001814215:000095017025054321",
+        "content_hash": "58029c3b61f15a6aae473e3ffd96ab651da1299ce47e32e5b0e6dfccb4e9014b",
+        "source_type": "filing",
+        "available_at": "2025-04-15T21:15:29+00:00",
+        "visible_chars": 385045,
+        "raw_chars": 4049846,
+        "readable_start": 175257,
+        "form_type": "10-K",
+        "preview": "Table of Contents &#160; &#160; &#160; UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; FORM 10-K &#160; (Mark",
+        "sections": [
+          {
+            "section_id": "sec00",
+            "heading": "Part III hereof. Table of Contents &#8203; TABLE OF CONTENTS",
+            "raw_start": 228819,
+            "raw_end": 231320
+          },
+          {
+            "section_id": "sec01",
+            "heading": "PART I 3 ITEM 1. BUSINESS 3 ITEM 1A. RISK FACTORS 9 ITEM 1B. UNRESOLVED STAFF COMMENTS",
+            "raw_start": 233828,
+            "raw_end": 237238
+          },
+          {
+            "section_id": "sec02",
+            "heading": "ITEM 1C. CYBERSECURITY 20 ITEM 2. PROPERTIES 20 ITEM 3. LEGAL PROCEEDINGS 20 ITEM 4. MI",
+            "raw_start": 237975,
+            "raw_end": 241862
+          },
+          {
+            "section_id": "sec03",
+            "heading": "PART II 21 ITEM 5. MARKET FOR REGISTRANT&#8217;S COMMON EQUITY, RELATED STOCKHOLDER MAT",
+            "raw_start": 243751,
+            "raw_end": 244981
+          },
+          {
+            "section_id": "sec04",
+            "heading": "ITEM 6. [RESERVED] 21 ITEM 7. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL",
+            "raw_start": 245764,
+            "raw_end": 247381
+          },
+          {
+            "section_id": "sec05",
+            "heading": "ITEM 7A. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK 32 ITEM 8. FINANCIA",
+            "raw_start": 248153,
+            "raw_end": 249771
+          },
+          {
+            "section_id": "sec06",
+            "heading": "ITEM 9. CHANGES IN AND DISAGREEMENTS WITH ACCOUNTANTS ON ACCOUNTING AND FINANCIAL DISC",
+            "raw_start": 250540,
+            "raw_end": 251014
+          },
+          {
+            "section_id": "sec07",
+            "heading": "ITEM 9A. CONTROLS AND PROCEDURES 33 ITEM 9B. OTHER INFORMATION 33 ITEM 9C. DISCLOSURE R",
+            "raw_start": 251757,
+            "raw_end": 254478
+          },
+          {
+            "section_id": "sec08",
+            "heading": "PART III 35 ITEM 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE 35 ITEM 11.",
+            "raw_start": 256404,
+            "raw_end": 258349
+          },
+          {
+            "section_id": "sec09",
+            "heading": "ITEM 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STO",
+            "raw_start": 259490,
+            "raw_end": 259945
+          },
+          {
+            "section_id": "sec10",
+            "heading": "ITEM 13. CERTAIN RELATIONSHIPS AND RELATED TRANSACTIONS, AND DIRECTOR INDEPENDENCE 35 I",
+            "raw_start": 260698,
+            "raw_end": 261886
+          },
+          {
+            "section_id": "sec11",
+            "heading": "ITEM 15. EXHIBITS, FINANCIAL STATEMENTS SCHEDULES 36 ITEM 16. FORM 10-K SUMMARY 40 &#82",
+            "raw_start": 264929,
+            "raw_end": 267173
+          },
+          {
+            "section_id": "sec12",
+            "heading": "ITEM 1. BUS INESS Unless the context requires otherwise, references to &#8220;Nuburu,&",
+            "raw_start": 307859,
+            "raw_end": 308366
+          },
+          {
+            "section_id": "sec13",
+            "heading": "ITEM 1A. RIS K FACTORS An investment in our Common Stock or Preferred Stock involves ri",
+            "raw_start": 377224,
+            "raw_end": 377889
+          },
+          {
+            "section_id": "sec14",
+            "heading": "ITEM 1B. UN RESOLVED STAFF COMMENTS None. 19 Table of Contents ITEM 1C. C",
+            "raw_start": 516077,
+            "raw_end": 518576
+          },
+          {
+            "section_id": "sec15",
+            "heading": "Item 1A. \" Risk Factors\" of this Annual Report on Form 10-K, which disclosures are inco",
+            "raw_start": 526450,
+            "raw_end": 526832
+          },
+          {
+            "section_id": "sec16",
+            "heading": "ITEM 2. PR OPERTIES Our corporate headquarters are located in Centennial, Colorado whe",
+            "raw_start": 532442,
+            "raw_end": 532930
+          },
+          {
+            "section_id": "sec17",
+            "heading": "ITEM 3. LEGAL PROCEE DINGS Nuburu has been and expects to continue to become involved",
+            "raw_start": 533473,
+            "raw_end": 533961
+          },
+          {
+            "section_id": "sec18",
+            "heading": "ITEM 4. MINE SAF ETY DISCLOSURES Not applicable. 20 Table of Contents &#8203;PA",
+            "raw_start": 535387,
+            "raw_end": 537559
+          },
+          {
+            "section_id": "sec19",
+            "heading": "ITEM 5. MARKET FOR REGISTRANT&#8217;S COMM ON EQUITY, RELATED STOCKHOLDER MATTERS AND",
+            "raw_start": 538028,
+            "raw_end": 538269
+          },
+          {
+            "section_id": "sec20",
+            "heading": "Item 5 by reference. Such transactions were conducted as private placements to accredi",
+            "raw_start": 545458,
+            "raw_end": 545544
+          },
+          {
+            "section_id": "sec21",
+            "heading": "ITEM 6. RESERVED Not applicable. 21 Table of Contents ITEM 7. MANAGEMENT&#8217;",
+            "raw_start": 547264,
+            "raw_end": 549169
+          },
+          {
+            "section_id": "sec22",
+            "heading": "Item 8. Financial Statements and Supplementary Data &#8221; of this Annual Report on F",
+            "raw_start": 550645,
+            "raw_end": 550869
+          },
+          {
+            "section_id": "sec23",
+            "heading": "Item 1A. Risk Factors &#8221; and elsewhere in this Annual Report on Form 10-K. A compa",
+            "raw_start": 551679,
+            "raw_end": 552151
+          }
+        ],
+        "section_count": 43
+      },
+      "raw_anchors": [
+        {
+          "matched_phrase": "internal control over financial reporting was not effective",
+          "raw_start": 860329,
+          "raw_end": 862663,
+          "raw_sha256": "088baf97e20aac106546d5b314f83813edb90a4b5e1638a4b5501d63821f68f6",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-style:italic;font-kerning:none;min-width:fit-content;\"> </span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 857445,
+          "raw_end": 858098,
+          "raw_sha256": "cb7d7cb12842ce9ade4bf9fc68418c7afd30d61404d93c0f46cbdd667a4b5c08",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Based on this evaluation, we concluded that during the period covered by this report, our disclosure controls and procedures were not effective as of December 31, 2024, because of a material weakness in our internal control over financial reporting described below.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Based on this evaluation, we concluded that during the period covered by this report, our disclosure controls and procedures were not effective as of December 31, 2024, because of a material weakness in our internal control over financial reporting described below."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 860329,
+          "raw_end": 862663,
+          "raw_sha256": "088baf97e20aac106546d5b314f83813edb90a4b5e1638a4b5501d63821f68f6",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-style:italic;font-kerning:none;min-width:fit-content;\"> </span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 860329,
+          "raw_end": 862663,
+          "raw_sha256": "088baf97e20aac106546d5b314f83813edb90a4b5e1638a4b5501d63821f68f6",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-style:italic;font-kerning:none;min-width:fit-content;\"> </span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 860329,
+          "raw_end": 862663,
+          "raw_sha256": "088baf97e20aac106546d5b314f83813edb90a4b5e1638a4b5501d63821f68f6",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-style:italic;font-kerning:none;min-width:fit-content;\"> </span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our Executive Chairman, we conducted an evaluation of the effectiveness of our internal control over financial reporting as of December 31, 2024 based on the framework established in &#8220;Internal Control &#8211; Integrated Framework (2013)&#8221; issued by the Committee of Sponsoring Organizations of the Treadway Commission. Our management concluded that our internal control over financial reporting was not effective as of that date due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness resulted in the restatements of the Company&#8217;s financial statements (i) as of and for the year ended December 31, 2023 (as reflected in Amendment No. 4 to the Annual Report on Form 10-K for the year ended December 31, 2023 filed on November 8, 2024 and this Form 10-K (see Note 15 to the consolidated financial statements included herein)), (ii) for each of the quarterly periods ended March 31, 2023, June 30, 2023 (as reflected in two Amendments No. 1 on Form 10-Q/A, each filed on November 8, 2024) and September 30, 2023 (as reflected in the Form 10-Q filed November 14, 2024) and (iii) or each of the quarterly periods ended March 31, 2024, June 30, 2024 and September 30, 2024 (see Note 15 to the consolidated financial statements included herein). Additionally, this material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 862663,
+          "raw_end": 863768,
+          "raw_sha256": "40565bacb7dd422720148fddf31ec7f98b134e6c6115dc7e86cfcb5904340603",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this annual report on Form 10-K, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+          "rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this annual report on Form 10-K, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner."
+        },
+        {
+          "matched_phrase": "have not been able to remediate",
+          "raw_start": 862663,
+          "raw_end": 863768,
+          "raw_sha256": "40565bacb7dd422720148fddf31ec7f98b134e6c6115dc7e86cfcb5904340603",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this annual report on Form 10-K, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+          "rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this annual report on Form 10-K, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner."
+        },
+        {
+          "matched_phrase": "March 31, 2025",
+          "raw_start": 592519,
+          "raw_end": 593149,
+          "raw_sha256": "338f2b101ed8ca1d468181f135e293179876193ed37bcbc62e02c48cbb376e15",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">On March 31, 2025, we also entered into a Joint Pursuit Agreement with the defense-tech company to allow both parties to jointly develop and market certain defense-related vehicles and services in advance of closing the full TCEI acquisition.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "On March 31, 2025, we also entered into a Joint Pursuit Agreement with the defense-tech company to allow both parties to jointly develop and market certain defense-related vehicles and services in advance of closing the full TCEI acquisition."
+        },
+        {
+          "matched_phrase": "March 31, 2025",
+          "raw_start": 719162,
+          "raw_end": 720805,
+          "raw_sha256": "a41605c6886f9861db376c771fcb24a256968629bf7f046c91f7479b82235b55",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">As of December 31, 2024, we had cash and cash equivalents of $209,337 as compared to $2,148,700 as of December 31, 2023. Subsequent to December 31, 2024 through March 31, 2025, the Company received cash of $2.5 million, primarily from the Indigo Capital Convertible Notes and the Settlement, defined and described in Note 16 to the consolidated financial statements, and future liquidity may be provided from certain agreements executed subsequent to December 31, 2024, as further described in Note 16 to the consolidated financial statements. Our cash flows from operations are not sufficient to fund our current operating model and expansion plans. Beginning on the second anniversary of the Closing Date, the Company must also, under certain circumstances, redeem the maximum portion of the Preferred Stock as permitted by law in cash at an amount equal to the Original Issuance Price as of such date. Notwithstanding the foregoing, the Company is not be required to redeem any shares of Preferred Stock to the extent the Company does not have legally available funds to effect such redemption. As the Conversion Price of the Preferred Stock exceeded the VWAP on the January 31, 2025 Test Date, the Company became obligated to redeem the Preferred Stock beginning at that time and, as such, reclassified such Preferred Stock from mezzanine equity to a long-term liability on January 31, 2025.</span></p>",
+          "rendering": "As of December 31, 2024, we had cash and cash equivalents of $209,337 as compared to $2,148,700 as of December 31, 2023. Subsequent to December 31, 2024 through March 31, 2025, the Company received cash of $2.5 million, primarily from the Indigo Capital Convertible Notes and the Settlement, defined and described in Note 16 to the consolidated financial statements, and future liquidity may be provided from certain agreements executed subsequent to December 31, 2024, as further described in Note 16 to the consolidated financial statements. Our cash flows from operations are not sufficient to fund our current operating model and expansion plans. Beginning on the second anniversary of the Closing Date, the Company must also, under certain circumstances, redeem the maximum portion of the Preferred Stock as permitted by law in cash at an amount equal to the Original Issuance Price as of such date. Notwithstanding the foregoing, the Company is not be required to redeem any shares of Preferred Stock to the extent the Company does not have legally available funds to effect such redemption. As the Conversion Price of the Preferred Stock exceeded the VWAP on the January 31, 2025 Test Date, the Company became obligated to redeem the Preferred Stock beginning at that time and, as such, reclassified such Preferred Stock from mezzanine equity to a long-term liability on January 31, 2025."
+        },
+        {
+          "matched_phrase": "March 31, 2025",
+          "raw_start": 4027493,
+          "raw_end": 4028123,
+          "raw_sha256": "338f2b101ed8ca1d468181f135e293179876193ed37bcbc62e02c48cbb376e15",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:6pt;font-family:Times New Roman;margin-bottom:0;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">On March 31, 2025, we also entered into a Joint Pursuit Agreement with the defense-tech company to allow both parties to jointly develop and market certain defense-related vehicles and services in advance of closing the full TCEI acquisition.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "On March 31, 2025, we also entered into a Joint Pursuit Agreement with the defense-tech company to allow both parties to jointly develop and market certain defense-related vehicles and services in advance of closing the full TCEI acquisition."
+        }
+      ],
+      "query_diagnostics": [
+        {
+          "query": "internal control financial reporting material weakness",
+          "helper": "_query_relevant_excerpt(max_chars=600)",
+          "excerpt": "we carried out an evaluation, under the supervision and with the participation of our management, including our Executive Chairman, of the effectiveness of the design and operation of our disclosure controls and procedures, as of the end of the period covered by this Annual Report on Form 10-K. Based on this evaluation, we concluded that during the period covered by this report, our disclosure controls and procedures were not effective as of December 31, 2024, because of a material weakness in our internal control over financial reporting described below. Management’s Report on Internal",
+          "excerpt_sha256": "d12ff5538992e28ee33e5138078dcdedcc8468013909f32a1aa527a91982e4e5",
+          "bounded_excerpt": true,
+          "internal_verbatim_window": "th:fit-content;\">As required by Rules 13a-15 and 15d-15 under the Exchange Act, we carried out an evaluation, under the supervision and with the participation of our management, including our Exe",
+          "internal_verbatim_window_sha256": "73ebf339b4fd192f08234daea2737945107ebed5c9e9b799d17172454962a1c6",
+          "internal_raw_positions": [
+            856919
+          ],
+          "true_projection_origin_bindings": [
+            {
+              "projection_start": 185115,
+              "projection_end": 185708,
+              "raw_start": 856999,
+              "raw_end": 858389,
+              "raw_span_sha256": "8e459b449c01b60d03d4cbf313f7378c1f7fe48cbba7bff1c61c507dfb5fbcdb",
+              "projected_substring_equals_selected_excerpt": true
+            }
+          ],
+          "verbatim_window_is_true_projection_origin": false,
+          "author_visibility_limit": "Controller fetch action returns counts/titles and catalog cardinality; neither excerpt nor exact_span/raw anchor is emitted in model_view or catalog cards. These coordinates are audit-only, not a production answer."
+        },
+        {
+          "query": "controls procedures",
+          "helper": "_query_relevant_excerpt(max_chars=600)",
+          "excerpt": "DISCLOSURES ABOUT MARKET RISK 32 ITEM 8. FINANCIAL STATEMENTS AND SUPPLEMENTARY DATA 32 ITEM 9. CHANGES IN AND DISAGREEMENTS WITH ACCOUNTANTS ON ACCOUNTING AND FINANCIAL DISCLOSURE 32 ITEM 9A. CONTROLS AND PROCEDURES 33 ITEM 9B. OTHER INFORMATION 33 ITEM 9C. DISCLOSURE REGARDING FOREIGN JURISDICTION THAT PREVENT INSPECTIONS. 34 PART III 35 ITEM 10. DIRECTORS, EXECUTIVE OFFICERS AND CORPORATE GOVERNANCE 35 ITEM 11. EXECUTIVE COMPENSATION 35 ITEM 12. SECURITY OWNERSHIP OF CERTAIN BENEFICIAL OWNERS AND MANAGEMENT AND RELATED STOCKHOLDER MATTERS 35 ITEM 13. CERTAIN RELATIONSHIPS AND RELATED",
+          "excerpt_sha256": "bdbc9b313da7fcd6cb3a4d27b684c67ad82cd3ea8d4218ebeb0dad65b5d7a3c1",
+          "bounded_excerpt": true,
+          "internal_verbatim_window": "ne solid;font-kerning:none;min-width:fit-content;\">QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK</span></a></p></td>\n     <td style=\"padding-top:0in;vertical-align:top;padding-bottom:0",
+          "internal_verbatim_window_sha256": "2ccaf6bfa29737b72f5630fb41c312ab819c390a09421bc8f3ae76981d6d2316",
+          "internal_raw_positions": [
+            248511
+          ],
+          "true_projection_origin_bindings": [
+            {
+              "projection_start": 5150,
+              "projection_end": 5743,
+              "raw_start": 248591,
+              "raw_end": 261108,
+              "raw_span_sha256": "d07d4618c8281fe949dea2ce103448a8668af5725cf601013ec6824cacc3d9a3",
+              "projected_substring_equals_selected_excerpt": true
+            }
+          ],
+          "verbatim_window_is_true_projection_origin": false,
+          "author_visibility_limit": "Controller fetch action returns counts/titles and catalog cardinality; neither excerpt nor exact_span/raw anchor is emitted in model_view or catalog cards. These coordinates are audit-only, not a production answer."
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/2f968133d751e642e28a263f.json",
+            "sha256": "eb637118c681c8a3fed050d07fc7483b6643c40307f0e2a1afcc2a9a109c87c2"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025054321/buru-20241231.htm",
+          "retrieved_at": "2026-09-17T18:14:04.049688+00:00",
+          "full_body_equal": true
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/9df8a471af4b66825e96c892.json",
+            "sha256": "08880cb82948efe3131c7005fcc97bdf91fbd41f86d516292bed07a8f730ad30"
+          },
+          "endpoint": "https://data.sec.gov/submissions/CIK0001814215.json",
+          "retrieved_at": "2026-09-17T18:13:59.081437+00:00",
+          "exact_submission_row": {
+            "acceptanceDateTime": "2025-04-15T21:15:29.000Z",
+            "accessionNumber": "0000950170-25-054321",
+            "act": "34",
+            "core_type": "XBRL",
+            "fileNumber": "001-39489",
+            "filingDate": "2025-04-15",
+            "filmNumber": "25840538",
+            "form": "10-K",
+            "isInlineXBRL": 1,
+            "isXBRL": 1,
+            "isXBRLNumeric": null,
+            "items": "",
+            "primaryDocDescription": "10-K",
+            "primaryDocument": "buru-20241231.htm",
+            "reportDate": "2024-12-31",
+            "size": 18616153
+          }
+        }
+      ]
+    },
+    {
+      "source_number": 1507,
+      "source": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1507.json",
+        "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+      },
+      "metadata": {
+        "available_at": "2025-05-20T21:28:45+00:00",
+        "company_id": "cik_0001814215",
+        "content_hash": "5b637f54f99546efee5338e6cba61f225d77f5cbfc2fa4664b39e044c2aa1aae",
+        "document_id": "sec:cik_0001814215:000095017025075392",
+        "metadata": {
+          "accession_number": "0000950170-25-075392",
+          "cik": "0001814215",
+          "form": "10-Q",
+          "provider": "sec_edgar",
+          "source_url": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025075392/buru-20250331.htm"
+        },
+        "published_at": "2025-05-20T21:28:45+00:00",
+        "source_type": "filing"
+      },
+      "raw_chars": 2426365,
+      "visible_chars": 199440,
+      "all_matcher_sections": [
+        {
+          "section_id": "sec00",
+          "heading": "PART I &#8211; INTERIM FINANCIAL INFORMATION Cautio",
+          "raw_start": 188295,
+          "raw_end": 190468
+        },
+        {
+          "section_id": "sec01",
+          "heading": "Item 1. Unaudited Condensed Consolidated Financial Statements 5 &",
+          "raw_start": 192347,
+          "raw_end": 194547
+        },
+        {
+          "section_id": "sec02",
+          "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+          "raw_start": 205545,
+          "raw_end": 206034
+        },
+        {
+          "section_id": "sec03",
+          "heading": "Item 3. Quantitative and Qualitative Disclosures about Market Risk 37 &#",
+          "raw_start": 207860,
+          "raw_end": 209656
+        },
+        {
+          "section_id": "sec04",
+          "heading": "Item 4. Controls and Procedures 37 PART II &#8211; OTHER INFORMAT",
+          "raw_start": 210131,
+          "raw_end": 212399
+        },
+        {
+          "section_id": "sec05",
+          "heading": "Item 1. Legal Proceedings 37 Item 1A. Risk Factors 37 &#16",
+          "raw_start": 214204,
+          "raw_end": 217844
+        },
+        {
+          "section_id": "sec06",
+          "heading": "Item 2. Unregistered Sales of Equity Securities, Use of Proceeds, and Issuer Purchases",
+          "raw_start": 218631,
+          "raw_end": 219115
+        },
+        {
+          "section_id": "sec07",
+          "heading": "Item 3. Defaults Upon Senior Securities 38 Item 4. Mine Safety Di",
+          "raw_start": 220952,
+          "raw_end": 223615
+        },
+        {
+          "section_id": "sec08",
+          "heading": "Item 5. Other Information 38 Item 6. Exhibits 39 &#",
+          "raw_start": 225426,
+          "raw_end": 229357
+        },
+        {
+          "section_id": "sec09",
+          "heading": "Part II, Item 1A and elsewhere in this Quarterly Report. Should one or more of these ri",
+          "raw_start": 259053,
+          "raw_end": 259396
+        },
+        {
+          "section_id": "sec10",
+          "heading": "Item 1. Condensed Consolidate d Financial Statements NUBURU, INC. CONDENSED CONSOLIDA",
+          "raw_start": 262128,
+          "raw_end": 262943
+        },
+        {
+          "section_id": "sec11",
+          "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYS IS OF FINANCIAL CONDITION AND RESULTS",
+          "raw_start": 2014704,
+          "raw_end": 2015004
+        },
+        {
+          "section_id": "sec12",
+          "heading": "Item 1 of this Quarterly Report. Change in Fair Value of Warrant Liabilities Change in",
+          "raw_start": 2076829,
+          "raw_end": 2077444
+        },
+        {
+          "section_id": "sec13",
+          "heading": "Item 1 of this Quarterly Report for more information. Change in Fair Value of Derivati",
+          "raw_start": 2077810,
+          "raw_end": 2078178
+        },
+        {
+          "section_id": "sec14",
+          "heading": "Item 1 of this Quarterly Report for more information. Change in Fair Value of Debt Cha",
+          "raw_start": 2078876,
+          "raw_end": 2079491
+        },
+        {
+          "section_id": "sec15",
+          "heading": "Item 1 of this Quarterly Report for more information. Gain on Sale of Intellectual Pro",
+          "raw_start": 2080635,
+          "raw_end": 2081143
+        },
+        {
+          "section_id": "sec16",
+          "heading": "Item 3. Quantitative and Qualitati ve Disclosures About Market Risk We are a smaller r",
+          "raw_start": 2332118,
+          "raw_end": 2332620
+        },
+        {
+          "section_id": "sec17",
+          "heading": "Item 4. Controls a nd Procedures Disclosure controls are procedures that are designed",
+          "raw_start": 2333414,
+          "raw_end": 2334061
+        },
+        {
+          "section_id": "sec18",
+          "heading": "PART II - OTHER IN FORMATION Item 1. Legal Pr oceedings. The information under the capt",
+          "raw_start": 2339792,
+          "raw_end": 2340893
+        },
+        {
+          "section_id": "sec19",
+          "heading": "Item 1A. Risk F actors. In addition to the other information contained in this Quarterl",
+          "raw_start": 2343276,
+          "raw_end": 2343765
+        },
+        {
+          "section_id": "sec20",
+          "heading": "Part I, Item 1A. &#8220;Risk Factors&#8221; of our most recently filed Form 10-K, as a",
+          "raw_start": 2343875,
+          "raw_end": 2343961
+        },
+        {
+          "section_id": "sec21",
+          "heading": "Item 2. Unregistered Sales of Eq uity Securities, Use of Proceeds, and Issuer Purchase",
+          "raw_start": 2346374,
+          "raw_end": 2346615
+        },
+        {
+          "section_id": "sec22",
+          "heading": "Part I, Item 2 in this Quarterly Report on Form 10-Q, as well as share-based compensat",
+          "raw_start": 2347595,
+          "raw_end": 2347681
+        },
+        {
+          "section_id": "sec23",
+          "heading": "Item 3. Defaults Upo n Senior Securities. See Note 8, Notes and Convertible Notes Paya",
+          "raw_start": 2348585,
+          "raw_end": 2349230
+        },
+        {
+          "section_id": "sec24",
+          "heading": "Item 4. Mine Safe ty Disclosures. Not applicable. Item 5. Other Inf ormation. No t app",
+          "raw_start": 2349672,
+          "raw_end": 2351887
+        },
+        {
+          "section_id": "sec25",
+          "heading": "Item 6. Exhi bits The following exhibits are filed as part of, or incorporated by refe",
+          "raw_start": 2353519,
+          "raw_end": 2354044
+        },
+        {
+          "section_id": "sec26",
+          "heading": "Item 601(a)(5). The registrant agrees to furnish a copy of all omitted exhibits and sche",
+          "raw_start": 2414062,
+          "raw_end": 2414150
+        }
+      ],
+      "card": {
+        "document_id": "sec:cik_0001814215:000095017025075392",
+        "content_hash": "5b637f54f99546efee5338e6cba61f225d77f5cbfc2fa4664b39e044c2aa1aae",
+        "source_type": "filing",
+        "available_at": "2025-05-20T21:28:45+00:00",
+        "visible_chars": 199440,
+        "raw_chars": 2426365,
+        "readable_start": 140502,
+        "form_type": "10-Q",
+        "preview": "Table of Contents &#160; &#160; &#160; UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, DC 20549 &#160; FORM 10-Q &#160; (Mark O",
+        "sections": [
+          {
+            "section_id": "sec00",
+            "heading": "PART I &#8211; INTERIM FINANCIAL INFORMATION Cautio",
+            "raw_start": 188295,
+            "raw_end": 190468
+          },
+          {
+            "section_id": "sec01",
+            "heading": "Item 1. Unaudited Condensed Consolidated Financial Statements 5 &",
+            "raw_start": 192347,
+            "raw_end": 194547
+          },
+          {
+            "section_id": "sec02",
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_start": 205545,
+            "raw_end": 206034
+          },
+          {
+            "section_id": "sec03",
+            "heading": "Item 3. Quantitative and Qualitative Disclosures about Market Risk 37 &#",
+            "raw_start": 207860,
+            "raw_end": 209656
+          },
+          {
+            "section_id": "sec04",
+            "heading": "Item 4. Controls and Procedures 37 PART II &#8211; OTHER INFORMAT",
+            "raw_start": 210131,
+            "raw_end": 212399
+          },
+          {
+            "section_id": "sec05",
+            "heading": "Item 1. Legal Proceedings 37 Item 1A. Risk Factors 37 &#16",
+            "raw_start": 214204,
+            "raw_end": 217844
+          },
+          {
+            "section_id": "sec06",
+            "heading": "Item 2. Unregistered Sales of Equity Securities, Use of Proceeds, and Issuer Purchases",
+            "raw_start": 218631,
+            "raw_end": 219115
+          },
+          {
+            "section_id": "sec07",
+            "heading": "Item 3. Defaults Upon Senior Securities 38 Item 4. Mine Safety Di",
+            "raw_start": 220952,
+            "raw_end": 223615
+          },
+          {
+            "section_id": "sec08",
+            "heading": "Item 5. Other Information 38 Item 6. Exhibits 39 &#",
+            "raw_start": 225426,
+            "raw_end": 229357
+          },
+          {
+            "section_id": "sec09",
+            "heading": "Part II, Item 1A and elsewhere in this Quarterly Report. Should one or more of these ri",
+            "raw_start": 259053,
+            "raw_end": 259396
+          },
+          {
+            "section_id": "sec10",
+            "heading": "Item 1. Condensed Consolidate d Financial Statements NUBURU, INC. CONDENSED CONSOLIDA",
+            "raw_start": 262128,
+            "raw_end": 262943
+          },
+          {
+            "section_id": "sec11",
+            "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYS IS OF FINANCIAL CONDITION AND RESULTS",
+            "raw_start": 2014704,
+            "raw_end": 2015004
+          },
+          {
+            "section_id": "sec12",
+            "heading": "Item 1 of this Quarterly Report. Change in Fair Value of Warrant Liabilities Change in",
+            "raw_start": 2076829,
+            "raw_end": 2077444
+          },
+          {
+            "section_id": "sec13",
+            "heading": "Item 1 of this Quarterly Report for more information. Change in Fair Value of Derivati",
+            "raw_start": 2077810,
+            "raw_end": 2078178
+          },
+          {
+            "section_id": "sec14",
+            "heading": "Item 1 of this Quarterly Report for more information. Change in Fair Value of Debt Cha",
+            "raw_start": 2078876,
+            "raw_end": 2079491
+          },
+          {
+            "section_id": "sec15",
+            "heading": "Item 1 of this Quarterly Report for more information. Gain on Sale of Intellectual Pro",
+            "raw_start": 2080635,
+            "raw_end": 2081143
+          },
+          {
+            "section_id": "sec16",
+            "heading": "Item 3. Quantitative and Qualitati ve Disclosures About Market Risk We are a smaller r",
+            "raw_start": 2332118,
+            "raw_end": 2332620
+          },
+          {
+            "section_id": "sec17",
+            "heading": "Item 4. Controls a nd Procedures Disclosure controls are procedures that are designed",
+            "raw_start": 2333414,
+            "raw_end": 2334061
+          },
+          {
+            "section_id": "sec18",
+            "heading": "PART II - OTHER IN FORMATION Item 1. Legal Pr oceedings. The information under the capt",
+            "raw_start": 2339792,
+            "raw_end": 2340893
+          },
+          {
+            "section_id": "sec19",
+            "heading": "Item 1A. Risk F actors. In addition to the other information contained in this Quarterl",
+            "raw_start": 2343276,
+            "raw_end": 2343765
+          },
+          {
+            "section_id": "sec20",
+            "heading": "Part I, Item 1A. &#8220;Risk Factors&#8221; of our most recently filed Form 10-K, as a",
+            "raw_start": 2343875,
+            "raw_end": 2343961
+          },
+          {
+            "section_id": "sec21",
+            "heading": "Item 2. Unregistered Sales of Eq uity Securities, Use of Proceeds, and Issuer Purchase",
+            "raw_start": 2346374,
+            "raw_end": 2346615
+          },
+          {
+            "section_id": "sec22",
+            "heading": "Part I, Item 2 in this Quarterly Report on Form 10-Q, as well as share-based compensat",
+            "raw_start": 2347595,
+            "raw_end": 2347681
+          },
+          {
+            "section_id": "sec23",
+            "heading": "Item 3. Defaults Upo n Senior Securities. See Note 8, Notes and Convertible Notes Paya",
+            "raw_start": 2348585,
+            "raw_end": 2349230
+          }
+        ],
+        "section_count": 27
+      },
+      "raw_anchors": [
+        {
+          "matched_phrase": "internal control over financial reporting was not effective",
+          "raw_start": 2334869,
+          "raw_end": 2336241,
+          "raw_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 2334869,
+          "raw_end": 2336241,
+          "raw_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 2334869,
+          "raw_end": 2336241,
+          "raw_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "material weakness",
+          "raw_start": 2336241,
+          "raw_end": 2337349,
+          "raw_sha256": "20b24be5b4d41556083f607e9d373cefea703a4906568fa97a679f986175618c",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+          "rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner."
+        },
+        {
+          "matched_phrase": "have not been able to remediate",
+          "raw_start": 2336241,
+          "raw_end": 2337349,
+          "raw_sha256": "20b24be5b4d41556083f607e9d373cefea703a4906568fa97a679f986175618c",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+          "rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner."
+        },
+        {
+          "matched_phrase": "March 31, 2025",
+          "raw_start": 2328831,
+          "raw_end": 2329474,
+          "raw_sha256": "8b4b9f7d387d4f764b71614598037e6367902e75cd0d77309cecbaa3e6cd900a",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">There have been no significant changes to our accounting policies during the three months ended March 31, 2025, as compared to the critical accounting policies described in our audited financial statements included in the Annual Report (as defined above).</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "There have been no significant changes to our accounting policies during the three months ended March 31, 2025, as compared to the critical accounting policies described in our audited financial statements included in the Annual Report (as defined above)."
+        },
+        {
+          "matched_phrase": "March 31, 2025",
+          "raw_start": 2334869,
+          "raw_end": 2336241,
+          "raw_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+          "rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis."
+        },
+        {
+          "matched_phrase": "March 31, 2025",
+          "raw_start": 2341084,
+          "raw_end": 2342008,
+          "raw_sha256": "7bde21531633c111ee45b2df3f991479827aeb98e47458cca4c8796f9e91670b",
+          "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">In the normal course of business, the Company may become involved in legal proceedings. The Company will accrue a liability for legal proceedings when it is probable that a liability has been incurred and the amount can be reasonably estimated. Significant judgment is required to determine both probability and the estimated amount. When only a range of possible loss can be established, the most probable amount in the range is accrued. If no amount within this range is a better estimate than any other amount within the range, the minimum amount in the range is accrued. At March 31, 2025, the Company was subject to legal proceedings as described in further detail below.</span></p>",
+          "rendering": "In the normal course of business, the Company may become involved in legal proceedings. The Company will accrue a liability for legal proceedings when it is probable that a liability has been incurred and the amount can be reasonably estimated. Significant judgment is required to determine both probability and the estimated amount. When only a range of possible loss can be established, the most probable amount in the range is accrued. If no amount within this range is a better estimate than any other amount within the range, the minimum amount in the range is accrued. At March 31, 2025, the Company was subject to legal proceedings as described in further detail below."
+        }
+      ],
+      "query_diagnostics": [
+        {
+          "query": "internal control financial reporting material weakness",
+          "helper": "_query_relevant_excerpt(max_chars=600)",
+          "excerpt": "of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness",
+          "excerpt_sha256": "34465241b72820adf9028e1debeec58d66ddb93a1a523b2a5a2bfa279bd16d42",
+          "bounded_excerpt": true,
+          "internal_verbatim_window": "on of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the E",
+          "internal_verbatim_window_sha256": "1b0b1625d472e21a48e97d626bcfe47625c40aeb11e0d7297eefdc964b805a66",
+          "internal_raw_positions": [
+            2335288
+          ],
+          "true_projection_origin_bindings": [
+            {
+              "projection_start": 167624,
+              "projection_end": 168219,
+              "raw_start": 2335368,
+              "raw_end": 2335964,
+              "raw_span_sha256": "b8881daa97cfdef021992841f734877fbc6da2aaa372e5d815b81572f40ddb4a",
+              "projected_substring_equals_selected_excerpt": true
+            }
+          ],
+          "verbatim_window_is_true_projection_origin": false,
+          "author_visibility_limit": "Controller fetch action returns counts/titles and catalog cardinality; neither excerpt nor exact_span/raw anchor is emitted in model_view or catalog cards. These coordinates are audit-only, not a production answer."
+        },
+        {
+          "query": "controls procedures",
+          "helper": "_query_relevant_excerpt(max_chars=600)",
+          "excerpt": "Financial Statements 9 Item 2. Management’s Discussion and Analysis of Financial Condition and Results of Operations 28 Item 3. Quantitative and Qualitative Disclosures about Market Risk 37 Item 4. Controls and Procedures 37 PART II – OTHER INFORMATION 37 Item 1. Legal Proceedings 37 Item 1A. Risk Factors 37 Item 2. Unregistered Sales of Equity Securities, Use of Proceeds, and Issuer Purchases of Equity Securities 38 Item 3. Defaults Upon Senior Securities 38 Item 4. Mine Safety Disclosures 38 Item 5. Other Information 38 Item 6. Exhibits 39 SIGNATURES 40 Table of Contents CAUTIONARY NOTE",
+          "excerpt_sha256": "64703994c00321450394243421c5905ec6a31cfea86f3e919cce9d3608a9deb7",
+          "bounded_excerpt": true,
+          "internal_verbatim_window": "our liquidity and cash flow, see section &#8220;Notes to Condensed Consolidated Financial Statements &#8211; Note 6 &#8211; Commitments and Contingencies&#8221; in the condensed consolidated financial st",
+          "internal_verbatim_window_sha256": "c0c2cd50b46d4257de29b6f8277749f7762872cf87d97e356a6f232ac48c6299",
+          "internal_raw_positions": [
+            2327579
+          ],
+          "true_projection_origin_bindings": [
+            {
+              "projection_start": 3098,
+              "projection_end": 3693,
+              "raw_start": 203708,
+              "raw_end": 232486,
+              "raw_span_sha256": "1bd2dc168a4934336c8231eb277399529874d726c7e208308f41d36b641b6e0c",
+              "projected_substring_equals_selected_excerpt": true
+            }
+          ],
+          "verbatim_window_is_true_projection_origin": false,
+          "author_visibility_limit": "Controller fetch action returns counts/titles and catalog cardinality; neither excerpt nor exact_span/raw anchor is emitted in model_view or catalog cards. These coordinates are audit-only, not a production answer."
+        }
+      ],
+      "provenance": [
+        {
+          "kind": "sec_static_archive_body",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/aa6694a9f36b8ecda1769138.json",
+            "sha256": "e47c845664c126e1cdf6149c06183abd72f657551138bbec8e05482538669d05"
+          },
+          "endpoint": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025075392/buru-20250331.htm",
+          "retrieved_at": "2026-09-17T18:14:00.327281+00:00",
+          "full_body_equal": true
+        },
+        {
+          "kind": "sec_submissions_acceptance",
+          "artifact": {
+            "path": "/Users/l/Project/Recommandation/runs/cold_start/evolution/information-evolution-slow-self-evolution-20260917-v97/cache/data/sec_edgar/filing_documents/9df8a471af4b66825e96c892.json",
+            "sha256": "08880cb82948efe3131c7005fcc97bdf91fbd41f86d516292bed07a8f730ad30"
+          },
+          "endpoint": "https://data.sec.gov/submissions/CIK0001814215.json",
+          "retrieved_at": "2026-09-17T18:13:59.081437+00:00",
+          "exact_submission_row": {
+            "acceptanceDateTime": "2025-05-20T21:28:45.000Z",
+            "accessionNumber": "0000950170-25-075392",
+            "act": "34",
+            "core_type": "XBRL",
+            "fileNumber": "001-39489",
+            "filingDate": "2025-05-20",
+            "filmNumber": "25970140",
+            "form": "10-Q",
+            "isInlineXBRL": 1,
+            "isXBRL": 1,
+            "isXBRLNumeric": null,
+            "items": "",
+            "primaryDocDescription": "10-Q",
+            "primaryDocument": "buru-20250331.htm",
+            "reportDate": "2025-03-31",
+            "size": 14624558
+          }
+        }
+      ]
+    }
+  ],
+  "code_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "86af38cbea304799b2974b631c11dcba07266f9033bd331fa155246394a54617"
+    }
+  ],
+  "protected_inputs": {
+    "before_file": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/source-navigation-boundary/protected-inputs-before.json",
+      "sha256": "b773c6881d0b797728c2227f1fa446f7ae72b6820a6cc5a87f1c705bd3406c1a"
+    },
+    "files": 1444,
+    "all_bytes_unchanged": true,
+    "code_files": 182,
+    "authorized_source_documents": 263
+  },
+  "scope": {
+    "external_api_network_get": 0,
+    "new_model_answers": 0,
+    "stage_advance_reentry": 0,
+    "production_changes": 0,
+    "cost_recalculation": "Not performed; separate reviewer owns exact cost."
+  }
+}

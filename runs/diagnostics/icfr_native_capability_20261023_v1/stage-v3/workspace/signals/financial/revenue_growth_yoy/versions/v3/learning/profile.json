@@ -1,0 +1,73 @@
+{
+  "confidence": "repeated",
+  "directional": {
+    "correct": 4,
+    "unavailable": 1,
+    "unavailable_with_inputs": 1,
+    "unavailable_without_inputs": 0,
+    "wrong": 0
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [
+    {
+      "context_tag": "large_cap",
+      "issuers": 8,
+      "observations": 8,
+      "positive_surge_rate": 1.0
+    },
+    {
+      "context_tag": "catalyst_window",
+      "issuers": 3,
+      "observations": 3,
+      "positive_surge_rate": 1.0
+    },
+    {
+      "context_tag": "mid_cap",
+      "issuers": 2,
+      "observations": 2,
+      "positive_surge_rate": null
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 0,
+    "misleading": 1,
+    "other": 2
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 12,
+  "selection_reason_codes": [
+    {
+      "count": 6,
+      "reason_code": "assess_applicability"
+    },
+    {
+      "count": 5,
+      "reason_code": "combine_evidence"
+    },
+    {
+      "count": 1,
+      "reason_code": "answer_need"
+    }
+  ],
+  "signal_ref": "revenue_growth_yoy:v3",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 1,
+      "surge": 0
+    },
+    "neutral": {
+      "non_surge": 3,
+      "surge": 2
+    },
+    "positive": {
+      "non_surge": 0,
+      "surge": 3
+    },
+    "unavailable": {
+      "non_surge": 1,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 10,
+  "unique_observations": 10
+}

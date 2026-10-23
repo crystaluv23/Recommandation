@@ -1,0 +1,199 @@
+{
+  "denominator_complete_cost": 264980,
+  "payload_encoded_content_bytes": 244902,
+  "all_31_top_level_fields": [
+    {
+      "field": "known_fact_refs",
+      "escaped_wire_bytes_including_key_and_value": 74875,
+      "percent_of_complete_cost": 28.2568,
+      "percent_of_payload_encoded_content": 30.5735
+    },
+    {
+      "field": "known_relation_refs",
+      "escaped_wire_bytes_including_key_and_value": 40285,
+      "percent_of_complete_cost": 15.203,
+      "percent_of_payload_encoded_content": 16.4494
+    },
+    {
+      "field": "catalog_observations",
+      "escaped_wire_bytes_including_key_and_value": 27221,
+      "percent_of_complete_cost": 10.2729,
+      "percent_of_payload_encoded_content": 11.1151
+    },
+    {
+      "field": "slow_method_memory",
+      "escaped_wire_bytes_including_key_and_value": 23500,
+      "percent_of_complete_cost": 8.8686,
+      "percent_of_payload_encoded_content": 9.5957
+    },
+    {
+      "field": "narrative_read_evidence",
+      "escaped_wire_bytes_including_key_and_value": 13917,
+      "percent_of_complete_cost": 5.2521,
+      "percent_of_payload_encoded_content": 5.6827
+    },
+    {
+      "field": "evidence_digest",
+      "escaped_wire_bytes_including_key_and_value": 12107,
+      "percent_of_complete_cost": 4.569,
+      "percent_of_payload_encoded_content": 4.9436
+    },
+    {
+      "field": "meta_memory_disclosures",
+      "escaped_wire_bytes_including_key_and_value": 11193,
+      "percent_of_complete_cost": 4.2241,
+      "percent_of_payload_encoded_content": 4.5704
+    },
+    {
+      "field": "meta_info",
+      "escaped_wire_bytes_including_key_and_value": 9428,
+      "percent_of_complete_cost": 3.558,
+      "percent_of_payload_encoded_content": 3.8497
+    },
+    {
+      "field": "signal_catalog",
+      "escaped_wire_bytes_including_key_and_value": 8674,
+      "percent_of_complete_cost": 3.2735,
+      "percent_of_payload_encoded_content": 3.5418
+    },
+    {
+      "field": "backlog_needs",
+      "escaped_wire_bytes_including_key_and_value": 7477,
+      "percent_of_complete_cost": 2.8217,
+      "percent_of_payload_encoded_content": 3.0531
+    },
+    {
+      "field": "measurable_evidence_manifest",
+      "escaped_wire_bytes_including_key_and_value": 5696,
+      "percent_of_complete_cost": 2.1496,
+      "percent_of_payload_encoded_content": 2.3258
+    },
+    {
+      "field": "last_action_result",
+      "escaped_wire_bytes_including_key_and_value": 3455,
+      "percent_of_complete_cost": 1.3039,
+      "percent_of_payload_encoded_content": 1.4108
+    },
+    {
+      "field": "narrative_read_progress",
+      "escaped_wire_bytes_including_key_and_value": 2170,
+      "percent_of_complete_cost": 0.8189,
+      "percent_of_payload_encoded_content": 0.8861
+    },
+    {
+      "field": "tool_contracts",
+      "escaped_wire_bytes_including_key_and_value": 859,
+      "percent_of_complete_cost": 0.3242,
+      "percent_of_payload_encoded_content": 0.3508
+    },
+    {
+      "field": "need_disposition_contract",
+      "escaped_wire_bytes_including_key_and_value": 852,
+      "percent_of_complete_cost": 0.3215,
+      "percent_of_payload_encoded_content": 0.3479
+    },
+    {
+      "field": "backlog_disclosure",
+      "escaped_wire_bytes_including_key_and_value": 446,
+      "percent_of_complete_cost": 0.1683,
+      "percent_of_payload_encoded_content": 0.1821
+    },
+    {
+      "field": "known_event_refs",
+      "escaped_wire_bytes_including_key_and_value": 400,
+      "percent_of_complete_cost": 0.151,
+      "percent_of_payload_encoded_content": 0.1633
+    },
+    {
+      "field": "case_prediction_times",
+      "escaped_wire_bytes_including_key_and_value": 371,
+      "percent_of_complete_cost": 0.14,
+      "percent_of_payload_encoded_content": 0.1515
+    },
+    {
+      "field": "signal_catalog_disclosure",
+      "escaped_wire_bytes_including_key_and_value": 335,
+      "percent_of_complete_cost": 0.1264,
+      "percent_of_payload_encoded_content": 0.1368
+    },
+    {
+      "field": "request_budget",
+      "escaped_wire_bytes_including_key_and_value": 292,
+      "percent_of_complete_cost": 0.1102,
+      "percent_of_payload_encoded_content": 0.1192
+    },
+    {
+      "field": "label_map",
+      "escaped_wire_bytes_including_key_and_value": 219,
+      "percent_of_complete_cost": 0.0826,
+      "percent_of_payload_encoded_content": 0.0894
+    },
+    {
+      "field": "available_actions",
+      "escaped_wire_bytes_including_key_and_value": 210,
+      "percent_of_complete_cost": 0.0793,
+      "percent_of_payload_encoded_content": 0.0857
+    },
+    {
+      "field": "research_axis",
+      "escaped_wire_bytes_including_key_and_value": 185,
+      "percent_of_complete_cost": 0.0698,
+      "percent_of_payload_encoded_content": 0.0755
+    },
+    {
+      "field": "modality_coverage",
+      "escaped_wire_bytes_including_key_and_value": 178,
+      "percent_of_complete_cost": 0.0672,
+      "percent_of_payload_encoded_content": 0.0727
+    },
+    {
+      "field": "available_source_families",
+      "escaped_wire_bytes_including_key_and_value": 129,
+      "percent_of_complete_cost": 0.0487,
+      "percent_of_payload_encoded_content": 0.0527
+    },
+    {
+      "field": "case_refs",
+      "escaped_wire_bytes_including_key_and_value": 119,
+      "percent_of_complete_cost": 0.0449,
+      "percent_of_payload_encoded_content": 0.0486
+    },
+    {
+      "field": "memory_consumption",
+      "escaped_wire_bytes_including_key_and_value": 113,
+      "percent_of_complete_cost": 0.0426,
+      "percent_of_payload_encoded_content": 0.0461
+    },
+    {
+      "field": "budget",
+      "escaped_wire_bytes_including_key_and_value": 81,
+      "percent_of_complete_cost": 0.0306,
+      "percent_of_payload_encoded_content": 0.0331
+    },
+    {
+      "field": "prior_modality_footprints",
+      "escaped_wire_bytes_including_key_and_value": 32,
+      "percent_of_complete_cost": 0.0121,
+      "percent_of_payload_encoded_content": 0.0131
+    },
+    {
+      "field": "state",
+      "escaped_wire_bytes_including_key_and_value": 28,
+      "percent_of_complete_cost": 0.0106,
+      "percent_of_payload_encoded_content": 0.0114
+    },
+    {
+      "field": "seed",
+      "escaped_wire_bytes_including_key_and_value": 23,
+      "percent_of_complete_cost": 0.0087,
+      "percent_of_payload_encoded_content": 0.0094
+    }
+  ],
+  "non_field_parts": {
+    "payload_braces_and_commas": 32,
+    "system_content_escaped_bytes": 16017,
+    "message_envelope_bytes": 61,
+    "output_reservation": 4000
+  },
+  "additive_exact": true
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": "private-navigation-boundary-findings-v1",
+  "private_audit_only": true,
+  "structural_findings": [
+    {
+      "id": "N1",
+      "verdict": "confirmed",
+      "claim": "document_card hard-truncates the matcher index to first24; annual actual Item9A is matcher sec34, so it has no supplied section raw locator in exact h009/h010."
+    },
+    {
+      "id": "N2",
+      "verdict": "confirmed",
+      "claim": "section_count43 is only cardinality; next_cursor3 pages documents, not the 19 omitted sections. read_span has raw offset/length but no section or search selector."
+    },
+    {
+      "id": "N3",
+      "verdict": "confirmed",
+      "claim": "fetch_case_evidence computes query-relevant excerpt and projection helper has exact raw origin runs, but _execute_fetch model response/catalog omit both excerpt and raw hint."
+    },
+    {
+      "id": "N4",
+      "verdict": "confirmed_counterexample",
+      "claim": "_verbatim_window leading-token heuristic can anchor a repeated TOC excerpt at a distant later occurrence; use true projection origin, never heuristic prefix-find as authoritative locator."
+    },
+    {
+      "id": "N5",
+      "verdict": "bounded_not_absolute",
+      "claim": "Relevant source body exists and is PIT-bound locally. Neither raw arbitrary-offset readability nor source existence proves the model can locate it under the actual disclosed navigation."
+    }
+  ],
+  "actual_author_actions": [
+    {
+      "name": "h009",
+      "file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/d1d559b9507c05367c0689a1059d748023d7bd542e7cfd4c684b8ab9f585b649.txt",
+        "sha256": "e8959647f083c911c1e116db7f86487724708e75c6ae04ca397f644b673b349f"
+      },
+      "actual_action": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "offset": 377224,
+        "length": 4000,
+        "rationale": [
+          "The read positive case-003 and control case-002 disclose effective disclosure controls and no material ICFR changes; these alone do not establish a distinguishing ICFR measurement.",
+          "Read the newly located positive case-005 annual-report risk section at its disclosed body coordinate to investigate a different ICFR disclosure, retaining unknowns for unread sections and cases."
+        ]
+      }
+    },
+    {
+      "name": "h010",
+      "file": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/exchange/outbox/6ddf18ff80a95cceb9c9d5b65e46b82fceadd76f55d05938e3006b7fa5faf597.txt",
+        "sha256": "bc3de99092d555887f98403bded2ebf0abd05332807bc089e0a8d12ca4f164d4"
+      },
+      "actual_action": {
+        "action": "read_span",
+        "document_ref": "document-sec:[ANON_ID_0000]:000095017025054321",
+        "offset": 381224,
+        "length": 4000,
+        "rationale": [
+          "The retained case-005 risk-factor window discusses losses and going-concern risk; it does not establish an ICFR weakness or its absence.",
+          "Continue at its supplied next_readable_start to inspect fresh source text while preserving the effective-controls and no-material-change counterevidence from case-003 and case-002."
+        ]
+      }
+    }
+  ],
+  "causal_limits": [
+    "Actor chose a supplied real Risk Factors heading and explicitly withheld an ICFR conclusion; this is not evidence of a semantic false claim.",
+    "A missing relevant supplied locator is a structural defect, but this audit does not prove a repaired model would select the right next action or succeed within complete request ceilings.",
+    "Single-request budget closure is a distinct cause owned by the independent cost review; no exact request-cost calculation here.",
+    "Do not reenter sealed v3 or dispatch h011; options are unimplemented and do not authorize v4."
+  ],
+  "preferred_option": {
+    "name": "Preserve native query-selection raw navigation hints in existing fetch response",
+    "new_tool": false,
+    "budget_reallocation": false,
+    "budget_policy": "existing heavy fetch(query), existing browse read_span; no larger ceilings, no free source read or candidate evidence credit",
+    "example_calls": [
+      {
+        "action": "fetch_evidence",
+        "case_refs": [
+          "case-005"
+        ],
+        "source_families": [
+          "filing"
+        ],
+        "max_documents": 3,
+        "query": "internal control financial reporting material weakness"
+      },
+      {
+        "action": "read_span",
+        "document_ref": "<runtime-issued hint.document_ref>",
+        "offset": "<runtime-issued hint.raw_start>",
+        "length": 4000
+      }
+    ],
+    "proposed_result_fields": {
+      "navigation_hints": [
+        {
+          "document_ref": "<runtime-issued>",
+          "content_hash": "<original content hash>",
+          "case_refs": [
+            "<actually fetched case>"
+          ],
+          "source_type": "filing",
+          "published_at": "<source clock>",
+          "available_at": "<source clock>",
+          "query": "<actual submitted query>",
+          "projection_version": "<exact projection matcher version>",
+          "raw_start": "<actual selected projection origin>",
+          "raw_end": "<actual selected projection origin>",
+          "raw_span_sha256": "<exact original raw window hash>",
+          "discovery_only": true,
+          "source_read_completed": false,
+          "candidate_citable": false,
+          "selection_is_exhaustive": false
+        }
+      ],
+      "navigation_disclosure": {
+        "selection": "bounded source-owned query window; lexical relevance only",
+        "omitted": "explicit accurate count if known, otherwise unknown",
+        "next_step": "ordinary charged read_span"
+      }
+    },
+    "lineage_requirements": [
+      "Derive origin from exact selected projection window and existing raw_offset_runs; never find a repeated rendered prefix in raw HTML.",
+      "Preserve native identity masking, doc/content hash, case/cutoff and source clocks.",
+      "Hints are navigation metadata; do not enter executed reads, materialization_evidence or semantic candidate support before actual read.",
+      "Keep whole hints or explicit omission/resource refusal under existing complete request ceilings; no cropping or hidden allowance.",
+      "Broad query may select TOC; no completeness/absence or ICFR conclusion follows. Existing source-bound query refinement and ordinary reads remain possible."
+    ],
+    "sufficiency": "Resolves late-index locator loss for a known relevant query without opening scope=evidence at light0. It does not make the matcher exhaustive or guarantee semantic relevance; full section enumeration remains separately useful."
+  },
+  "alternative_options": [
+    {
+      "name": "Nested section pagination on existing evidence catalog",
+      "example": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "document_ref": "<already fetched document>",
+        "section_cursor": 24
+      },
+      "tradeoff": "New optional interface arguments and shared document/hash-bound section pagination; still existing light charge, so inaccessible at light0. More light is not authorized and not proposed."
+    },
+    {
+      "name": "TOC/cross-reference structural annotations/ranking",
+      "tradeoff": "Advisory metadata only, preserving unknown and original match offsets. No simple regex can guarantee semantic headings; never delete all uncertain matches or count heading presence as source evidence."
+    }
+  ],
+  "implementation_boundary": "No implementation authorized in this diagnostic. Owning spec/interface and representative controls would be changed only in a separately authorized repair; existing instruction already permits source query/read diagnostics, so no assumed new user approval gate for these options.",
+  "required_counterexamples": [
+    "TOC and body both Item9A with real body beyond first24.",
+    "Repeated prefix produces wrong _verbatim_window raw match.",
+    "Broad controls/procedures query legitimately selects TOC; cannot become actual assessment.",
+    "Entity/markup/Unicode projection maps exact raw coordinates and full-window hash.",
+    "Post-cutoff or wrong-case source hint refused; shared document does not grant another case event.",
+    "No query/no matches/omitted hints preserves bounded unknown, not semantic absence.",
+    "Directory document cursor and section cursor are not interchangeable.",
+    "Hint-only candidate citation rejected until actual readable source window executed.",
+    "Per-request overflow stays resource control-flow failure; never trim unit or relabel no-pattern."
+  ],
+  "sources_and_qualification": "Source1506 assessment as of2024-12-31, accepted2025-04-15; source1507 quarter ended2025-03-31, accepted2025-05-20. Both pre-case cutoff2025-05-30, exact local cache/submission/body support, not contemporaneous independent remote attestation.",
+  "protected_inputs": {
+    "before_file": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/source-navigation-boundary/protected-inputs-before.json",
+      "sha256": "b773c6881d0b797728c2227f1fa446f7ae72b6820a6cc5a87f1c705bd3406c1a"
+    },
+    "files": 1444,
+    "all_bytes_unchanged": true,
+    "code_files": 182,
+    "authorized_source_documents": 263
+  },
+  "external_api_network_get": 0,
+  "production_changes": 0,
+  "stage_reentry": 0,
+  "quarterly_known_ref_boundary": {
+    "source_number": 1507,
+    "audit_derived_event_ref": "event-744536812ddcbc30",
+    "present_in_h009_known_event_refs": true,
+    "present_in_h010_known_event_refs": true,
+    "source_accession_or_document_card_in_h009_h010": false,
+    "meaning": "Quarterly is fetched, but the supplied opaque event handle lacks its case/document/section mapping until additional catalog/read navigation. A known opaque handle is not a supplied relevant body anchor."
+  }
+}

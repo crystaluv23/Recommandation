@@ -1942,10 +1942,28 @@
         "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/equivalence-evidence.json"
       ],
       "result": "Actual frozen98147 v2 uses11fresh first answers/0corrections/1837419 logical reservations, externalAPI/network0. Independent actual h007/h008 A/B and h009 A/B/C source bodies preserved with faithful limited DCP-vs-ICFR distinction, not candidate/efficiency proof. Catalog pages/sections/cursors still vanish after read: h007 recovers cursor0 consuming lastlight; only2of14 cards seen; h010/h011 legitimately follow cover next-readable coordinates. Parent stops at unassigned h012, preserves323stagefiles/182runtimearchive/11receipts; pending not terminal, no-pattern or budget-exhaustion. Candidate1uncompleted/consumer4unattempted and oldv1 unchanged. General four-scope whole-response working-context repair under implementation, then unchanged-criteria new-code evaluation needed. Spec-first actual four-scope whole-response view8/32KB and ledger-derived compute page12/8KB now locally fixed; read/compute preserves directory cursors while changed source population marks historical; only current visible matching pending needs gain disposition authority. Postfetch computed snapshot invalidated and candidate citations typed-rejected until ordinary recompute, historical ordered locators retained. Final470 associated tests pass/stable hashes/network0; independent8 groups first5pass/3harness corrections preserved, only3supplement pass at unchanged product hashes. Neworacle15 protected original fields deep-equal across three revisions, allresource/nativephases unchanged; both stopped pendingprogress exactbindings added without rewriting oldmaps. Fresh new-code navigation/candidate/admission/consumption still required."
+    },
+    {
+      "id": "native-icfr-catalog-context-v3-20261023",
+      "strategy": "same_population_native_icfr_candidate_chain_v3_with_retained_catalog_context",
+      "failure_families": [
+        "whole_native_request_growth_under_broad_fetch",
+        "late_filing_section_addressability_under_bounded_catalog"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/mining-catalog-working-context-20261023.md",
+        "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+        "runs/diagnostics/mining_catalog_working_context_20261023_v1/actual-deployment/report.md",
+        "runs/diagnostics/mining_catalog_working_context_20261023_v1/terminal-runtime-binding.json",
+        "runs/diagnostics/mining_catalog_working_context_20261023_v1/terminal-boundary/report.md",
+        "runs/diagnostics/mining_catalog_working_context_20261023_v1/source-navigation-boundary/report.md"
+      ],
+      "result": "Frozen9ae48904 actual v3 has10fresh first answers/0corrections/2055941 logical reservations; externalAPI/network/newbusinesslabels0. Independent fixed7answers+h008input verify18cards, two-source three complete windows, original source directory/sections/cursor retained; h007 directly reads C and h008 light1, not causal efficiency or full candidate proof. h008 naturally uses nextcursor2; h009/h010 read case005 annual risk text, preserve losses/goingconcern vs unestablished ICFR. Next native request blocked before prepare by MiningRequestBudgetExhausted, sealed terminal_resource_or_control_stop, no11thinbox/answer/receipt. Candidate1uncompleted/0passed, consumer4unattempted.182source archive readbacksame. Independent readonly native replay matches all10 actual wires/hash and next264980 exceeds originalsingle262144 by2836; aggregate10526971 remains and calls10of80. Known fact/relation handles contribute115160/43.4599percent. Source audit verifies43matcherhits/24disclosed, actuallateItem9A omitted, documentcursor notsectioncursor, truequeryorigin discarded and oldapproximatefind canmisanchorTOC. No newanswer/semanticclosure/newtarget/capsreset."
     }
   ],
   "review": {
-    "after_iteration": "mining-catalog-working-context-20261023",
+    "after_iteration": "native-icfr-catalog-context-v3-20261023",
     "evidence": [
       "reports/icfr-source-and-native-path-preflight-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
@@ -1969,7 +1987,13 @@
       "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
       "runs/diagnostics/mining_catalog_working_context_20261023_v1/associated-test-bindings-final.json",
       "runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/review.md",
-      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/equivalence-evidence.json"
+      "runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/equivalence-evidence.json",
+      "reports/mining-catalog-working-context-20261023.md",
+      "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3/completion.json",
+      "runs/diagnostics/mining_catalog_working_context_20261023_v1/actual-deployment/report.md",
+      "runs/diagnostics/mining_catalog_working_context_20261023_v1/terminal-runtime-binding.json",
+      "runs/diagnostics/mining_catalog_working_context_20261023_v1/terminal-boundary/report.md",
+      "runs/diagnostics/mining_catalog_working_context_20261023_v1/source-navigation-boundary/report.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2083,21 +2107,22 @@
       "Whole-unit S5-only checks did not inspect the original Mining instruction or S4 preconditions: headline support and any narrative read still authorized unread/wrong-case citations. Reuse actual S5 source-owned read evidence before acceptance, while leaving semantic truth to original-source review. A new whole-chain diagnostic also needed independent checks for explicit zero allowance and input-only later-phase effects; fixes/tests alone do not establish fresh full-chain behavior.",
       "The complete S4-to-S5 handoff and new each-citation readiness gate preserve runtime source bytes but do not preserve them in the next S4 model view. I checked first wires and materializer evidence, not two-source narrative meaning across a real action sequence. Genuine fresh roles had to reread bodies because narrative_read_progress only stores receipts, unlike complete structured read progress. Repeated rereading is not by itself a no-capability conclusion. Stop more blind calls at the confirmed producer loss, preserve pending/fixed denominator, and repair the existing bounded source-unit projection before a new-code control; never hot edit this frozen stage or label its pending state terminal.",
       "Metadata-only narrative progress was explicitly the old design, not merely an implementation omission. Because each role receives current view rather than a full conversation, preserving coverage receipts/S5 bytes did not preserve S4 meaning. The new working page derives actual complete masked source units without a second store or inferred summary; it must still prove fresh planning rather than turn offline old-source reconstruction into live compliance. Preserve the first padding-harness mistake and distinguish its corrected expectation from a product fix.",
-      "The source-body repair preserved S4 meaning but left inspected catalog pages/section locators/next_cursor only in last_action_result. Stateless roles therefore legitimately recovered cursor0 and exhausted scarce light budget; h009 retained all three bodies while losing directory navigation. Prior source/handoff tests and script-held locators missed this related dependency. Audit all four catalog scopes and preserve exact historical responses without reviving stale permissions; no candidate failure or no-pattern inferred from unread material."
+      "The source-body repair preserved S4 meaning but left inspected catalog pages/section locators/next_cursor only in last_action_result. Stateless roles therefore legitimately recovered cursor0 and exhausted scarce light budget; h009 retained all three bodies while losing directory navigation. Prior source/handoff tests and script-held locators missed this related dependency. Audit all four catalog scopes and preserve exact historical responses without reviving stale permissions; no candidate failure or no-pattern inferred from unread material.",
+      "Actual context retention now works, but source selection changes graph growth: broad null/32 fetch2879facts1342relations versus earlier targeted2088/952. Focused source/working-page tests and first-wire fits do not establish complete future native request affordability. The annual source also discloses43section anchors while displaying24; determine actual addressability and total-message cost from frozen original artifacts before another interface or resource decision, rather than call a budget terminal no-pattern or automatically rename/restart it."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "diagnose",
-      "strategy": "same_population_native_icfr_candidate_chain_v3_with_retained_catalog_context",
-      "action": "Checkpoint repaired code/tests and preserved prior controls, freeze stage-v3 once under oracle-v3 unchanged source/semantic/cap boundaries, then dispatch only exact current native inbox to fresh fork_turns=none subagents serially. Independently review actual candidate/S5 semantics and orientation before native admission; require autonomous exact new-version use in all four fixed diagnostic controls. No old answers or forced candidate/ref.",
-      "stop": "No externalAPI/network/GET/new labels/check/LockedTest/fullsuccessor, oldstage reentry or hot edit; no hidden source/candidate/forcedref, schema/semantic/oracle/cap changes or cleared failure history. Stop at first concrete broken boundary, fixed result or declared resource exhaustion.",
-      "new_evidence": "Actual v2 source-body and source-semantic preservation plus independently observed catalog2of14/light0/page disappearance, and two legitimate cover continuations isolate the next producer dependency; no inference of absent pattern. Local470 and independent8 controls now preserve body/catalog meaning, legacy compute invalidity and current permissions, with original semantic/cap boundaries verified before new actors.",
-      "distinguishing_variable": "Actually inspected whole catalog responses remain available across intervening read/compute, with honest historic snapshot and current permission checks; source population and stage semantic/resource obligations fixed.",
-      "question": "Do fresh native authors now navigate retained catalog pages and source windows without justified page0 recovery, then generate/implement/admit and exactly consume a genuine source-grounded reusable measurement?",
-      "pass": "Actual fresh autonomous navigation plus faithful S4/S5/technical admission and all four exact-version diagnostic uses satisfy the unchanged source-semantic oracle and scoped reopen checks.",
-      "fail": "First actual source/navigation/definition/candidate/implementation/admission/consumer boundary fails or frozen resource ceiling blocks progress; no-pattern only if domain requirements truly satisfied, never inferred from unread material.",
-      "on_pass": "Report only the proven diagnostic scope and effect unverified; retain magnitude/committed-use/wholeloop/source-authenticity gaps and choose their next named evidence boundary.",
-      "on_fail": "Retain fixed denominators, raw inputs/answers/corrections/costs and first broken boundary. Change the failed strategy or make a bounded systemic repair without hot edits, source pruning, oracle weakening or extra answers on the stopped target."
+      "kind": "repair",
+      "strategy": "offline_lossless_mining_handles_and_true_query_origin_handoff",
+      "action": "Outside sealed v3, spec-first offline verify reversible short opaque fact/relation handle representation at model egress and exact inverse without pruning canonical facts/edges/citations/permissions; deliver bounded discovery-only true query projection raw origins through existing charged fetch, requiring existing charged read for evidence. Preserve all source, case/PIT, whole-body, stable18, original caps and old terminal artifacts; no new actor/stage or budget reset in this repair batch.",
+      "stop": "No sealed stage advance/reentry, h011, external API/network/new business labels, new control or budget reset; stop on any binding/roundtrip failure or repeated no-information change.",
+      "new_evidence": "All10 wires match native readonly reconstruction; exact blocked264980 and43.4599percent handle cost isolate representation rather than a generic body-size guess. Independent true-origin audit proves existing query navigation is internally present but not handed off, with approximate find misanchor counterexample.",
+      "distinguishing_variable": "Lossless opaque identifier wire representation and exact existing selector-origin handoff, tested offline; same canonical graph/source population, raw bodies, native permissions and caps.",
+      "question": "Can complete Mining graph identifiers and query navigation be represented with exact reversible bindings and reliable raw origins under original full-request costs, without deleting facts, weakening evidence or granting unread citation authority?",
+      "pass": "Offline full-request roundtrip and native cost evidence preserve all2879fact/1342relation identities, ordered links, case/identity/typed permissions, literal source bodies and precise true-origin navigation; original failure and collision/TOC/Unicode/wrongcase/PIT/unread counterexamples pass with source hashes stable.",
+      "fail": "Any canonical identity/edge/body/permission changes, alias collision or unknown acceptance, approximate raw anchor, unread citation authority, cap growth or unresolved original whole-request boundary.",
+      "on_pass": "Checkpoint local repair only; independently review counterexamples and define a frozen new-code acceptance with explicit preserved resource accounting before any fresh roles. No automatic reentry or claim of candidate/MVP closure.",
+      "on_fail": "Stop that repair strategy, preserve failures and narrow the conflicting requirement; do not trim evidence, raise caps or dispatch actors to compensate."
     }
   },
   "successor_prerequisites": [
