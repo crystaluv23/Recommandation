@@ -1,0 +1,37 @@
+# 目录家族独立审计（旧部署 98147bc1）
+
+仅审 stage-v2 h001–h011 的11个 exact inbox、11份原答、11份 receipts；未读 h012。`evidence.json` 保存每步动作、whole-card 出现路径、目录坐标及预算，`bindings.json` 绑定33个 wire 文件、manifest、parent stop 与6份冻结代码/spec。它们检查前后 byte/hash 相同。生产运行未执行、测试未重跑、网络/API/actor 通信0；只写本目录。checkout 已有下一版修改，故静态判断使用 frozen-runtime-98147bc1.tar.gz 内原件，6个文件均与 v2 manifest 精确匹配，复制在 frozen-baseline/，不能拿新代码冒充原部署。
+
+**实际遗漏成立，有限范围内的保留也成立。** 第一次可避免的 evidence 目录重查是 h007：h004 请求首目录，h005 输入披露2/14份文档、next_cursor=2，以及 case003/case002 两份 filing 的完整 section 导航。h005/h006 分别读 case003 A/B 后，h006/h007 没有该目录的 sections 或 cursor；读回执、正文工作页不能还原另一文档的 section 坐标。h007 原答明确恢复 cursor0，h008 恢复相同2份文档导航并用完最后一个 light。对比仅归一化每 wire 变动的匿名ID后，除后来增加的 read_windows 外，完整两张卡相同。h008 随后直接读 case002 C，说明原目录确有后续可用导航信息。这个反事实只说明保留可省该次重查，不证明另一模型一定采取更优动作。
+
+h009–h011 目录再次缺失、light=0，但 A/B/C 及后来窗口都在 narrative_read_evidence 中。h009选择对一个未读 event 从0建立导航，h010因 hidden-only 回执转到真实 readable_start，h011继续 cover 后的窗口。可观察到剩余12文档目录不可浏览的限制；不能把这些选择一概判为错误或把预算耗尽判成能力不存在。parent stop 的11答/1837419为逻辑预留，host tokens/费用未测量。
+
+Signal 卡也有实际覆盖：默认首7/18的 capability_contract 每步完整保留；h001读cursor7后，h002出现中间7张完整卡，h003已全部缺失；h002读cursor14后，h003出现末4张，h004起缺失。18张卡的 source_hash、card_hash 与逐输入对象路径均已列入证据。h001/h002是初次覆盖浏览，不是冗余重查；11步内没有实际重复 Signal 目录。没有执行 Signal item_refs 原件读取，不能声称这些原件在本次发生过读后丢失。
+
+| 路径 | 旧 action→下一 view 行为 | 充分性与证据层 |
+|---|---|---|
+| evidence inspect_catalog | whole 卡/sections/case_bindings/read_windows 仅 last_action_result；下一动作覆盖；digest 只概要，read progress 只已读窗口，不能重建目录 | 实际 h005→h006、h008→h009 丢失导航；文档/正文/S5本身未丢 |
+| signals inspect_catalog | 默认首页恒在；后页与 item_refs 的 whole `{spec,skill}` 原件只有 last_result；card 原件哈希不可替代 skill 正文 | 后页丢失实证；原件丢失只是静态可达风险，未实际读取 |
+| backlog inspect_catalog | 默认当前pending首整页保留 exact need/kind/status+scope/hash；后页与 item_refs 完整 sources 原件只有 last_result | 当前首卡足以识别 need，scope摘要不可冒充完整来源；后页/原件丢失本次未触发 |
+| memory inspect_catalog | 默认 brief+directory 重建；索引型 item_refs 读取返回的完整 sources（含被索引完整 item）加入 meta_memory_disclosures 并保留；过滤页/cursor依旧 transient | 实际6个预披露 memory rows 在11输入中逐对象完全相同。没有新memory read；索引型原件已有可靠持久路径。无 index 的 fallback 原件读取未加入 disclosures，是静态分支风险，不能套到本次生产 |
+| inspect_manifest | manifest 已常驻每次 view；显式action结果虽覆盖，常驻原件保留 | 11输入 manifest 完全相同；无需缓存重复原件 |
+| fetch_evidence | facts/events/documents/case associations、counts/family/concept digest及已知refs持久；单次 query/window/omitted coverage 的详细诊断仅ledger/last，ledger不自动全披露 | h003仅一次fetch；累计节点保留不等于逐次coverage说明保留。未实际触发多fetch比较遗漏 |
+| narrative read_span | 当前版12 whole units/40000 items bytes正文页+回执；真实case/target/hash/range/clocks，显式omission；后续action不覆写该页 | 实际 h007/h008同时A/B，h009 A/B/C，后续4/5窗；已足够保留本次已读正文。不含未读目录/未读scope |
+| fact read_span | whole fact receipt含source/hash/taxonomy/unit/period/value/context持久，12/8000 bounded | 有已有忠实路径，未触发；超界必须显式，不承诺无限历史 |
+| compare_groups | whole concept比较结果12/8000持久；绑定 facts+labels+axis hash，变化显式invalidated | 已有有界忠实路径；正确失效不是丢失。未触发 |
+
+静态位置（均指 frozen-baseline）：controller `_model_view`522、catalog dispatch979、fetch1041、fact read1362、compare1410、need refs1837/backlog1846、signals1883、memory2034、evidence2103；owning spec memory248–255、catalog304–325、narrative445起、need607–640。role_model 真实 prompt 已披露四scope、item_refs、cursor、read_span、compare及现有工作页，没有可在一次动作取回任意旧目录/旧Signal原件的额外工具。ledger/S5保有数据不等于S4可见。
+
+## 最小通用方案及边界反例
+
+建议只保留**成功 inspect_catalog 真正返回的 whole response 快照**，四scope共享8pages/32000 UTF8 items bytes；不读新页、不从本地所有 originals/索引注册项补正文、不写模型语义笔记、不增加tool。按现有 whole-entry 机制保整页，oversized/omitted 必须给 scope、原请求定位与 required_bytes，重查照常计费；正文/omission/envelope 全算实际 native request 硬cap。runtime缓存用原 handle，在每个实际wire重新身份投影，不能保存已匿名化 ANON_ID 后跨wire错绑。
+
+- evidence 页是历史披露，不是现时全目录。绑定原cursor/filter、返回payload hash与source snapshot。读操作会增加 read_windows，不得因此把旧read_windows说成当前；已读正文/当前回执是当前证据。fetch 可改变 doc/event/case membership及目录排序/extent，旧cursor不能当当前下一页保证；标记历史/失效，不免费刷新。固定文档/hash的section坐标可以复用，但共享doc不能扩授新case event scope。反例：读页后新增同doc第二case，再用旧页冒充已对该case读过；必须失败。
+- backlog 分离可见旧原件与当前处置权：允许refs只能是本次可见、whole/hash匹配的卡/原件与当前pending交集，另用当前 need_state base_hash。已staged项在旧页仍可解释来源，却不能再次授权；被工作页淘汰的历史refs不能因内存仍有就授权。反例：缓存后处置一项、换page、换base_hash，再提交旧项，必须拒绝；其他仍pending且当前可见的缓存行可合法处置。
+- signals 保精确signal_ref+source_hash和actual item_refs response，不从 _signal_read_entries 全表补未读 spec/skill。原件/目录source改变必须历史/失效；定义与skill不可混用不同版本。反例：只读card却从cache看到skill正文，属于权限扩大。
+- memory 索引原件已有48KB累计保留，目录缓存不应把所有支持ref自动展开。保存level/signal_ref/cursor/source hash；旧directory是历史索引，不伪装fresh性能/当前usage。48KB合法读取可能超过32KB缓存，必须whole oversize/明确仍在 meta_memory_disclosures，而非裁剪原件或声称消失。反例：读取一个item只显示其真实read返回sources，其他source仅ref，不得补正文。
+- 容量反例：第9页、单页>32000、多字节Unicode、相同scope但不同filter/cursor、同doc不同case，应区分 whole omission、去重与scope，不以截断或last-wins制造完整假象。真实wire身份正反投影及完整成本需单独验证；本审计不预称新实现已过。
+
+另一个邻近静态风险：compute_statistic 的显式算术结果仅last_result与relation存储，后继只列known_relation_refs；compare持久页不等于任意算术结果。11步未调用compute，目录缓存也不直接解决它；本次无需扩大为通用无限action历史。
+
+本轮关闭的是旧部署的目录/卡片可见性定位与最小修复边界，不是 fresh修复效果、候选语义、准入、consumer或MVP。保留后的实际决策质量与成本仍需新部署独立证据。

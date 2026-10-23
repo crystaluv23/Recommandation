@@ -1,0 +1,69 @@
+{
+  "confidence": "repeated",
+  "directional": {
+    "correct": 4,
+    "unavailable": 0,
+    "unavailable_with_inputs": 0,
+    "unavailable_without_inputs": 0,
+    "wrong": 7
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [
+    {
+      "context_tag": "high_volatility",
+      "issuers": 11,
+      "observations": 11,
+      "positive_surge_rate": null
+    },
+    {
+      "context_tag": "small_cap",
+      "issuers": 9,
+      "observations": 9,
+      "positive_surge_rate": null
+    },
+    {
+      "context_tag": "financials",
+      "issuers": 4,
+      "observations": 4,
+      "positive_surge_rate": null
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 0,
+    "misleading": 1,
+    "other": 0
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 21,
+  "selection_reason_codes": [
+    {
+      "count": 19,
+      "reason_code": "test_contradiction"
+    },
+    {
+      "count": 2,
+      "reason_code": "assess_applicability"
+    }
+  ],
+  "signal_ref": "negative_word_count:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 4,
+      "surge": 7
+    },
+    "neutral": {
+      "non_surge": 2,
+      "surge": 0
+    },
+    "positive": {
+      "non_surge": 0,
+      "surge": 0
+    },
+    "unavailable": {
+      "non_surge": 0,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 13,
+  "unique_observations": 13
+}

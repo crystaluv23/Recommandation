@@ -1,0 +1,27 @@
+{
+  "schema_version": "oracle-v3-unified-diff-byte-preservation-v1",
+  "records": [
+    {
+      "original_name": "stage-spec.diff",
+      "uncompressed_sha256": "ae957d37eac39230c83c7fdf75a787322f2d1386fcd8bd1c1d256a03c4a0ae45",
+      "uncompressed_bytes": 2274,
+      "trailing_whitespace_lines": [
+        5
+      ],
+      "reason": "Intrinsic unified diff context markers preserved exactly; do not strip context whitespace.",
+      "packaged_file": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/stage-spec.diff.gz",
+      "packaged_sha256": "d4eea0edb8c0a12c5738cb40ed4e63e73adce5def06baad5b81777c7bfc913c7",
+      "gzip_mtime": 0,
+      "decompress_equals_original": true,
+      "decompressed_sha256": "ae957d37eac39230c83c7fdf75a787322f2d1386fcd8bd1c1d256a03c4a0ae45"
+    },
+    {
+      "original_name": "mining-view-spec.diff",
+      "uncompressed_sha256": "4b9069b83df0ca4a83123bf296e303092bd3127c0d23079fbbcbd13b0e2e76a9",
+      "uncompressed_bytes": 5377,
+      "trailing_whitespace_lines": [],
+      "packaged_file": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/mining-view-spec.diff",
+      "decompress_equals_original": "not_required"
+    }
+  ]
+}

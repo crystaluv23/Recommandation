@@ -1,0 +1,56 @@
+{
+  "tests": [
+    {
+      "as_of": "2024-08-13T00:00:00Z",
+      "company_id": "0002001184",
+      "documents": [
+        {
+          "available_at": "2024-08-12T00:00:00Z",
+          "content": "CashAndCashEquivalentsAtCarryingValue: {\"accn\":\"0002001184-24-000035\",\"end\":\"2024-06-30\",\"filed\":\"2024-08-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2024,\"val\":73374000}",
+          "document_id": "cash_2024-06-30",
+          "published_at": "2024-08-12T00:00:00Z",
+          "source_type": "company_facts"
+        },
+        {
+          "available_at": "2024-08-12T00:00:00Z",
+          "content": "LiabilitiesCurrent: {\"accn\":\"0002001184-24-000035\",\"end\":\"2024-06-30\",\"filed\":\"2024-08-12\",\"form\":\"10-Q\",\"fp\":\"Q2\",\"fy\":2024,\"val\":468101000}",
+          "document_id": "liabilities_2024-06-30",
+          "published_at": "2024-08-12T00:00:00Z",
+          "source_type": "company_facts"
+        }
+      ],
+      "expected": "negative",
+      "name": "negative_low_cash_coverage"
+    },
+    {
+      "as_of": "2024-11-05T00:00:00Z",
+      "company_id": "0000003499",
+      "documents": [
+        {
+          "available_at": "2024-11-04T00:00:00Z",
+          "content": "CashAndCashEquivalentsAtCarryingValue: {\"accn\":\"0000003499-24-000041\",\"end\":\"2024-09-30\",\"filed\":\"2024-11-04\",\"form\":\"10-Q\",\"fp\":\"Q3\",\"fy\":2024,\"val\":354817000}",
+          "document_id": "cash_2024-09-30",
+          "published_at": "2024-11-04T00:00:00Z",
+          "source_type": "company_facts"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "unavailable_missing_liabilities"
+    },
+    {
+      "as_of": "2025-04-30T00:00:00Z",
+      "company_id": "0001410578",
+      "documents": [
+        {
+          "available_at": "2025-04-29T00:00:00Z",
+          "content": "LiabilitiesCurrent: {\"accn\":\"0001410578-25-000968\",\"end\":\"2024-12-31\",\"filed\":\"2025-04-29\",\"form\":\"20-F\",\"fp\":\"FY\",\"fy\":2024,\"val\":521235000}",
+          "document_id": "liabilities_2024-12-31",
+          "published_at": "2025-04-29T00:00:00Z",
+          "source_type": "company_facts"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "unavailable_missing_cash"
+    }
+  ]
+}

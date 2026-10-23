@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-10-23：98147bc1真实v2的11fresh首答/0纠错、1837419逻辑预留；独立核两源三正文跨步保留及有限DCP/ICFR表述忠实，但目录section/cursor与Signal后页仍被后续动作覆盖。h012未派未答、323文件/182源码归档、原1/4未完成分母保留，非no-pattern或预算耗尽。spec-first以四scope实际whole响应8/32000工作页修复，同步当前backlog权限/历史快照；补既有ledger派生计算页、失效引用typed拒及原价重算坐标。最终470关联过/测试hash稳；独立8组首5过、3个harness纠正后补3过，原件保留；v3oracle原15字段deep-equal、两旧pending另精确绑定，新实际链仍待，0外部API/网络，不关闭MVP。见[报告](../reports/mining-catalog-working-context-20261023.md)。
+
 - 2026-10-23：spec-first修S4已读叙事正文跨步丢失：同既有source-owned read单位派生12unit/40000bytes完整工作页，保真实case/target/source/hash/时钟、omission与charged revisit，原S5/ledger/权限保持。452关联过、版本稳定/网络0；原A/B/C窗口回归只证离线投影。v2隔离旧pending stage并核原336文件/12receipt成本/h013无答，oracle语义不变、资源不增；未据此关闭fresh候选/准入/消费或MVP。见[报告](../reports/mining-narrative-read-evidence-20261023.md)。
 
 - 2026-10-23：cbc9f1ab后真实ICFR完整控制12独立fresh首答/0纠错、2001316逻辑预留、API/网络0；原生S4正文跨步只剩回执的缺口由前10wire独立核出，runtime/S5原文仍全。h013未dispatch，parent停止调度、保原pending不造终态/预算耗尽，1候选正控未完成、四消费未试。归档182实际冻结runtime文件逐hash读回；下一修正文可见性再验完整链，不热改旧stage。见[报告](../reports/icfr-native-stage-and-citation-prerequisite-20261023.md)。

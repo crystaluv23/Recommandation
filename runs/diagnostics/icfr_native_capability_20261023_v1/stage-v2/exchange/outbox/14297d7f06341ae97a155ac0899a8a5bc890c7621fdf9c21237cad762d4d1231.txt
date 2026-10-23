@@ -1,0 +1,1 @@
+{"action": "inspect_catalog", "scope": "signals", "cursor": 14, "rationale": ["Read the remaining existing Signal catalog before selecting a distinct ICFR measurement.", "The prior catalog response supplies next_cursor 14; omitted entries remain unknown."]}

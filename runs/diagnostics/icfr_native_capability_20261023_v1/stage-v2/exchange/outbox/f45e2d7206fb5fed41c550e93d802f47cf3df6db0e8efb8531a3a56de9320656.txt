@@ -1,0 +1,1 @@
+{"action": "inspect_catalog", "scope": "evidence", "rationale": ["The fetched filing families have not yet been explored through readable narrative spans.", "Inspect document case bindings and raw section coordinates to locate point-in-time ICFR disclosures before defining a measurement or comparing label groups."]}

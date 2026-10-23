@@ -1,0 +1,482 @@
+{
+  "scope": "Exactly h005-h009 inboxes and h005-h008 raw answers/receipts; h009 outbox/receipt not read",
+  "requests": [
+    {
+      "h": 5,
+      "request_hash": "a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2",
+      "complete_bytes_plus_output": 193062,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 75,
+        "calls_used": 4,
+        "next_minimum": 17539,
+        "remaining_after": "00000000000011923163",
+        "single_limit": 262144,
+        "this_request": "00000000000000193062",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 466687
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "working_page_counts": null,
+      "units": [],
+      "last_action": "inspect_catalog",
+      "receipt": {
+        "agent_id": "/root/icfr_v2_h005",
+        "inbox_sha256": "579e5f1d86d89fbba94a8b396692d3b19e2e0070b2723ab3ee05d56fa59c42a1",
+        "raw_output_sha256": "b1ab09ba53fda7e46b7c7be2f73f725c985809513573142cf557f6fa84f08775",
+        "request_hash": "a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2"
+      },
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-99d2c1094c6984b5",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Read the actual controls-and-procedures disclosure for positive case-003 to ground an ICFR measurement.",
+          "The directory is discovery only; material weakness, remediation and effectiveness remain unestablished until the raw text is read."
+        ]
+      }
+    },
+    {
+      "h": 6,
+      "request_hash": "0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5",
+      "complete_bytes_plus_output": 192196,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 74,
+        "calls_used": 5,
+        "next_minimum": 17539,
+        "remaining_after": "00000000000011730967",
+        "single_limit": 262144,
+        "this_request": "00000000000000192196",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 659749
+      },
+      "tool_budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "working_page_counts": {
+        "available": 1,
+        "included": 1,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "units": [
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1152908,
+          "offset": 1148801,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1631,
+          "source_type": "filing",
+          "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+          "readable_text_sha256": "264e23a354326255e2045ec7b437654beee01f7d2101f12ee875a95dda12218e",
+          "matches_old_original_source_window": true
+        }
+      ],
+      "last_action": "read_span",
+      "receipt": {
+        "agent_id": "/root/icfr_v2_h006",
+        "inbox_sha256": "0eea5062f82b3f09513bc7190e82bca764ed8f273009bc1792bfaa2d3d8ed1b8",
+        "raw_output_sha256": "e130d0f968158239b82f47ac960515a5e74b924e23e7eb22ae0bc37314b786c9",
+        "request_hash": "0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5"
+      },
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-99d2c1094c6984b5",
+        "offset": 1152908,
+        "length": 4000,
+        "rationale": [
+          "The executed case-003 window establishes effective disclosure controls but ends at the ICFR changes heading.",
+          "Continue at the supplied next readable coordinate to inspect the actual ICFR disclosure before defining a measurement; disclosure-control effectiveness alone does not establish ICFR effectiveness."
+        ]
+      }
+    },
+    {
+      "h": 7,
+      "request_hash": "d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d",
+      "complete_bytes_plus_output": 193665,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 73,
+        "calls_used": 6,
+        "next_minimum": 17539,
+        "remaining_after": "00000000000011537302",
+        "single_limit": 262144,
+        "this_request": "00000000000000193665",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 851945
+      },
+      "tool_budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "working_page_counts": {
+        "available": 2,
+        "included": 2,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "units": [
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1156908,
+          "offset": 1152908,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1015,
+          "source_type": "filing",
+          "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+          "readable_text_sha256": "366f7024d5a41d94c7a5de0d523e5cff126c4b39c6d87d385c71e9f6dd97fcb9",
+          "matches_old_original_source_window": true
+        },
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1152908,
+          "offset": 1148801,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1631,
+          "source_type": "filing",
+          "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+          "readable_text_sha256": "264e23a354326255e2045ec7b437654beee01f7d2101f12ee875a95dda12218e",
+          "matches_old_original_source_window": true
+        }
+      ],
+      "last_action": "read_span",
+      "receipt": {
+        "agent_id": "/root/icfr_v2_h007",
+        "inbox_sha256": "d80beff6cc3cd5de1c4f00ae81dc8ab4f0730fc4edd8ddacaf2e1b47b5aa8118",
+        "raw_output_sha256": "62efb2892949b706e8e410c3b11349ebd94571e357fec6d38a300ca357582e19",
+        "request_hash": "d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d"
+      },
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "cursor": 0,
+        "rationale": [
+          "The retained case-003 windows establish effective disclosure controls and no material ICFR changes, but do not establish an explicit ICFR effectiveness assessment or a material-weakness predicate.",
+          "Recover the titled document directory and exact section coordinates to select another case and inspect substantive ICFR disclosures; directory entries alone will not establish support.",
+          "The current view contains no directory next_cursor, so cursor zero is directory recovery, not a claim of newly explored coverage."
+        ]
+      }
+    },
+    {
+      "h": 8,
+      "request_hash": "6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3",
+      "complete_bytes_plus_output": 198990,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 72,
+        "calls_used": 7,
+        "next_minimum": 17539,
+        "remaining_after": "00000000000011338312",
+        "single_limit": 262144,
+        "this_request": "00000000000000198990",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1045610
+      },
+      "tool_budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "working_page_counts": {
+        "available": 2,
+        "included": 2,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "units": [
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1156908,
+          "offset": 1152908,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1015,
+          "source_type": "filing",
+          "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+          "readable_text_sha256": "366f7024d5a41d94c7a5de0d523e5cff126c4b39c6d87d385c71e9f6dd97fcb9",
+          "matches_old_original_source_window": true
+        },
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1152908,
+          "offset": 1148801,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1631,
+          "source_type": "filing",
+          "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+          "readable_text_sha256": "264e23a354326255e2045ec7b437654beee01f7d2101f12ee875a95dda12218e",
+          "matches_old_original_source_window": true
+        }
+      ],
+      "last_action": "inspect_catalog",
+      "receipt": {
+        "agent_id": "/root/icfr_v2_h008",
+        "inbox_sha256": "4604dfc8dcbc88bd2eefa79f12b0d12fb12e9d3f774305d01af7a91e3e8d66c3",
+        "raw_output_sha256": "ee0968d2734d54b233741b7dfdc20326ed18a2c2303ebdaa582d99eca7860666",
+        "request_hash": "6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3"
+      },
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-24747d604f79cfb5",
+        "offset": 3969625,
+        "length": 4000,
+        "rationale": [
+          "Read the discovered control case-002 Controls and Procedures section to ground an ICFR contrast against the already read positive case-003.",
+          "The positive excerpt states effective disclosure controls and no material ICFR changes; this does not establish an ICFR effectiveness opinion or cohort-wide pattern.",
+          "Use the supplied section coordinate and preserve unread catalog and backlog limitations while light budget is zero."
+        ]
+      }
+    },
+    {
+      "h": 9,
+      "request_hash": "0932a19b81399678e33d33b002288ecf36f5d20e1299004b404e2a97849d0860",
+      "complete_bytes_plus_output": 197851,
+      "request_budget": {
+        "call_limit": 80,
+        "calls_remaining_after": 71,
+        "calls_used": 8,
+        "next_minimum": 17539,
+        "remaining_after": "00000000000011140461",
+        "single_limit": 262144,
+        "this_request": "00000000000000197851",
+        "total_limit": 12582912,
+        "unit": "bytes_plus_output",
+        "used": 1244600
+      },
+      "tool_budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "working_page_counts": {
+        "available": 3,
+        "included": 3,
+        "omitted_after": 0,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "units": [
+        {
+          "available_at": "2025-05-12T20:05:53+00:00",
+          "case_refs": [
+            "case-002"
+          ],
+          "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+          "document_ref": "document-sec:[ANON_ID_0000]:000114036125018373",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 3973625,
+          "offset": 3969625,
+          "published_at": "2025-05-12T20:05:53+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-002"
+              ],
+              "ref": "event-24747d604f79cfb5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 2094,
+          "source_type": "filing",
+          "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+          "readable_text_sha256": "5287a19c3b2fe2482b0861aa84d36af449f503d7435a8aeeffc043a9f890a7d4",
+          "matches_old_original_source_window": true
+        },
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1156908,
+          "offset": 1152908,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1015,
+          "source_type": "filing",
+          "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+          "readable_text_sha256": "366f7024d5a41d94c7a5de0d523e5cff126c4b39c6d87d385c71e9f6dd97fcb9",
+          "matches_old_original_source_window": true
+        },
+        {
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "case_refs": [
+            "case-003"
+          ],
+          "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+          "document_ref": "document-sec:[ANON_ID_0001]:000149315225011966",
+          "has_readable_text": true,
+          "length": 4000,
+          "next_readable_start": 1152908,
+          "offset": 1148801,
+          "published_at": "2025-08-14T20:01:09+00:00",
+          "raw_window_chars": 4000,
+          "read_count": 1,
+          "read_targets": [
+            {
+              "case_refs": [
+                "case-003"
+              ],
+              "ref": "event-99d2c1094c6984b5",
+              "target": "event_ref"
+            }
+          ],
+          "readable_chars": 1631,
+          "source_type": "filing",
+          "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+          "readable_text_sha256": "264e23a354326255e2045ec7b437654beee01f7d2101f12ee875a95dda12218e",
+          "matches_old_original_source_window": true
+        }
+      ],
+      "last_action": "read_span"
+    }
+  ],
+  "navigation": {
+    "h008": {
+      "available": 14,
+      "included": 2,
+      "omitted_after": 12,
+      "next_cursor": 2,
+      "light_remaining": 0,
+      "catalog_allowed_scopes": [
+        "memory"
+      ]
+    },
+    "h009": {
+      "directory_result_retained": false,
+      "section_field_paths": [],
+      "section_count_field_paths": [],
+      "catalog_allowed_scopes": [
+        "memory"
+      ],
+      "read_body_and_raw_locators_retained": true
+    }
+  },
+  "target_note": "Original fixed10 windows were document-ref reads; v2 actual authored actions use event-ref. Source meaning/case/ranges/raw hashes/clocks match; actual event targets are separately verified against the four raw answers.",
+  "accounting_note": "UTF8 compact sorted message bytes plus output allowance, including new page and repeated last result; h009 checked as an input reservation, not as a newly verified answer; host tokens/fees unmeasured.",
+  "audit_note": "One preliminary assertion wrongly assumed request-id canonical hashing matched the wire-cost serialization. Request IDs are instead bound by native saved request and receipt/file hashes; exact cost checks use the declared wire-cost serialization. No input or product changed.",
+  "network": 0,
+  "API": 0,
+  "production_answers_written": 0
+}

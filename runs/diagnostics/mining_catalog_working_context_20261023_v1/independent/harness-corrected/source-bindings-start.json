@@ -1,0 +1,13 @@
+{
+  "src/stock_opportunity_agent/research/mining_controller.py": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+  "src/stock_opportunity_agent/research/mining_role_model.py": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+  "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+  "src/stock_opportunity_agent/research/stage_contracts.py": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+  "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+  "src/stock_opportunity_agent/research/local_role_exchange.py": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d",
+  "src/stock_opportunity_agent/research/evolution_reflection_memory.py": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+  "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+  "tests/test_mining_catalog_working_context.py": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485",
+  "tests/test_mining_narrative_citation_readiness.py": "080d09b09f09edb092e19e4022dd447fba3df9617a90a5dee060f270d599014c",
+  "tests/test_mining_narrative_read_evidence.py": "ad4899fa9a841bb940ca7f251f1c55a331df3850cf1bb0b24e615b33aca1fa38"
+}

@@ -1,0 +1,73 @@
+{
+  "preliminary": true,
+  "source_stable_during_run": true,
+  "controls": [
+    {
+      "id": "actual-two-source-old-new",
+      "passed": true,
+      "detail": {
+        "two_real_sources_three_windows": true,
+        "old_new_ledger_budgets_s5_equal": true,
+        "scope": "offline projection, not full14doc actual replay"
+      }
+    },
+    {
+      "id": "cursor-read-compute-order",
+      "passed": true,
+      "detail": {
+        "saved_cursor_after_read_compute": 12,
+        "changed_order_invalidates_same_set": true
+      }
+    },
+    {
+      "id": "scope-readiness-rejections",
+      "passed": true,
+      "detail": {
+        "catalog_does_not_authorize_other_case_or_hidden_window": true
+      }
+    },
+    {
+      "id": "need-authority-rejections",
+      "passed": true,
+      "detail": {
+        "current_visible_pending_legal": true,
+        "staged_stale_changed_omitted_unknown_rejected": true
+      }
+    },
+    {
+      "id": "signal-unread-hash-unicode",
+      "passed": true,
+      "detail": {
+        "signal_unread_skill_absent_changed_hash_refused": true,
+        "unicode_whole_omission": {
+          "available": 5,
+          "included": 2,
+          "omitted_before": 0,
+          "omitted_after": 3,
+          "oversized": 0
+        }
+      }
+    },
+    {
+      "id": "indexed-memory-real-oversize",
+      "passed": false,
+      "type": "AssertionError",
+      "error": "",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/controls.py\", line 26, in record\n    try:RESULTS.append({'id':n,'passed':True,'detail':fn()})\n                                                      ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/controls.py\", line 117, in memory\n    response=catalog(c,'memory',item_refs=[ref]);H.read(c,docs[0]);v=c._model_view();assert '原'*11600 in json.dumps(v['meta_memory_disclosures'],ensure_ascii=False);assert 'UNREAD_MEMORY_ORIGINAL' not in json.dumps(v['catalog_observations'],ensure_ascii=False)\n                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "id": "native-wire-budget",
+      "passed": false,
+      "type": "ValidationError",
+      "error": "document_id must contain only safe identifier characters",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/controls.py\", line 26, in record\n    try:RESULTS.append({'id':n,'passed':True,'detail':fn()})\n                                                      ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/controls.py\", line 150, in wire\n    extra=RawInfoDocument.create(document_id='Hidden Holder Inc.-transport',company_id=docs[0].company_id,source_type='filing',published_at=docs[0].published_at,available_at=docs[0].available_at,content='Transport-only exact source.')\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py\", line 187, in create\n    return cls(\n           ^^^^\n  File \"<string>\", line 11, in __init__\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py\", line 153, in __post_init__\n    _validate_component(str(getattr(self, name)), name)\n  File \"/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py\", line 506, in _validate_component\n    raise ValidationError(\nstock_opportunity_agent.models.ValidationError: document_id must contain only safe identifier characters\n"
+    },
+    {
+      "id": "computed-source-invalid-recompute",
+      "passed": false,
+      "type": "TypeError",
+      "error": "can only concatenate str (not \"int\") to str",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/controls.py\", line 26, in record\n    try:RESULTS.append({'id':n,'passed':True,'detail':fn()})\n                                                      ^^^^\n  File \"/Users/l/Project/Recommandation/runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/controls.py\", line 134, in computed\n    prior=c._facts[refs[0]];c._facts[refs[0]]=replace(prior,value=prior.value+123,taxonomy='different-taxonomy')\n                                                                  ~~~~~~~~~~~^~~~\nTypeError: can only concatenate str (not \"int\") to str\n"
+    }
+  ]
+}

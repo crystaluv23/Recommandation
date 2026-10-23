@@ -1,0 +1,2052 @@
+{
+  "cycle_id": 1,
+  "result": {
+    "agent_audits": {
+      "legacy_candidate_recheck": {
+        "pending": [],
+        "policy": "technical_revalidation_without_effect_gate",
+        "schema_version": "legacy-candidate-recheck-v1",
+        "selected": []
+      },
+      "mining_pipeline": {
+        "axes": {
+          "magnitude_ge3_v1": {
+            "axis_id": "magnitude_ge3_v1",
+            "candidate_refs": [],
+            "capability_gaps": {},
+            "cycle_id": 1,
+            "limits": {
+              "case_pool_limit": 32,
+              "evidence_documents_per_case": 4,
+              "evidence_lookback_days": 365,
+              "exploration_interval": 3,
+              "exploration_microbatch_size": 4,
+              "h2_min_ready_issuers": 16,
+              "h2_min_ready_per_class": 4,
+              "h2_profile_scan_limit": 96,
+              "hypothesis_limit": 3,
+              "induction_cases_per_class": 4,
+              "ranking_case_limit": 12,
+              "reflection_feedback_limit": 3,
+              "selected_hypothesis_limit": 2,
+              "validation_cases_per_class": 8
+            },
+            "modality_metrics": {
+              "eligible_narrative_seed_count": 2,
+              "eligible_structured_seed_count": 2,
+              "narrative_candidate_count": 0,
+              "narrative_exploration_completed": 2,
+              "narrative_materialization_count": 0,
+              "narrative_read_count": 0,
+              "narrative_unavailable_count": 0,
+              "narrative_validation_count": 0,
+              "structured_candidate_count": 0,
+              "structured_exploration_completed": 0,
+              "structured_materialization_count": 0,
+              "structured_validation_count": 0
+            },
+            "narrative_candidate_refs": [],
+            "need_disposition_counts": {},
+            "refined_hypotheses": {},
+            "research_axis": {
+              "axis_id": "magnitude_ge3_v1",
+              "boundary": "This descriptor defines a fixed projection of already realized labels for retrospective contrast research. It is not a case outcome, carries no per-case group membership, and never redefines the prediction target.",
+              "contrast": {
+                "high": "realized_max_multiple >= 3.0",
+                "low": "2.0 <= realized_max_multiple < 3.0"
+              },
+              "evaluation_protocol": "ge3-paired-evaluation-v1",
+              "population": "true_surge_cases",
+              "target_id": "magnitude_ge3_v1",
+              "version": "ge3-projection-v1"
+            },
+            "schema_version": "signal-mining-audit-v1",
+            "seeds": [
+              {
+                "axis_id": "magnitude_ge3_v1",
+                "candidate_count": 0,
+                "explored_families": [],
+                "fetched_case_refs": [],
+                "ledger_actions": 4,
+                "mixed_candidate_count": 0,
+                "modality_coverage": {
+                  "narrative": {
+                    "available": true,
+                    "explored": false,
+                    "status": "required"
+                  },
+                  "structured": {
+                    "available": true,
+                    "explored": false,
+                    "status": "required"
+                  }
+                },
+                "model_calls": 4,
+                "narrative_candidate_count": 0,
+                "narrative_reads": 0,
+                "need_disposition_rows": [],
+                "need_dispositions": 0,
+                "pending_need_refs": [
+                  "need-e6c4f110c7a67f907e403e51",
+                  "need-fe153eb99bc7b556545cd1a3",
+                  "need-cfd29cbf9a3bbf0b2d37c71b",
+                  "need-b4f82d291b7c6d5181fc437b",
+                  "need-126b66ec7cd0783066398d40",
+                  "need-1e7ae75cbade44d97e5fe792",
+                  "need-188b935c598d09170c94004f",
+                  "need-ac1d1d3bda069dd586e55060",
+                  "need-6ebf32eaa6919dd31a15e24e",
+                  "need-5f55a8c034e5dde7257002a0",
+                  "need-02f4cea216fe1fa783eb0e66",
+                  "need-f675d54bc13b8e40297a17c5",
+                  "need-9bdc5c95f963dbe23ff848f0",
+                  "need-ade6b6e6346c750207fe7fbb",
+                  "need-66e76ab5dc047fdb15e08de0",
+                  "need-09aab971a9454fc7ba677e63",
+                  "need-a7a616243c0abd04f82aaafe",
+                  "need-96bf0252b28ae1404894fa7c",
+                  "need-7b0222bd07b5adbb3a392532",
+                  "need-c2dbdd77e9f6ee290e5ec31e",
+                  "need-d98fad2b2e3700c1088f9eac",
+                  "need-a3ffc2cd7bdf87a22fb6504f",
+                  "need-fdcd9df2c79c3892b0313987",
+                  "need-cb6192a7e0732171ce901a9a",
+                  "need-1d328efb0fd75ea972425d24",
+                  "need-0f91c15dfe879a46f912201e",
+                  "need-c1b8c85b7af38d840f0694c6",
+                  "need-cfc1e2938b719d15de5bec62",
+                  "need-139b5f5589713e2d1f9c2287",
+                  "need-cbb61cce496d8beeb97150c2",
+                  "need-0ae93d06ab0b08b3055565b1",
+                  "need-b0c0466449f87dc74b12a7ac",
+                  "need-de140d77ab1ae1643db44905",
+                  "need-4315dc17070a0ec8f0a86dfd",
+                  "need-0a7c3584c0f5f9f8c8f586ed",
+                  "need-2fa2f583d20c46ca79eb3493",
+                  "need-fb8829cc3e8f323f1240055f",
+                  "need-3d6023d69f3f1c54099519a0",
+                  "need-67423c24c7b2dae6d66b15c0",
+                  "need-25aa09136e7accef802241f0",
+                  "need-b5d73f4c2859b0810742905d",
+                  "need-21b4a6278a39f7d9e868a83e",
+                  "need-cdc0e9599a6fed9dbbe633c5",
+                  "need-9412c3f675754fe80177e764",
+                  "need-9293a5be7364170769851786",
+                  "need-6d6e9497b8e12bd8197ae2dc",
+                  "need-6899451911e26056c3c18bd7",
+                  "need-a54b32bc1b6a870e0c789485",
+                  "need-9ff30f66c2e98cd42d262b8f",
+                  "need-e6036dc0ac64df37eefe45d4",
+                  "need-26a98329841e57aaa9ab7272",
+                  "need-0a150b3825a3ff4ddb201ab0",
+                  "need-ab41dafcf98056378f58bbea",
+                  "need-b8169fa51316368edec3eb4d",
+                  "need-67fb73d0946d655c9720b095",
+                  "need-f6dc56f8aeb78c8091f314d4",
+                  "need-2972bf79a71d38f7bbcb054f",
+                  "need-87db2cf2681977c5300a254c",
+                  "need-270e22b0752a466fb3b621ef",
+                  "need-9cae73674b3d4519a1b7c62b",
+                  "need-83fb5a6b305672932c92d6a4",
+                  "need-fa47837385c5f86ec7fb5483",
+                  "need-9124fb3fdc718f903d3dd204",
+                  "need-c5c2dcfe6a6104acf5edb6a7",
+                  "need-68a773b28ecb7f04055a73a5",
+                  "need-6eeed6753453b45fd131060d",
+                  "need-f6eec4cc00a7ff7e0d7d7bc4",
+                  "need-8ab36a6c45eefe965fc3155e",
+                  "need-8898c280b80be103be5300e4",
+                  "need-a9e505482b2103f6a4e44ecc",
+                  "need-5eb690b208e3ca837825afb6",
+                  "need-0daddb7bb8547629025a2941",
+                  "need-8328fec4ad5f21a462730a52",
+                  "need-ebe7a6ebe86288dfdc6a5f37",
+                  "need-b7ee92c3b83523cc3c4fb27e",
+                  "need-5fd7eb25ab4bd68048b568dc",
+                  "need-880b40dd52c37e485e9871db",
+                  "need-27a3fcd272136cb298b8a3a1",
+                  "need-19bcb79ea83bbfc016545a8a",
+                  "need-85ae0050ae082bcd42ff1584",
+                  "need-8b55a47e229233e6fdce35a6",
+                  "need-4d01099ecee0143d8ba03d5b",
+                  "need-2c8f9e196ee813f8ac794a10",
+                  "need-c55abe8ec1485d4232965b1a",
+                  "need-2b9af1ba40152c26f0873273",
+                  "need-8a5d59f2a62b80c9ef4d6957",
+                  "need-be28dc06a8b16bf628489b81",
+                  "need-13572b63930d6971211a543c",
+                  "need-9edc032f24e7e8768d1bc248",
+                  "need-ee859709df567856ff771834",
+                  "need-b7e687d313e8a18744bfa67d",
+                  "need-35f0d12d6baa8ef8775f22c5",
+                  "need-06c21dcc0591c534cc802dfc",
+                  "need-77b54f01a438bff4e92ca957",
+                  "need-3de50a6090a73c16dd588e3f",
+                  "need-776132774534fec10641f1fa",
+                  "need-1d2ca6a6a1b3975860bca343",
+                  "need-7bf434a7806da1f77ab6d4ec",
+                  "need-75ebf315274476b34e0c2e75",
+                  "need-847f69267d0a39337d8cdec9",
+                  "need-f6a2fb640e12ee7ef707a519",
+                  "need-7d80364ad2ac11ba530010fc",
+                  "need-b410063a5d435cc1aedb5e97",
+                  "need-e28e51d9be2d2d6822162fac",
+                  "need-a6e4ecf5a99db28bd67b5ba8",
+                  "need-f491022585e855dca9cec2a2",
+                  "need-9d44e86f2f551c40eb22ff25",
+                  "need-e30f9cb0a6f9849fb2e947dd",
+                  "need-e854c4fe0a1997537dddb53b",
+                  "need-2a2e5462f59a443b599a3eab",
+                  "need-8b74c9ebb21fd3fcfab41a73",
+                  "need-c5844ff9d32498dcd3cac8a0",
+                  "need-c168795de5fd5e16e331eb58",
+                  "need-eaebfca94e2455fdad766f59",
+                  "need-23ff1960b06c7e2feb7fd3a2",
+                  "need-913b2dbd757e8a1830399767",
+                  "need-46e6646b06ef4ad1509d51c0",
+                  "need-f30ae61126a5acdd8f9d7973",
+                  "reflection-e39a706ddefcbb1c",
+                  "reflection-166ca5f950269326"
+                ],
+                "seed": "hypothesis",
+                "staged_need_dispositions": [],
+                "status": "failed",
+                "structured_candidate_count": 0,
+                "terminal_kind": "technical_failure"
+              },
+              {
+                "axis_id": "magnitude_ge3_v1",
+                "candidate_count": 0,
+                "explored_families": [],
+                "fetched_case_refs": [],
+                "ledger_actions": 4,
+                "mixed_candidate_count": 0,
+                "modality_coverage": {
+                  "narrative": {
+                    "available": true,
+                    "explored": false,
+                    "status": "required"
+                  },
+                  "structured": {
+                    "available": true,
+                    "explored": false,
+                    "status": "required"
+                  }
+                },
+                "model_calls": 4,
+                "narrative_candidate_count": 0,
+                "narrative_reads": 0,
+                "need_disposition_rows": [],
+                "need_dispositions": 0,
+                "pending_need_refs": [],
+                "seed": "discovery",
+                "staged_need_dispositions": [],
+                "status": "failed",
+                "structured_candidate_count": 0,
+                "terminal_kind": "technical_failure"
+              }
+            ],
+            "status": "failed",
+            "structured_candidate_refs": [],
+            "track": "controller"
+          },
+          "surge_direction": {
+            "axis_id": "surge_direction",
+            "candidate_refs": [],
+            "capability_gaps": {},
+            "cycle_id": 1,
+            "limits": {
+              "case_pool_limit": 32,
+              "evidence_documents_per_case": 4,
+              "evidence_lookback_days": 365,
+              "exploration_interval": 3,
+              "exploration_microbatch_size": 4,
+              "h2_min_ready_issuers": 16,
+              "h2_min_ready_per_class": 4,
+              "h2_profile_scan_limit": 96,
+              "hypothesis_limit": 3,
+              "induction_cases_per_class": 4,
+              "ranking_case_limit": 12,
+              "reflection_feedback_limit": 3,
+              "selected_hypothesis_limit": 2,
+              "validation_cases_per_class": 8
+            },
+            "modality_metrics": {
+              "eligible_narrative_seed_count": 2,
+              "eligible_structured_seed_count": 2,
+              "narrative_candidate_count": 0,
+              "narrative_exploration_completed": 2,
+              "narrative_materialization_count": 0,
+              "narrative_read_count": 1,
+              "narrative_unavailable_count": 0,
+              "narrative_validation_count": 0,
+              "structured_candidate_count": 0,
+              "structured_exploration_completed": 0,
+              "structured_materialization_count": 0,
+              "structured_validation_count": 0
+            },
+            "narrative_candidate_refs": [],
+            "need_disposition_counts": {},
+            "refined_hypotheses": {},
+            "research_axis": {
+              "axis_id": "surge_direction",
+              "control": "realized_max_multiple < 2.0",
+              "population": "eligible_discovery_cases",
+              "positive": "realized_max_multiple >= 2.0"
+            },
+            "schema_version": "signal-mining-audit-v1",
+            "seeds": [
+              {
+                "axis_id": "surge_direction",
+                "candidate_count": 0,
+                "explored_families": [
+                  "10-k",
+                  "company_facts",
+                  "filing",
+                  "financials",
+                  "news",
+                  "sec_filing"
+                ],
+                "fetched_case_refs": [
+                  "case-001",
+                  "case-002",
+                  "case-003",
+                  "case-004",
+                  "case-005",
+                  "case-006",
+                  "case-007",
+                  "case-008"
+                ],
+                "ledger_actions": 7,
+                "mixed_candidate_count": 0,
+                "modality_coverage": {
+                  "narrative": {
+                    "available": true,
+                    "explored": true,
+                    "status": "explored"
+                  },
+                  "structured": {
+                    "available": true,
+                    "explored": true,
+                    "status": "explored"
+                  }
+                },
+                "model_calls": 7,
+                "narrative_candidate_count": 0,
+                "narrative_reads": 1,
+                "need_disposition_rows": [],
+                "need_dispositions": 0,
+                "pending_need_refs": [
+                  "need-e6c4f110c7a67f907e403e51",
+                  "need-fe153eb99bc7b556545cd1a3",
+                  "need-cfd29cbf9a3bbf0b2d37c71b",
+                  "need-b4f82d291b7c6d5181fc437b",
+                  "need-126b66ec7cd0783066398d40",
+                  "need-1e7ae75cbade44d97e5fe792",
+                  "need-188b935c598d09170c94004f",
+                  "need-ac1d1d3bda069dd586e55060",
+                  "need-6ebf32eaa6919dd31a15e24e",
+                  "need-5f55a8c034e5dde7257002a0",
+                  "need-02f4cea216fe1fa783eb0e66",
+                  "need-f675d54bc13b8e40297a17c5",
+                  "need-9bdc5c95f963dbe23ff848f0",
+                  "need-ade6b6e6346c750207fe7fbb",
+                  "need-66e76ab5dc047fdb15e08de0",
+                  "need-09aab971a9454fc7ba677e63",
+                  "need-a7a616243c0abd04f82aaafe",
+                  "need-96bf0252b28ae1404894fa7c",
+                  "need-7b0222bd07b5adbb3a392532",
+                  "need-c2dbdd77e9f6ee290e5ec31e",
+                  "need-d98fad2b2e3700c1088f9eac",
+                  "need-a3ffc2cd7bdf87a22fb6504f",
+                  "need-fdcd9df2c79c3892b0313987",
+                  "need-cb6192a7e0732171ce901a9a",
+                  "need-1d328efb0fd75ea972425d24",
+                  "need-0f91c15dfe879a46f912201e",
+                  "need-c1b8c85b7af38d840f0694c6",
+                  "need-cfc1e2938b719d15de5bec62",
+                  "need-139b5f5589713e2d1f9c2287",
+                  "need-cbb61cce496d8beeb97150c2",
+                  "need-0ae93d06ab0b08b3055565b1",
+                  "need-b0c0466449f87dc74b12a7ac",
+                  "need-de140d77ab1ae1643db44905",
+                  "need-4315dc17070a0ec8f0a86dfd",
+                  "need-0a7c3584c0f5f9f8c8f586ed",
+                  "need-2fa2f583d20c46ca79eb3493",
+                  "need-fb8829cc3e8f323f1240055f",
+                  "need-3d6023d69f3f1c54099519a0",
+                  "need-67423c24c7b2dae6d66b15c0",
+                  "need-25aa09136e7accef802241f0",
+                  "need-b5d73f4c2859b0810742905d",
+                  "need-21b4a6278a39f7d9e868a83e",
+                  "need-cdc0e9599a6fed9dbbe633c5",
+                  "need-9412c3f675754fe80177e764",
+                  "need-9293a5be7364170769851786",
+                  "need-6d6e9497b8e12bd8197ae2dc",
+                  "need-6899451911e26056c3c18bd7",
+                  "need-a54b32bc1b6a870e0c789485",
+                  "need-9ff30f66c2e98cd42d262b8f",
+                  "need-e6036dc0ac64df37eefe45d4",
+                  "need-26a98329841e57aaa9ab7272",
+                  "need-0a150b3825a3ff4ddb201ab0",
+                  "need-ab41dafcf98056378f58bbea",
+                  "need-b8169fa51316368edec3eb4d",
+                  "need-67fb73d0946d655c9720b095",
+                  "need-f6dc56f8aeb78c8091f314d4",
+                  "need-2972bf79a71d38f7bbcb054f",
+                  "need-87db2cf2681977c5300a254c",
+                  "need-270e22b0752a466fb3b621ef",
+                  "need-9cae73674b3d4519a1b7c62b",
+                  "need-83fb5a6b305672932c92d6a4",
+                  "need-fa47837385c5f86ec7fb5483",
+                  "need-9124fb3fdc718f903d3dd204",
+                  "need-c5c2dcfe6a6104acf5edb6a7",
+                  "need-68a773b28ecb7f04055a73a5",
+                  "need-6eeed6753453b45fd131060d",
+                  "need-f6eec4cc00a7ff7e0d7d7bc4",
+                  "need-8ab36a6c45eefe965fc3155e",
+                  "need-8898c280b80be103be5300e4",
+                  "need-a9e505482b2103f6a4e44ecc",
+                  "need-5eb690b208e3ca837825afb6",
+                  "need-0daddb7bb8547629025a2941",
+                  "need-8328fec4ad5f21a462730a52",
+                  "need-ebe7a6ebe86288dfdc6a5f37",
+                  "need-b7ee92c3b83523cc3c4fb27e",
+                  "need-5fd7eb25ab4bd68048b568dc",
+                  "need-880b40dd52c37e485e9871db",
+                  "need-27a3fcd272136cb298b8a3a1",
+                  "need-19bcb79ea83bbfc016545a8a",
+                  "need-85ae0050ae082bcd42ff1584",
+                  "need-8b55a47e229233e6fdce35a6",
+                  "need-4d01099ecee0143d8ba03d5b",
+                  "need-2c8f9e196ee813f8ac794a10",
+                  "need-c55abe8ec1485d4232965b1a",
+                  "need-2b9af1ba40152c26f0873273",
+                  "need-8a5d59f2a62b80c9ef4d6957",
+                  "need-be28dc06a8b16bf628489b81",
+                  "need-13572b63930d6971211a543c",
+                  "need-9edc032f24e7e8768d1bc248",
+                  "need-ee859709df567856ff771834",
+                  "need-b7e687d313e8a18744bfa67d",
+                  "need-35f0d12d6baa8ef8775f22c5",
+                  "need-06c21dcc0591c534cc802dfc",
+                  "need-77b54f01a438bff4e92ca957",
+                  "need-3de50a6090a73c16dd588e3f",
+                  "need-776132774534fec10641f1fa",
+                  "need-1d2ca6a6a1b3975860bca343",
+                  "need-7bf434a7806da1f77ab6d4ec",
+                  "need-75ebf315274476b34e0c2e75",
+                  "need-847f69267d0a39337d8cdec9",
+                  "need-f6a2fb640e12ee7ef707a519",
+                  "need-7d80364ad2ac11ba530010fc",
+                  "need-b410063a5d435cc1aedb5e97",
+                  "need-e28e51d9be2d2d6822162fac",
+                  "need-a6e4ecf5a99db28bd67b5ba8",
+                  "need-f491022585e855dca9cec2a2",
+                  "need-9d44e86f2f551c40eb22ff25",
+                  "need-e30f9cb0a6f9849fb2e947dd",
+                  "need-e854c4fe0a1997537dddb53b",
+                  "need-2a2e5462f59a443b599a3eab",
+                  "need-8b74c9ebb21fd3fcfab41a73",
+                  "need-c5844ff9d32498dcd3cac8a0",
+                  "need-c168795de5fd5e16e331eb58",
+                  "need-eaebfca94e2455fdad766f59",
+                  "need-23ff1960b06c7e2feb7fd3a2",
+                  "need-913b2dbd757e8a1830399767",
+                  "need-46e6646b06ef4ad1509d51c0",
+                  "need-f30ae61126a5acdd8f9d7973",
+                  "reflection-e39a706ddefcbb1c",
+                  "reflection-166ca5f950269326"
+                ],
+                "seed": "hypothesis",
+                "staged_need_dispositions": [],
+                "status": "failed",
+                "structured_candidate_count": 0,
+                "terminal_kind": "technical_failure"
+              },
+              {
+                "axis_id": "surge_direction",
+                "candidate_count": 0,
+                "explored_families": [
+                  "10-k",
+                  "company_facts",
+                  "filing",
+                  "financials",
+                  "news",
+                  "sec_filing"
+                ],
+                "fetched_case_refs": [
+                  "case-001",
+                  "case-002",
+                  "case-003",
+                  "case-004",
+                  "case-005",
+                  "case-006",
+                  "case-007",
+                  "case-008"
+                ],
+                "ledger_actions": 6,
+                "mixed_candidate_count": 0,
+                "modality_coverage": {
+                  "narrative": {
+                    "available": true,
+                    "explored": false,
+                    "status": "required"
+                  },
+                  "structured": {
+                    "available": true,
+                    "explored": true,
+                    "status": "explored"
+                  }
+                },
+                "model_calls": 6,
+                "narrative_candidate_count": 0,
+                "narrative_reads": 0,
+                "need_disposition_rows": [],
+                "need_dispositions": 0,
+                "pending_need_refs": [],
+                "seed": "discovery",
+                "staged_need_dispositions": [],
+                "status": "failed",
+                "structured_candidate_count": 0,
+                "terminal_kind": "technical_failure"
+              }
+            ],
+            "status": "failed",
+            "structured_candidate_refs": [],
+            "track": "controller"
+          }
+        },
+        "candidate_refs": [],
+        "cycle_id": 1,
+        "schema_version": "signal-mining-multi-axis-audit-v1",
+        "status": "failed",
+        "track": "controller_multi_axis"
+      },
+      "update_pipeline": {
+        "candidate_refs": [
+          "financing_listing_action:v4",
+          "guidance_acceleration:v3"
+        ],
+        "cycle_id": 1,
+        "disposition": "portfolio_completed",
+        "model_called": true,
+        "model_target_count": 3,
+        "model_usage": {
+          "cost": 0.06286672,
+          "llm_calls": 3,
+          "tokens": 238112
+        },
+        "schema_version": "signal-update-audit-v2",
+        "status": "completed",
+        "target_count": 3,
+        "target_limit": 3,
+        "targets": [
+          {
+            "cycle_id": 1,
+            "error": "signal_update_decision failed validation after one correction: provider returned invalid structured output: Unterminated string starting at: line 1 column 6206 (char 6205); provider output reached max_output_tokens=8000 and ended before one complete JSON object. Treat this as output-ceiling truncation: return the compact decision frontier only, obey every field/item/byte ceiling, and do not enumerate the input projections",
+            "issue_fingerprint": "fbea58e59a05caa40d6ce2375d90ef175156896172d26f1350e3d558c7d3325e",
+            "model_called": true,
+            "request_refs": [
+              "1cbb4b90fb8951436743269126f267015f5b06a7da33276d2b7d75f0b4f6d7d2",
+              "793c81ed172faddb8e378f330a6bcdfa55ef15a2442b32b59901444667a0e637"
+            ],
+            "schema_version": "signal-update-target-audit-v1",
+            "status": "failed",
+            "target": {
+              "problem_type": "repeated_explicit_misleading",
+              "recurring_contexts": [
+                {
+                  "context_tag": "customer_concentrated",
+                  "issuers": 6,
+                  "observations": 6,
+                  "positive_surge_rate": 1.0
+                },
+                {
+                  "context_tag": "large_cap",
+                  "issuers": 4,
+                  "observations": 4,
+                  "positive_surge_rate": 0.5
+                },
+                {
+                  "context_tag": "semiconductors",
+                  "issuers": 3,
+                  "observations": 3,
+                  "positive_surge_rate": 1.0
+                }
+              ],
+              "signal_ref": "customer_concentration:v2",
+              "support": {
+                "directional_wrong": 7,
+                "misleading_attributions": 2,
+                "unavailable": 0,
+                "unavailable_with_inputs": 0,
+                "unique_observations": 10
+              },
+              "worked_recent_cycles": 0
+            },
+            "usage": {
+              "cost": 0.05342932,
+              "llm_calls": 2,
+              "tokens": 174819
+            }
+          },
+          {
+            "candidate_refs": [
+              "financing_listing_action:v4"
+            ],
+            "cycle_id": 1,
+            "decision": {
+              "candidate": {
+                "signal_ref": "financing_listing_action:v3",
+                "skill": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Do not treat completed financing as automatically positive for the fixed surge target. Explain whether the point-in-time effect reduces or increases dilution, distress, or tradability, and whether it is a catalyst or merely a capital-structure event, with literal spans.\n",
+                "spec": {
+                  "category": "catalysts",
+                  "definition": {
+                    "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+                  },
+                  "evidence_policy": {
+                    "require_exact_span": true,
+                    "require_source": true,
+                    "require_timestamp": true
+                  },
+                  "execution": {
+                    "skill_file": "skill.md",
+                    "type": "llm"
+                  },
+                  "modality": "narrative",
+                  "parameters": {
+                    "result_required_evidence_phrases": [
+                      "financing",
+                      "refinancing",
+                      "debt",
+                      "restructuring",
+                      "listing",
+                      "dilution",
+                      "redemption",
+                      "reverse split",
+                      "share sale",
+                      "offering",
+                      "placement",
+                      "credit facility",
+                      "loan",
+                      "convertible",
+                      "PIPE",
+                      "securities purchase agreement"
+                    ],
+                    "routing_answer_need_phrases": [
+                      "financing",
+                      "refinancing",
+                      "debt restructuring",
+                      "listing",
+                      "dilution",
+                      "runway",
+                      "redemption",
+                      "reverse split",
+                      "share sale",
+                      "share offering",
+                      "equity offering",
+                      "debt maturity",
+                      "debt maturities",
+                      "PIPE",
+                      "securities purchase agreement",
+                      "reverse merger"
+                    ]
+                  },
+                  "raw_retrieval": {
+                    "lookback_days": 730,
+                    "query_terms": [
+                      "financing offering",
+                      "listing compliance",
+                      "reverse split",
+                      "PIPE financing",
+                      "securities purchase agreement",
+                      "at-the-market sales agreement",
+                      "equity offering",
+                      "convertible note conversion",
+                      "pre-funded warrant",
+                      "reverse merger",
+                      "investment grade credit rating",
+                      "credit facility amendment"
+                    ],
+                    "source_types": [
+                      "filing",
+                      "company_announcement",
+                      "news"
+                    ]
+                  },
+                  "schema": {
+                    "confidence": {
+                      "type": "float"
+                    },
+                    "value": {
+                      "type": "categorical",
+                      "values": [
+                        "positive",
+                        "neutral",
+                        "negative",
+                        "unavailable"
+                      ]
+                    }
+                  },
+                  "signal_id": "financing_listing_action",
+                  "version": 4
+                },
+                "tests": [
+                  {
+                    "documents": [
+                      {
+                        "content": "The financing remains a proposal and has not closed.",
+                        "source_type": "filing"
+                      }
+                    ],
+                    "expected": "neutral",
+                    "name": "proposed financing is not completed"
+                  }
+                ]
+              },
+              "case_diagnostics": [
+                {
+                  "case_ref": "update-case-001",
+                  "evidence_gaps": [
+                    "The visible spans do not show exchange-compliance, redemption, reverse-split, or listing actions.",
+                    "The visible spans do not establish whether the financing was associated with the fixed surge target."
+                  ],
+                  "evidence_verdict": "supported",
+                  "facts": [
+                    {
+                      "document_ref": "document-02",
+                      "exact_span": "On December&#160;10, 2024, the Company issued a press release to announce the closing of the 2024 Term Loan B Facility."
+                    },
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "The Fifth Amendment refinanced $298 million of outstanding borrowings under the 2022 Incremental Term, with a 75 basis point rate reduction; and included additional borrowings of $300 million."
+                    },
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "These transactions reinforce our expectation that we will maintain adequate liquidity for the next year and beyond."
+                    }
+                  ],
+                  "outcome_explanation": "The current Signal returned positive on completed refinancing and term-loan actions, but the supplied label is control, so the directional association is misaligned.",
+                  "outcome_relation": "misaligned"
+                },
+                {
+                  "case_ref": "update-case-002",
+                  "evidence_gaps": [
+                    "The visible spans do not show whether the financing actions were sufficient to resolve going-concern doubt.",
+                    "The visible spans do not establish the fixed surge target outcome."
+                  ],
+                  "evidence_verdict": "supported",
+                  "facts": [
+                    {
+                      "document_ref": "document-02",
+                      "exact_span": "The Convertible Note Exchange reduced the aggregate principal balance of our 2026 Notes from $<ix:nonFraction id=\"c289\" contextRef=\"i_2025-05-13_DebtInstrumentAxis-ConvertibleSeniorNotes2026Member_SubsequentEventTypeAxis-SubsequentEventMember\" unitRef=\"USD\" name=\"us-gaap:DebtInstrumentCarryingAmount\" scale=\"6\" format=\"ixt:num-dot-decimal\" decimals=\"-5\">97.9</ix:nonFraction> million to $<ix:nonFraction id=\"c290\" contextRef=\"i_2025-05-14_DebtInstrumentAxis-ConvertibleSeniorNotes2026Member_SubsequentEventTypeAxis-SubsequentEventMember\" unitRef=\"USD\" name=\"us-gaap:DebtInstrumentCarryingAmount\" scale=\"6\" format=\"ixt:num-dot-decimal\" decimals=\"-5\">27.1</ix:nonFraction>&#160;million."
+                    },
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "On May 12, 2025, the Company entered into note conversion agreements (each, a &#8220;Note Conversion Agreement&#8221;) with two affiliated holders of the 2026 Notes to convert $10 million aggregate principal amount of 2026 Notes into shares of the Company&#8217;s common stock (the &#8220;Equitization Transaction&#8221;)."
+                    },
+                    {
+                      "document_ref": "document-02",
+                      "exact_span": "We also have a sales agreement pursuant to an at the market (&#8220;ATM&#8221;)&#160;equity offering facility through which we may, from time to time, offer and sell shares of our common stock equaling an aggregate amount of&#160;up to&#160;$150.0&#160;million. Subsequent to March 31, 2025, we received $3.5&#160;million in net proceeds from sale of our common stock through the ATM facility."
+                    }
+                  ],
+                  "outcome_explanation": "The current Signal returned positive on completed convertible-note exchange and ATM sales, and the supplied label is positive, so the directional association is aligned.",
+                  "outcome_relation": "aligned"
+                },
+                {
+                  "case_ref": "update-case-003",
+                  "evidence_gaps": [
+                    "The visible spans do not show whether the convertible notes or ATM sales were associated with the fixed surge target.",
+                    "The visible spans do not establish the absence of other financing or listing actions."
+                  ],
+                  "evidence_verdict": "supported",
+                  "facts": [
+                    {
+                      "document_ref": "document-04",
+                      "exact_span": "On November 7, 2024, [MASKED_COMPANY]. (the &#8220;Company&#8221;) issued to the several initial purchasers (the &#8220;Initial Purchasers&#8221;) $402.5 million aggregate principal amount of the Company&#8217;s 2.25% convertible senior notes due 2030 (the &#8220;Notes&#8221;), pursuant to a purchase agreement among the Company and BofA Securities, Inc. and J.P. Morgan Securities LLC, as representatives of the Initial Purchasers."
+                    },
+                    {
+                      "document_ref": "document-03",
+                      "exact_span": "On November 5, 2024, [MASKED_COMPANY]. (the &#8220;Company&#8221;) issued a press release announcing the pricing of its offering of $350 million aggregate principal amount of 2.25% convertible senior notes due 2030 (the &#8220;Notes&#8221;) in a private placement to persons reasonably believed to be qualified institutional buyers pursuant to Rule 144A under the Securities Act of 1933, as amended."
+                    },
+                    {
+                      "document_ref": "document-02",
+                      "exact_span": "On February 9, 2024, the Company entered into an At Market Issuance Sales Agreement with B. Riley Securities, Inc., Lake Street Capital Markets, LLC and Roth Capital Partners, LLC (collectively, the &#8220;Agents&#8221;), relating to the ATM offering of shares of the Company&#8217;s Class A Common Stock."
+                    }
+                  ],
+                  "outcome_explanation": "The current Signal returned positive on completed convertible-note issuance and ATM program evidence, and the supplied label is positive, so the directional association is aligned.",
+                  "outcome_relation": "aligned"
+                }
+              ],
+              "changed_paths": [
+                "skill"
+              ],
+              "disposition": "update",
+              "problem_type": "repeated_explicit_misleading",
+              "rationale": [
+                "The stable v3 skill treats completed financing actions as positive evidence for runway/tradability, but the supplied cases show that completed financings can be associated with controls and can be misaligned with the fixed surge target.",
+                "Case update-case-001 is a control with a positive v3 call; the cited spans support completed refinancing and term-loan actions, but the label is control and the current relation is misaligned.",
+                "Case update-case-002 is a positive case with a positive v3 call; the cited spans support completed convertible-note exchange and ATM sales, but the interpretation also notes going-concern doubt and near-term maturity, so the directional association is not clean.",
+                "Case update-case-003 is a positive case with a positive v3 call; the cited spans support a completed convertible-note issuance and ATM program, but the interpretation itself notes dilution risk, so the stable orientation is not reliably aligned with the fixed surge target.",
+                "The learned profile shows repeated explicit misleading: 17 selection events, 1 positive non-surge, 6 neutral non-surge, and only 5 positive surge, with mean realized multiples nearly flat across states.",
+                "The correctable defect is the skill's directional orientation and routing: it should separate completed financing actions from proposals, but it should not default completed financing to positive for the fixed surge target; it should assess whether the action reduces or increases dilution/distress and whether it is a catalyst or merely a capital-structure event.",
+                "The update changes only permitted mutable fields: skill, parameters, and raw_retrieval query terms/source types; the stable definition, execution identity, schema, evidence policy, and tests remain unchanged."
+              ],
+              "signal_ref": "financing_listing_action:v3"
+            },
+            "diagnostic_counts": {
+              "evidence_verdict": {
+                "contradicted": 0,
+                "insufficient": 0,
+                "supported": 3
+              },
+              "outcome_relation": {
+                "aligned": 2,
+                "misaligned": 1,
+                "not_assessable": 0
+              }
+            },
+            "disposition": "update",
+            "execution_usage": {
+              "cost": 0.0,
+              "llm_calls": 0,
+              "tokens": 111266
+            },
+            "issue_fingerprint": "1ed90fee10f10308d436fa40c0d852f5dd21ce61a5d28dff39dc4ac9ff6c85aa",
+            "local_selection": {
+              "available_bucket_counts": {
+                "correct": 2,
+                "neutral": 4,
+                "unavailable": 0,
+                "wrong": 1
+              },
+              "holdout_case_ids": [
+                "cik_0001474627:20250530",
+                "cik_0001097362:20250731",
+                "cik_0000878518:20250930",
+                "cik_0000800457:20250731",
+                "cik_0001814215:20250530",
+                "cik_0001946703:20250731",
+                "cik_0001438133:20250930",
+                "cik_0001679273:20250331"
+              ],
+              "induction_case_ids": [
+                "cik_0001361658:20250131",
+                "cik_0001285819:20250930",
+                "cik_0001065059:20250131"
+              ],
+              "issuer_disjoint": true,
+              "primary_sources": [
+                "wrong"
+              ],
+              "problem_bucket": "wrong",
+              "technical_failure_count": 1
+            },
+            "model_called": true,
+            "model_usage": {
+              "cost": 0.0,
+              "llm_calls": 0,
+              "tokens": 31023
+            },
+            "request_refs": [
+              "3f764834b64eb5b1e48c9d62a96381c0b832138d1242a7669b5632cadd00222b",
+              "ee283eb086f7677b7c65a14fbe525e6a5d6ca1393da05353b3e9410974c82978"
+            ],
+            "resolutions": [
+              {
+                "as_of": "2025-01-31T00:00:00+00:00",
+                "case_ref": "update-case-001",
+                "cited_document_refs": [
+                  "document-02",
+                  "document-02",
+                  "document-01",
+                  "document-01",
+                  "document-01"
+                ],
+                "document_count": 10,
+                "document_hashes": [
+                  "846fda69c507ec6a9e7e2faa1964b9485f3c43dfe728ba2785f7fda989ad6c50",
+                  "d544b0f5a032c92022d5f92b57b19ddb77d0520cb6960fcafaa2ff493e6d74ec",
+                  "efa191c82d848be065650c7601bdcb7d34ccc554df9779d06e59a39530b26c0f",
+                  "165eefb18467f37d6d283b5573e6403c7a614bd165f3bbcb44c1c3c3557071f6",
+                  "295f3b9299a059bf2313f9a7854662aa76d10846cd81bc94a4de58949dff846e",
+                  "d6d91415a880c7f7ac8dd441d6b62cc4fd61dedf303c1eea2abee7cf6978c45e",
+                  "514e5df8075df975a1130e47e65325e33d3819d044d6ba4266820e1463d46968",
+                  "0aa63f730634f9e27f64c198f1b8b01fa30def44dbd0d4b26d0da7f61634ace5",
+                  "6d137e9e0d85b9f580dc1921d0e331f2cf17a85217047f1b6539b7bf6eec91bd",
+                  "60ce00eb58e048751bb7da762b2c465355055e1ff3569df65ef00a5a0ed4c303"
+                ],
+                "document_ids": [
+                  "sec:cik_0001361658:000136165824000145",
+                  "sec:cik_0001361658:000136165824000222",
+                  "sec:cik_0001361658:000136165824000118",
+                  "sec:cik_0001361658:000136165824000129",
+                  "sec:cik_0001361658:000136165824000142",
+                  "sec:cik_0001361658:000136165824000165",
+                  "sec:cik_0001361658:000136165824000175",
+                  "sec:cik_0001361658:000136165824000179",
+                  "sec:cik_0001361658:000136165824000203",
+                  "sec:cik_0001361658:000136165824000226"
+                ],
+                "input_request": {
+                  "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+                  "request_id": "signal:financing_listing_action:v3",
+                  "source_types": [
+                    "filing",
+                    "company_announcement",
+                    "news"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              },
+              {
+                "as_of": "2025-09-30T00:00:00+00:00",
+                "case_ref": "update-case-002",
+                "cited_document_refs": [
+                  "document-02",
+                  "document-01",
+                  "document-02",
+                  "document-02"
+                ],
+                "document_count": 4,
+                "document_hashes": [
+                  "1e5a99949ad4305820a864effdef3d6bd9a2a99a3372286b9d0cd926646fe5fa",
+                  "378729c94a90f60e8fe3937b2a1509c97a3e77ecf770d4718545a95529f6fe8d",
+                  "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226",
+                  "b5cd97cba9abc3bab786fb33a93bfc116ff35ea2b29cc0c03a44a3eee5b19727"
+                ],
+                "document_ids": [
+                  "sec:cik_0001285819:000143774925017211",
+                  "sec:cik_0001285819:000143774925017213",
+                  "sec:cik_0001285819:000143774925010216",
+                  "sec:cik_0001285819:000143774925014815"
+                ],
+                "input_request": {
+                  "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+                  "request_id": "signal:financing_listing_action:v3",
+                  "source_types": [
+                    "filing",
+                    "company_announcement",
+                    "news"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              },
+              {
+                "as_of": "2025-01-31T00:00:00+00:00",
+                "case_ref": "update-case-003",
+                "cited_document_refs": [
+                  "document-04",
+                  "document-03",
+                  "document-02",
+                  "document-01"
+                ],
+                "document_count": 10,
+                "document_hashes": [
+                  "2c070d1a03431bd497a93777ed4a970ce942935325d722c7a546eb8e9bbc9845",
+                  "3db291274fcf69c540527e1da4b1379436683d09c5f4c146413c106a084019b7",
+                  "08a15720cd72c4c9dc01269c5a1f507cd8009500c31c05fd680caf221eabb1ff",
+                  "97f4b122d0b30f0577560806ec8fac9bee67fedd9623e63dedf8c1ee8271b022",
+                  "5ff3bf3c648a1cd121388d82c66219d18b7ff9516b0e9512ee8e735d5ec71cec",
+                  "df17ab2f25a98f4f382a2d6ea3ac57b3e93cc3fda192f7fe5eec05206b5b70bc",
+                  "34e4184262c6a2f03db6201d290ab8f21733a4abc6a91c08710a43946884dadb",
+                  "ccf4cf7dffac894bae88b7af5640f0c0fae3f09e306a90dc9b38a73029f7ed3e",
+                  "1d7ccb06c8f25c7a2d41cb92f08343e16c4b4365a8b69506964c34b4b6300752",
+                  "4d0ccc4fe832bf65a06cc227d5b901c9bb10d33d804c137f1b768683406008a5"
+                ],
+                "document_ids": [
+                  "sec:cik_0001065059:000106505924000013",
+                  "sec:cik_0001065059:000106505924000089",
+                  "sec:cik_0001065059:000106505924000096",
+                  "sec:cik_0001065059:000106505924000100",
+                  "sec:cik_0001065059:000106505924000086",
+                  "sec:cik_0001065059:000106505924000091",
+                  "sec:cik_0001065059:000106505924000093",
+                  "sec:cik_0001065059:000106505924000098",
+                  "sec:cik_0001065059:000106505924000102",
+                  "sec:cik_0001065059:000106505924000108"
+                ],
+                "input_request": {
+                  "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+                  "request_id": "signal:financing_listing_action:v3",
+                  "source_types": [
+                    "filing",
+                    "company_announcement",
+                    "news"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              }
+            ],
+            "schema_version": "signal-update-target-audit-v1",
+            "staged_ref": "financing_listing_action:v4",
+            "status": "completed",
+            "target": {
+              "problem_type": "repeated_explicit_misleading",
+              "recurring_contexts": [
+                {
+                  "context_tag": "small_cap",
+                  "issuers": 8,
+                  "observations": 8,
+                  "positive_surge_rate": 0.75
+                },
+                {
+                  "context_tag": "capital_intensive",
+                  "issuers": 6,
+                  "observations": 6,
+                  "positive_surge_rate": 1.0
+                },
+                {
+                  "context_tag": "large_cap",
+                  "issuers": 5,
+                  "observations": 5,
+                  "positive_surge_rate": 1.0
+                }
+              ],
+              "signal_ref": "financing_listing_action:v3",
+              "support": {
+                "directional_wrong": 2,
+                "misleading_attributions": 2,
+                "unavailable": 0,
+                "unavailable_with_inputs": 0,
+                "unique_observations": 17
+              },
+              "worked_recent_cycles": 0
+            },
+            "technical_failures": [
+              {
+                "case_id": "cik_0001746129:20250731",
+                "company_id": "cik_0001746129",
+                "error_code": "signal_output_validation_exhausted",
+                "error_message": "Signal counter evidence[1] on projection 'projection_ca336082822ec693375bc4ad' touches internal projection edge=['end']; overlapping_projection_ids=[]; overlapping_projection_interior_candidates={}. Copy one listed byte-exact candidate, another complete literal from an overlapping projection, or shorten the citation to a complete clause strictly inside the cited projection; return unavailable only when no compliant literal exists",
+                "execution_status": "validation_failed",
+                "resolution": {
+                  "appended_documents": [],
+                  "context_spans": [],
+                  "coverage": {
+                    "context_truncated": null,
+                    "contract_satisfied": true,
+                    "deduplicated_document_count": 0,
+                    "eligible_document_count": 10,
+                    "missing_requirements": [],
+                    "observed_distinct_period_count": 0,
+                    "observed_observation_count": 0,
+                    "observed_period_span_days": null,
+                    "query_evaluated": true,
+                    "query_matched_document_count": 10,
+                    "query_requested": true,
+                    "query_status": "matched",
+                    "required_source_group_count": 0,
+                    "satisfied_source_group_count": 0,
+                    "selected_document_count": 10,
+                    "selection_truncated": false,
+                    "visible_span_count": 0
+                  },
+                  "data_gap": null,
+                  "documents": [
+                    {
+                      "available_at": "2025-03-12T20:15:51+00:00",
+                      "content_hash": "57e3433d741b8be602664f7be4400086ac613913478fa42c8620d387fee6b6b9",
+                      "document_id": "sec:cik_0001746129:000114036125008438"
+                    },
+                    {
+                      "available_at": "2024-08-08T13:30:10+00:00",
+                      "content_hash": "64e5c30fc250d163f6f2fa2c3e50cd87b9d179c4bc7913852732cb5bf7812c42",
+                      "document_id": "sec:cik_0001746129:000114036124036309"
+                    },
+                    {
+                      "available_at": "2024-11-05T14:18:58+00:00",
+                      "content_hash": "65de5e97c5667f17d95587d33f87827acf3a278a5aad019b400e53495e2c56d3",
+                      "document_id": "sec:cik_0001746129:000114036124045199"
+                    },
+                    {
+                      "available_at": "2025-05-12T20:05:53+00:00",
+                      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+                      "document_id": "sec:cik_0001746129:000114036125018373"
+                    },
+                    {
+                      "available_at": "2025-03-25T13:00:14+00:00",
+                      "content_hash": "1cfbd83e926a55baac144a61dc06795b79dcf298af0f04e2375ee815289fb75a",
+                      "document_id": "sec:cik_0001746129:000114036125010177"
+                    },
+                    {
+                      "available_at": "2025-07-17T12:00:47+00:00",
+                      "content_hash": "4cd1152c2e2b0a7351db39e8a7bfbe4e1dfa0da8a213e75ea563d6de06839229",
+                      "document_id": "sec:cik_0001746129:000114036125026134"
+                    },
+                    {
+                      "available_at": "2025-04-10T12:00:29+00:00",
+                      "content_hash": "9468ed399781a8298173a4dd3edf82d5f78a6b66bfbe70222beb8bbe16c47ccf",
+                      "document_id": "sec:cik_0001746129:000114036125013171"
+                    },
+                    {
+                      "available_at": "2025-01-16T13:00:42+00:00",
+                      "content_hash": "9d4fd2277f4fc8a98fc1b1185916ee96661724e3de2dee0c158de9597dd21ae9",
+                      "document_id": "sec:cik_0001746129:000114036125001243"
+                    },
+                    {
+                      "available_at": "2024-10-11T12:00:29+00:00",
+                      "content_hash": "9d768864899681b62d0841187051ec2bcabafe845f495c5c6d76ee0de0ae8d18",
+                      "document_id": "sec:cik_0001746129:000114036124043297"
+                    },
+                    {
+                      "available_at": "2025-05-19T20:15:25+00:00",
+                      "content_hash": "94413c47167702ba1b7c4455e794b141f130ab87b6f126c9a09fc6c30907e8b8",
+                      "document_id": "sec:cik_0001746129:000114036125019776"
+                    }
+                  ],
+                  "events": [
+                    {
+                      "details": {
+                        "matched_document_ids": [
+                          "sec:cik_0001746129:000114036125008438",
+                          "sec:cik_0001746129:000114036124036309",
+                          "sec:cik_0001746129:000114036124045199",
+                          "sec:cik_0001746129:000114036125018373",
+                          "sec:cik_0001746129:000114036125010177",
+                          "sec:cik_0001746129:000114036125026134",
+                          "sec:cik_0001746129:000114036125013171",
+                          "sec:cik_0001746129:000114036125001243",
+                          "sec:cik_0001746129:000114036124043297",
+                          "sec:cik_0001746129:000114036125019776"
+                        ],
+                        "phase": "initial",
+                        "request_id": "signal:financing_listing_action:v3",
+                        "source_types": [
+                          "filing",
+                          "company_announcement",
+                          "news"
+                        ]
+                      },
+                      "kind": "local_query"
+                    }
+                  ],
+                  "omitted_context_markers": [],
+                  "request": {
+                    "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability.",
+                    "lookback_days": 730,
+                    "max_documents": 10,
+                    "query": "financing offering listing compliance reverse split PIPE financing securities purchase agreement at-the-market sales agreement equity offering convertible note conversion pre-funded warrant reverse merger investment grade credit rating credit facility amendment",
+                    "request_id": "signal:financing_listing_action:v3",
+                    "source_types": [
+                      "filing",
+                      "company_announcement",
+                      "news"
+                    ]
+                  },
+                  "status": "resolved"
+                }
+              }
+            ],
+            "work_fingerprint": "c03eceebdab978997ee0d2a024184cd03f841104c1647e607b68cdbb6fe6cf82"
+          },
+          {
+            "candidate_refs": [
+              "guidance_acceleration:v3"
+            ],
+            "cycle_id": 1,
+            "decision": {
+              "candidate": {
+                "signal_ref": "guidance_acceleration:v2",
+                "skill": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.\n",
+                "spec": {
+                  "category": "management",
+                  "definition": {
+                    "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+                  },
+                  "evidence_policy": {
+                    "require_exact_span": true,
+                    "require_source": true,
+                    "require_timestamp": true
+                  },
+                  "execution": {
+                    "skill_file": "skill.md",
+                    "type": "llm"
+                  },
+                  "modality": "narrative",
+                  "parameters": {
+                    "result_required_evidence_phrases": [
+                      "guidance",
+                      "outlook",
+                      "forecast",
+                      "we expect",
+                      "management expects",
+                      "company expects",
+                      "now expects",
+                      "raises its",
+                      "raised its",
+                      "lowers its",
+                      "lowered its",
+                      "reaffirms",
+                      "reaffirmed",
+                      "on track to"
+                    ],
+                    "routing_answer_need_phrases": [
+                      "guidance",
+                      "outlook",
+                      "forecast"
+                    ],
+                    "routing_need_phrases": [
+                      "guidance update",
+                      "guidance updates",
+                      "updated guidance",
+                      "guidance change",
+                      "guidance changes",
+                      "revised guidance",
+                      "guidance revision",
+                      "guidance revisions"
+                    ]
+                  },
+                  "raw_retrieval": {
+                    "comparison_requirement": "Current guidance versus explicit prior guidance; both current and prior guidance spans must be visible.",
+                    "lookback_days": 365,
+                    "query_terms": [
+                      "guidance outlook forecast",
+                      "raises guidance",
+                      "raised guidance",
+                      "lowers guidance",
+                      "lowered guidance",
+                      "reaffirms guidance",
+                      "reaffirmed guidance",
+                      "updated guidance",
+                      "revised guidance",
+                      "now expects",
+                      "management expects",
+                      "company expects"
+                    ],
+                    "source_types": [
+                      "earnings_call",
+                      "company_announcement",
+                      "press_release",
+                      "filing"
+                    ]
+                  },
+                  "schema": {
+                    "confidence": {
+                      "type": "float"
+                    },
+                    "value": {
+                      "type": "categorical",
+                      "values": [
+                        "positive",
+                        "neutral",
+                        "negative",
+                        "unavailable"
+                      ]
+                    }
+                  },
+                  "signal_id": "guidance_acceleration",
+                  "version": 3
+                },
+                "tests": [
+                  {
+                    "documents": [
+                      {
+                        "content": "Management remains optimistic but did not change guidance.",
+                        "source_type": "filing"
+                      }
+                    ],
+                    "expected": "neutral",
+                    "name": "generic optimism"
+                  }
+                ]
+              },
+              "case_diagnostics": [
+                {
+                  "case_ref": "update-case-001",
+                  "evidence_gaps": [
+                    "No explicit current management guidance or prior guidance baseline is visible in the supplied excerpts.",
+                    "The visible documents are accounting-pronouncement and boilerplate forward-looking-statement text, not earnings-call or company-announcement guidance revisions."
+                  ],
+                  "evidence_verdict": "insufficient",
+                  "facts": [
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "read in conjunction with the Company\u2019s 2023 Consolidated Financial Statements included in its Annual Report on Form 10-K filed with the Securities and Exchange Commission (\u201cSEC\u201d) on February 21, 2024. 2. New Accounting Pronouncements Recently Issued Accounting Pronouncements Business Combinations\u2014Joint Venture Formations . In August 2023, the Financial Accounting Standards Board (\u201cFASB\u201d) issued guidance to address the accounting for contributions made to a joint venture, upon formation, in a joint venture\u2019s separate financial statements. The guidance was issued in an effort to reduce diversity in practice and requires a joint venture to initially measure its assets and liabilities at fair value on the formation date. This guidance is effective prospectively for all joint ventures within the scope of the standard that are formed on or after January 1, 2025. Existing joint ventures have the option to apply the guidance retrospectively. Early adoption is permitted. The Company is currently evaluating the impact of the adoption of this guidance on its financial statements and related disclosures. Disclosure improvements . In October 2023, the FASB issued guidance to modify the"
+                    },
+                    {
+                      "document_ref": "document-07",
+                      "exact_span": "are any statements other than statements of historical fact, including statements regarding our expectations, beliefs, hopes, intentions or strategies regarding the future. In some cases, forward-looking statements can be identified by the use of words such as \u201cmay,\u201d \u201cwill,\u201d \u201cexpects,\u201d \u201cshould,\u201d \u201cbelieves,\u201d \u201cplans,\u201d \u201canticipates,\u201d \u201cestimates,\u201d \u201cpredicts,\u201d \u201cpotential,\u201d \u201cprojects,\u201d \u201ccontinue,\u201d \u201cguidance,\u201d \u201ccommitments,\u201d \u201cfuture,\u201d \u201coutlook,\u201d or other words of similar meaning. Forward-looking statements are subject to risks and uncertainties that could cause actual results of [MASKED_COMPANY] Co. and its subsidiaries (\u201c[MASKED_COMPANY] Co.\u201d or \u201cwe\u201d) to differ materially from those discussed in, or implied by, the forward-looking statements. Factors that might cause such a difference include, but are not limited to, risks associated with: the acquisition of the [MASKED_COMPANY] brand and the future prospects and plans for [MASKED_COMPANY] Co., including our ability to execute our strategies to grow our cornerstone timeshare and exchange businesses and expand into the broader leisure travel industry through travel clubs; our ability to compete in the highly competitive timeshare and"
+                    }
+                  ],
+                  "outcome_explanation": "The label is control, but source support is insufficient to establish the measured condition, so directional association cannot be assessed.",
+                  "outcome_relation": "not_assessable"
+                },
+                {
+                  "case_ref": "update-case-002",
+                  "evidence_gaps": [
+                    "No explicit current management guidance or prior guidance baseline is visible in the supplied excerpts.",
+                    "The visible documents are tax-accounting and segment-reporting notes, not guidance revisions."
+                  ],
+                  "evidence_verdict": "insufficient",
+                  "facts": [
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "31, 2023, the recognized benefit from income tax resulted from the loss for the quarter and included benefits related to the U.S. FDII and federal R&D tax credit, along with a discrete tax benefit due primarily to share-based compensation windfalls. The effective tax rate excluding discrete items for the three months ended March 31, 2024 , as compared to the prior year, differed primarily due to lower projected U.S. FDII and federal R&D tax credits and higher book income, as well as non-deductible officer share-based compensation and certain foreign-based employee share-based compensation . Table of Contents [MASKED_COMPANY]. NOTES TO CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (Unaudited) [MASKED_COMPANY]. | Q1'2024 Form 10-Q | 15 Note 9 \u2014 Segment Reporting The Company\u2019s Chief Operating Decision-Maker (\u201cCODM\u201d) is its chief executive officer. The Company continue s to monitor and review its segment reporting structure in accordance with authoritative guidance to determine whether any changes have occurred that would impact its reportable segments . The following table presents a summary of the Company\u2019s financial information by segment and corporate operating expenses."
+                    },
+                    {
+                      "document_ref": "document-07",
+                      "exact_span": "recognized benefit from income tax resulted from the Company\u2019s loss for the respective periods and included benefits related to the U.S. FDII and R&D tax credit, along with a discrete tax benefit due primarily to share- based compensation windfalls. The effective tax rate excluding discrete items for the six months ended June 30, 2024 , as compared to the prior year, differed primarily due to lower projected R&D tax credits, increased non-deductible officer share-based compensation, and higher projected book income that is reducing the effective tax rate of the projected U.S. FDII . Table of Contents [MASKED_COMPANY]. NOTES TO CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (Unaudited) [MASKED_COMPANY]. | Q2'2024 Form 10-Q | 16 Note 9 \u2014 Segment Reporting The Company\u2019s Chief Operating Decision-Maker (\u201cCODM\u201d) is its President and Chief Executive Officer . The Company continue s to monitor and review its segment reporting structure in accordance with authoritative guidance to determine whether any changes have occurred that would impact its reportable segments . The following tables present a summary of the Company\u2019s financial information by segment and corporate operating"
+                    }
+                  ],
+                  "outcome_explanation": "The label is control, but source support is insufficient to establish the measured condition, so directional association cannot be assessed.",
+                  "outcome_relation": "not_assessable"
+                },
+                {
+                  "case_ref": "update-case-003",
+                  "evidence_gaps": [
+                    "The visible management statements are recurring liquidity and cash-flow sufficiency plans, not explicit guidance revisions.",
+                    "No explicit prior guidance baseline or upward change in level, timing, or conviction is visible."
+                  ],
+                  "evidence_verdict": "insufficient",
+                  "facts": [
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "In\norder to meet the debt obligations and operating needs of our business, our management expects to satisfy the cash flow needs and through\n(i) maintaining stable relationships with banks in order to renew the bank borrowings upon maturity or to arrange for additional banking\nfacilities for use when necessary; (ii) closely monitoring the collection status of accounts receivable and actively following up with\nour customers for settlements; (iii) diversifying and broadening our customer base to avoid reliance on particular customers and to expand\nour sources of revenue and cash flow; (iv) effectively managing accounts payable and negotiating for longer credit periods from suppliers,\nwhen necessary; (v) obtaining financial support from our Controlling Shareholder and investors to meet short-term operating expenses;\nand (vi) continuing to focusing on improving operational efficiency and cost reductions and enhancing efficiency."
+                    },
+                    {
+                      "document_ref": "document-02",
+                      "exact_span": "In\norder to meet the debt obligations and operating needs of our business, our management expects to satisfy the cash flow needs and through\n(i) maintaining stable relationships with banks in order to renew the bank borrowings upon maturity or to arrange for additional banking\nfacilities for use when necessary; (ii) closely monitoring the collection status of accounts receivable and actively following up with\nour customers for settlements; (iii) diversifying and broadening our customer base to avoid reliance on particular customers and to expand\nour sources of revenue and cash flow; (iv) effectively managing accounts payable and negotiating for longer credit periods from suppliers,\nwhen necessary; (v) obtaining financial support from our Controlling Shareholder and investors to meet short-term operating expenses;\nand (vi) continuing to focusing on improving operational efficiency and cost reductions and enhancing efficiency."
+                    }
+                  ],
+                  "outcome_explanation": "The label is positive, but source support is insufficient to establish the measured condition, so directional association cannot be assessed.",
+                  "outcome_relation": "not_assessable"
+                },
+                {
+                  "case_ref": "update-case-004",
+                  "evidence_gaps": [
+                    "The visible forward-looking statement is a bid intention, not an explicit guidance revision.",
+                    "The DOE contract amendment is a third-party action, not a company guidance revision, and no explicit prior guidance baseline is visible."
+                  ],
+                  "evidence_verdict": "insufficient",
+                  "facts": [
+                    {
+                      "document_ref": "document-01",
+                      "exact_span": "The Company expects to submit bids for both RFPs, with the goal of expanding HALEU production capability at the Piketon facility and building a deconversion facility, subject to, among other things, availability of funding and/or offtake commitments."
+                    },
+                    {
+                      "document_ref": "document-02",
+                      "exact_span": "On November 5, 2024, the United States Department of Energy and American Centrifuge Operating, LLC, a Delaware limited liability company and a wholly subsidiary of [MASKED_COMPANY]. (&#8220;Centrus&#8221;) executed an amendment to the High-Assay, Low-Enriched Uranium (&#8220;HALEU&#8221;) Demonstration Cascade Completion and HALEU Production contract (the &#8220;Contract&#8221;), dated November 30, 2022, to extend the period of performance for the second phase (&#8220;Phase 2&#8221;) of the Contract, which was to expire on November 6, 2024, to June 30, 2025 and separately to add approximately $24 million of incremental funding."
+                    }
+                  ],
+                  "outcome_explanation": "The label is positive, but source support is insufficient to establish the measured condition, so directional association cannot be assessed.",
+                  "outcome_relation": "not_assessable"
+                }
+              ],
+              "changed_paths": [
+                "spec.raw_retrieval.source_types",
+                "spec.raw_retrieval.query_terms",
+                "spec.raw_retrieval.comparison_requirement",
+                "spec.raw_retrieval.lookback_days"
+              ],
+              "disposition": "update",
+              "problem_type": "repeated_explicit_misleading",
+              "rationale": [
+                "The stable Signal is an LLM narrative skill that requires explicit prior guidance and a material upward change in level, timing, or conviction; generic optimism is neutral.",
+                "Across the four supplied cases, the current v2 result is unavailable in two cases and neutral in two cases, while the visible evidence contains no explicit prior guidance baseline or explicit upward revision statement.",
+                "The target-use profile shows 14 selected-use observations with positive-state mean realized multiple 2.44 versus neutral 3.11 and negative 3.38, and reflection attribution marks the signal as ignored or misleading in 5 of 7 attributed events.",
+                "The correctable defect is retrieval and applicability: the current query terms and source types surface accounting-guidance and boilerplate filings rather than explicit current-versus-prior management guidance, so the skill cannot reliably find the required comparator.",
+                "The update narrows retrieval to explicit guidance-revision language and adds a comparison requirement that demands both current and prior guidance spans, while preserving the stable definition, execution identity, and fixtures."
+              ],
+              "signal_ref": "guidance_acceleration:v2"
+            },
+            "diagnostic_counts": {
+              "evidence_verdict": {
+                "contradicted": 0,
+                "insufficient": 4,
+                "supported": 0
+              },
+              "outcome_relation": {
+                "aligned": 0,
+                "misaligned": 0,
+                "not_assessable": 4
+              }
+            },
+            "disposition": "update",
+            "execution_usage": {
+              "cost": 0.013028119999999999,
+              "llm_calls": 4,
+              "tokens": 122746
+            },
+            "issue_fingerprint": "79157d6f3f168eb31acefa43cbc5253c934aba4066d77813b6e66bcbfaed70f1",
+            "local_selection": {
+              "available_bucket_counts": {
+                "correct": 0,
+                "neutral": 3,
+                "unavailable": 2,
+                "wrong": 0
+              },
+              "holdout_case_ids": [
+                "cik_0001474627:20250530",
+                "cik_0001097362:20250731",
+                "cik_0000878518:20250930",
+                "cik_0000800457:20250731",
+                "cik_0001814215:20250530",
+                "cik_0001946703:20250731",
+                "cik_0001438133:20250930",
+                "cik_0001679273:20250331"
+              ],
+              "induction_case_ids": [
+                "cik_0001361658:20250131",
+                "cik_0001421517:20250131",
+                "cik_0002009312:20250930",
+                "cik_0001065059:20250131"
+              ],
+              "issuer_disjoint": true,
+              "primary_sources": [
+                "domain_unavailable",
+                "domain_unavailable"
+              ],
+              "problem_bucket": "wrong",
+              "technical_failure_count": 3
+            },
+            "model_called": true,
+            "model_usage": {
+              "cost": 0.009437400000000002,
+              "llm_calls": 1,
+              "tokens": 32270
+            },
+            "request_refs": [
+              "3f764834b64eb5b1e48c9d62a96381c0b832138d1242a7669b5632cadd00222b",
+              "b670f2dd6d8aa285aa2e9c86a388b740355b7d9ec4da645f654a97f6446991f7"
+            ],
+            "resolutions": [
+              {
+                "as_of": "2025-01-31T00:00:00+00:00",
+                "case_ref": "update-case-001",
+                "cited_document_refs": [],
+                "document_count": 10,
+                "document_hashes": [
+                  "efa191c82d848be065650c7601bdcb7d34ccc554df9779d06e59a39530b26c0f",
+                  "165eefb18467f37d6d283b5573e6403c7a614bd165f3bbcb44c1c3c3557071f6",
+                  "295f3b9299a059bf2313f9a7854662aa76d10846cd81bc94a4de58949dff846e",
+                  "846fda69c507ec6a9e7e2faa1964b9485f3c43dfe728ba2785f7fda989ad6c50",
+                  "d6d91415a880c7f7ac8dd441d6b62cc4fd61dedf303c1eea2abee7cf6978c45e",
+                  "514e5df8075df975a1130e47e65325e33d3819d044d6ba4266820e1463d46968",
+                  "0aa63f730634f9e27f64c198f1b8b01fa30def44dbd0d4b26d0da7f61634ace5",
+                  "6d137e9e0d85b9f580dc1921d0e331f2cf17a85217047f1b6539b7bf6eec91bd",
+                  "d544b0f5a032c92022d5f92b57b19ddb77d0520cb6960fcafaa2ff493e6d74ec",
+                  "60ce00eb58e048751bb7da762b2c465355055e1ff3569df65ef00a5a0ed4c303"
+                ],
+                "document_ids": [
+                  "sec:cik_0001361658:000136165824000118",
+                  "sec:cik_0001361658:000136165824000129",
+                  "sec:cik_0001361658:000136165824000142",
+                  "sec:cik_0001361658:000136165824000145",
+                  "sec:cik_0001361658:000136165824000165",
+                  "sec:cik_0001361658:000136165824000175",
+                  "sec:cik_0001361658:000136165824000179",
+                  "sec:cik_0001361658:000136165824000203",
+                  "sec:cik_0001361658:000136165824000222",
+                  "sec:cik_0001361658:000136165824000226"
+                ],
+                "input_request": {
+                  "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "guidance outlook forecast raises lowers reaffirms",
+                  "request_id": "signal:guidance_acceleration:v2",
+                  "source_types": [
+                    "earnings_call",
+                    "filing",
+                    "company_announcement"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              },
+              {
+                "as_of": "2025-01-31T00:00:00+00:00",
+                "case_ref": "update-case-002",
+                "cited_document_refs": [],
+                "document_count": 10,
+                "document_hashes": [
+                  "f99a06050128190ec29ad478ad27d7226f43b3eea3e9fcd22ab70ff9e1136575",
+                  "8b37cb86e135f1af114987eb7e03c7d97713ff8b98a5f808694ad874ef1a1a26",
+                  "63b8de79205c584366f012b33775524efc883d29888fb729fd8ef29265ff8278",
+                  "c40a8d57c4c293b249226c69b8b8258dbb2a85fd45b2d9f49b8807d9e906a8bc",
+                  "cb61ed3dc463b674b34b5a228b8d0576242127e6eb6c98c45b7c990bb67d50ee",
+                  "ee76616b349cc4c2893e740c4b495b9965c224654a2e555b3762d4eaf50f7f77",
+                  "57e4f89084fe411725e87acadfd252fffd78cb391894e5a9d2df4b4b973839cf",
+                  "62a69e93f567a41ad57bd1f2dd715230830e4418a3de7e630279965908410dce",
+                  "3fddf38310b3adfa737171f797e40a3719e145289e801de1a74c42d42d842522",
+                  "56866d00af93beb8184d0ab5cb2e7132a2b142d7504ddb50017e4df5ff7c66a6"
+                ],
+                "document_ids": [
+                  "sec:cik_0001421517:000142151724000093",
+                  "sec:cik_0001421517:000142151724000122",
+                  "sec:cik_0001421517:000142151724000140",
+                  "sec:cik_0001421517:000142151724000144",
+                  "sec:cik_0001421517:000142151724000167",
+                  "sec:cik_0001421517:000142151724000170",
+                  "sec:cik_0001421517:000142151724000172",
+                  "sec:cik_0001421517:000142151724000190",
+                  "sec:cik_0001421517:000142151724000191",
+                  "sec:cik_0001421517:000142151724000203"
+                ],
+                "input_request": {
+                  "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "guidance outlook forecast raises lowers reaffirms",
+                  "request_id": "signal:guidance_acceleration:v2",
+                  "source_types": [
+                    "earnings_call",
+                    "filing",
+                    "company_announcement"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              },
+              {
+                "as_of": "2025-09-30T00:00:00+00:00",
+                "case_ref": "update-case-003",
+                "cited_document_refs": [
+                  "document-01",
+                  "document-02"
+                ],
+                "document_count": 3,
+                "document_hashes": [
+                  "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+                  "a9e13fc2183551fabc81a570a3934c287fa988d378dfd0f2f751b1501b3525f4",
+                  "3a7725466f20c887094866a72fc256ac64c6f0aa808d4871208cb6458489931f"
+                ],
+                "document_ids": [
+                  "sec:cik_0002009312:000149315225011966",
+                  "sec:cik_0002009312:000164117225001168",
+                  "sec:cik_0002009312:000164117225010834"
+                ],
+                "input_request": {
+                  "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "guidance outlook forecast raises lowers reaffirms",
+                  "request_id": "signal:guidance_acceleration:v2",
+                  "source_types": [
+                    "earnings_call",
+                    "filing",
+                    "company_announcement"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              },
+              {
+                "as_of": "2025-01-31T00:00:00+00:00",
+                "case_ref": "update-case-004",
+                "cited_document_refs": [
+                  "document-01",
+                  "document-02"
+                ],
+                "document_count": 10,
+                "document_hashes": [
+                  "2c070d1a03431bd497a93777ed4a970ce942935325d722c7a546eb8e9bbc9845",
+                  "1d7ccb06c8f25c7a2d41cb92f08343e16c4b4365a8b69506964c34b4b6300752",
+                  "5ff3bf3c648a1cd121388d82c66219d18b7ff9516b0e9512ee8e735d5ec71cec",
+                  "3db291274fcf69c540527e1da4b1379436683d09c5f4c146413c106a084019b7",
+                  "df17ab2f25a98f4f382a2d6ea3ac57b3e93cc3fda192f7fe5eec05206b5b70bc",
+                  "34e4184262c6a2f03db6201d290ab8f21733a4abc6a91c08710a43946884dadb",
+                  "08a15720cd72c4c9dc01269c5a1f507cd8009500c31c05fd680caf221eabb1ff",
+                  "ccf4cf7dffac894bae88b7af5640f0c0fae3f09e306a90dc9b38a73029f7ed3e",
+                  "97f4b122d0b30f0577560806ec8fac9bee67fedd9623e63dedf8c1ee8271b022",
+                  "4d0ccc4fe832bf65a06cc227d5b901c9bb10d33d804c137f1b768683406008a5"
+                ],
+                "document_ids": [
+                  "sec:cik_0001065059:000106505924000013",
+                  "sec:cik_0001065059:000106505924000102",
+                  "sec:cik_0001065059:000106505924000086",
+                  "sec:cik_0001065059:000106505924000089",
+                  "sec:cik_0001065059:000106505924000091",
+                  "sec:cik_0001065059:000106505924000093",
+                  "sec:cik_0001065059:000106505924000096",
+                  "sec:cik_0001065059:000106505924000098",
+                  "sec:cik_0001065059:000106505924000100",
+                  "sec:cik_0001065059:000106505924000108"
+                ],
+                "input_request": {
+                  "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                  "lookback_days": 730,
+                  "max_documents": 10,
+                  "query": "guidance outlook forecast raises lowers reaffirms",
+                  "request_id": "signal:guidance_acceleration:v2",
+                  "source_types": [
+                    "earnings_call",
+                    "filing",
+                    "company_announcement"
+                  ]
+                },
+                "reused_signal_execution_input": true,
+                "status": "resolved"
+              }
+            ],
+            "schema_version": "signal-update-target-audit-v1",
+            "staged_ref": "guidance_acceleration:v3",
+            "status": "completed",
+            "target": {
+              "problem_type": "repeated_explicit_misleading",
+              "recurring_contexts": [
+                {
+                  "context_tag": "large_cap",
+                  "issuers": 6,
+                  "observations": 6,
+                  "positive_surge_rate": 1.0
+                },
+                {
+                  "context_tag": "mid_cap",
+                  "issuers": 4,
+                  "observations": 4,
+                  "positive_surge_rate": 0.0
+                },
+                {
+                  "context_tag": "small_cap",
+                  "issuers": 4,
+                  "observations": 4,
+                  "positive_surge_rate": null
+                }
+              ],
+              "signal_ref": "guidance_acceleration:v2",
+              "support": {
+                "directional_wrong": 2,
+                "misleading_attributions": 2,
+                "unavailable": 0,
+                "unavailable_with_inputs": 0,
+                "unique_observations": 14
+              },
+              "worked_recent_cycles": 0
+            },
+            "technical_failures": [
+              {
+                "case_id": "cik_0001951089:20250530",
+                "company_id": "cik_0001951089",
+                "error_code": "signal_output_validation_exhausted",
+                "error_message": "signal guidance_acceleration:v2 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+                "execution_status": "validation_failed",
+                "resolution": {
+                  "appended_documents": [],
+                  "context_spans": [],
+                  "coverage": {
+                    "context_truncated": null,
+                    "contract_satisfied": true,
+                    "deduplicated_document_count": 0,
+                    "eligible_document_count": 10,
+                    "missing_requirements": [],
+                    "observed_distinct_period_count": 0,
+                    "observed_observation_count": 0,
+                    "observed_period_span_days": null,
+                    "query_evaluated": true,
+                    "query_matched_document_count": 6,
+                    "query_requested": true,
+                    "query_status": "matched",
+                    "required_source_group_count": 0,
+                    "satisfied_source_group_count": 0,
+                    "selected_document_count": 10,
+                    "selection_truncated": false,
+                    "visible_span_count": 0
+                  },
+                  "data_gap": null,
+                  "documents": [
+                    {
+                      "available_at": "2025-04-01T10:00:16+00:00",
+                      "content_hash": "d381ad3a458d5f4de10e3614a19fdadcff1b7b99d48acd10f36b5eaf5fecddbd",
+                      "document_id": "sec:cik_0001951089:000121390025026459"
+                    },
+                    {
+                      "available_at": "2025-04-25T20:08:07+00:00",
+                      "content_hash": "cfb4c6d45b52806f38fb610ccc4d2e55ab232ba6d40082e71d8f7bd971ebc9b5",
+                      "document_id": "sec:cik_0001951089:000121390025035550"
+                    },
+                    {
+                      "available_at": "2025-04-11T20:18:56+00:00",
+                      "content_hash": "5c171d404a7e1e074fbc23c697ce5c30c9845ca340f84b62796381e459a71853",
+                      "document_id": "sec:cik_0001951089:000121390025031098"
+                    },
+                    {
+                      "available_at": "2025-04-25T20:15:23+00:00",
+                      "content_hash": "db790a19e32c853ab984be39bcc638c125290e3701534c090bcc201018fcac1e",
+                      "document_id": "sec:cik_0001951089:000121390025035577"
+                    },
+                    {
+                      "available_at": "2025-04-02T11:33:42+00:00",
+                      "content_hash": "a3646da8ac66518c4f982be58fdc6440c0f76090462363486ca74aa179a22236",
+                      "document_id": "sec:cik_0001951089:000121390025027568"
+                    },
+                    {
+                      "available_at": "2025-04-01T13:02:35+00:00",
+                      "content_hash": "7370e7396645646be0d793d0ad944a6535e613bebb3533b67a07e190180dc7db",
+                      "document_id": "sec:cik_0001951089:000121390025026756"
+                    },
+                    {
+                      "available_at": "2025-05-02T20:15:23+00:00",
+                      "content_hash": "16182170b4a242e28e0ead24ad79736268d5eab284a2eafd19de0a28413ff6cc",
+                      "document_id": "sec:cik_0001951089:000121390025039159"
+                    },
+                    {
+                      "available_at": "2025-04-24T15:04:14+00:00",
+                      "content_hash": "68132f8eefc9abda2ef6cf657471a1ca8da5c6c4e38aa6df9cc9ecae278e30a7",
+                      "document_id": "sec:cik_0001951089:000090266425001965"
+                    },
+                    {
+                      "available_at": "2025-04-10T20:15:03+00:00",
+                      "content_hash": "e8975de50575ce8e4e728eab4629d071de6d2ae17988c93710822f81056a9af5",
+                      "document_id": "sec:cik_0001951089:000121390025030663"
+                    },
+                    {
+                      "available_at": "2025-04-01T13:00:33+00:00",
+                      "content_hash": "55c43b93e8607a24ec5f505aa8ad7a5405b7bcd88ed3664399aed99082ff3216",
+                      "document_id": "sec:cik_0001951089:000121390025026753"
+                    }
+                  ],
+                  "events": [
+                    {
+                      "details": {
+                        "matched_document_ids": [
+                          "sec:cik_0001951089:000121390025026459",
+                          "sec:cik_0001951089:000121390025035550",
+                          "sec:cik_0001951089:000121390025031098",
+                          "sec:cik_0001951089:000121390025035577",
+                          "sec:cik_0001951089:000121390025027568",
+                          "sec:cik_0001951089:000121390025026756",
+                          "sec:cik_0001951089:000121390025039159",
+                          "sec:cik_0001951089:000090266425001965",
+                          "sec:cik_0001951089:000121390025030663",
+                          "sec:cik_0001951089:000121390025026753"
+                        ],
+                        "phase": "initial",
+                        "request_id": "signal:guidance_acceleration:v2",
+                        "source_types": [
+                          "earnings_call",
+                          "filing",
+                          "company_announcement"
+                        ]
+                      },
+                      "kind": "local_query"
+                    }
+                  ],
+                  "omitted_context_markers": [],
+                  "request": {
+                    "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                    "lookback_days": 730,
+                    "max_documents": 10,
+                    "query": "guidance outlook forecast raises lowers reaffirms",
+                    "request_id": "signal:guidance_acceleration:v2",
+                    "source_types": [
+                      "earnings_call",
+                      "filing",
+                      "company_announcement"
+                    ]
+                  },
+                  "status": "resolved"
+                }
+              },
+              {
+                "case_id": "cik_0001285819:20250930",
+                "company_id": "cik_0001285819",
+                "error_code": "signal_output_validation_exhausted",
+                "error_message": "signal guidance_acceleration:v2 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+                "execution_status": "validation_failed",
+                "resolution": {
+                  "appended_documents": [],
+                  "context_spans": [],
+                  "coverage": {
+                    "context_truncated": null,
+                    "contract_satisfied": true,
+                    "deduplicated_document_count": 0,
+                    "eligible_document_count": 4,
+                    "missing_requirements": [],
+                    "observed_distinct_period_count": 0,
+                    "observed_observation_count": 0,
+                    "observed_period_span_days": null,
+                    "query_evaluated": true,
+                    "query_matched_document_count": 2,
+                    "query_requested": true,
+                    "query_status": "matched",
+                    "required_source_group_count": 0,
+                    "satisfied_source_group_count": 0,
+                    "selected_document_count": 4,
+                    "selection_truncated": false,
+                    "visible_span_count": 0
+                  },
+                  "data_gap": null,
+                  "documents": [
+                    {
+                      "available_at": "2025-03-31T20:28:41+00:00",
+                      "content_hash": "9d0a62aaa6d3337802337d0d5a2cd2e5950a9d4a189828225fc06ded7ec9d226",
+                      "document_id": "sec:cik_0001285819:000143774925010216"
+                    },
+                    {
+                      "available_at": "2025-05-15T20:32:51+00:00",
+                      "content_hash": "378729c94a90f60e8fe3937b2a1509c97a3e77ecf770d4718545a95529f6fe8d",
+                      "document_id": "sec:cik_0001285819:000143774925017213"
+                    },
+                    {
+                      "available_at": "2025-05-15T20:31:10+00:00",
+                      "content_hash": "1e5a99949ad4305820a864effdef3d6bd9a2a99a3372286b9d0cd926646fe5fa",
+                      "document_id": "sec:cik_0001285819:000143774925017211"
+                    },
+                    {
+                      "available_at": "2025-05-06T21:00:35+00:00",
+                      "content_hash": "b5cd97cba9abc3bab786fb33a93bfc116ff35ea2b29cc0c03a44a3eee5b19727",
+                      "document_id": "sec:cik_0001285819:000143774925014815"
+                    }
+                  ],
+                  "events": [
+                    {
+                      "details": {
+                        "matched_document_ids": [
+                          "sec:cik_0001285819:000143774925010216",
+                          "sec:cik_0001285819:000143774925017213",
+                          "sec:cik_0001285819:000143774925017211",
+                          "sec:cik_0001285819:000143774925014815"
+                        ],
+                        "phase": "initial",
+                        "request_id": "signal:guidance_acceleration:v2",
+                        "source_types": [
+                          "earnings_call",
+                          "filing",
+                          "company_announcement"
+                        ]
+                      },
+                      "kind": "local_query"
+                    }
+                  ],
+                  "omitted_context_markers": [],
+                  "request": {
+                    "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                    "lookback_days": 730,
+                    "max_documents": 10,
+                    "query": "guidance outlook forecast raises lowers reaffirms",
+                    "request_id": "signal:guidance_acceleration:v2",
+                    "source_types": [
+                      "earnings_call",
+                      "filing",
+                      "company_announcement"
+                    ]
+                  },
+                  "status": "resolved"
+                }
+              },
+              {
+                "case_id": "cik_0001746129:20250731",
+                "company_id": "cik_0001746129",
+                "error_code": "signal_output_validation_exhausted",
+                "error_message": "signal guidance_acceleration:v2 available result requires cited evidence containing at least one version-owned result_required_evidence_phrases value: ['guidance', 'outlook', 'forecast', 'we expect', 'management expects', 'company expects', 'now expects', 'raises its', 'raised its', 'lowers its', 'lowered its', 'reaffirms', 'reaffirmed', 'on track to']. Return unavailable with empty evidence when visible evidence does not name the measured object",
+                "execution_status": "validation_failed",
+                "resolution": {
+                  "appended_documents": [],
+                  "context_spans": [],
+                  "coverage": {
+                    "context_truncated": null,
+                    "contract_satisfied": true,
+                    "deduplicated_document_count": 0,
+                    "eligible_document_count": 10,
+                    "missing_requirements": [],
+                    "observed_distinct_period_count": 0,
+                    "observed_observation_count": 0,
+                    "observed_period_span_days": null,
+                    "query_evaluated": true,
+                    "query_matched_document_count": 4,
+                    "query_requested": true,
+                    "query_status": "matched",
+                    "required_source_group_count": 0,
+                    "satisfied_source_group_count": 0,
+                    "selected_document_count": 10,
+                    "selection_truncated": false,
+                    "visible_span_count": 0
+                  },
+                  "data_gap": null,
+                  "documents": [
+                    {
+                      "available_at": "2025-03-12T20:15:51+00:00",
+                      "content_hash": "57e3433d741b8be602664f7be4400086ac613913478fa42c8620d387fee6b6b9",
+                      "document_id": "sec:cik_0001746129:000114036125008438"
+                    },
+                    {
+                      "available_at": "2025-05-12T20:05:53+00:00",
+                      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+                      "document_id": "sec:cik_0001746129:000114036125018373"
+                    },
+                    {
+                      "available_at": "2024-11-05T14:18:58+00:00",
+                      "content_hash": "65de5e97c5667f17d95587d33f87827acf3a278a5aad019b400e53495e2c56d3",
+                      "document_id": "sec:cik_0001746129:000114036124045199"
+                    },
+                    {
+                      "available_at": "2024-08-08T13:30:10+00:00",
+                      "content_hash": "64e5c30fc250d163f6f2fa2c3e50cd87b9d179c4bc7913852732cb5bf7812c42",
+                      "document_id": "sec:cik_0001746129:000114036124036309"
+                    },
+                    {
+                      "available_at": "2025-07-17T12:00:47+00:00",
+                      "content_hash": "4cd1152c2e2b0a7351db39e8a7bfbe4e1dfa0da8a213e75ea563d6de06839229",
+                      "document_id": "sec:cik_0001746129:000114036125026134"
+                    },
+                    {
+                      "available_at": "2025-05-19T20:15:25+00:00",
+                      "content_hash": "94413c47167702ba1b7c4455e794b141f130ab87b6f126c9a09fc6c30907e8b8",
+                      "document_id": "sec:cik_0001746129:000114036125019776"
+                    },
+                    {
+                      "available_at": "2025-04-10T12:00:29+00:00",
+                      "content_hash": "9468ed399781a8298173a4dd3edf82d5f78a6b66bfbe70222beb8bbe16c47ccf",
+                      "document_id": "sec:cik_0001746129:000114036125013171"
+                    },
+                    {
+                      "available_at": "2025-03-25T13:00:14+00:00",
+                      "content_hash": "1cfbd83e926a55baac144a61dc06795b79dcf298af0f04e2375ee815289fb75a",
+                      "document_id": "sec:cik_0001746129:000114036125010177"
+                    },
+                    {
+                      "available_at": "2025-01-16T13:00:42+00:00",
+                      "content_hash": "9d4fd2277f4fc8a98fc1b1185916ee96661724e3de2dee0c158de9597dd21ae9",
+                      "document_id": "sec:cik_0001746129:000114036125001243"
+                    },
+                    {
+                      "available_at": "2024-10-11T12:00:29+00:00",
+                      "content_hash": "9d768864899681b62d0841187051ec2bcabafe845f495c5c6d76ee0de0ae8d18",
+                      "document_id": "sec:cik_0001746129:000114036124043297"
+                    }
+                  ],
+                  "events": [
+                    {
+                      "details": {
+                        "matched_document_ids": [
+                          "sec:cik_0001746129:000114036125008438",
+                          "sec:cik_0001746129:000114036125018373",
+                          "sec:cik_0001746129:000114036124045199",
+                          "sec:cik_0001746129:000114036124036309",
+                          "sec:cik_0001746129:000114036125026134",
+                          "sec:cik_0001746129:000114036125019776",
+                          "sec:cik_0001746129:000114036125013171",
+                          "sec:cik_0001746129:000114036125010177",
+                          "sec:cik_0001746129:000114036125001243",
+                          "sec:cik_0001746129:000114036124043297"
+                        ],
+                        "phase": "initial",
+                        "request_id": "signal:guidance_acceleration:v2",
+                        "source_types": [
+                          "earnings_call",
+                          "filing",
+                          "company_announcement"
+                        ]
+                      },
+                      "kind": "local_query"
+                    }
+                  ],
+                  "omitted_context_markers": [],
+                  "request": {
+                    "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance.",
+                    "lookback_days": 730,
+                    "max_documents": 10,
+                    "query": "guidance outlook forecast raises lowers reaffirms",
+                    "request_id": "signal:guidance_acceleration:v2",
+                    "source_types": [
+                      "earnings_call",
+                      "filing",
+                      "company_announcement"
+                    ]
+                  },
+                  "status": "resolved"
+                }
+              }
+            ],
+            "work_fingerprint": "49e8efdeab6e20573d10946610e4da92e59ac4bcb5e6f5fa4e7323bc9920c921"
+          }
+        ]
+      }
+    },
+    "candidate_effectiveness": {
+      "financing_listing_action:v4": {
+        "effect_status": "unverified",
+        "reasons": [
+          "Effect is observed after committed use; technical admission does not assert benefit."
+        ],
+        "research_targets": [
+          "surge_direction"
+        ],
+        "status": "pending_use",
+        "technical_admission": "admitted"
+      },
+      "guidance_acceleration:v3": {
+        "effect_status": "unverified",
+        "reasons": [
+          "Effect is observed after committed use; technical admission does not assert benefit."
+        ],
+        "research_targets": [
+          "surge_direction"
+        ],
+        "status": "pending_use",
+        "technical_admission": "admitted"
+      }
+    },
+    "candidate_evaluations": {
+      "financing_listing_action:v4": "b6b3796615278189fbd26385971ecd2d1f4db19b1755f4521c3e63c1ed9bd1ed",
+      "guidance_acceleration:v3": "63efccb7573753909ba99088584ab6abcf15582dadcf22f70451d84f550e303c"
+    },
+    "candidate_research_targets": {
+      "financing_listing_action:v4": "surge_direction",
+      "guidance_acceleration:v3": "surge_direction"
+    },
+    "input_registry_hash": "866d821e51aa50a3272d2f7d0c2562faabf121097fc5ced75b70c527388b24d0",
+    "input_registry_version": 7,
+    "magnitude_contribution": {
+      "assessed": false,
+      "fast_consumption_assessed": false,
+      "reason": "target mining/effectiveness may be assessed, but the required Fast absent/present consumption experiment and Binary-F1 protection have not run",
+      "target_candidate_refs": [],
+      "target_mining_assessed": false,
+      "target_supported_candidate_refs": [],
+      "target_track_statuses": {
+        "magnitude_ge3_v1": "failed"
+      }
+    },
+    "min_new_signals_per_cycle": 1,
+    "mined_candidates": [],
+    "new_candidate_count": 0,
+    "new_promoted_signal_count": 0,
+    "new_validated_signal_count": 0,
+    "output_registry_hash": "180814422ea72ce91eff4afddde022644c5fba10b5eff4cab6723e4e373dce62",
+    "output_registry_version": 8,
+    "promoted": [
+      "financing_listing_action:v4",
+      "guidance_acceleration:v3"
+    ],
+    "provisional_candidates": {},
+    "refined_hypotheses": {},
+    "rejected": {
+      "update:customer_concentration:v2": [
+        "structured_output_failed: signal_update_decision failed validation after one correction: provider returned invalid structured output: Unterminated string starting at: line 1 column 6206 (char 6205); provider output reached max_output_tokens=8000 and ended before one complete JSON object. Treat this as output-ceiling truncation: return the compact decision frontier only, obey every field/item/byte ceiling, and do not enumerate the input projections"
+      ]
+    },
+    "sampling_manifest_hash": "c7d6224759fefe76d4b1db1090d51873add3ffa1fb9b92151407822b4b0d04ca",
+    "search_input_fingerprint": "5fa8cc2d6c631053d638d7212dcd008d818833a22bb3c69e81f339f414acb73b",
+    "signal_goal_status": "unmet",
+    "slow_experiments_hash": "680382eb06f7aa2f5bf5cf09e8433c9bbb211885253bbacb472daef226269a3e",
+    "slow_input_hash": "ce4c2812217469b8fbd8e05563266b092df65c4f79eafae1597b41a49e865517",
+    "slow_memory_hash": "9e30e511f801bb5e41e2e11968da4b6822ecd8291838af36166f11a67d7295c0",
+    "updated_candidates": [
+      "financing_listing_action:v4",
+      "guidance_acceleration:v3"
+    ],
+    "updated_signal_count": 2,
+    "validated_candidates": {
+      "financing_listing_action:v4": "26b8304febb135aef16a11d9b9378c97d1d24398c97612f013f54108a0dedd1b",
+      "guidance_acceleration:v3": "154776329dbc1c23a7345a78dd91bc71a81ac4656dcc4a567871d158afd76159"
+    }
+  },
+  "run_contract_hash": "175e61eae26433b3c1a8e1eec68c1c2f3a4191494056e2ab6b41857c585d204f",
+  "schema_version": "dual-loop-slow-result-v2"
+}

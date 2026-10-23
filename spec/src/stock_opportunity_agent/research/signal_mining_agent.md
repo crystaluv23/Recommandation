@@ -442,6 +442,39 @@ Mining or a published/reused capability.
   fact/event/relation counts, per-concept positive/control case coverage) and
   the `last_action_result` of the previous executed action. A view that hides
   what fetches already collected invites redundant sweeps and is a defect.
+- Successful `inspect_catalog` responses additionally survive intervening
+  actions in `catalog_observations`. Retain only the exact runtime-issued
+  response, scope, arguments, ledger action id and response/source-snapshot
+  hashes; never populate unrequested pages, originals or semantic notes. A
+  repeated request replaces its prior observation and moves it to the front,
+  while charging the unchanged scope budget. Select most-recent complete
+  responses, at most8 responses/32,000 UTF-8 JSON bytes; disclose the arguments,
+  hash and required bytes of omitted/oversized responses without clipping.
+  All four scopes (`signals`, `evidence`, `backlog`, `memory`) use this same
+  working surface, including whole-original reads. Larger legal responses can
+  remain available only in the previous action and existing canonical source
+  disclosures; the working page explicitly reports their size.
+  Observations are historical tool responses, not current catalogs: their
+  source-snapshot hashes bind the issued source population, source versions,
+  case scopes and relevant state. Evidence population bindings preserve
+  first-seen immutable narrative-document order, event order and case scopes,
+  excluding read progress: ordinary reads/computation preserve directory
+  pagination, so the saved next cursor remains usable without re-reading page
+  zero. A later fetch that changes that population can change pagination;
+  historical `read_windows` never asserts current read status. Existing live
+  progress remains authoritative and a required current-catalog refresh uses
+  the ordinary charged action. Runtime handles are
+  retained before native per-request identity projection, never cached wire
+  aliases. This surface adds no action, read allowance or semantic authority;
+  the entire response/disclosure and duplicate last result count in the
+  unchanged whole-request budget.
+  Backlog context does not itself grant disposition authority. A backlog item
+  visible in an included observation can enter `allowed_need_refs` only while
+  still pending and exactly matching its current whole original or source
+  hash. Omitted, oversized, changed and already staged items grant no authority;
+  the disposition base hash and all existing typed validation remain current.
+  Views do not mutate observations, sources, budgets, ledger or S5 evidence;
+  replaying the accepted tool actions deterministically reconstructs them.
 - Narrative read progress survives intervening catalog and computation actions.
   Every unique immutable document/hash/raw range retains its receipt metadata
   (coordinates, readable status, hash and next readable offset), without another
@@ -489,6 +522,31 @@ Mining or a published/reused capability.
   action sequence reconstructs the same working view; it does not backfill old
   archived model requests. A selected ref or read count alone proves neither
   comparability nor semantic sufficiency.
+- Actual `compute_statistic` results survive subsequent read/catalog/compare
+  actions in `computed_statistics`, derived from the existing relation graph,
+  immutable facts and actual compute ledger rows. Include only relations with
+  a supported compute rule, `numerator_denominator` kind and a matching real
+  computation; automatic same-concept/co-occurrence relations are not computed
+  observations. Keep the complete result, ordered operand refs and source-bound
+  fact units, at most12 whole entries/8,000 UTF-8 JSON bytes with explicit
+  omitted/oversized relation refs and required sizes. This arithmetic does not
+  establish same-unit, period, namespace or semantic comparability.
+  No additional compute history/store or automatic recomputation is introduced.
+  Since the legacy relation does not retain original operand snapshots, any
+  later fetch conservatively invalidates its working result, even if a repeated
+  fetch may have left the operands unchanged. Missing/case-mismatched operands
+  also invalidate it; retain the complete historical relation (old value, rule,
+  ordered operand refs and case) plus the reason so an ordinary recomputation
+  remains addressable. Never attach current fact units to that old value or
+  treat it as valid current evidence. Canonical relations/S5/ledger remain untouched.
+  Candidate citation readiness uses the same ledger-derived invalidation rule
+  and rejects an invalidated computed relation before the candidate/sink; its
+  typed feedback requests an ordinary charged recomputation, not a new value
+  invented by the model. Omission from the bounded page never bypasses this
+  gate.
+  Repeating compute at its ordinary heavy cost restores a current result and
+  refreshes its last compute action id; selection orders by that real action.
+  The complete working page/disclosure counts against original request limits.
 - Executed `compare_groups` locators survive intervening reads/computations in
   `comparison_progress`. Each complete concept unit retains both groups' case
   counts, available cases, latest/prior value-ref mappings and unresolved-basis

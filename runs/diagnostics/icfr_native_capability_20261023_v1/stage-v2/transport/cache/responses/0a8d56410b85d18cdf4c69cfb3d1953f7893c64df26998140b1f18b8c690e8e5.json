@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "event_ref": "event-99d2c1094c6984b5",
+    "length": 4000,
+    "offset": 1152908,
+    "rationale": [
+      "The executed case-003 window establishes effective disclosure controls but ends at the ICFR changes heading.",
+      "Continue at the supplied next readable coordinate to inspect the actual ICFR disclosure before defining a measurement; disclosure-control effectiveness alone does not establish ICFR effectiveness."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"event_ref\": \"event-99d2c1094c6984b5\", \"offset\": 1152908, \"length\": 4000, \"rationale\": [\"The executed case-003 window establishes effective disclosure controls but ends at the ICFR changes heading.\", \"Continue at the supplied next readable coordinate to inspect the actual ICFR disclosure before defining a measurement; disclosure-control effectiveness alone does not establish ICFR effectiveness.\"]}",
+  "request_hash": "0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5",
+  "response_id": "local-0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5",
+  "usage": {
+    "accounting_tokens": 192196,
+    "agent_id": "/root/icfr_v2_h006",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "0eea5062f82b3f09513bc7190e82bca764ed8f273009bc1792bfaa2d3d8ed1b8",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "e130d0f968158239b82f47ac960515a5e74b924e23e7eb22ae0bc37314b786c9",
+    "request_hash": "0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5",
+    "token_usage": null
+  }
+}

@@ -1,0 +1,7 @@
+test_later_fetch_invalidates_computed_citation_then_paid_recompute_restores (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_later_fetch_invalidates_computed_citation_then_paid_recompute_restores) ... ok
+test_missing_computed_operand_invalidates_without_recomputing_or_synthesizing_value (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_missing_computed_operand_invalidates_without_recomputing_or_synthesizing_value) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK

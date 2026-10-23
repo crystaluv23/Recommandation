@@ -1,0 +1,10 @@
+{
+  "pending": {
+    "inbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/851a4ec2cb21d0d0f5b3e5d8bfe2ef0fed8be636dc8b22deef5aac9c8ae4eec6.json",
+    "inbox_sha256": "71667b731e318dd45f4c11e2f3bb5de1d40710dc46b5b9fceb5e74208ece909b",
+    "outbox_path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/851a4ec2cb21d0d0f5b3e5d8bfe2ef0fed8be636dc8b22deef5aac9c8ae4eec6.txt",
+    "request_hash": "851a4ec2cb21d0d0f5b3e5d8bfe2ef0fed8be636dc8b22deef5aac9c8ae4eec6",
+    "stage": "mining_controller_step"
+  },
+  "status": "pending_independent_role"
+}

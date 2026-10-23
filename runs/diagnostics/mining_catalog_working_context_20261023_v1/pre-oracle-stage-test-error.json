@@ -1,0 +1,12 @@
+{
+  "command": "python -m unittest tests.test_icfr_native_capability_stage",
+  "tests_run": 21,
+  "passed": 20,
+  "errors": 1,
+  "failed_test": "test_no_author_pending_and_input_only_on_actual_approved_native_axis",
+  "error_type": "FileNotFoundError",
+  "error": "oracle-v3/acceptance-obligations.json not yet frozen",
+  "scope": "diagnostic harness preparation dependency, not product model semantic failure",
+  "production_stage_created": false,
+  "correction": "Run after prospective oracle-v3 frozen; retain original precondition error."
+}

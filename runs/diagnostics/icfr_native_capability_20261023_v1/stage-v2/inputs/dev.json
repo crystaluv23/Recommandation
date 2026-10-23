@@ -1,0 +1,54 @@
+{
+  "cases": [
+    {
+      "case_id": "cik_0001951089:20250530",
+      "case_ref": "case-001",
+      "cutoff": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0001746129:20250731",
+      "case_ref": "case-002",
+      "cutoff": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0002009312:20250930",
+      "case_ref": "case-003",
+      "cutoff": "2025-09-30T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0001361658:20250131",
+      "case_ref": "case-004",
+      "cutoff": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0001814215:20250530",
+      "case_ref": "case-005",
+      "cutoff": "2025-05-30T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0001946703:20250731",
+      "case_ref": "case-006",
+      "cutoff": "2025-07-31T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0001065059:20250131",
+      "case_ref": "case-007",
+      "cutoff": "2025-01-31T00:00:00+00:00"
+    },
+    {
+      "case_id": "cik_0000800457:20250731",
+      "case_ref": "case-008",
+      "cutoff": "2025-07-31T00:00:00+00:00"
+    }
+  ],
+  "groups": {
+    "case-001": "positive",
+    "case-002": "control",
+    "case-003": "positive",
+    "case-004": "control",
+    "case-005": "positive",
+    "case-006": "control",
+    "case-007": "positive",
+    "case-008": "control"
+  }
+}

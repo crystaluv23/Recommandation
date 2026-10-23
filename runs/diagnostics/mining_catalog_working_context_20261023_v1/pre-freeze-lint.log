@@ -1,0 +1,25 @@
+status: 1
+
+Pre-push lint feedback
+timestamp_utc: 2026-10-23T00:42:56Z
+repo: /Users/l/Project/Recommandation
+command: scripts/lint_repo.sh
+
+Repository lint
+root: /Users/l/Project/Recommandation
+
+PASS: required meta and lint files exist
+Meta check: PASS (administrative only; not live/learning/benefit acceptance)
+PASS: meta records and convergence review are consistent (administrative only)
+PASS: .githooks/pre-push is executable
+PASS: scripts/lint_repo.sh is executable
+PASS: git core.hooksPath is .githooks
+PASS: no merge conflict markers
+PASS: no trailing whitespace
+PASS: no hand-written outcome label constants
+FAIL: broken local markdown link in runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/spec/src/stock_opportunity_agent/research/signal_mining_agent.md -> ../../../../reports/v167-mining-reliability-review-20261002.md
+FAIL: broken local markdown link in runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/spec/src/stock_opportunity_agent/research/signal_mining_agent.md -> stage_contracts.md
+
+Lint result: FAIL (2 issue(s))
+
+Push blocked: pre-push lint failed. Latest feedback: /Users/l/Project/Recommandation/.lint-feedback/pre-push-last.log

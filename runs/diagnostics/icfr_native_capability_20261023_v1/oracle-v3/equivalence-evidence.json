@@ -1,0 +1,286 @@
+{
+  "schema_version": "icfr-prospective-oracle-v3-equivalence-v1",
+  "original_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle/acceptance-obligations.json",
+    "sha256": "9fec7af60c3b34c8c10139504fae9199286eaf6179cf39ef2d012fbdf2855aa5"
+  },
+  "previous_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v2/acceptance-obligations.json",
+    "sha256": "e650fb4f73bc5067ee29193328cd3d091dd3b52e4d3c62e5ed095399000ec0d9"
+  },
+  "new_oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/acceptance-obligations.json",
+    "sha256": "dada4c92bac32c133f4efa7bea523d0b0f05d57d0340d1660cdf7976bf257096"
+  },
+  "protected_original_keys": [
+    "schema_version",
+    "privacy",
+    "prospective_boundary",
+    "source_review",
+    "source_material",
+    "source_scope",
+    "research_semantics",
+    "novelty_baseline",
+    "fixed_denominators",
+    "pipeline_positive_control",
+    "consumer_controls",
+    "counterexample_rejection_rules",
+    "stage_spec_review",
+    "scope_limits",
+    "preauthor_clarification"
+  ],
+  "original_protected_semantics_sha256": "4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429",
+  "v2_protected_semantics_sha256": "4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429",
+  "v3_protected_semantics_sha256": "4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429",
+  "per_protected_key_sha256": {
+    "schema_version": {
+      "original": "9a8c3ed33c086068b7639d605283d8ce4248a3b21fe1fe00e3db9ec8d7066cad",
+      "v2": "9a8c3ed33c086068b7639d605283d8ce4248a3b21fe1fe00e3db9ec8d7066cad",
+      "v3": "9a8c3ed33c086068b7639d605283d8ce4248a3b21fe1fe00e3db9ec8d7066cad"
+    },
+    "privacy": {
+      "original": "1d06b8673bbeba308a3ae284b0bf728181b480fc463b7f4a74df22dba19cc441",
+      "v2": "1d06b8673bbeba308a3ae284b0bf728181b480fc463b7f4a74df22dba19cc441",
+      "v3": "1d06b8673bbeba308a3ae284b0bf728181b480fc463b7f4a74df22dba19cc441"
+    },
+    "prospective_boundary": {
+      "original": "ee8e8a0f7e5ce76dc164c905b8a3c2931230249d964ecb2f318fcfb511dafa1d",
+      "v2": "ee8e8a0f7e5ce76dc164c905b8a3c2931230249d964ecb2f318fcfb511dafa1d",
+      "v3": "ee8e8a0f7e5ce76dc164c905b8a3c2931230249d964ecb2f318fcfb511dafa1d"
+    },
+    "source_review": {
+      "original": "81b5285608b36332755bd78214ba8b003b0519745824f816381d82f9c25c7aba",
+      "v2": "81b5285608b36332755bd78214ba8b003b0519745824f816381d82f9c25c7aba",
+      "v3": "81b5285608b36332755bd78214ba8b003b0519745824f816381d82f9c25c7aba"
+    },
+    "source_material": {
+      "original": "fe848d561e072d5712e6ec15a08352a8ce2400f9cecc54f5049352fa11feb680",
+      "v2": "fe848d561e072d5712e6ec15a08352a8ce2400f9cecc54f5049352fa11feb680",
+      "v3": "fe848d561e072d5712e6ec15a08352a8ce2400f9cecc54f5049352fa11feb680"
+    },
+    "source_scope": {
+      "original": "9d9bc43ba1cb11767e5bdd8e975a80989862b2af12db36b55b2a71725b67fc88",
+      "v2": "9d9bc43ba1cb11767e5bdd8e975a80989862b2af12db36b55b2a71725b67fc88",
+      "v3": "9d9bc43ba1cb11767e5bdd8e975a80989862b2af12db36b55b2a71725b67fc88"
+    },
+    "research_semantics": {
+      "original": "042dcf564c723a6bee992c7a183832120b974604360dd463e3b7821ea3058e04",
+      "v2": "042dcf564c723a6bee992c7a183832120b974604360dd463e3b7821ea3058e04",
+      "v3": "042dcf564c723a6bee992c7a183832120b974604360dd463e3b7821ea3058e04"
+    },
+    "novelty_baseline": {
+      "original": "035eb339d45a2db564e29dba6eb0c9adbc2ee8f5fcc03f03db8b296c7397d092",
+      "v2": "035eb339d45a2db564e29dba6eb0c9adbc2ee8f5fcc03f03db8b296c7397d092",
+      "v3": "035eb339d45a2db564e29dba6eb0c9adbc2ee8f5fcc03f03db8b296c7397d092"
+    },
+    "fixed_denominators": {
+      "original": "1cb855f822cd6ebe8cb4a1bbf8b2ecf00547b67c92f2cd1aad8e6953a10c1931",
+      "v2": "1cb855f822cd6ebe8cb4a1bbf8b2ecf00547b67c92f2cd1aad8e6953a10c1931",
+      "v3": "1cb855f822cd6ebe8cb4a1bbf8b2ecf00547b67c92f2cd1aad8e6953a10c1931"
+    },
+    "pipeline_positive_control": {
+      "original": "4d1551a4fe8a1e73f206e150c7c4f3f496f1a7c26cd85ac4766acdeecec9cf4d",
+      "v2": "4d1551a4fe8a1e73f206e150c7c4f3f496f1a7c26cd85ac4766acdeecec9cf4d",
+      "v3": "4d1551a4fe8a1e73f206e150c7c4f3f496f1a7c26cd85ac4766acdeecec9cf4d"
+    },
+    "consumer_controls": {
+      "original": "e2d60c7816598e94b62d3fd5a69c94b8a815faa723363bacddba72760ced2ac1",
+      "v2": "e2d60c7816598e94b62d3fd5a69c94b8a815faa723363bacddba72760ced2ac1",
+      "v3": "e2d60c7816598e94b62d3fd5a69c94b8a815faa723363bacddba72760ced2ac1"
+    },
+    "counterexample_rejection_rules": {
+      "original": "8d54332cd7fb46daeb7039a314dec1ea7d3155d3703c3c86e2dd2876b4f377a6",
+      "v2": "8d54332cd7fb46daeb7039a314dec1ea7d3155d3703c3c86e2dd2876b4f377a6",
+      "v3": "8d54332cd7fb46daeb7039a314dec1ea7d3155d3703c3c86e2dd2876b4f377a6"
+    },
+    "stage_spec_review": {
+      "original": "4d78717c9b482af6aa7c812e52c19eb7a14856034f49a667f18133c9ed514a8d",
+      "v2": "4d78717c9b482af6aa7c812e52c19eb7a14856034f49a667f18133c9ed514a8d",
+      "v3": "4d78717c9b482af6aa7c812e52c19eb7a14856034f49a667f18133c9ed514a8d"
+    },
+    "scope_limits": {
+      "original": "eb6d8c98c9d3a827486dafe6f792c7edddd368275287d5c2b5f6af77266dbfb6",
+      "v2": "eb6d8c98c9d3a827486dafe6f792c7edddd368275287d5c2b5f6af77266dbfb6",
+      "v3": "eb6d8c98c9d3a827486dafe6f792c7edddd368275287d5c2b5f6af77266dbfb6"
+    },
+    "preauthor_clarification": {
+      "original": "f03397a4d78756180e4018e3f23b1782a019ca8329085b7b2b649f9e1c3cebff",
+      "v2": "f03397a4d78756180e4018e3f23b1782a019ca8329085b7b2b649f9e1c3cebff",
+      "v3": "f03397a4d78756180e4018e3f23b1782a019ca8329085b7b2b649f9e1c3cebff"
+    }
+  },
+  "deep_equal_protected_semantics": true,
+  "changed_v2_keys": [
+    "frozen_at_utc",
+    "contract_bindings",
+    "freeze_revision",
+    "predecessor_bindings",
+    "prospective_revision"
+  ],
+  "old_oracle_bytes_unchanged": true,
+  "new_stage_absent_at_freeze": true,
+  "no_new_actor_answers_read": true,
+  "contract_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_icfr_native_capability_stage.md",
+      "sha256": "e8ceb257900f9da8b9a8e85753fb48e9e82a9d018f3b6e32d8c1c09b025af331"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/engineering-mvp.md",
+      "sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py",
+      "sha256": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_icfr_native_capability_stage.py",
+      "sha256": "32927a48b1b16ac8397ae89bf36257f7270115084562c7956780e56fb861389a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py",
+      "sha256": "bf708ed18142e8567bd6c73d93afcdc73424a1cfdf7b5ffe2c04ea97dc498375"
+    }
+  ],
+  "predecessor_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+      "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+      "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+      "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+      "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+      "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+      "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+    }
+  ],
+  "predecessor_controls": [
+    {
+      "stop_receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+        "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+      },
+      "runtime_archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+        "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+      },
+      "pending_progress": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+        "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+      },
+      "answered_unique_requests": 12,
+      "logical_reservations": 2001316,
+      "candidate_denominator": 1,
+      "candidate_acceptance": "uncompleted",
+      "consumer_denominator": 4,
+      "consumer_attempted": 0,
+      "new_role_answers_imported": false
+    },
+    {
+      "stop_receipt": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+        "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+      },
+      "runtime_archive": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+        "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+      },
+      "pending_progress": {
+        "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+        "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+      },
+      "answered_unique_requests": 11,
+      "logical_reservations": 1837419,
+      "candidate_denominator": 1,
+      "candidate_acceptance": "uncompleted",
+      "consumer_denominator": 4,
+      "consumer_attempted": 0,
+      "new_role_answers_imported": false
+    }
+  ],
+  "actual_native_predecessor_readonly_check": {
+    "helper": "_stopped_predecessors",
+    "verified_rows": 660,
+    "includes_original_filemaps": [
+      336,
+      323
+    ],
+    "plus_new_v2_pending_progress_binding": 1,
+    "actual_accounting": [
+      [
+        12,
+        2001316
+      ],
+      [
+        11,
+        1837419
+      ]
+    ],
+    "pending_identity_answer_absence_and_status_verified": true,
+    "transient_file_policy": "Existing _files excludes progress/locks/completion; v1 stop explicitly bound progress, v2 progress now bound separately. No old map rewritten."
+  },
+  "four_product_hashes_match_parent_final": {
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+    "src/stock_opportunity_agent/research/mining_controller.py": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+    "tests/test_mining_catalog_working_context.py": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485"
+  },
+  "resources_and_native_phases_exactly_equal_v2_archive": true,
+  "source_material_binding_actual_matches": true,
+  "source_review_binding_actual_matches": true,
+  "view_change_limits": {
+    "catalog_observations": "at most8 complete responses /32000 UTF-8 JSON bytes",
+    "computed_statistics": "at most12 complete ledger-derived entries /8000 UTF-8 JSON bytes",
+    "no_allowance_or_semantic_increase": true,
+    "computed_stale_operand_semantics": "Later fetch/missing/mismatched operand invalidates current evidence and candidate citation; ordinary charged recomputation can restore it. No automatic recompute or new value."
+  },
+  "not_claimed": [
+    "new model compliance",
+    "new capability control passed",
+    "effect or magnitude",
+    "whole MVP"
+  ],
+  "external_api_network_get_new_label_calls": 0
+}

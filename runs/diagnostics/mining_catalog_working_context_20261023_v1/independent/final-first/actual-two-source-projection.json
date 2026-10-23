@@ -1,0 +1,399 @@
+{
+  "old_view_has_catalog": false,
+  "new_observation": {
+    "observation_ref": "661586c75f2fc95ce8c97c0170c16366d39ce7e12355dfceb7a78bbd9dae02cc",
+    "scope": "evidence",
+    "arguments": {
+      "action": "inspect_catalog",
+      "scope": "evidence"
+    },
+    "action_id": 2,
+    "response_hash": "6aa6a92479534fd6cf7456f600b210f7fee56ee83f2a5ca01e5a8bff42f7fabf",
+    "source_snapshot_hash": "884d646b6bdb99c08d298f1eabc1517fde09614a7a73dc200eb54013299f8c10",
+    "result": {
+      "items": [
+        {
+          "event_ref": "event-99d2c1094c6984b5",
+          "document_ref": "document-sec:cik_0002009312:000149315225011966",
+          "title": "10-Q 2025-08-14",
+          "available_at": "2025-08-14T20:01:09+00:00",
+          "discovery_only": true,
+          "case_bindings": [
+            {
+              "case_ref": "case-003",
+              "event_ref": "event-99d2c1094c6984b5"
+            }
+          ],
+          "raw_chars": 1191914,
+          "readable_start": 160442,
+          "sections": [
+            {
+              "section_id": "sec00",
+              "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+              "raw_start": 183640,
+              "raw_end": 184115
+            },
+            {
+              "section_id": "sec01",
+              "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+              "raw_start": 184516,
+              "raw_end": 184602
+            },
+            {
+              "section_id": "sec02",
+              "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+              "raw_start": 184996,
+              "raw_end": 185470
+            },
+            {
+              "section_id": "sec03",
+              "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+              "raw_start": 185865,
+              "raw_end": 187105
+            },
+            {
+              "section_id": "sec04",
+              "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+              "raw_start": 187551,
+              "raw_end": 188402
+            },
+            {
+              "section_id": "sec05",
+              "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+              "raw_start": 188811,
+              "raw_end": 190904
+            },
+            {
+              "section_id": "sec06",
+              "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+              "raw_start": 209861,
+              "raw_end": 210430
+            },
+            {
+              "section_id": "sec07",
+              "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+              "raw_start": 214365,
+              "raw_end": 215508
+            },
+            {
+              "section_id": "sec08",
+              "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+              "raw_start": 912261,
+              "raw_end": 912522
+            },
+            {
+              "section_id": "sec09",
+              "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+              "raw_start": 1147325,
+              "raw_end": 1148005
+            },
+            {
+              "section_id": "sec10",
+              "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+              "raw_start": 1148801,
+              "raw_end": 1149505
+            },
+            {
+              "section_id": "sec11",
+              "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+              "raw_start": 1155063,
+              "raw_end": 1156322
+            },
+            {
+              "section_id": "sec12",
+              "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+              "raw_start": 1158223,
+              "raw_end": 1158900
+            },
+            {
+              "section_id": "sec13",
+              "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+              "raw_start": 1159422,
+              "raw_end": 1160102
+            },
+            {
+              "section_id": "sec14",
+              "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+              "raw_start": 1160835,
+              "raw_end": 1162286
+            },
+            {
+              "section_id": "sec15",
+              "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+              "raw_start": 1163299,
+              "raw_end": 1163981
+            },
+            {
+              "section_id": "sec16",
+              "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+              "raw_start": 1167485,
+              "raw_end": 1169506
+            }
+          ],
+          "section_count": 17,
+          "family": "filing",
+          "window": "2025Q3"
+        },
+        {
+          "event_ref": "event-24747d604f79cfb5",
+          "document_ref": "document-sec:cik_0001746129:000114036125018373",
+          "title": "10-Q 2025-05-12",
+          "available_at": "2025-05-12T20:05:53+00:00",
+          "discovery_only": true,
+          "case_bindings": [
+            {
+              "case_ref": "case-002",
+              "event_ref": "event-24747d604f79cfb5"
+            }
+          ],
+          "raw_chars": 3988651,
+          "readable_start": 251090,
+          "sections": [
+            {
+              "section_id": "sec00",
+              "heading": "PART I. FINANCIAL INFORMATION Item 1. Financial Statements",
+              "raw_start": 272259,
+              "raw_end": 273510
+            },
+            {
+              "section_id": "sec01",
+              "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+              "raw_start": 277081,
+              "raw_end": 277409
+            },
+            {
+              "section_id": "sec02",
+              "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 49 Item 4. Controls",
+              "raw_start": 277870,
+              "raw_end": 278891
+            },
+            {
+              "section_id": "sec03",
+              "heading": "PART II. OTHER INFORMATION 51 Item 1. Legal Proceedings 51 Item 1A",
+              "raw_start": 279650,
+              "raw_end": 281623
+            },
+            {
+              "section_id": "sec04",
+              "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 51 Item 3. Default",
+              "raw_start": 282419,
+              "raw_end": 283522
+            },
+            {
+              "section_id": "sec05",
+              "heading": "Item 4. Mine Safety Disclosures 51 Item 5. Other Information 51 Item 6. Exhibits 52 &#",
+              "raw_start": 284134,
+              "raw_end": 286295
+            },
+            {
+              "section_id": "sec06",
+              "heading": "ITEM 2. Management&#8217;s Discussion and Analysis of Financial Condition and R",
+              "raw_start": 3083467,
+              "raw_end": 3083736
+            },
+            {
+              "section_id": "sec07",
+              "heading": "ITEM 3. Quantitative and Qualitative Disclosures about Market Risk Interest Rate Sensi",
+              "raw_start": 3944092,
+              "raw_end": 3944282
+            },
+            {
+              "section_id": "sec08",
+              "heading": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Ex",
+              "raw_start": 3969625,
+              "raw_end": 3969896
+            },
+            {
+              "section_id": "sec09",
+              "heading": "PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions th",
+              "raw_start": 3972224,
+              "raw_end": 3972577
+            },
+            {
+              "section_id": "sec10",
+              "heading": "ITEM 1A. Risk Factors In addition to the other information set forth in this Report, we",
+              "raw_start": 3973501,
+              "raw_end": 3973673
+            },
+            {
+              "section_id": "sec11",
+              "heading": "Item 1A. &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the year ende",
+              "raw_start": 3973687,
+              "raw_end": 3973774
+            },
+            {
+              "section_id": "sec12",
+              "heading": "ITEM 2. Unregistered Sales of Equity Securities and Use of Proceeds On October 30, 202",
+              "raw_start": 3974188,
+              "raw_end": 3974359
+            },
+            {
+              "section_id": "sec13",
+              "heading": "ITEM 3. Defaults Upon Senior Securities None ITEM 4. Mine Safety Disclosures None ITEM",
+              "raw_start": 3975564,
+              "raw_end": 3976187
+            },
+            {
+              "section_id": "sec14",
+              "heading": "Item 408(a) of Regulation S-K. 51 Table of Contents ITEM 6. Exhibits 31.1 Certification",
+              "raw_start": 3977182,
+              "raw_end": 3978788
+            }
+          ],
+          "section_count": 15,
+          "family": "filing",
+          "window": "2025Q2"
+        }
+      ],
+      "counts": {
+        "available": 2,
+        "included": 2,
+        "omitted_before": 0,
+        "omitted_after": 0,
+        "oversized": 0
+      },
+      "cursor": 0,
+      "next_cursor": null,
+      "oversized_entries": [],
+      "max_entry_bytes": 8000,
+      "selection_is_exhaustive": true
+    },
+    "source_snapshot_matches": true
+  },
+  "body_units": {
+    "items": [
+      {
+        "document_ref": "document-sec:cik_0001746129:000114036125018373",
+        "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+        "verbatim_hash": "ed481adf41dfed51a840970e9b4f41ccd1bcd3774c1dc061258a0678a40c7b65",
+        "offset": 3969625,
+        "length": 4000,
+        "raw_window_chars": 4000,
+        "has_readable_text": true,
+        "readable_chars": 2094,
+        "next_readable_start": 3973625,
+        "source_type": "filing",
+        "published_at": "2025-05-12T20:05:53+00:00",
+        "available_at": "2025-05-12T20:05:53+00:00",
+        "readable_text": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, conducted an evaluation of the effectiveness as of March 31, 2025 of our disclosure controls and procedures, as defined Rules 13a-15(e) and 15d-15(e) under the Exchange Act.&#160; In designing and evaluating the disclosure controls and procedures, management recognizes that any controls and procedures, no matter how well designed and operated, can provide only reasonable assurance of achieving the desired control objectives, and management was required to apply judgment in evaluating its controls and procedures.&#160; Based on this evaluation, our Chief Executive Officer and Chief Financial Officer concluded that our disclosure controls and procedures were effective as of the end of the fiscal quarter covered by this Form 10-Q. Changes in Internal Control over Financial Reporting There was no change in our internal control over financial reporting (as such term is defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act) that occurred during the three months ended March 31, 2025 that has materially affected, or is reasonably likely to materially affect, such controls. 50 Table of Contents PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions that are routine and incidental to our business. Given the nature, scope and complexity of the extensive legal and regulatory landscape applicable to our business, including laws and regulations governing consumer protections, fair lending, fair labor, privacy, information security and anti-money laundering and anti-terrorism laws, we, like all banking organizations, are subject to heightened legal and regulatory compliance and litigation risk. However, based upon available information and in consultation with legal counsel, management is of the opinion that no proceedings exist, either individually or in the aggregate, which, if determined adversely, would have a material adverse effect on our financial statements. ITEM 1A. Risk Factors In addition to th",
+        "read_count": 1,
+        "case_refs": [
+          "case-002"
+        ],
+        "read_targets": [
+          {
+            "target": "event_ref",
+            "ref": "event-24747d604f79cfb5",
+            "case_refs": [
+              "case-002"
+            ]
+          }
+        ]
+      },
+      {
+        "document_ref": "document-sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968",
+        "offset": 1152908,
+        "length": 4000,
+        "raw_window_chars": 4000,
+        "has_readable_text": true,
+        "readable_chars": 1015,
+        "next_readable_start": 1156908,
+        "source_type": "filing",
+        "published_at": "2025-08-14T20:01:09+00:00",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "readable_text": "&#160; There were no changes in our internal control over financial reporting during the period covered by this Quarterly Report that materially affected, or are reasonably likely to materially affect, our internal control over financial reporting (as defined in Rules 13a-15(f) and 15d-15(f) under the Exchange Act). &#160; 42 &#160; &#160; PART II&#8212;OTHER INFORMATION &#160; ITEM 1. LEGAL PROCEEDINGS &#160; The Company may be involved in various legal proceedings, claims and other disputes arising from the commercial operations, projects, employees and other matters which, in general, are subject to uncertainties and in which the outcomes are not predictable. The Company determines whether an estimated loss from a contingency should be accrued by assessing whether a loss is deemed probable and can be reasonably estimated. Although the outcomes of these legal proceedings cannot be predicted, the Company does not believe these actions, in the aggregate, will have a material adverse impact on its fin",
+        "read_count": 1,
+        "case_refs": [
+          "case-003"
+        ],
+        "read_targets": [
+          {
+            "target": "event_ref",
+            "ref": "event-99d2c1094c6984b5",
+            "case_refs": [
+              "case-003"
+            ]
+          }
+        ]
+      },
+      {
+        "document_ref": "document-sec:cik_0002009312:000149315225011966",
+        "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+        "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80",
+        "offset": 1148801,
+        "length": 4000,
+        "raw_window_chars": 4000,
+        "has_readable_text": true,
+        "readable_chars": 1631,
+        "next_readable_start": 1152908,
+        "source_type": "filing",
+        "published_at": "2025-08-14T20:01:09+00:00",
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "readable_text": "ITEM 4. CONTROLS AND PROCEDURES &#160; Evaluation of Disclosure Controls and Procedures &#160; Our management, with the participation of our Chief Executive Officer and Chief Financial Officer, evaluated the effectiveness of our disclosure controls and procedures (as defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act at the end of the period covered by this quarterly report. &#160; Based on this evaluation, the Chief Executive Officer and Chief Financial Officer concluded that, as of end of the period covered by this Quarterly Report, our disclosure controls and procedures (as defined in &#167; 240.13a-15(e) or 240.15d-15(e) of Regulation S-K) were effective to provide reasonable assurance that the information required to be disclosed by us in the reports we file or submit under the Exchange Act is recorded, processed, summarized and reported within the time periods specified in the SEC&#8217;s rules and forms, and that such information (i) is accumulated and communicated to management, including our Chief Executive Officer and Chief Financial Officer, as appropriate to allow timely decisions regarding required disclosures and (2) recorded, processed, summarized and reported within the time periods specified in the SEC&#8217;s rules and forms. &#160; We recognize that any controls system, no matter how well designed and operated, can provide only reasonable assurance of achieving its objectives, and our management necessarily applies its judgment in evaluating the benefits of possible controls and procedures relative to their costs. &#160; Changes in Internal Control over Financial Reporting",
+        "read_count": 1,
+        "case_refs": [
+          "case-003"
+        ],
+        "read_targets": [
+          {
+            "target": "event_ref",
+            "ref": "event-99d2c1094c6984b5",
+            "case_refs": [
+              "case-003"
+            ]
+          }
+        ]
+      }
+    ],
+    "counts": {
+      "available": 3,
+      "included": 3,
+      "omitted_before": 0,
+      "omitted_after": 0,
+      "oversized": 0
+    },
+    "cursor": 0,
+    "next_cursor": null,
+    "oversized_entries": [],
+    "max_entry_bytes": 40000,
+    "selection_is_exhaustive": true,
+    "omitted_entries": [],
+    "max_items": 12,
+    "selection_order": "most_recent_read_first",
+    "revisit_action": "read_span with a known event_ref or document_ref at these coordinates; ordinary browse cost"
+  },
+  "source_bindings": [
+    {
+      "available_at": "2025-05-12T20:05:53+00:00",
+      "case_id": "cik_0001746129:20250731",
+      "case_ref": "case-002",
+      "content_hash": "8de6937582d3f2b985c7cb3c6ce206a4cc38fa0b8729f7105f56fe373bc2bfa7",
+      "content_hash_matches": true,
+      "cutoff": "2025-07-31T00:00:00+00:00",
+      "document_id": "sec:cik_0001746129:000114036125018373",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1495.json",
+      "pit_eligible": true,
+      "requires_primary_filing_audit": null,
+      "sha256": "5563b56655ce50413fd4a88a7f7aa6540359fa088b3bd7584c2e62b0356e41f0",
+      "snapshot_sha256_matches": true,
+      "source_type": "filing"
+    },
+    {
+      "available_at": "2025-08-14T20:01:09+00:00",
+      "case_id": "cik_0002009312:20250930",
+      "case_ref": "case-003",
+      "content_hash": "f6bbe6a78628f1e9e452e03b03dd55cbb6afe56291fe2284237ea4aecefa2766",
+      "content_hash_matches": true,
+      "cutoff": "2025-09-30T00:00:00+00:00",
+      "document_id": "sec:cik_0002009312:000149315225011966",
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1502.json",
+      "pit_eligible": true,
+      "requires_primary_filing_audit": null,
+      "sha256": "3fbd019a7ced7a7ac1d85c7820e972283926825a072818e03f65565b60cc18c7",
+      "snapshot_sha256_matches": true,
+      "source_type": "filing"
+    }
+  ]
+}

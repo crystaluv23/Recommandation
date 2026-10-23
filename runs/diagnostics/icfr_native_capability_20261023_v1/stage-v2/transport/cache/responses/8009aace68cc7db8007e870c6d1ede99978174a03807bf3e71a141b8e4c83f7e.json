@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "event_ref": "event-1329aa913b56a3b2",
+    "length": 4000,
+    "offset": 175257,
+    "rationale": [
+      "The previous case-005 window contained hidden markup only; continue at its supplied next_readable_start to obtain actual source text.",
+      "The observed case-003 positive and case-002 control both report effective disclosure controls and no material ICFR changes, so those observations alone do not establish a distinguishing ICFR measurement."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"event_ref\": \"event-1329aa913b56a3b2\", \"offset\": 175257, \"length\": 4000, \"rationale\": [\"The previous case-005 window contained hidden markup only; continue at its supplied next_readable_start to obtain actual source text.\", \"The observed case-003 positive and case-002 control both report effective disclosure controls and no material ICFR changes, so those observations alone do not establish a distinguishing ICFR measurement.\"]}",
+  "request_hash": "8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e",
+  "response_id": "local-8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e",
+  "usage": {
+    "accounting_tokens": 196803,
+    "agent_id": "/root/icfr_v2_h010",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "7e38c852f562e5ce0e7e3294271b3d45344ae1ee16e45ca9b8f7f8f288b1961f",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "0b2314fae93e5034db4aee00309c38b3e368afe45997f01170b9b428c4c53eaa",
+    "request_hash": "8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e",
+    "token_usage": null
+  }
+}

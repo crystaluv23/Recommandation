@@ -20,4 +20,8 @@
 
 原stage仍为parent停止调度后的pending：12答/2001316逻辑预留，h013未派未答；不是完成、预算耗尽或no-pattern。新driver拒绝对旧路径prepare/advance/submit；新prepare和verify核旧停止收据、完整文件映射、归档、h013无答及旧receipt实际计费，前轮分母和成本进入新contract。新stage不导入旧LLM答案/cache、不手写候选，重新从既有接受S1/S2 prefix进入实际双seed链。两个新边界反例确认仅有“停止”标记不能掩盖旧文件/答复漂移。
 
-下一证据必须是新代码下fresh真实候选→忠实S5→技术准入→精确Fast诊断使用；本地修复、oracle相同和工具存在均不关闭S3–S8或整体MVP。完整committed use、magnitude及业务恢复仍未验证，原历史0/2和1/2不改。
+98147bc1实际冻结stage-v2并重新开始独立角色；未导入旧答案。11个fresh首答/0纠错、1,837,419逻辑预留，外部API/网络0。独立固定h005–h008原答及h009输入核实：h007同时保A/B，目录动作后h008仍保A/B，读C后h009保A/B/C；1631/1015/2094字符全部完整，source/hash/range/case/时钟和完整请求计费均同。h007原答正确区分disclosure-controls有效、ICFR无重大变化与尚未建立ICFR assessment/material-weakness结论。这只证明实际部署的跨步正文保留和局部表述忠实，不证明效率或候选链通过。见[独立实际核验](../runs/diagnostics/mining_narrative_read_evidence_20261023_v1/actual-deployment/report.md)。
+
+新断点为目录上下文：h004返回的2/14目录页及章节坐标在read后消失，h007恢复cursor0耗尽最后light；h008读C后又无目录页。后续两个原答按宿主next_readable_start诚实推进case005封面，未声称ICFR结论。父于h012停止派发，保留原生pending，未造budget-exhausted/no-pattern/能力失败终态。323份stage文件、182源码归档及11实际receipt成本进入[第二停止收据](../runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json)；h012未派未答，原1候选正控未完成、4消费者未试。旧正文修复未覆盖目录这一同族工作依赖，是此前检查范围的遗漏。
+
+下一证据必须是新代码下fresh真实候选→忠实S5→技术准入→精确Fast诊断使用；先处理目录跨步丢失，不继续沿封面盲读。本地修复、oracle相同和工具存在均不关闭S3–S8或整体MVP。完整committed use、magnitude及业务恢复仍未验证，原历史0/2和1/2不改。

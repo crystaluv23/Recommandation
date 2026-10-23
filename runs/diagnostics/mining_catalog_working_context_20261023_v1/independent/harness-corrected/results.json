@@ -1,0 +1,48 @@
+{
+  "preliminary": true,
+  "source_stable_during_run": true,
+  "controls": [
+    {
+      "id": "indexed-memory-real-oversize",
+      "passed": true,
+      "detail": {
+        "actual_packet_bytes": 35274,
+        "unclipped_in_existing_disclosure": true,
+        "oversize_locator": {
+          "index": 0,
+          "required_bytes": 35764,
+          "observation_ref": "40645698fec275877c75dccbe21aafbdc8bd3a83a33ae715464b61fc121206ad",
+          "scope": "memory",
+          "arguments": {
+            "action": "inspect_catalog",
+            "scope": "memory",
+            "item_refs": [
+              "reflection_source:8f8c32a6bc6975332886f66cbb4f35f5657322f9ccfe8143cfb83928cb4d5b35"
+            ]
+          },
+          "response_hash": "562fc14d8cd88813734203400b59e2dcff13b0fccf181666d5b5c34d8ab3e048",
+          "source_snapshot_hash": "6ba97216cfc9a0a7f0a7965ced919aa284e875fc5202e246a1cf96422e62e0a5"
+        }
+      }
+    },
+    {
+      "id": "native-wire-budget",
+      "passed": true,
+      "detail": {
+        "native_complete_wire_cost": 30403,
+        "one_synthetic_response_no_actor": true,
+        "gate_before_receive": true
+      }
+    },
+    {
+      "id": "computed-source-invalid-recompute",
+      "passed": true,
+      "detail": {
+        "ordinary_read_catalog_preserves_result": true,
+        "post_fetch_same_ref_value_taxonomy_old_relation_rejected": true,
+        "recompute_restores_citation": true,
+        "semantic_comparability_not_claimed": true
+      }
+    }
+  ]
+}

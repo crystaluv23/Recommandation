@@ -1,0 +1,26 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_catalog",
+    "rationale": [
+      "The fetched filing families have not yet been explored through readable narrative spans.",
+      "Inspect document case bindings and raw section coordinates to locate point-in-time ICFR disclosures before defining a measurement or comparing label groups."
+    ],
+    "scope": "evidence"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"inspect_catalog\", \"scope\": \"evidence\", \"rationale\": [\"The fetched filing families have not yet been explored through readable narrative spans.\", \"Inspect document case bindings and raw section coordinates to locate point-in-time ICFR disclosures before defining a measurement or comparing label groups.\"]}",
+  "request_hash": "f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656",
+  "response_id": "local-f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656",
+  "usage": {
+    "accounting_tokens": 187147,
+    "agent_id": "/root/icfr_v2_h004",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "b00173e4f142d75db3ea37f0a195847ea4cee395e3cca18167e2faa109414775",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "faad1deaaa86556bb85e1f4b83687761cb543403b001dc8dfb02f53bf0e3f213",
+    "request_hash": "f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656",
+    "token_usage": null
+  }
+}

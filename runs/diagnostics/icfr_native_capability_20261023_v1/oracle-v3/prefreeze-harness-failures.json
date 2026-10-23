@@ -1,0 +1,24 @@
+{
+  "schema_version": "oracle-v3-prefreeze-harness-failures-v1",
+  "failures": [
+    {
+      "attempt": 1,
+      "runtime": "macOS system Python3.9",
+      "error": "ImportError: cannot import name UnionType from types",
+      "stage_check_executed": false,
+      "oracle_written": false,
+      "classification": "runtime mismatch; product-compatible bundled runtime required"
+    },
+    {
+      "attempt": 2,
+      "runtime": "project-compatible bundled Python",
+      "error": "ModuleNotFoundError: scripts; fallback diagnose_executed_answer_scope absent from script path",
+      "stage_check_executed": false,
+      "oracle_written": false,
+      "classification": "new oracle harness did not include repo root in sys.path; corrected only new oracle-v3 script"
+    }
+  ],
+  "product_or_stage_changes": 0,
+  "semantic_changes": 0,
+  "retention": "Both failures preserved; no acceptance requirement or source fact changed."
+}

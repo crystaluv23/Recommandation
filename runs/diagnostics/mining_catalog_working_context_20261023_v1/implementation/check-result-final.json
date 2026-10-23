@@ -1,0 +1,17 @@
+{
+  "old_five": {
+    "tests": 5,
+    "failures": 1,
+    "errors": 4,
+    "source_sha256": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+    "archive_sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+  },
+  "associated": {
+    "tests": 81,
+    "failures": 0,
+    "errors": 0,
+    "successful": true
+  },
+  "network_attempts": 0,
+  "stable": true
+}

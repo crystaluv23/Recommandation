@@ -1,0 +1,60 @@
+{
+  "attempts": [
+    {
+      "action_summary": "defer",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "defer",
+      "parent_signal_ref": "financing_listing_action:v5",
+      "proposal_hash": "dfb3c580b9e4e541dcd6f2d7dd24ab92663b7c000a7291b0694aa078d930a071",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:Update:001"
+    },
+    {
+      "action_summary": "no_change",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "no_change",
+      "parent_signal_ref": "order_confirmation_disclosed:v2",
+      "proposal_hash": "1bd95f8550a542fe9a12a052a63d840ff901c1739d215c7490c2979f90ca1ce4",
+      "request_refs": [
+        "e4b9d33cedd4ed1ce1c4fecdb713faf8e14b5f1dc40b72f1411e3f41774bc132",
+        "2a4d7d9676811f4b814e3da752af7af7df7d947612c367eee326015aeb347ad6"
+      ],
+      "stage": "Update",
+      "usage_ref": "2a4d7d9676811f4b814e3da752af7af7df7d947612c367eee326015aeb347ad6",
+      "work_id": "cycle-0001:Update:002"
+    },
+    {
+      "action_summary": "defer",
+      "candidate_hash": null,
+      "candidate_ref": null,
+      "evidence_or_evaluation_refs": [],
+      "failure_ref": null,
+      "lesson_refs": [],
+      "need_refs": [],
+      "outcome": "defer",
+      "parent_signal_ref": "guidance_acceleration:v3",
+      "proposal_hash": "9e02b5122033686c34d0df9c899d98b0c8ca795518765b7fd7e2307d4d57696d",
+      "request_refs": [],
+      "stage": "Update",
+      "usage_ref": null,
+      "work_id": "cycle-0001:Update:003"
+    }
+  ],
+  "contract_hash": "66d93955caf3fdecc46dfd956ad365b980896f1dac322175b0c0732856880ef8",
+  "cycle_id": 1,
+  "input_hash": "db9024ba1b8440e119f290a6c07aedcf79acfa43f35b33aebc0c30148689f1e3",
+  "memory_hash": "6e2dad5fc761bbff0ad89b2732a9ef07f3fab0fe6eed0eecbd36be0434e14473",
+  "schema_version": "slow-experiments-v1"
+}

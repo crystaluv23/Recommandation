@@ -1,0 +1,29 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "event_ref": "event-24747d604f79cfb5",
+    "length": 4000,
+    "offset": 3969625,
+    "rationale": [
+      "Read the discovered control case-002 Controls and Procedures section to ground an ICFR contrast against the already read positive case-003.",
+      "The positive excerpt states effective disclosure controls and no material ICFR changes; this does not establish an ICFR effectiveness opinion or cohort-wide pattern.",
+      "Use the supplied section coordinate and preserve unread catalog and backlog limitations while light budget is zero."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"event_ref\": \"event-24747d604f79cfb5\", \"offset\": 3969625, \"length\": 4000, \"rationale\": [\"Read the discovered control case-002 Controls and Procedures section to ground an ICFR contrast against the already read positive case-003.\", \"The positive excerpt states effective disclosure controls and no material ICFR changes; this does not establish an ICFR effectiveness opinion or cohort-wide pattern.\", \"Use the supplied section coordinate and preserve unread catalog and backlog limitations while light budget is zero.\"]}",
+  "request_hash": "6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3",
+  "response_id": "local-6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3",
+  "usage": {
+    "accounting_tokens": 198990,
+    "agent_id": "/root/icfr_v2_h008",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "4604dfc8dcbc88bd2eefa79f12b0d12fb12e9d3f774305d01af7a91e3e8d66c3",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "ee0968d2734d54b233741b7dfdc20326ed18a2c2303ebdaa582d99eca7860666",
+    "request_hash": "6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3",
+    "token_usage": null
+  }
+}

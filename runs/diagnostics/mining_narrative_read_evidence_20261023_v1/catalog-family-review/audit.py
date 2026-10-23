@@ -1,0 +1,40 @@
+"""Read-only fixed eleven-wire catalog retention audit; no model/runtime invocation."""
+import hashlib,json,pathlib,re,tarfile
+R=pathlib.Path('/Users/l/Project/Recommandation'); O=R/'runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review'; B=R/'runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2'
+ids='575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8 14297d7f06341ae97a155ac0899a8a5bc890c7621fdf9c21237cad762d4d1231 c8b680aa458c068a21898ffe833111cf4a7086d25b58b835a0daef4c879c4d6c f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656 a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2 0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5 d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d 6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3 0932a19b81399678e33d33b002288ecf36f5d20e1299004b404e2a97849d0860 8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e 6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd'.split()
+def sha(x):return hashlib.sha256(x).hexdigest()
+def cb(x):return json.dumps(x,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
+def dump(n,x):(O/n).write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+paths=[B/'manifest.json',R/'runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json']+[B/'exchange'/kind/(h+suffix) for h in ids for kind,suffix in [('inbox','.json'),('outbox','.txt'),('receipts','.json')]]
+before={str(p.relative_to(R)):sha(p.read_bytes()) for p in paths};views=[];rows=[]
+for i,h in enumerate(ids,1):
+ wire=json.loads((B/'exchange/inbox'/f'{h}.json').read_text());v=json.loads(next(m['content'] for m in wire['messages'] if m['role']=='user'));views.append(v)
+ raw=(B/'exchange/outbox'/f'{h}.txt').read_bytes();a=json.loads(raw);receipt=json.loads((B/'exchange/receipts'/f'{h}.json').read_text())
+ assert receipt['agent_id']==f'/root/icfr_v2_h{i:03}' and receipt['inbox_sha256']==before[str((B/'exchange/inbox'/f'{h}.json').relative_to(R))] and receipt['raw_output_sha256']==sha(raw)
+ last=v.get('last_action_result',{});result=last.get('result',{});page=result if last.get('action')=='inspect_catalog' else {}
+ rows.append({'h':i,'request_hash':h,'answer':a,'tool_budget':v['budget'],'last_action':last.get('action'),'last_scope':last.get('scope'),'catalog_cursor':page.get('cursor'),'catalog_counts':page.get('counts'),'catalog_next_cursor':page.get('next_cursor'),'default_signal_refs':[x['signal_ref'] for x in v['signal_catalog']],'default_signal_disclosure':v['signal_catalog_disclosure'],'backlog_disclosure':v['backlog_disclosure'],'memory_sources':[{'ref':x.get('ref'),'source_hash':sha(cb(x))} for x in v['meta_memory_disclosures']],'memory_consumption':v['memory_consumption'],'body_page_count':len(v.get('narrative_read_evidence',{}).get('items',[]))})
+def walk(x,path='$'):
+ if isinstance(x,dict):
+  yield path,x
+  for k,v in x.items():yield from walk(v,path+'.'+k)
+ elif isinstance(x,list):
+  for i,v in enumerate(x):yield from walk(v,f'{path}[{i}]')
+signal_cards=[x for v in views[:3] for _,x in walk(v) if 'signal_ref' in x and 'capability_contract' in x and 'source_hash' in x]
+unique={x['signal_ref']:x for x in signal_cards};matrix=[]
+for ref,card in unique.items():
+ matrix.append({'signal_ref':ref,'source_hash':card['source_hash'],'card_hash':sha(cb(card)),'presence':[{'h':i+1,'paths':[p for p,x in walk(v) if x==card]} for i,v in enumerate(views)]})
+def norm(x):return re.sub(r'\[ANON_ID_\d+\]','[ANON_ID]',json.dumps(x,ensure_ascii=False,sort_keys=True))
+e0=views[4]['last_action_result']['result']['items'];e1=views[7]['last_action_result']['result']['items']
+evidence={'first_page_items':e0,'repeated_page_items':e1,'immutable_card_coordinates_equal_after_normalizing_wire_anonym_ids':norm([{k:v for k,v in x.items() if k!='read_windows'} for x in e0])==norm([{k:v for k,v in x.items() if k!='read_windows'} for x in e1]),'section_coordinates_presence':[{'h':i+1,'paths':[p for p,x in walk(v) if 'sections' in x and 'section_count' in x],'cursor_paths':[p for p,x in walk(v) if x.get('counts',{}).get('available')==14 and 'next_cursor' in x]} for i,v in enumerate(views)]}
+archive=R/'runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz'
+rels=['src/stock_opportunity_agent/research/mining_controller.py','src/stock_opportunity_agent/research/mining_role_model.py','src/stock_opportunity_agent/research/stage_contracts.py','src/stock_opportunity_agent/research/evolution_reflection_memory.py','src/stock_opportunity_agent/research/mining_agent_tools.py','spec/src/stock_opportunity_agent/research/signal_mining_agent.md']
+manifest=json.loads((B/'manifest.json').read_text());mh={x['path']:x['sha256'] for x in manifest['code']};sources=[]
+with tarfile.open(archive) as t:
+ for rel in rels:
+  payload=t.extractfile(rel).read();out=O/'frozen-baseline'/(rel+'.txt' if rel.endswith('.md') else rel);out.parent.mkdir(parents=True,exist_ok=True);out.write_bytes(payload)
+  manifest_hash=mh.get(str(R/rel));assert manifest_hash==sha(payload),(rel,manifest_hash,sha(payload))
+  sources.append({'path':rel,'frozen_archive_sha256':sha(payload),'manifest_sha256':manifest_hash,'current_checkout_sha256_at_review':sha((R/rel).read_bytes()),'baseline_copy':str(out.relative_to(R))})
+after={str(p.relative_to(R)):sha(p.read_bytes()) for p in paths};assert before==after
+dump('evidence.json',{'scope':'only h001-h011 inbox, raw answer, receipt; h012 never read','requests':rows,'signal_whole_card_presence':matrix,'evidence_directory':evidence,'memory_six_rows_exactly_equal_all_eleven':[views[0]['meta_memory_disclosures']==v['meta_memory_disclosures'] for v in views],'all_eleven_manifest_equal':[views[0]['measurable_evidence_manifest']==v['measurable_evidence_manifest'] for v in views]})
+dump('bindings.json',{'stage_artifacts_before_and_after_equal':before,'sources':sources,'archive_sha256':sha(archive.read_bytes()),'binding_scope':'33 fixed wire artifacts + manifest + parent stop; six owning frozen source/spec files from archive, not changing live checkout','network_calls':0,'model_calls':0,'tests_or_stage_execution':0})
+print(json.dumps({'wires':len(rows),'signal_cards':len(unique),'evidence_coords_equal':evidence['immutable_card_coordinates_equal_after_normalizing_wire_anonym_ids'],'memory_exact_equal':all(views[0]['meta_memory_disclosures']==v['meta_memory_disclosures'] for v in views),'body_counts':[r['body_page_count'] for r in rows],'stable':before==after}))

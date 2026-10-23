@@ -1,0 +1,2814 @@
+{
+  "scope": "only h001-h011 inbox, raw answer, receipt; h012 never read",
+  "requests": [
+    {
+      "h": 1,
+      "request_hash": "575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8",
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 7,
+        "rationale": [
+          "Inspect omitted Signal cards before selecting a new reusable ICFR measurement.",
+          "The visible seven of eighteen cards do not establish catalog-wide uniqueness; source support and label association remain unverified."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 4
+      },
+      "last_action": null,
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 0
+    },
+    {
+      "h": 2,
+      "request_hash": "14297d7f06341ae97a155ac0899a8a5bc890c7621fdf9c21237cad762d4d1231",
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "signals",
+        "cursor": 14,
+        "rationale": [
+          "Read the remaining existing Signal catalog before selecting a distinct ICFR measurement.",
+          "The prior catalog response supplies next_cursor 14; omitted entries remain unknown."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 3
+      },
+      "last_action": "inspect_catalog",
+      "last_scope": "signals",
+      "catalog_cursor": 7,
+      "catalog_counts": {
+        "available": 18,
+        "included": 7,
+        "omitted_after": 4,
+        "omitted_before": 7,
+        "oversized": 0
+      },
+      "catalog_next_cursor": 14,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 0
+    },
+    {
+      "h": 3,
+      "request_hash": "c8b680aa458c068a21898ffe833111cf4a7086d25b58b835a0daef4c879c4d6c",
+      "answer": {
+        "action": "fetch_evidence",
+        "rationale": [
+          "Fetch point-in-time ICFR disclosures across every labeled case before selecting a reusable narrative measurement.",
+          "Include structured company facts in the same fetch to explore both available modalities; listed documents and excerpts will still require exact raw reads."
+        ],
+        "case_refs": [
+          "case-001",
+          "case-002",
+          "case-003",
+          "case-004",
+          "case-005",
+          "case-006",
+          "case-007",
+          "case-008"
+        ],
+        "source_families": [
+          "filing",
+          "10-k",
+          "sec_filing",
+          "sec_company_facts"
+        ],
+        "max_documents": 24,
+        "query": "internal control over financial reporting material weakness remediation disclosure controls"
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 12,
+        "light_remaining": 2
+      },
+      "last_action": "inspect_catalog",
+      "last_scope": "signals",
+      "catalog_cursor": 14,
+      "catalog_counts": {
+        "available": 18,
+        "included": 4,
+        "omitted_after": 0,
+        "omitted_before": 14,
+        "oversized": 0
+      },
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 0
+    },
+    {
+      "h": 4,
+      "request_hash": "f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656",
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "rationale": [
+          "The fetched filing families have not yet been explored through readable narrative spans.",
+          "Inspect document case bindings and raw section coordinates to locate point-in-time ICFR disclosures before defining a measurement or comparing label groups."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 2
+      },
+      "last_action": "fetch_evidence",
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 0
+    },
+    {
+      "h": 5,
+      "request_hash": "a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2",
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-99d2c1094c6984b5",
+        "offset": 1148801,
+        "length": 4000,
+        "rationale": [
+          "Read the actual controls-and-procedures disclosure for positive case-003 to ground an ICFR measurement.",
+          "The directory is discovery only; material weakness, remediation and effectiveness remain unestablished until the raw text is read."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 24,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action": "inspect_catalog",
+      "last_scope": "evidence",
+      "catalog_cursor": 0,
+      "catalog_counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "catalog_next_cursor": 2,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 0
+    },
+    {
+      "h": 6,
+      "request_hash": "0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5",
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-99d2c1094c6984b5",
+        "offset": 1152908,
+        "length": 4000,
+        "rationale": [
+          "The executed case-003 window establishes effective disclosure controls but ends at the ICFR changes heading.",
+          "Continue at the supplied next readable coordinate to inspect the actual ICFR disclosure before defining a measurement; disclosure-control effectiveness alone does not establish ICFR effectiveness."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 23,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action": "read_span",
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 1
+    },
+    {
+      "h": 7,
+      "request_hash": "d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d",
+      "answer": {
+        "action": "inspect_catalog",
+        "scope": "evidence",
+        "cursor": 0,
+        "rationale": [
+          "The retained case-003 windows establish effective disclosure controls and no material ICFR changes, but do not establish an explicit ICFR effectiveness assessment or a material-weakness predicate.",
+          "Recover the titled document directory and exact section coordinates to select another case and inspect substantive ICFR disclosures; directory entries alone will not establish support.",
+          "The current view contains no directory next_cursor, so cursor zero is directory recovery, not a claim of newly explored coverage."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 11,
+        "light_remaining": 1
+      },
+      "last_action": "read_span",
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 2
+    },
+    {
+      "h": 8,
+      "request_hash": "6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3",
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-24747d604f79cfb5",
+        "offset": 3969625,
+        "length": 4000,
+        "rationale": [
+          "Read the discovered control case-002 Controls and Procedures section to ground an ICFR contrast against the already read positive case-003.",
+          "The positive excerpt states effective disclosure controls and no material ICFR changes; this does not establish an ICFR effectiveness opinion or cohort-wide pattern.",
+          "Use the supplied section coordinate and preserve unread catalog and backlog limitations while light budget is zero."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 22,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "last_action": "inspect_catalog",
+      "last_scope": "evidence",
+      "catalog_cursor": 0,
+      "catalog_counts": {
+        "available": 14,
+        "included": 2,
+        "omitted_after": 12,
+        "omitted_before": 0,
+        "oversized": 0
+      },
+      "catalog_next_cursor": 2,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 2
+    },
+    {
+      "h": 9,
+      "request_hash": "0932a19b81399678e33d33b002288ecf36f5d20e1299004b404e2a97849d0860",
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-1329aa913b56a3b2",
+        "offset": 0,
+        "length": 4000,
+        "rationale": [
+          "The retained positive and control reads both report effective disclosure controls and no material ICFR changes; those observations do not establish a distinguishing measurement.",
+          "Read an unread fetched event to establish its case binding and raw navigation coordinates before extending the ICFR comparison; unread material remains unknown."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 21,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "last_action": "read_span",
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 3
+    },
+    {
+      "h": 10,
+      "request_hash": "8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e",
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-1329aa913b56a3b2",
+        "offset": 175257,
+        "length": 4000,
+        "rationale": [
+          "The previous case-005 window contained hidden markup only; continue at its supplied next_readable_start to obtain actual source text.",
+          "The observed case-003 positive and case-002 control both report effective disclosure controls and no material ICFR changes, so those observations alone do not establish a distinguishing ICFR measurement."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 20,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "last_action": "read_span",
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 4
+    },
+    {
+      "h": 11,
+      "request_hash": "6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd",
+      "answer": {
+        "action": "read_span",
+        "event_ref": "event-1329aa913b56a3b2",
+        "offset": 179677,
+        "length": 4000,
+        "rationale": [
+          "Continue at the supplied next readable coordinate for case-005; the prior readable window contains only the filing cover and establishes no ICFR conclusion.",
+          "The case-003 positive and case-002 control excerpts both report effective disclosure controls and no material ICFR changes, so they do not yet establish a discriminating ICFR measurement."
+        ]
+      },
+      "tool_budget": {
+        "browse_remaining": 19,
+        "heavy_remaining": 11,
+        "light_remaining": 0
+      },
+      "last_action": "read_span",
+      "last_scope": null,
+      "catalog_cursor": null,
+      "catalog_counts": null,
+      "catalog_next_cursor": null,
+      "default_signal_refs": [
+        "financing_listing_action:v5",
+        "cash_burn_rate_elevated:v2",
+        "cash_reserves:v2",
+        "cash_to_current_liabilities_ratio:v2",
+        "gross_margin_change:v3",
+        "liquidity_runway_months:v3",
+        "net_share_retirement_yoy:v3"
+      ],
+      "default_signal_disclosure": {
+        "counts": {
+          "available": 18,
+          "included": 7,
+          "omitted_after": 11,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 7,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=signals item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false
+      },
+      "backlog_disclosure": {
+        "backlog_hash": "921bbc4b7ee46ef23ee8b38db6c03c7505cfb2eea56248f5d36fb2d881cb68bd",
+        "counts": {
+          "available": 265,
+          "included": 12,
+          "omitted_after": 253,
+          "omitted_before": 0,
+          "oversized": 0
+        },
+        "cursor": 0,
+        "max_entry_bytes": 8000,
+        "next_cursor": 12,
+        "oversized_entries": [],
+        "read_action": "inspect_catalog scope=backlog item_refs",
+        "read_byte_limit": 16000,
+        "selection_is_exhaustive": false,
+        "total_backlog_count": 265
+      },
+      "memory_sources": [
+        {
+          "ref": "reflection:6cefa180664cced1ea3ff0cae131f4c83c18c5a587d42e511faabac0485e1a66",
+          "source_hash": "97a46d6b13359fb5b9de1f467aeb58d2ce0a7551b1f99e63d4fbc771a3c03876"
+        },
+        {
+          "ref": "reflection_source:2c64e3e7d2c4cb3084b94b7ad52ef6b6cc931f9e6fd98fb26afc8f00b84f9e69",
+          "source_hash": "8d130a7f1ff2862fb3b3f6d08f70379778b14a23d04cf27e8a2fd1ce05864178"
+        },
+        {
+          "ref": "reflection:c0dd33744360b17f2eb8c3adbebebfe474e0c98ec9ffd488bd817e5e3f71ac5d",
+          "source_hash": "596ee8be8365aa259c2a238b14e0c0b788a70016f6db677774506b072d24c032"
+        },
+        {
+          "ref": "reflection_source:f5f97a76236429be40851cd22b489a947adb83b5f362ef85fd02bd1c9031cdc7",
+          "source_hash": "f40e53e270f784cd52f471b3baf8dc3a7d72547ebc76e1c097cd2d4cddc8ec3a"
+        },
+        {
+          "ref": "reflection:ba50deb6472d4aac66da8bb824d2f2ba1a91d02b085809b31bd97cfe834d0d4f",
+          "source_hash": "a3d4da30d10ed1e94e2b8fbe01dcafbfcd75b60032545ac59bd217e2da3f3ad4"
+        },
+        {
+          "ref": "reflection_source:a047b73f2353d94cefb1de26c5ed648cb120774d23f28fe16b4e6e2545d80ae6",
+          "source_hash": "353ab63aaef931a851bc6f3acb31a0d6bb172e9faca47ae66fee0ddb59bf6fee"
+        }
+      ],
+      "memory_consumption": {
+        "original_disclosure_bytes": 10559,
+        "original_disclosure_limit": 48000,
+        "read_refs": []
+      },
+      "body_page_count": 5
+    }
+  ],
+  "signal_whole_card_presence": [
+    {
+      "signal_ref": "financing_listing_action:v5",
+      "source_hash": "25775e238f61f3a5b75f45198ffada844e25b949adc6b0bc9e942e56e4b825bb",
+      "card_hash": "62f2febf2094d978cebdec6e6aef52fa6d7e4fc5169a3bc0c3afb5f8987c70bd",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[0]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "cash_burn_rate_elevated:v2",
+      "source_hash": "d0fb9b98b6a12c9502543d01d9f0972d826283a5de4207771d387c52eed0ff8c",
+      "card_hash": "9dfbe0dfec449c39ab1c1dae25785448c59a6181997c709f56cf5fc14e2b415e",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[1]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "cash_reserves:v2",
+      "source_hash": "68daabb511383937741863ed77fa8c53aeeb4a0b4e5471c8a9062e75590525d5",
+      "card_hash": "36106d45efe2d9f762b578a7a2a739ce63aac4bc26c6ac324b04d36629917335",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[2]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "cash_to_current_liabilities_ratio:v2",
+      "source_hash": "650c604c2eb897f88f636997901a835cd8922270ad9330439f8079843cddf40f",
+      "card_hash": "33dd3241c7397876a0841687fb43e230c2c4fdf4d61cebde5e9fe0cc8e440385",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[3]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "gross_margin_change:v3",
+      "source_hash": "c958cacf6d34c2408753398d3cde5e220d35d672d2ff06066bb52f9241b1addd",
+      "card_hash": "4c8c06b7251bfca15fcd2bcb2464bd41639def7bc6adfb78cdb855ee3938fc04",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[4]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "liquidity_runway_months:v3",
+      "source_hash": "ea60163a6f51ba20394d0c95995ee81910c753e583886d6d713c8519c32bf472",
+      "card_hash": "5f58f9473205692e6f89c8daca476c79cffd983ae06de829e4d3d9436d057654",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[5]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "net_share_retirement_yoy:v3",
+      "source_hash": "e3b06d46ab060da11bf2dd9b2a473942daece4c0a83615ac59f5c03c7eab8fb2",
+      "card_hash": "d7a3fe8ea6d52f9c878c08fa6ac7e21642d77744b3b7c9f2fc4ef0631b6cafc8",
+      "presence": [
+        {
+          "h": 1,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 5,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 6,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 7,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 8,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 9,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 10,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        },
+        {
+          "h": 11,
+          "paths": [
+            "$.signal_catalog[6]"
+          ]
+        }
+      ]
+    },
+    {
+      "signal_ref": "operating_cash_flow_margin:v2",
+      "source_hash": "828ce230b6d441b27c3998dd6c8c74c04ae15fbdb4bf2e30049b31b0c6a0952e",
+      "card_hash": "03f5b062cb7d3142cae80e489f4c27cafc1ddabd6b63b80e2319ecad9b360988",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[0]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "revenue_acceleration:v2",
+      "source_hash": "b1cdead2c864ecadcaaa061c46ed5900578e56e8b88404022041bb99b7569fe1",
+      "card_hash": "4696cfebb55e4bc0be3dd312aa6acc857c1c125848d0bc22cb39694651c475e3",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[1]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "revenue_growth_yoy:v3",
+      "source_hash": "69337857ea9d9b4e6ecb05978baeb84ba2d23dc17fa851d971e8465744f1bbf7",
+      "card_hash": "8e96606675a5330d5401f21be31da03ca64cab846b9a6d521712f6c617c0f6a6",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[2]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "guidance_acceleration:v3",
+      "source_hash": "bca7bd051508cee22f06ca62f06d9ea1718de1873900962135133b5dc19d9627",
+      "card_hash": "5c8ede8fd61d4de38d3ed5aadb504cde8a915b0642d218ea8cffb808cac0787a",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[3]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "max_drawdown_1y:v2",
+      "source_hash": "718b2545f0d0d291b5b4a0478223a0afdcd401ce281b649252bba787e1727d36",
+      "card_hash": "81aad5740025530641b1921168a28392dcf7957f18f5fb06a18a214dd0d8090d",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[4]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "price_momentum_126d:v2",
+      "source_hash": "035f8b19948ad41683f3f9bf039c33e3cbc378dfb3cc61357a10a8f4deb017a6",
+      "card_hash": "55cf478e6ddc89fb3365d7e9094575d9e509347e36b508acf95f85dcc9f3cc61",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[5]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "negative_word_count:v2",
+      "source_hash": "009b1e0b21ce6bcfd58b74c102eafe2dbfe991918ffdac7d250532d20a19e3f0",
+      "card_hash": "95a21c27b6b2157eeecc698febf050e873669e0e8e4e5c9b3a3cd40b0f1bdf6c",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": [
+            "$.last_action_result.result.items[6]"
+          ]
+        },
+        {
+          "h": 3,
+          "paths": []
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "order_confirmation_disclosed:v3",
+      "source_hash": "382aefd77c7ad7208b0d07f8fbe9ad96b70c5c40d2370aa01ef505bf9aa7276d",
+      "card_hash": "5173a0b38f0d451c5afcbbf6403fd1c31d5a0cb5e06cdb976addc22e013e8f0d",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": []
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.last_action_result.result.items[0]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "order_quality:v2",
+      "source_hash": "7d054cafc32ddf2d4080451745d58c742a64d2afd2409b1c97b07522ebb0a946",
+      "card_hash": "4ea82fc60dc6c9e029255972f6490d0d72c5bec16fa57cd2ade8536ecdcecd6d",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": []
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.last_action_result.result.items[1]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "commercialization_status:v2",
+      "source_hash": "16ed86d1f824a0f596e49a5d5848e413b2e5c4fd86058bdcb90b6c95454372ba",
+      "card_hash": "437ff716c1a6854e22fb0b4b3305daf4d14ab460e3ca3c1105d1954f60fa53fb",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": []
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.last_action_result.result.items[2]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    },
+    {
+      "signal_ref": "customer_concentration:v2",
+      "source_hash": "ee242b80fc0c72ac3d535962b3c92faad5c7f8ab363c70764bc0135d7bb75410",
+      "card_hash": "f85f591cec962c81f07f4e4f4bf2b5c29a9f62831902c4896b72f00f5f8538c3",
+      "presence": [
+        {
+          "h": 1,
+          "paths": []
+        },
+        {
+          "h": 2,
+          "paths": []
+        },
+        {
+          "h": 3,
+          "paths": [
+            "$.last_action_result.result.items[3]"
+          ]
+        },
+        {
+          "h": 4,
+          "paths": []
+        },
+        {
+          "h": 5,
+          "paths": []
+        },
+        {
+          "h": 6,
+          "paths": []
+        },
+        {
+          "h": 7,
+          "paths": []
+        },
+        {
+          "h": 8,
+          "paths": []
+        },
+        {
+          "h": 9,
+          "paths": []
+        },
+        {
+          "h": 10,
+          "paths": []
+        },
+        {
+          "h": 11,
+          "paths": []
+        }
+      ]
+    }
+  ],
+  "evidence_directory": {
+    "first_page_items": [
+      {
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "case_bindings": [
+          {
+            "case_ref": "case-003",
+            "event_ref": "event-99d2c1094c6984b5"
+          }
+        ],
+        "discovery_only": true,
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "event_ref": "event-99d2c1094c6984b5",
+        "family": "filing",
+        "raw_chars": 1191914,
+        "readable_start": 160442,
+        "section_count": 17,
+        "sections": [
+          {
+            "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+            "raw_end": 184115,
+            "raw_start": 183640,
+            "section_id": "sec00"
+          },
+          {
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_end": 184602,
+            "raw_start": 184516,
+            "section_id": "sec01"
+          },
+          {
+            "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+            "raw_end": 185470,
+            "raw_start": 184996,
+            "section_id": "sec02"
+          },
+          {
+            "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+            "raw_end": 187105,
+            "raw_start": 185865,
+            "section_id": "sec03"
+          },
+          {
+            "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+            "raw_end": 188402,
+            "raw_start": 187551,
+            "section_id": "sec04"
+          },
+          {
+            "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+            "raw_end": 190904,
+            "raw_start": 188811,
+            "section_id": "sec05"
+          },
+          {
+            "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+            "raw_end": 210430,
+            "raw_start": 209861,
+            "section_id": "sec06"
+          },
+          {
+            "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+            "raw_end": 215508,
+            "raw_start": 214365,
+            "section_id": "sec07"
+          },
+          {
+            "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+            "raw_end": 912522,
+            "raw_start": 912261,
+            "section_id": "sec08"
+          },
+          {
+            "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+            "raw_end": 1148005,
+            "raw_start": 1147325,
+            "section_id": "sec09"
+          },
+          {
+            "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+            "raw_end": 1149505,
+            "raw_start": 1148801,
+            "section_id": "sec10"
+          },
+          {
+            "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+            "raw_end": 1156322,
+            "raw_start": 1155063,
+            "section_id": "sec11"
+          },
+          {
+            "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+            "raw_end": 1158900,
+            "raw_start": 1158223,
+            "section_id": "sec12"
+          },
+          {
+            "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+            "raw_end": 1160102,
+            "raw_start": 1159422,
+            "section_id": "sec13"
+          },
+          {
+            "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+            "raw_end": 1162286,
+            "raw_start": 1160835,
+            "section_id": "sec14"
+          },
+          {
+            "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+            "raw_end": 1163981,
+            "raw_start": 1163299,
+            "section_id": "sec15"
+          },
+          {
+            "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+            "raw_end": 1169506,
+            "raw_start": 1167485,
+            "section_id": "sec16"
+          }
+        ],
+        "title": "10-Q 2025-08-14",
+        "window": "2025Q3"
+      },
+      {
+        "available_at": "2025-05-12T20:05:53+00:00",
+        "case_bindings": [
+          {
+            "case_ref": "case-002",
+            "event_ref": "event-24747d604f79cfb5"
+          }
+        ],
+        "discovery_only": true,
+        "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+        "event_ref": "event-24747d604f79cfb5",
+        "family": "filing",
+        "raw_chars": 3988651,
+        "readable_start": 251090,
+        "section_count": 15,
+        "sections": [
+          {
+            "heading": "PART I. FINANCIAL INFORMATION Item 1. Financial Statements",
+            "raw_end": 273510,
+            "raw_start": 272259,
+            "section_id": "sec00"
+          },
+          {
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_end": 277409,
+            "raw_start": 277081,
+            "section_id": "sec01"
+          },
+          {
+            "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 49 Item 4. Controls",
+            "raw_end": 278891,
+            "raw_start": 277870,
+            "section_id": "sec02"
+          },
+          {
+            "heading": "PART II. OTHER INFORMATION 51 Item 1. Legal Proceedings 51 Item 1A",
+            "raw_end": 281623,
+            "raw_start": 279650,
+            "section_id": "sec03"
+          },
+          {
+            "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 51 Item 3. Default",
+            "raw_end": 283522,
+            "raw_start": 282419,
+            "section_id": "sec04"
+          },
+          {
+            "heading": "Item 4. Mine Safety Disclosures 51 Item 5. Other Information 51 Item 6. Exhibits 52 &#",
+            "raw_end": 286295,
+            "raw_start": 284134,
+            "section_id": "sec05"
+          },
+          {
+            "heading": "ITEM 2. Management&#8217;s Discussion and Analysis of Financial Condition and R",
+            "raw_end": 3083736,
+            "raw_start": 3083467,
+            "section_id": "sec06"
+          },
+          {
+            "heading": "ITEM 3. Quantitative and Qualitative Disclosures about Market Risk Interest Rate Sensi",
+            "raw_end": 3944282,
+            "raw_start": 3944092,
+            "section_id": "sec07"
+          },
+          {
+            "heading": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Ex",
+            "raw_end": 3969896,
+            "raw_start": 3969625,
+            "section_id": "sec08"
+          },
+          {
+            "heading": "PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions th",
+            "raw_end": 3972577,
+            "raw_start": 3972224,
+            "section_id": "sec09"
+          },
+          {
+            "heading": "ITEM 1A. Risk Factors In addition to the other information set forth in this Report, we",
+            "raw_end": 3973673,
+            "raw_start": 3973501,
+            "section_id": "sec10"
+          },
+          {
+            "heading": "Item 1A. &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the year ende",
+            "raw_end": 3973774,
+            "raw_start": 3973687,
+            "section_id": "sec11"
+          },
+          {
+            "heading": "ITEM 2. Unregistered Sales of Equity Securities and Use of Proceeds On October 30, 202",
+            "raw_end": 3974359,
+            "raw_start": 3974188,
+            "section_id": "sec12"
+          },
+          {
+            "heading": "ITEM 3. Defaults Upon Senior Securities None ITEM 4. Mine Safety Disclosures None ITEM",
+            "raw_end": 3976187,
+            "raw_start": 3975564,
+            "section_id": "sec13"
+          },
+          {
+            "heading": "Item 408(a) of Regulation S-K. 51 Table of Contents ITEM 6. Exhibits 31.1 Certification",
+            "raw_end": 3978788,
+            "raw_start": 3977182,
+            "section_id": "sec14"
+          }
+        ],
+        "title": "10-Q 2025-05-12",
+        "window": "2025Q2"
+      }
+    ],
+    "repeated_page_items": [
+      {
+        "available_at": "2025-08-14T20:01:09+00:00",
+        "case_bindings": [
+          {
+            "case_ref": "case-003",
+            "event_ref": "event-99d2c1094c6984b5"
+          }
+        ],
+        "discovery_only": true,
+        "document_ref": "document-sec:[ANON_ID_0000]:000149315225011966",
+        "event_ref": "event-99d2c1094c6984b5",
+        "family": "filing",
+        "raw_chars": 1191914,
+        "read_windows": [
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1152908,
+            "offset": 1148801,
+            "read_count": 1,
+            "verbatim_hash": "c9513e3c8847ea1d662ae18a56c8cb637b8019c39a7d5eda1b4e83d04fd60f80"
+          },
+          {
+            "case_refs": [
+              "case-003"
+            ],
+            "has_readable_text": true,
+            "length": 4000,
+            "next_readable_start": 1156908,
+            "offset": 1152908,
+            "read_count": 1,
+            "verbatim_hash": "41f972b205ff1bbdff269e110e63b5651b5abf2446502f9276a7a51c180c3968"
+          }
+        ],
+        "readable_start": 160442,
+        "section_count": 17,
+        "sections": [
+          {
+            "heading": "PART I - FINANCIAL INFORMATION 5 Item 1. Condensed Consolidated Financial Statements (",
+            "raw_end": 184115,
+            "raw_start": 183640,
+            "section_id": "sec00"
+          },
+          {
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_end": 184602,
+            "raw_start": 184516,
+            "section_id": "sec01"
+          },
+          {
+            "heading": "Item 3. Quantitative and Qualitative Disclosure About Market Risk 42 Item 4. Controls",
+            "raw_end": 185470,
+            "raw_start": 184996,
+            "section_id": "sec02"
+          },
+          {
+            "heading": "PART II - OTHER INFORMATION 43 Item 1. Legal Proceedings 43 Item 1A. Risk Factors 43 It",
+            "raw_end": 187105,
+            "raw_start": 185865,
+            "section_id": "sec03"
+          },
+          {
+            "heading": "Item 3. Defaults Upon Senior Securities 43 Item 4. Mine Safety Disclosures 43 Item 5.",
+            "raw_end": 188402,
+            "raw_start": 187551,
+            "section_id": "sec04"
+          },
+          {
+            "heading": "Item 6. Exhibits 43 SIGNATURES 44 2 Forward-Looking Statements &#",
+            "raw_end": 190904,
+            "raw_start": 188811,
+            "section_id": "sec05"
+          },
+          {
+            "heading": "Item 1. Interim Financial Statements 5 Unaudited Condensed Consolidated Statements of",
+            "raw_end": 210430,
+            "raw_start": 209861,
+            "section_id": "sec06"
+          },
+          {
+            "heading": "PART I ITEM 1. CONDENSED CONSOLIDATED FINANCIAL STATEMENTS (UNAUDITED) A",
+            "raw_end": 215508,
+            "raw_start": 214365,
+            "section_id": "sec07"
+          },
+          {
+            "heading": "ITEM 2. MANAGEMENT&#8217;S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS",
+            "raw_end": 912522,
+            "raw_start": 912261,
+            "section_id": "sec08"
+          },
+          {
+            "heading": "ITEM 3. QUANTITATIVE AND QUALITATIVE DISCLOSURES ABOUT MARKET RISK As a smaller",
+            "raw_end": 1148005,
+            "raw_start": 1147325,
+            "section_id": "sec09"
+          },
+          {
+            "heading": "ITEM 4. CONTROLS AND PROCEDURES Evaluation of Disclosure Controls and Procedure",
+            "raw_end": 1149505,
+            "raw_start": 1148801,
+            "section_id": "sec10"
+          },
+          {
+            "heading": "PART II&#8212;OTHER INFORMATION ITEM 1. LEGAL PROCEEDINGS The Company may",
+            "raw_end": 1156322,
+            "raw_start": 1155063,
+            "section_id": "sec11"
+          },
+          {
+            "heading": "ITEM 1A. RISK FACTORS As a smaller reporting company, we are not required to mak",
+            "raw_end": 1158900,
+            "raw_start": 1158223,
+            "section_id": "sec12"
+          },
+          {
+            "heading": "ITEM 2. UNREGISTERED SALES OF EQUITY SECURITIES AND USE OF PROCEEDS There have",
+            "raw_end": 1160102,
+            "raw_start": 1159422,
+            "section_id": "sec13"
+          },
+          {
+            "heading": "ITEM 3. DEFAULTS UPON SENIOR SECURITIES None. ITEM 4. MINE SAFETY DISCLO",
+            "raw_end": 1162286,
+            "raw_start": 1160835,
+            "section_id": "sec14"
+          },
+          {
+            "heading": "ITEM 5. OTHER INFORMATION Trading Arrangements of Section 16 Reporting Persons.",
+            "raw_end": 1163981,
+            "raw_start": 1163299,
+            "section_id": "sec15"
+          },
+          {
+            "heading": "ITEM 6. Exhibits EXHIBIT INDEX Exhibit No. Description of Exhibit",
+            "raw_end": 1169506,
+            "raw_start": 1167485,
+            "section_id": "sec16"
+          }
+        ],
+        "title": "10-Q 2025-08-14",
+        "window": "2025Q3"
+      },
+      {
+        "available_at": "2025-05-12T20:05:53+00:00",
+        "case_bindings": [
+          {
+            "case_ref": "case-002",
+            "event_ref": "event-24747d604f79cfb5"
+          }
+        ],
+        "discovery_only": true,
+        "document_ref": "document-sec:[ANON_ID_0001]:000114036125018373",
+        "event_ref": "event-24747d604f79cfb5",
+        "family": "filing",
+        "raw_chars": 3988651,
+        "readable_start": 251090,
+        "section_count": 15,
+        "sections": [
+          {
+            "heading": "PART I. FINANCIAL INFORMATION Item 1. Financial Statements",
+            "raw_end": 273510,
+            "raw_start": 272259,
+            "section_id": "sec00"
+          },
+          {
+            "heading": "Item 2. Management&#8217;s Discussion and Analysis of Financial Condition and Results",
+            "raw_end": 277409,
+            "raw_start": 277081,
+            "section_id": "sec01"
+          },
+          {
+            "heading": "Item 3. Quantitative and Qualitative Disclosures About Market Risk 49 Item 4. Controls",
+            "raw_end": 278891,
+            "raw_start": 277870,
+            "section_id": "sec02"
+          },
+          {
+            "heading": "PART II. OTHER INFORMATION 51 Item 1. Legal Proceedings 51 Item 1A",
+            "raw_end": 281623,
+            "raw_start": 279650,
+            "section_id": "sec03"
+          },
+          {
+            "heading": "Item 2. Unregistered Sales of Equity Securities and Use of Proceeds 51 Item 3. Default",
+            "raw_end": 283522,
+            "raw_start": 282419,
+            "section_id": "sec04"
+          },
+          {
+            "heading": "Item 4. Mine Safety Disclosures 51 Item 5. Other Information 51 Item 6. Exhibits 52 &#",
+            "raw_end": 286295,
+            "raw_start": 284134,
+            "section_id": "sec05"
+          },
+          {
+            "heading": "ITEM 2. Management&#8217;s Discussion and Analysis of Financial Condition and R",
+            "raw_end": 3083736,
+            "raw_start": 3083467,
+            "section_id": "sec06"
+          },
+          {
+            "heading": "ITEM 3. Quantitative and Qualitative Disclosures about Market Risk Interest Rate Sensi",
+            "raw_end": 3944282,
+            "raw_start": 3944092,
+            "section_id": "sec07"
+          },
+          {
+            "heading": "ITEM 4. Controls and Procedures Our management, with the participation of our Chief Ex",
+            "raw_end": 3969896,
+            "raw_start": 3969625,
+            "section_id": "sec08"
+          },
+          {
+            "heading": "PART II ITEM 1. Legal Proceedings From time to time, we are a party to legal actions th",
+            "raw_end": 3972577,
+            "raw_start": 3972224,
+            "section_id": "sec09"
+          },
+          {
+            "heading": "ITEM 1A. Risk Factors In addition to the other information set forth in this Report, we",
+            "raw_end": 3973673,
+            "raw_start": 3973501,
+            "section_id": "sec10"
+          },
+          {
+            "heading": "Item 1A. &#8220;Risk Factors&#8221; of our Annual Report on Form 10-K for the year ende",
+            "raw_end": 3973774,
+            "raw_start": 3973687,
+            "section_id": "sec11"
+          },
+          {
+            "heading": "ITEM 2. Unregistered Sales of Equity Securities and Use of Proceeds On October 30, 202",
+            "raw_end": 3974359,
+            "raw_start": 3974188,
+            "section_id": "sec12"
+          },
+          {
+            "heading": "ITEM 3. Defaults Upon Senior Securities None ITEM 4. Mine Safety Disclosures None ITEM",
+            "raw_end": 3976187,
+            "raw_start": 3975564,
+            "section_id": "sec13"
+          },
+          {
+            "heading": "Item 408(a) of Regulation S-K. 51 Table of Contents ITEM 6. Exhibits 31.1 Certification",
+            "raw_end": 3978788,
+            "raw_start": 3977182,
+            "section_id": "sec14"
+          }
+        ],
+        "title": "10-Q 2025-05-12",
+        "window": "2025Q2"
+      }
+    ],
+    "immutable_card_coordinates_equal_after_normalizing_wire_anonym_ids": true,
+    "section_coordinates_presence": [
+      {
+        "h": 1,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 2,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 3,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 4,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 5,
+        "paths": [
+          "$.last_action_result.result.items[0]",
+          "$.last_action_result.result.items[1]"
+        ],
+        "cursor_paths": [
+          "$.last_action_result.result"
+        ]
+      },
+      {
+        "h": 6,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 7,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 8,
+        "paths": [
+          "$.last_action_result.result.items[0]",
+          "$.last_action_result.result.items[1]"
+        ],
+        "cursor_paths": [
+          "$.last_action_result.result"
+        ]
+      },
+      {
+        "h": 9,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 10,
+        "paths": [],
+        "cursor_paths": []
+      },
+      {
+        "h": 11,
+        "paths": [],
+        "cursor_paths": []
+      }
+    ]
+  },
+  "memory_six_rows_exactly_equal_all_eleven": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "all_eleven_manifest_equal": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ]
+}

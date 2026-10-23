@@ -1,0 +1,13 @@
+{
+  "scope": "Final historical-computed-relation locator repair after bound81; two affected compute tests and one native wire/cost test pass; no broader81 rerun. Parent owns combined final suite.",
+  "files": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+    "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485"
+  },
+  "logs": {
+    "final-locator-focused.log": "f1b65451d1d51796bdf7f7e6554c108383f56ef8a67b7d20612552409b65a5b6",
+    "final-locator-native-wire.log": "aa6c13bc139723fbb7621e3dddeb5cd1284839d9ad6e9cadf32a4acf28e36e24"
+  }
+}

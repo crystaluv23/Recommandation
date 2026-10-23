@@ -1,0 +1,36 @@
+{
+  "purpose": "Packaging-only rename of frozen Markdown byte copy to avoid resolving relative links inside diagnostics; no control rerun",
+  "original_copy": "frozen-baseline/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+  "packaged_copy": "frozen-baseline/spec/src/stock_opportunity_agent/research/signal_mining_agent.md.txt",
+  "original_and_packaged_sha256": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3",
+  "source_hash_unchanged": true,
+  "versions": [
+    {
+      "active_file": "audit.py",
+      "preserved_original": "audit.py.pre-packaging.txt",
+      "original_sha256": "523178a5b7dafc99ab4a3b5c7aff75b44091498642eccf6c6ab6d42c20469b5b",
+      "packaged_sha256": "b1c853cc94cbb351f3ba6e7fd31583662c40bd4242bb08831b05afd987d71c21"
+    },
+    {
+      "active_file": "bindings.json",
+      "preserved_original": "bindings.json.pre-packaging.txt",
+      "original_sha256": "d71a0f0effc94288a8644de3052f1c349a07a5d3f718405577cee72721b5f027",
+      "packaged_sha256": "9bd681773c1bfc804ba11765cf137f949152fad14523bfe061908fdc993b3886"
+    },
+    {
+      "active_file": "report.md",
+      "preserved_original": "report.md.pre-packaging.txt",
+      "original_sha256": "f49f77016fc8bc46588a1e85908605ae96e52765341aebce2eba2bb0b6b50228",
+      "packaged_sha256": "96bca9146bcbeb1c5e196057b6b3be00275fb6fe3463704730f9babb81fe629c"
+    },
+    {
+      "active_file": "report-bindings.json",
+      "preserved_original": "report-bindings.json.pre-packaging.txt",
+      "original_sha256": "762a814e914a7ecbb68eb9df0d887a71d6ec43026de53eba3e6fa5811fc28db8",
+      "packaged_sha256": "ceb2a8017138d848613a20bdeeeb06a9f9362abff0459edf8dddb112c6b54f0b"
+    }
+  ],
+  "unchanged_evidence_sha256": "326cc9f4645c6010d2b1846a4b9504b1009d36a096ef0a7c35f33659bcab8f81",
+  "controls_rerun": false,
+  "product_or_stage_changed": false
+}

@@ -1,0 +1,30 @@
+{
+  "old_five": {
+    "tests": 5,
+    "failures": 1,
+    "errors": 4,
+    "source_sha256": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+    "archive_sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+  },
+  "associated": {
+    "tests": 81,
+    "failures": 0,
+    "errors": 0,
+    "successful": true
+  },
+  "network_attempts": 0,
+  "before": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "918f96fa4bf65502c6272af247cdfdbd71b6f13ec6ab790d0ed63db2c18b9c27",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "b3d2e1b355710d34cf7b67cfc4ceeab5e96188155af425382d4d6d6dd3816d7f",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "f3706c02b299d22e2717e7a4c8cf68aec435e366842d90fe7dda616a3cf2a0f0",
+    "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py": "051e992fa9021ac902b4c40b7124a7b9204d8696e0699147b95810d5b908fd07"
+  },
+  "after": {
+    "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "918f96fa4bf65502c6272af247cdfdbd71b6f13ec6ab790d0ed63db2c18b9c27",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py": "b3d2e1b355710d34cf7b67cfc4ceeab5e96188155af425382d4d6d6dd3816d7f",
+    "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py": "f3706c02b299d22e2717e7a4c8cf68aec435e366842d90fe7dda616a3cf2a0f0",
+    "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py": "051e992fa9021ac902b4c40b7124a7b9204d8696e0699147b95810d5b908fd07"
+  },
+  "stable": true,
+  "scope": "Offline production-entry projections/regressions, not fresh role behavior, candidate or admission."
+}

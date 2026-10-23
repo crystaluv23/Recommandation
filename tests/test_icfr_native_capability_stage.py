@@ -21,13 +21,13 @@ from stock_opportunity_agent.research.signal_evolution import SignalEvolutionEng
 
 class ICFRNativeCapabilityStageTests(TestCase):
     def test_stopped_old_destination_cannot_be_prepared_advanced_or_submitted(self):
-        for action in (
-            lambda: stage.prepare(stage.STOPPED_STAGE_ROOT),
-            lambda: stage.advance(stage.STOPPED_STAGE_ROOT),
-            lambda: stage.submit(stage.STOPPED_STAGE_ROOT, '0' * 64, '/root/no_author'),
-        ):
-            with self.assertRaisesRegex(ValidationError, 'h013 must remain unanswered'):
-                action()
+        for root in (stage.STOPPED_STAGE_ROOT, stage.STOPPED_STAGE_V2_ROOT):
+            for action in (
+                lambda: stage.prepare(root), lambda: stage.advance(root),
+                lambda: stage.submit(root, '0' * 64, '/root/no_author'),
+            ):
+                with self.assertRaisesRegex(ValidationError, 'h013 must remain unanswered'):
+                    action()
 
     def test_predecessor_checks_actual_receipts_and_absence_not_only_a_stop_flag(self):
         with TemporaryDirectory() as temporary:
@@ -59,6 +59,11 @@ class ICFRNativeCapabilityStageTests(TestCase):
                 evidence, _ = stage._stopped_predecessor()
                 self.assertEqual(evidence['answered_unique_requests'], 1)
                 self.assertFalse(evidence['new_role_answers_imported'])
+                extra = old / 'unrecorded-file.json'
+                extra.write_text('{}')
+                with self.assertRaisesRegex(ValidationError, 'file set differs'):
+                    stage._stopped_predecessor()
+                extra.unlink()
                 for path in (Path(pending['outbox_path']), old / 'completion.json'):
                     path.write_text('{}')
                     with self.assertRaises(ValidationError):

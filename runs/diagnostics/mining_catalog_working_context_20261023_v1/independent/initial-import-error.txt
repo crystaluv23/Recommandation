@@ -1,0 +1,4 @@
+Initial launch, before any control or source-binding capture:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src <bundled-python> controls.py final-first
+ModuleNotFoundError: No module named 'tests'
+Cause: executing a script under runs/diagnostics puts its directory, not repo root, on sys.path. Control fixture imports require repo root as well as src. Corrected launch only: PYTHONPATH=src:.; no product change.

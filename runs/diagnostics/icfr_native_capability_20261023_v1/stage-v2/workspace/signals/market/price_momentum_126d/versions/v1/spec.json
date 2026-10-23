@@ -1,0 +1,47 @@
+{
+  "category": "market",
+  "definition": {
+    "description": "Measure total return across the latest 126 intervals in the chronological adjusted-close series."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "market.price_momentum_126d",
+    "type": "deterministic"
+  },
+  "parameters": {
+    "lookback_observations": 126,
+    "negative_max": -0.2,
+    "positive_min": 0.2
+  },
+  "raw_retrieval": {
+    "lookback_days": 400,
+    "minimum_observations": 127,
+    "query_terms": [
+      "adjusted close",
+      "price history"
+    ],
+    "source_types": [
+      "market_data"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "price_momentum_126d",
+  "version": 1
+}

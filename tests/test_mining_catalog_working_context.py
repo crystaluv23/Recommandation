@@ -1,0 +1,409 @@
+"""Whole issued catalog responses survive native Mining steps, without new reads."""
+from copy import deepcopy
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest import TestCase
+from unittest.mock import patch
+import json
+
+from stock_opportunity_agent.artifacts import canonical_json_hash
+from stock_opportunity_agent.data.raw_info import RawInfoDocument, RawInfoStore
+from stock_opportunity_agent.llm import get_model
+from stock_opportunity_agent.research.evolution_transport import ExternalAttemptLedger, StructuredRoleClient
+from stock_opportunity_agent.research.evolution_reflection_memory import ReflectionMemoryIndex
+from stock_opportunity_agent.research.local_role_exchange import LocalRoleExchange
+from stock_opportunity_agent.research.mining_controller import LabelAwareMiningController
+from stock_opportunity_agent.research.mining_role_model import MiningAgentRoleModel, MiningRequestBudgetExhausted
+from stock_opportunity_agent.research.stage_contracts import json_bytes
+from tests import test_mining_narrative_read_evidence as narrative_support
+from tests.evolution_runtime_test_support import ScriptedRoleCaller
+from tests.scheme_evolution_test_support import make_case, NOW
+from tests.test_mining_controller import FACTS_CONTENT
+
+
+class MiningCatalogWorkingContextTests(TestCase):
+    def controller(self, *, body_count=2, signals=0, needs=0, memory=None):
+        case = make_case('catalog_owner', 1.1)
+        docs = [RawInfoDocument.create(document_id=f'filing-{i}', company_id=case.company_id,
+            source_type='filing', published_at=NOW, available_at=NOW,
+            content=f'<html><head><script>HIDDEN_{i}</script></head><body><h2>Item 9A. Controls and Procedures</h2><p>Actual body {i}.</p></body></html>',
+            metadata={'secret': f'UNREQUESTED_METADATA_{i}'}) for i in range(body_count)]
+        facts = RawInfoDocument.create(document_id='facts', company_id=case.company_id,
+            source_type='company_facts', published_at=NOW, available_at=NOW, content=FACTS_CONTENT)
+        originals = {f'measure_{i}:v1': {'spec': {'signal_id': f'measure_{i}', 'version': 1,
+            'definition': {'description': f'Measurement {i}', 'observable': f'exact measurable field {i}'}},
+            'skill': f'Hidden Holder Inc. exact original {i} ' + '长' * 100} for i in range(signals)}
+        controller = LabelAwareMiningController(store=RawInfoStore(documents=[*docs, facts]), model=object(),
+            case_pairs=[('case-001', case)], measurable_evidence_manifest={'source': 'fixture'},
+            signal_catalog=[{'signal_ref': ref} for ref in originals], signal_originals=originals,
+            backlog_needs=[{'need_ref': f'n{i:03d}', 'need': f'Exact need {i}',
+                'sources': [{'detail': f'Complete original source {i}'}]} for i in range(needs)],
+            seed='hypothesis' if needs else 'discovery', meta_memory_briefs=memory or {},
+            identity_aliases=('Hidden Holder Inc.',), light_action_limit=30, browse_limit=40)
+        controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+            'source_families': ['filing', 'company_facts'], 'max_documents': 40,
+            'rationale': ['Fetch controlled source material.']})
+        return controller, docs
+
+    def catalog(self, controller, scope='evidence', **args):
+        raw = {'action': 'inspect_catalog', 'scope': scope, **args, 'rationale': ['Inspect actual catalog.']}
+        controller._validate_action_shape(raw)
+        controller._execute('inspect_catalog', raw)
+        return deepcopy(controller._last_action_result['result'])
+
+    def read(self, controller, doc):
+        controller._execute_read_span({'action': 'read_span', 'document_ref': 'document-' + doc.document_id,
+            'offset': 0, 'length': 4000, 'rationale': ['Read actual bounded source.']})
+
+    def page(self, controller):
+        return controller._model_view()['catalog_observations']
+
+    def test_evidence_directory_survives_two_reads_and_reaches_next_page(self):
+        controller, docs = self.controller(body_count=15)
+        original = self.catalog(controller)
+        self.assertIsNotNone(original['next_cursor'])
+        self.assertEqual(len(controller._catalog_observations), 1)
+        before, budget = deepcopy(controller.ledger.to_dict()), controller._remaining_budget()
+        for doc in docs[:2]:
+            self.read(controller, doc)
+        page = self.page(controller)
+        row = page['items'][0]
+        self.assertEqual(row['result'], original)
+        self.assertEqual(row['response_hash'], canonical_json_hash(original))
+        self.assertTrue(row['source_snapshot_matches'])
+        self.assertEqual(page['snapshot_status'], 'historical_tool_responses')
+        self.assertEqual(controller._remaining_budget()['light_remaining'], budget['light_remaining'])
+        self.assertEqual(controller.ledger.to_dict()['entries'][:len(before['entries'])], before['entries'])
+        first_refs = {r['document_ref'] for r in original['items']}
+        self.assertEqual({r['document_ref'] for r in row['result']['items']}, first_refs)
+        next_page = self.catalog(controller, cursor=row['result']['next_cursor'])
+        self.assertTrue({r['document_ref'] for r in next_page['items']} - first_refs)
+        self.assertEqual(len(self.page(controller)['items']), 2)
+
+    def test_signal_cards_and_whole_originals_survive_compute(self):
+        controller, _ = self.controller(signals=20)
+        cards = self.catalog(controller, 'signals', cursor=12)
+        originals = self.catalog(controller, 'signals', item_refs=['measure_17:v1'])
+        refs = list(controller._facts)[:2]
+        controller._execute_compute({'action': 'compute_statistic', 'rule': 'latest_minus_comparable_prior',
+            'fact_refs': refs, 'rationale': ['Compute after exact catalog reads.']})
+        caller = ScriptedRoleCaller([{'action': 'record_deferred', 'rationale': ['Stop synthetic control.']}])
+        MiningAgentRoleModel(caller).next_action(controller._model_view())
+        page = caller.calls[0]['payload']['catalog_observations']
+        self.assertEqual([r['result'] for r in page['items']], [originals, cards])
+        self.assertTrue(all(r['source_snapshot_matches'] for r in page['items']))
+        self.assertNotIn('Hidden Holder Inc.', json.dumps(page))
+        self.assertIn('exact original 17', json.dumps(page))
+        self.assertIn('catalog_observations', caller.calls[0]['system_prompt'])
+
+    def test_all_four_scopes_remain_exact_and_view_is_isolated(self):
+        memory = {'items': [{'item_ref': 'm0', 'brief': 'Exact brief', 'original': 'Exact memory original'}]}
+        controller, docs = self.controller(signals=1, needs=30, memory=memory)
+        expected = [self.catalog(controller, 'signals', item_refs=['measure_0:v1']),
+                    self.catalog(controller, 'evidence'),
+                    self.catalog(controller, 'backlog', item_refs=['n025']),
+                    self.catalog(controller, 'memory', item_refs=['m0'])]
+        self.read(controller, docs[0])
+        stored = deepcopy(controller._catalog_observations)
+        page = self.page(controller)
+        self.assertEqual([r['scope'] for r in page['items']], ['memory', 'backlog', 'evidence', 'signals'])
+        self.assertEqual([r['result'] for r in page['items']], list(reversed(expected)))
+        for row in page['items']:
+            self.assertEqual(row['response_hash'], canonical_json_hash(row['result']))
+            self.assertTrue(any(e.action_id == row['action_id'] and e.output_hash == row['response_hash']
+                                for e in controller.ledger.entries))
+        page['items'][0]['result']['items'][0]['original'] = 'MUTATION'
+        page['items'][1]['arguments']['item_refs'].append('UNREAD')
+        self.assertEqual(controller._catalog_observations, stored)
+        self.assertNotIn('MUTATION', json.dumps(self.page(controller)))
+
+    def test_repeat_charges_and_reorders_without_new_observation(self):
+        controller, _ = self.controller(signals=1)
+        self.catalog(controller, 'signals')
+        self.catalog(controller, 'evidence')
+        before = controller._light_used
+        self.catalog(controller, 'signals')
+        page = self.page(controller)
+        self.assertEqual(len(page['items']), 2)
+        self.assertEqual(page['items'][0]['scope'], 'signals')
+        self.assertEqual(controller._light_used, before + 1)
+        self.assertEqual(sum(e.action == 'inspect_catalog' for e in controller.ledger.entries), 3)
+        self.assertEqual(self.page(controller), page)
+
+    def test_fetch_invalidates_snapshot_without_replacing_historical_cards(self):
+        controller, _ = self.controller()
+        original = self.catalog(controller)
+        old_hash = self.page(controller)['items'][0]['source_snapshot_hash']
+        self.assertTrue(self.page(controller)['items'][0]['source_snapshot_matches'])
+        # An actual fetch adds another immutable narrative document to the directory.
+        document = RawInfoDocument.create(document_id='additional-filing',
+            company_id=controller.case_pairs[0][1].company_id, source_type='filing',
+            published_at=NOW, available_at=NOW, content='Another exact source body.')
+        controller.store.append(document)
+        controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+            'source_families': ['filing'], 'max_documents': 40,
+            'rationale': ['Fetch the changed authorized fixture population.']})
+        page = self.page(controller)
+        self.assertFalse(page['items'][0]['source_snapshot_matches'])
+        self.assertEqual(page['items'][0]['source_snapshot_hash'], old_hash)
+        self.assertEqual(page['items'][0]['result'], original)
+        refreshed = self.catalog(controller)
+        self.assertTrue(self.page(controller)['items'][0]['source_snapshot_matches'])
+        self.assertEqual(len(self.page(controller)['items']), 1)
+        self.assertEqual(self.page(controller)['items'][0]['result'], refreshed)
+
+    def test_backlog_visible_matching_pending_originals_authorize_current_base_only(self):
+        controller, docs = self.controller(needs=40)
+        self.catalog(controller, 'backlog', item_refs=['n025'])
+        self.read(controller, docs[0])
+        initial = controller._model_view()['need_disposition_contract']
+        self.assertIn('n025', initial['allowed_need_refs'])
+        self.assertNotIn('n026', initial['allowed_need_refs'])
+        row = {'need_refs': ['n025'], 'disposition': 'deferred_measurement', 'signal_refs': [],
+               'rationale': ['Retain this current scoped need.']}
+        controller._record_need_dispositions({'base_hash': initial['base_hash'], 'need_dispositions': [row]})
+        current = controller._model_view()['need_disposition_contract']
+        self.assertNotIn('n025', current['allowed_need_refs'])
+        self.assertNotEqual(current['base_hash'], initial['base_hash'])
+        self.assertIn('n025', json.dumps(self.page(controller)))
+
+    def test_changed_backlog_original_does_not_gain_cache_authority(self):
+        controller, docs = self.controller(needs=40)
+        self.catalog(controller, 'backlog', cursor=24)
+        self.read(controller, docs[0])
+        self.assertIn('n025', controller._disclosed_need_refs())
+        controller._backlog_by_ref['n025']['need'] = 'Changed meaning'
+        self.assertNotIn('n025', controller._disclosed_need_refs())
+        self.assertFalse(self.page(controller)['items'][0]['source_snapshot_matches'])
+        self.assertIn('Exact need 25', json.dumps(self.page(controller)))
+
+    def test_omitted_backlog_page_cannot_authorize_unshown_needs(self):
+        controller, docs = self.controller(needs=120)
+        self.catalog(controller, 'backlog', item_refs=['n025'])
+        for cursor in range(40, 49):
+            self.catalog(controller, 'backlog', cursor=cursor)
+        self.read(controller, docs[0])
+        page = self.page(controller)
+        self.assertLessEqual(len(page['items']), 8)
+        self.assertLessEqual(json_bytes(page['items']), 32000)
+        self.assertTrue(page['omitted_entries'])
+        self.assertNotIn('n025', controller._disclosed_need_refs())
+        self.assertTrue(any(r['arguments'].get('item_refs') == ['n025'] for r in page['omitted_entries']))
+
+    def test_unicode_byte_bound_and_oversized_whole_response_are_explicit(self):
+        memory = {'items': [{'item_ref': f'm{i}', 'brief': 'Bounded brief', 'original': '🧪' * 3000} for i in range(4)]}
+        controller, _ = self.controller(memory=memory)
+        for i in range(4):
+            self.catalog(controller, 'memory', item_refs=[f'm{i}'])
+        page = self.page(controller)
+        self.assertLessEqual(json_bytes(page['items']), 32000)
+        self.assertLess(len(page['items']), 4)
+        self.assertTrue(page['omitted_entries'])
+        self.assertTrue(all(r['result']['items'][0]['original'] == '🧪' * 3000 for r in page['items']))
+        # An indexed memory packet can legally exceed the working-page cap without being clipped.
+        row = deepcopy(next(iter(controller._catalog_observations.values())))
+        row['observation_ref'] = 'large-packet'
+        row['result'] = {'sources': [{'content': '长' * 13000}]}
+        row['response_hash'] = canonical_json_hash(row['result'])
+        controller._catalog_observations[row['observation_ref']] = row
+        page = self.page(controller)
+        self.assertEqual(page['counts']['oversized'], 1)
+        self.assertGreater(page['oversized_entries'][0]['required_bytes'], 32000)
+        self.assertEqual(page['oversized_entries'][0]['response_hash'], row['response_hash'])
+        self.assertNotIn('result', page['oversized_entries'][0])
+
+    def test_no_unrequested_body_metadata_or_failed_catalog_is_retained(self):
+        controller, _ = self.controller(body_count=15)
+        self.assertNotIn('catalog_observations', controller._model_view())
+        original = self.catalog(controller)
+        before = deepcopy(controller._catalog_observations)
+        with self.assertRaises(Exception):
+            self.catalog(controller, cursor=999)
+        self.assertEqual(controller._catalog_observations, before)
+        text = json.dumps(self.page(controller))
+        self.assertNotIn('HIDDEN_', text)
+        self.assertNotIn('UNREQUESTED_METADATA_', text)
+        self.assertNotIn('readable_text', text)
+        self.assertEqual(self.page(controller)['items'][0]['result'], original)
+
+    def test_indexed_memory_legal_large_original_keeps_canonical_disclosure_and_explicit_oversize(self):
+        controller, docs = self.controller()
+        index = ReflectionMemoryIndex()
+        ref = index._source({'detail': '长' * 13000}, level='case')
+        controller.memory_index = index
+        original = self.catalog(controller, 'memory', item_refs=[ref])
+        self.assertGreater(json_bytes(original), 32000)
+        self.assertLessEqual(json_bytes(original), 48000)
+        self.assertEqual(controller._browse_used, 1)
+        self.read(controller, docs[0])
+        page = self.page(controller)
+        self.assertEqual(page['items'], [])
+        self.assertEqual(page['counts']['oversized'], 1)
+        self.assertEqual(page['oversized_entries'][0]['arguments']['item_refs'], [ref])
+        self.assertEqual(page['oversized_entries'][0]['response_hash'], canonical_json_hash(original))
+        self.assertEqual(controller.meta_memory_disclosures[0]['content'], original['sources'][0])
+        self.assertEqual(controller._memory_read_refs, {ref})
+
+    def test_evidence_population_binding_preserves_order_and_deduplicates_repeated_fetch(self):
+        from dataclasses import replace
+        controller, _ = self.controller()
+        self.catalog(controller)
+        before = controller._catalog_source_snapshot('evidence')
+        controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+            'source_families': ['filing', 'company_facts'], 'max_documents': 40,
+            'rationale': ['Repeat the same controlled population.']})
+        self.assertEqual(controller._catalog_source_snapshot('evidence'), before)
+        self.assertTrue(self.page(controller)['items'][0]['source_snapshot_matches'])
+        original_cards = self.page(controller)['items'][0]['result']['items']
+        for ref, result in list(controller._documents.items()):
+            controller._documents[ref] = replace(result, documents=tuple(reversed(result.documents)))
+        self.assertNotEqual(controller._catalog_source_snapshot('evidence'), before)
+        self.assertFalse(self.page(controller)['items'][0]['source_snapshot_matches'])
+        reordered = controller._evidence_catalog_view()['items']
+        self.assertEqual([r['document_ref'] for r in reordered],
+                         list(reversed([r['document_ref'] for r in original_cards])))
+
+    def test_signal_original_change_marks_historical_response_and_preserves_original_guard(self):
+        controller, docs = self.controller(signals=1)
+        original = self.catalog(controller, 'signals', item_refs=['measure_0:v1'])
+        self.read(controller, docs[0])
+        controller._signal_originals['measure_0:v1']['skill'] = 'Changed unsupported original'
+        page = self.page(controller)
+        self.assertFalse(page['items'][0]['source_snapshot_matches'])
+        self.assertEqual(page['items'][0]['result'], original)
+        with self.assertRaisesRegex(Exception, 'snapshot changed'):
+            self.catalog(controller, 'signals', item_refs=['measure_0:v1'])
+
+    def test_same_accepted_tools_reconstruct_identical_view_and_s5_units(self):
+        def replay():
+            controller, docs = self.controller(signals=2, needs=40)
+            self.catalog(controller, 'signals', cursor=1)
+            self.catalog(controller, 'evidence')
+            for doc in docs:
+                self.read(controller, doc)
+            self.catalog(controller, 'backlog', item_refs=['n025'])
+            self.catalog(controller, 'signals', cursor=1)
+            return controller
+        left, right = replay(), replay()
+        self.assertEqual(left._model_view(), right._model_view())
+        self.assertEqual(left.materialization_evidence(), right.materialization_evidence())
+        before = (deepcopy(left.ledger.to_dict()), left._remaining_budget(), left.materialization_evidence())
+        self.page(left)
+        self.assertEqual((left.ledger.to_dict(), left._remaining_budget(), left.materialization_evidence()), before)
+
+    def test_computed_values_and_ordered_source_operands_survive_reads_and_catalog(self):
+        controller, docs = self.controller()
+        self.assertTrue(controller._relations)
+        self.assertTrue(all(relation.rule is None for relation in controller._relations.values()))
+        self.assertNotIn('computed_statistics', controller._model_view())
+        refs = list(controller._facts)[:2]
+        raw = {'action': 'compute_statistic', 'rule': 'latest_minus_comparable_prior',
+               'fact_refs': refs, 'rationale': ['Compute the exact ordered fixture operands.']}
+        controller._execute_compute(raw)
+        relation_ref = controller._last_action_result['relation_ref']
+        expected = deepcopy(controller._last_action_result)
+        evidence = deepcopy(controller.materialization_evidence())
+        self.read(controller, docs[0])
+        self.catalog(controller)
+        row = controller._model_view()['computed_statistics']['items'][0]
+        self.assertEqual(row['snapshot_status'], 'current_since_last_fetch')
+        self.assertEqual(row['relation']['value'], expected['value'])
+        self.assertEqual(list(row['relation']['fact_refs']), refs)
+        self.assertEqual([fact['fact_ref'] for fact in row['operands']], refs)
+        self.assertEqual([fact['content_hash'] for fact in row['operands']],
+                         [controller._facts[ref].content_hash for ref in refs])
+        self.assertEqual(controller.materialization_evidence()[relation_ref], evidence[relation_ref])
+        self.assertEqual(controller._heavy_used, 2)
+
+    def test_later_fetch_invalidates_computed_citation_then_paid_recompute_restores(self):
+        from stock_opportunity_agent.research.mining_controller import InvalidMiningAction
+        controller, docs = self.controller()
+        self.read(controller, docs[0])
+        refs = list(controller._facts)[:2]
+        raw = {'action': 'compute_statistic', 'rule': 'latest_minus_comparable_prior',
+               'fact_refs': refs, 'rationale': ['Compute exact ordered operands.']}
+        controller._execute_compute(raw)
+        relation_ref = controller._last_action_result['relation_ref']
+        canonical = deepcopy(controller.materialization_evidence()[relation_ref])
+        controller._execute_fetch({'action': 'fetch_evidence', 'case_refs': ['case-001'],
+            'source_families': ['filing', 'company_facts'], 'max_documents': 40,
+            'rationale': ['Repeat source fetch; legacy operand snapshots are unverified.']})
+        row = controller._model_view()['computed_statistics']['items'][0]
+        self.assertEqual(row['snapshot_status'], 'invalidated')
+        self.assertEqual(row['relation']['rule'], raw['rule'])
+        self.assertEqual(list(row['relation']['fact_refs']), refs)
+        self.assertEqual(row['relation']['value'], canonical['value'])
+        self.assertTrue(row['relation_is_historical'])
+        self.assertNotIn('operands', row)
+        candidate = {'action': 'propose_candidate', 'rationale': ['Attempt actual candidate boundary.'],
+            'candidate': {'measurement': {'observable': 'a_new_fixture_measurement', 'value_kind': 'numeric',
+                'normalization': 'Preserve exact computed arithmetic.'},
+                'falsifiers': [{'condition': 'No difference exists.', 'expected_observation': 'Zero result.'}],
+                'evidence_refs': [relation_ref]}}
+        with self.assertRaisesRegex(InvalidMiningAction, 'invalidated computed relations'):
+            controller._execute_propose(candidate)
+        self.assertEqual(controller.materialization_evidence()[relation_ref], canonical)
+        before = controller._heavy_used
+        controller._execute_compute(raw)
+        self.assertEqual(controller._heavy_used, before + 1)
+        self.assertEqual(controller._model_view()['computed_statistics']['items'][0]['snapshot_status'],
+                         'current_since_last_fetch')
+        self.assertEqual(controller._execute_propose(candidate)[0], 'candidate')
+
+    def test_missing_computed_operand_invalidates_without_recomputing_or_synthesizing_value(self):
+        controller, _ = self.controller()
+        refs = list(controller._facts)[:2]
+        controller._execute_compute({'action': 'compute_statistic', 'rule': 'latest_minus_comparable_prior',
+            'fact_refs': refs, 'rationale': ['Compute exact ordered fixture operands.']})
+        controller._facts.pop(refs[0])
+        with patch('stock_opportunity_agent.research.mining_controller.compute_statistic',
+                   side_effect=AssertionError('No automatic recomputation')):
+            row = controller._model_view()['computed_statistics']['items'][0]
+        self.assertEqual(row['snapshot_status'], 'invalidated')
+        self.assertEqual(row['invalidated_reason'], 'missing_or_case_mismatched_operands')
+        self.assertTrue(row['relation_is_historical'])
+        self.assertEqual(list(row['relation']['fact_refs']), refs)
+        self.assertEqual(row['relation']['rule'], 'latest_minus_comparable_prior')
+        self.assertNotIn('operands', row)
+
+    def test_native_wire_counts_complete_cache_and_rejects_before_receive(self):
+        controller, docs = self.controller(signals=3)
+        self.catalog(controller, 'signals', item_refs=['measure_1:v1'])
+        original = self.catalog(controller, 'evidence')
+        controller._execute_compute({'action': 'compute_statistic', 'rule': 'latest_minus_comparable_prior',
+            'fact_refs': list(controller._facts)[:2], 'rationale': ['Retain computed value in actual wire.']})
+        self.read(controller, docs[0])
+        before = (deepcopy(controller.ledger.to_dict()), controller.materialization_evidence())
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            captured = []
+            def observe(event):
+                if event.get('event_type') == 'request_ready':
+                    captured.append(json.loads(Path(event['request_path']).read_text())['request'])
+                    raise narrative_support.Captured()
+            client = StructuredRoleClient(registration=get_model('independent-subagent'),
+                contract=narrative_support.Contract(), workspace=root,
+                ledger=ExternalAttemptLedger(root / 'unused.json', max_attempts=1, max_total_cost=.01),
+                local_role_exchange=LocalRoleExchange(root / 'exchange', max_calls=1),
+                allow_external=False, environ={}, on_progress=observe)
+            model = MiningAgentRoleModel(client, identity_aliases=('Hidden Holder Inc.',),
+                max_request_tokens=262144, max_total_tokens=1048576, max_calls=10)
+            with patch.object(LocalRoleExchange, 'receive', side_effect=AssertionError('must not receive')):
+                with self.assertRaises(narrative_support.Captured):
+                    model.next_action(controller._model_view())
+            wire = captured[0]
+            payload = json.loads(wire['messages'][1]['content'])
+            self.assertEqual(int(payload['request_budget']['this_request']),
+                             json_bytes(wire['messages']) + wire['max_output_tokens'])
+            rows = payload['catalog_observations']['items']
+            self.assertEqual(payload['computed_statistics']['items'][0]['snapshot_status'], 'current_since_last_fetch')
+            self.assertEqual(rows[0]['result']['counts'], original['counts'])
+            self.assertEqual(rows[0]['result']['next_cursor'], original['next_cursor'])
+            self.assertEqual(rows[1]['arguments']['item_refs'], ['measure_1:v1'])
+            self.assertNotIn('Hidden Holder Inc.', json.dumps(wire))
+            self.assertNotIn('HIDDEN_', json.dumps(wire))
+            self.assertFalse(list((root / 'exchange/inbox').glob('*.json')))
+            limited = MiningAgentRoleModel(client, max_request_tokens=5000)
+            with self.assertRaises(MiningRequestBudgetExhausted):
+                limited.next_action(controller._model_view())
+            self.assertEqual((controller.ledger.to_dict(), controller.materialization_evidence()), before)

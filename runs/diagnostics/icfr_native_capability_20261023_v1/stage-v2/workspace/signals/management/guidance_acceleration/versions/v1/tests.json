@@ -1,0 +1,14 @@
+{
+  "tests": [
+    {
+      "documents": [
+        {
+          "content": "Management remains optimistic but did not change guidance.",
+          "source_type": "filing"
+        }
+      ],
+      "expected": "neutral",
+      "name": "generic optimism"
+    }
+  ]
+}

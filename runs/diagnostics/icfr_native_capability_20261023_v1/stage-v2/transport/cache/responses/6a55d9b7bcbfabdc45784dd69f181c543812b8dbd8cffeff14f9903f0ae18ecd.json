@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "event_ref": "event-1329aa913b56a3b2",
+    "length": 4000,
+    "offset": 179677,
+    "rationale": [
+      "Continue at the supplied next readable coordinate for case-005; the prior readable window contains only the filing cover and establishes no ICFR conclusion.",
+      "The case-003 positive and case-002 control excerpts both report effective disclosure controls and no material ICFR changes, so they do not yet establish a discriminating ICFR measurement."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\": \"read_span\", \"event_ref\": \"event-1329aa913b56a3b2\", \"offset\": 179677, \"length\": 4000, \"rationale\": [\"Continue at the supplied next readable coordinate for case-005; the prior readable window contains only the filing cover and establishes no ICFR conclusion.\", \"The case-003 positive and case-002 control excerpts both report effective disclosure controls and no material ICFR changes, so they do not yet establish a discriminating ICFR measurement.\"]}",
+  "request_hash": "6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd",
+  "response_id": "local-6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd",
+  "usage": {
+    "accounting_tokens": 198165,
+    "agent_id": "/root/icfr_v2_h011",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "76396263dfad832ba2409326c8cee1224aa0afb749154fce2eb4165ba5c99631",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "8bbf39b1450d5fdf67a331fd4807588c7a0fac29c4dd33ae654a12e64ad087ac",
+    "request_hash": "6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd",
+    "token_usage": null
+  }
+}

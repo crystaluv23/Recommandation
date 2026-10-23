@@ -1,0 +1,27 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "inspect_catalog",
+    "cursor": 7,
+    "rationale": [
+      "Inspect omitted Signal cards before selecting a new reusable ICFR measurement.",
+      "The visible seven of eighteen cards do not establish catalog-wide uniqueness; source support and label association remain unverified."
+    ],
+    "scope": "signals"
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"inspect_catalog\",\"scope\":\"signals\",\"cursor\":7,\"rationale\":[\"Inspect omitted Signal cards before selecting a new reusable ICFR measurement.\",\"The visible seven of eighteen cards do not establish catalog-wide uniqueness; source support and label association remain unverified.\"]}",
+  "request_hash": "575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8",
+  "response_id": "local-575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8",
+  "usage": {
+    "accounting_tokens": 88572,
+    "agent_id": "/root/icfr_v2_h001",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "8612df5db4cbd7f9a46dd69f5270d35fba278ab476eb47e452747669a1d56089",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "21ddcced3bdb719fae1b742d8f6141917ca4e7b033c58219b22168b7d3b18a5a",
+    "request_hash": "575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8",
+    "token_usage": null
+  }
+}

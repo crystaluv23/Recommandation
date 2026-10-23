@@ -1,0 +1,31 @@
+# Mining目录跨动作上下文
+
+当前修复针对实际成功目录查询后，其完整响应在下一次read/compute后丢失的错误家族。生产角色为独立fresh subagent，外部LLM API和本轮网络调用0。没有改测量、canonical业务记录、标签、来源、PIT或资源预算。
+
+## 实际断点与遗漏
+
+98147bc1原生stage-v2已证已读两来源三正文窗持续可见；原答正确保留DCP有效与ICFR assessment未知的差异。但目录页、章节坐标和next_cursor仍只在last_action_result，读正文即替换。h007必须恢复cursor0，用完最后light；h008只看到2/14目录项，h009又失去目录。h010/h011沿next_readable_start继续case005封面并诚实保留未知，不能倒称这些动作本身错误，也不能由未读12份证明不存在模式。
+
+正文修复保了source→S4含义及原S5交接，遗漏了同一工作链的目录→下次read和目录→下页导航依赖。旧测试在脚本中保存目录/定位坐标，与每节点无会话历史的真实组合不同。适用家族还包括已查Signal后页/完整定义、backlog按需原件和memory响应；未实际触发的风险将与本次目录实证区分。
+
+## 冻结历史与验收边界
+
+stage-v2保11实际首答/0纠错、1,837,419逻辑预留，323文件和182源码归档。h012未派未答，原生仍pending；不是终态、预算耗尽或no-pattern。stage-v1的12答/2,001,316、336文件及h013未答继续保留。两轮候选分母各1未完成，消费者各4未试，没有准入、发布或业务完成指针推进。
+
+新driver只允许stage-v3，逐次检查两个旧文件集、pending无答、归档和原生receipt计费，并在新contract记录各自历史。新评估保持263源/stable18/full265/six disclosures/dev8/original groups及原所有caps；不导入旧LLM答案，不手写候选或forced ref。oracle-v3须在新演员前冻结，并逐字段保持既有语义义务。
+
+## 最小修复范围
+
+成功inspect_catalog的实际完整响应统一进入catalog_observations，四scope共享8whole responses/32000 UTF8 JSON bytes，保原runtime handles、args、ledger action、response/source snapshot hash。whole页入选或显式给遗漏/超大请求坐标与所需字节；未查询页、未读原件和模型语义笔记不补入。重复查询仍扣原scope预算，完整页面、披露和重复last result均计原生请求成本。
+
+目录来源快照保真实文档/hash/case及顺序，与阅读进度分开：read/compute不使旧next_cursor失效，新增来源改变目录时标明snapshot不再匹配。历史页上的read_windows不是当前阅读状态。Signal原件仍守精确版本/hash；backlog缓存只有当前实际可见、hash匹配且仍pending项能进入当前allowedrefs，已staged/遗漏/超大/变化项不获权；既有basehash/typed校验保持。memory已读原件的原48KBdisclosure路径保留，大于32KB的合法响应明确oversized，不裁正文。
+
+家族审计也识别到静态可达的compute后继含义缺口（当前11节点未触发compute）。新增小页直接从既有ledger/relations/facts派生12whole/8000 bytes实际计算值、rule及ordered operands，非自动关系不冒充计算。旧relation无operand快照，任何后fetch保守标invalidated；保历史relation供寻址，不附新facts冒旧operand。失效关系在S4引用前typed拒，普通付费compute可恢复；不重算、不删原relation/ledger/S5、不改算术或可比性含义。该层不声称证明统计关系有效。
+
+实现层18新+63关联81过，最后历史重算locator小修另有3定向过，原hash和日志均保留。归档98147的五回归为4个缺新工作页错误、1个backlog可见权限断言失败；不是五个语义误判。最初测试将最多8页误作必有8页，实际32KB先到只6页，原harness及失败日志保留，仅修正容量断言。父在冻结前还纠正了read_progress混入目录population hash，以及invalidated计算页缺重算坐标两处设计遗漏；没有带入新stage。
+
+[独立8组](../runs/diagnostics/mining_catalog_working_context_20261023_v1/independent/review.md)首5/8通过，3组因memory测试任意字段不属canonical source、docid含非法空格、fact.value类型预期错误而失败；原脚本/结果保留，只纠正3组输入后3/3通过，5已过不重跑，最终产品hash均同。两真实source目录/三窗与旧部署逐项核sections/坐标/case/时钟，old/new ledger/S5/预算同；read+compute游标保持、source顺序变化失效、case/hidden拒、need已处理/陈旧/变化/淘汰拒及Signal原件守卫通过。实际memory packet35274字节超过32KB页时whole omission明确且原48KB原件仍在；synthetic native完整wire成本30403、身份正反投影及receive前cap通过。其中一条本地synthetic响应不是生产作者，不计fresh链能力。
+
+父最终470关联全部通过（31.491秒），测试前后相关源码hash同、socket tripwire0；真实temporary prepare/首请求捕获属于零作者连接检查。最初stage模块20过/1错误为oracle-v3尚未冻结的harness依赖；冻结器的runtime/import与root路径前置错误均保留，不算产品语义失败。最终oracle-v3 sha256为dada4c92bac32c133f4efa7bea523d0b0f05d57d0340d1660cdf7976bf257096，15个原有受保护字段逐字段同，三版canonical hash均4951c16c4d3cb976595e0ca12d16388fb13b85e7096fc34831e728ab55914429；两旧pending-progress另精确绑定，未改旧映射。
+
+本地与独立边界验证已完成；还须验证新代码真实自主目录→正文→下一目录页；完整候选、S5、准入和精确消费仍是原能力正控要求。目录保留本身不关闭S3–S8或整体MVP。

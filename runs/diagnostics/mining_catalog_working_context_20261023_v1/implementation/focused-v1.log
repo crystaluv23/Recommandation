@@ -1,0 +1,25 @@
+test_all_four_scopes_remain_exact_and_view_is_isolated (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_all_four_scopes_remain_exact_and_view_is_isolated) ... ok
+test_backlog_visible_matching_pending_originals_authorize_current_base_only (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_backlog_visible_matching_pending_originals_authorize_current_base_only) ... ok
+test_changed_backlog_original_does_not_gain_cache_authority (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_changed_backlog_original_does_not_gain_cache_authority) ... ok
+test_evidence_directory_survives_two_reads_and_reaches_next_page (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_evidence_directory_survives_two_reads_and_reaches_next_page) ... ok
+test_fetch_invalidates_snapshot_without_replacing_historical_cards (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_fetch_invalidates_snapshot_without_replacing_historical_cards) ... ok
+test_native_wire_counts_complete_cache_and_rejects_before_receive (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_native_wire_counts_complete_cache_and_rejects_before_receive) ... ok
+test_no_unrequested_body_metadata_or_failed_catalog_is_retained (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_no_unrequested_body_metadata_or_failed_catalog_is_retained) ... ok
+test_omitted_backlog_page_cannot_authorize_unshown_needs (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_omitted_backlog_page_cannot_authorize_unshown_needs) ... FAIL
+test_repeat_charges_and_reorders_without_new_observation (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_repeat_charges_and_reorders_without_new_observation) ... ok
+test_same_accepted_tools_reconstruct_identical_view_and_s5_units (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_same_accepted_tools_reconstruct_identical_view_and_s5_units) ... ok
+test_signal_cards_and_whole_originals_survive_compute (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_signal_cards_and_whole_originals_survive_compute) ... ok
+test_unicode_byte_bound_and_oversized_whole_response_are_explicit (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_unicode_byte_bound_and_oversized_whole_response_are_explicit) ... ok
+
+======================================================================
+FAIL: test_omitted_backlog_page_cannot_authorize_unshown_needs (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_omitted_backlog_page_cannot_authorize_unshown_needs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py", line 180, in test_omitted_backlog_page_cannot_authorize_unshown_needs
+    self.assertEqual(len(page['items']), 8)
+AssertionError: 6 != 8
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.054s
+
+FAILED (failures=1)

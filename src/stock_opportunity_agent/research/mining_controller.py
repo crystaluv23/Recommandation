@@ -376,6 +376,7 @@ class LabelAwareMiningController:
         self._fact_read_progress: dict[str, dict[str, Any]] = {}
         self._comparison_progress: dict[str, dict[str, Any]] = {}
         self._comparison_snapshot: str | None = None
+        self._catalog_observations: dict[str, dict[str, Any]] = {}
         self._last_action_result: Mapping[str, Any] | None = None
         self._narrative_explored = False
         self._narrative_reads = 0
@@ -569,6 +570,8 @@ class LabelAwareMiningController:
         }
         if self._last_action_result is not None:
             view["last_action_result"] = deepcopy(self._last_action_result)
+        if self._catalog_observations:
+            view["catalog_observations"] = self._catalog_observations_view()
         if self._comparison_progress:
             current = self._comparison_snapshot == self._comparison_context_hash()
             entries = deepcopy(list(reversed(list(self._comparison_progress.values())))) if current else []
@@ -604,6 +607,9 @@ class LabelAwareMiningController:
                 **progress, "selection_order": "most_recent_read_first",
                 "revisit_action": "read_span with fact_ref; ordinary heavy cost",
             }
+        computed = self._computed_statistics_view()
+        if computed is not None:
+            view["computed_statistics"] = computed
         view["available_actions"] = [
             action for action in ACTIONS
             if (action not in LIGHT_ACTIONS or self._light_used < self.light_action_limit
@@ -628,6 +634,100 @@ class LabelAwareMiningController:
                 "row_rationale": NEED_ROW_RATIONALE_CONTRACT,
             }
         return view
+
+    def _computed_statistics_entries(self) -> list[dict[str, Any]]:
+        """Derive working/citation readiness from actual compute and fetch ledger order."""
+        computes = {entry.evidence_refs[0]: entry.action_id for entry in self.ledger.entries
+                    if entry.action == "compute_statistic" and entry.evidence_refs}
+        last_fetch = max((entry.action_id for entry in self.ledger.entries
+                          if entry.action == "fetch_evidence"), default=0)
+        entries = []
+        for ref, action_id in sorted(computes.items(), key=lambda item: item[1], reverse=True):
+            relation = self._relations.get(ref)
+            if (relation is None or relation.kind != "numerator_denominator"
+                or relation.rule not in COMPUTE_RULES or relation.value is None):
+                continue
+            facts = [self._facts.get(fact_ref) for fact_ref in relation.fact_refs]
+            reason = ("later_fetch_operand_snapshot_unverified" if last_fetch > action_id else
+                      "missing_or_case_mismatched_operands" if len(facts) != 2
+                      or any(fact is None or fact.case_ref != relation.case_ref for fact in facts) else None)
+            row = {"relation_ref": ref, "last_compute_action_id": action_id,
+                   "snapshot_status": "invalidated" if reason else "current_since_last_fetch",
+                   "relation": asdict(relation)}
+            if reason:
+                row["invalidated_reason"] = reason
+                row["relation_is_historical"] = True
+            else:
+                row["operands"] = [asdict(fact) for fact in facts]
+            entries.append(_mask_identity_values(row, self.identity_aliases, expand_aliases=False))
+        return entries
+
+    def _computed_statistics_view(self) -> dict[str, Any] | None:
+        """Project actual computed relations; never recompute or pair old values with new facts."""
+        entries = self._computed_statistics_entries()
+        if not entries:
+            return None
+        page = bounded_entry_page(entries, max_items=12, max_bytes=8_000)
+        selected = {row["relation_ref"] for row in page["items"]}
+        oversized = {row["index"] for row in page["oversized_entries"]}
+        page["oversized_entries"] = [{**row, "relation_ref": entries[row["index"]]["relation_ref"]}
+                                     for row in page["oversized_entries"]]
+        page["omitted_entries"] = [{"index": index, "relation_ref": row["relation_ref"],
+            "required_bytes": json_bytes([row])} for index, row in enumerate(entries)
+            if row["relation_ref"] not in selected and index not in oversized]
+        return {**page, "selection_order": "most_recent_actual_compute_first",
+            "revisit_action": "compute_statistic with original rule/ordered fact_refs; ordinary heavy cost",
+            "semantic_note": "A computed number does not establish operand comparability; any later fetch conservatively invalidates legacy operand snapshots."}
+
+    def _catalog_source_snapshot(self, scope: str) -> str:
+        """Bind a tool response to runtime source state without reading new content."""
+        if scope == "evidence":
+            documents, seen = [], set()
+            for result in self._documents.values():
+                for document in result.documents:
+                    identity = (document.document_id, document.content_hash)
+                    if _evidence_source_family(document.source_type) not in _NARRATIVE_FAMILIES or identity in seen:
+                        continue
+                    seen.add(identity)
+                    documents.append({"document_ref": f"document-{document.document_id}",
+                        "content_hash": document.content_hash, "source_type": document.source_type,
+                        "published_at": document.published_at.isoformat(),
+                        "available_at": document.available_at.isoformat()})
+            source = {"documents": documents,
+                "case_scopes": [[list(key), sorted(refs)]
+                    for key, refs in sorted(self._document_case_refs.items()) if key in seen],
+                "events": [asdict(event) for event in self._events.values()
+                           if event.source_family in _NARRATIVE_FAMILIES]}
+        elif scope == "signals":
+            source = {"catalog": self.signal_catalog, "originals": self._signal_originals}
+        elif scope == "backlog":
+            source = {"originals": self._backlog_by_ref, "need_state_hash": self._need_state_hash()}
+        else:
+            source = {"briefs": self.meta_memory_briefs, "disclosures": self.meta_memory_disclosures,
+                "source_catalog": self.memory_index.source_catalog() if self.memory_index is not None else None}
+        return canonical_json_hash(source)
+
+    def _catalog_observations_view(self) -> dict[str, Any]:
+        """Return bounded whole historical responses, never unrequested catalog entries."""
+        entries = deepcopy(list(reversed(list(self._catalog_observations.values()))))
+        current = {scope: self._catalog_source_snapshot(scope) for scope in {row["scope"] for row in entries}}
+        for row in entries:
+            row["source_snapshot_matches"] = row["source_snapshot_hash"] == current[row["scope"]]
+        page = bounded_entry_page(entries, max_items=8, max_bytes=32_000)
+        selected = {row["observation_ref"] for row in page["items"]}
+        oversized = {row["index"] for row in page["oversized_entries"]}
+        def locator(index: int) -> dict[str, Any]:
+            row = entries[index]
+            return {key: deepcopy(row[key]) for key in (
+                "observation_ref", "scope", "arguments", "response_hash", "source_snapshot_hash")}
+        page["oversized_entries"] = [{**row, **locator(row["index"])} for row in page["oversized_entries"]]
+        page["omitted_entries"] = [{"index": index, "required_bytes": json_bytes([row]), **locator(index)}
+            for index, row in enumerate(entries)
+            if row["observation_ref"] not in selected and index not in oversized]
+        return {**page, "selection_order": "most_recent_successful_catalog_request_first",
+            "snapshot_status": "historical_tool_responses",
+            "revisit_action": "inspect_catalog with saved arguments; ordinary scope budget",
+            "current_state_note": "Evidence reads/compute preserve directory population and cursor validity; historical read_windows are not current read status. A changed source snapshot can change pagination; refresh only when current pagination is required."}
 
     def _narrative_read_evidence_view(self) -> dict[str, Any]:
         """Project whole executed narrative units without changing source handoff."""
@@ -1007,6 +1107,17 @@ class LabelAwareMiningController:
                 coverage={"keys": sorted(payload)},
                 omitted_coverage=dict(payload.get("counts", {})),
             )
+            if action == "inspect_catalog":
+                arguments = _action_arguments(raw)
+                observation_ref = canonical_json_hash({"scope": scope, "arguments": arguments})
+                self._catalog_observations.pop(observation_ref, None)
+                self._catalog_observations[observation_ref] = {
+                    "observation_ref": observation_ref, "scope": scope,
+                    "arguments": deepcopy(arguments), "action_id": self.ledger.entries[-1].action_id,
+                    "response_hash": canonical_json_hash(payload),
+                    "source_snapshot_hash": self._catalog_source_snapshot(scope),
+                    "result": deepcopy(payload),
+                }
             self._advance("exploring")
             return "running", [], ()
         if action == "fetch_evidence":
@@ -1577,6 +1688,14 @@ class LabelAwareMiningController:
                 + ", ".join(unknown)
             )
         cited_set = set(str(ref) for ref in evidence_refs)
+        invalidated = [row["relation_ref"] for row in self._computed_statistics_entries()
+                       if row["relation_ref"] in cited_set and row["snapshot_status"] == "invalidated"]
+        if invalidated:
+            raise InvalidMiningAction(
+                "candidate cites invalidated computed relations; repeat ordinary charged "
+                "compute_statistic with the current ordered fact_refs before proposing: "
+                + ", ".join(invalidated)
+            )
         if predicate is not None:
             self._validate_narrative_predicate(predicate, cited_set)
         cited_fact_concepts = {
@@ -1840,6 +1959,17 @@ class LabelAwareMiningController:
         receipt = self._last_action_result or {}
         if receipt.get("scope") == "backlog":
             refs.extend(row["need_ref"] for row in receipt.get("result", {}).get("items", ()))
+        for observation in self._catalog_observations_view()["items"]:
+            if observation["scope"] != "backlog":
+                continue
+            for row in observation["result"].get("items", ()):
+                ref = row.get("need_ref")
+                original = self._backlog_by_ref.get(ref)
+                if original is not None and (
+                    row.get("source_hash") == canonical_json_hash(original)
+                    or canonical_json_hash(row) == canonical_json_hash(original)
+                ):
+                    refs.append(ref)
         pending = set(self._pending_need_refs())
         return list(dict.fromkeys(ref for ref in refs if ref in pending))
 

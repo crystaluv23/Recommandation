@@ -1,0 +1,58 @@
+{
+  "category": "orders",
+  "definition": {
+    "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skill.md",
+    "type": "llm"
+  },
+  "modality": "narrative",
+  "parameters": {
+    "routing_required_research_phrases": [
+      "purchase order",
+      "purchase orders",
+      "customer order",
+      "customer orders",
+      "order backlog",
+      "funded backlog",
+      "contract award",
+      "customer commitment"
+    ]
+  },
+  "raw_retrieval": {
+    "lookback_days": 730,
+    "query_terms": [
+      "purchase order backlog",
+      "contract award",
+      "customer commitment"
+    ],
+    "source_types": [
+      "filing",
+      "company_announcement",
+      "customer_announcement",
+      "earnings_call"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "order_quality",
+  "version": 2
+}

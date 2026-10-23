@@ -1,0 +1,1 @@
+{"action":"read_span","event_ref":"event-99d2c1094c6984b5","offset":1148801,"length":4000,"rationale":["Read the actual controls-and-procedures disclosure for positive case-003 to ground an ICFR measurement.","The directory is discovery only; material weakness, remediation and effectiveness remain unestablished until the raw text is read."]}

@@ -10,7 +10,7 @@ they do not extend, restart or rename any exhausted historical target.
 ## Fixed input and oracle boundary
 
 This revision uses the new
-`runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2` destination. The
+`runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3` destination. The
 original `stage` is a separately preserved incomplete control: twelve real
 answers consumed2,001,316 logical reservation units, then the parent stopped
 before dispatching its prepared h013 after confirming S4 lost prior narrative
@@ -23,7 +23,22 @@ start native Mining from the same previously accepted S1/S2 prefix; no prior
 candidate, hidden body, hand-written working note or supplied action is reused.
 The old candidate denominator1/uncompleted and consumer4/unattempted remain
 visible beside this new revision's independently fixed denominators.
-Freeze a separate `oracle-v2/acceptance-obligations.json` before new actors,
+The separately stopped `stage-v2` retains eleven real answers/1,837,419 logical
+units and its unanswered h012. Its actual inputs prove that read bodies now
+survive, while inspected catalog pages/section coordinates do not. Preserve
+its323 files and exact182-file runtime archive as a second incomplete control;
+do not reenter either stopped root. Verify both stop receipts, full file sets,
+pending identities/answer absence, archive bytes and actual receipt costs on
+every new prepare/verify. Bind both exact pending-progress files in the new
+contract, including when an older snapshot excluded that diagnostic file.
+Include both prior controls in the new contract and
+do not import either answer cache. This revision retains bounded working views
+of actually inspected catalog responses and computed relations. Computed
+relations without a still-established operand snapshot cannot authorize a
+candidate citation; the existing charged compute action can reestablish it.
+It changes no input population, measurement or admission semantics, original
+failure denominators or resource ceilings.
+Freeze a separate `oracle-v3/acceptance-obligations.json` before new actors,
 retaining all original source-semantic obligations unchanged and binding this
 spec plus the repaired owning Mining view. Preserve the original oracle bytes.
 This is a new code-version evaluation of the same population and capability,

@@ -1,0 +1,8 @@
+{
+  "initial_scope": "mining",
+  "request": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/transport/requests/0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5.json",
+    "sha256": "d754fd69917a5737ccb05b1bdc28480704931e5d40def8e8d1493f1702fa0c4c"
+  },
+  "reservation": 192196
+}

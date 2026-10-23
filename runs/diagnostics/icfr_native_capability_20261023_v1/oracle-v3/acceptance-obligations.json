@@ -1,0 +1,590 @@
+{
+  "schema_version": "private-prospective-icfr-native-acceptance-v1",
+  "frozen_at_utc": "2026-10-23T00:40:46.743448+00:00",
+  "privacy": "Private evaluator-only obligations. Never supply this file, oracle passages, expected mapping, source locators or private source classifications to authors.",
+  "prospective_boundary": {
+    "author_outputs_read": false,
+    "candidate_json_supplied": false,
+    "fixed_candidate_enum_answers": false,
+    "output_rule": "Derive concrete expected output independently from the candidate own immutable definition after authoring and before consumer results. This rule and original facts cannot be relaxed after results. A candidate outside this scope is rejected, not used to rewrite oracle."
+  },
+  "contract_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/run_icfr_native_capability_stage.md",
+      "sha256": "e8ceb257900f9da8b9a8e85753fb48e9e82a9d018f3b6e32d8c1c09b025af331"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/vision.md",
+      "sha256": "1da04a9197ab2f037240165cf76751028efdbc98f563bab3d457b8b45e5a59a4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/architecture.md",
+      "sha256": "41ff07ba757e677fb72ecf2c7a50431fbc20247ecba22aa7c188724cfa0579a1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/engineering-mvp.md",
+      "sha256": "5f8d9f326530cd2f4545f0036516b2b17efdd0631d83214b36d359afcd761947"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/evolution_signal_roles.md",
+      "sha256": "d05153054efd4a6ab4e26d2cd8048259df4e4fe821f83ea4cad39072e20a2cd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/signal_library.md",
+      "sha256": "f0d6473af0291603cb8a17c27ea7787888b1eec783e1a25a6503cdc4de24e045"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "sha256": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_mining_catalog_working_context.py",
+      "sha256": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/run_icfr_native_capability_stage.py",
+      "sha256": "32927a48b1b16ac8397ae89bf36257f7270115084562c7956780e56fb861389a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/tests/test_icfr_native_capability_stage.py",
+      "sha256": "bf708ed18142e8567bd6c73d93afcdc73424a1cfdf7b5ffe2c04ea97dc498375"
+    }
+  ],
+  "source_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/source-review/bindings-evidence.json",
+    "sha256": "951c069e4698e6921274a008bbd4bbc0f7afbf2cb636285dd385e7672f28a01f"
+  },
+  "source_material": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/mining_capability_frontier_20261023_v1/independent/narrative-material-bindings.json",
+    "sha256": "957c97fb081d42120ede3a464da57ab10bcfe1913fb5a7c7f066b76976fce41f"
+  },
+  "source_scope": {
+    "level": "bounded local historical filing-source binding",
+    "not_claimed": [
+      "contemporaneous remote attestation",
+      "acceptance-instant exact historical bytes",
+      "independent no-modification version history",
+      "latest cutoff-day ICFR truth"
+    ],
+    "availability_rule": "SEC retained exact submission acceptance establishes the local historical filing clock; 2026 retrieved_at is capture time. Neither timestamp field alone nor hashes alone prove source authenticity; use bound original body/request/issuer/period/cache chain."
+  },
+  "research_semantics": {
+    "axis": "existing fixed surge direction; never redefine SignalValue as generic predicate presence",
+    "target": "Existing fixed adjusted-share-price surge outcome; no label, horizon, class or direction redefinition.",
+    "rules": [
+      "Separate source factual state, candidate measurement state and hypothesized research orientation.",
+      "Do not equate actual weakness with positive just because predicate is present, or no weakness with negative just because absent.",
+      "Require candidate own pre-result definition and rationale to state applicable state meaning, research relevance, counterevidence and uncertainty.",
+      "A defensible target-relevant hypothesis need not prove independent predictive benefit, but stock direction/magnitude cannot be fabricated from the source.",
+      "Unverified effect must remain unverified; technical admission and diagnostic use never establish empirical orientation.",
+      "If source facts are measurable but direction is not justified, preserve factual distinctions and uncertainty under existing contracts; do not invent a mapping to meet this control.",
+      "An irreconcilable direction/definition contract fails or stays unknown before promotion; do not silently change canonical schema.",
+      "A clear binary measurement of whether a dated management assessment explicitly identifies an ICFR material weakness is a legitimate reusable measurement. Presence wording alone is not grounds for rejection. Its canonical directional orientation must remain separately defined and justified.",
+      "Candidate research orientation may use already-authorized runtime development contrast as an unverified hypothesis; no causal proof, paired predictive gain or new labels are required for this engineering control."
+    ]
+  },
+  "novelty_baseline": {
+    "six_exact_existing_narrative_definitions": [
+      {
+        "exact_ref": "financing_listing_action:v5",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/catalysts/financing_listing_action/versions/v5/spec.json",
+          "sha256": "9f2fde95759969e3e0c120aea20387a31c68e46c6c3699edf6fed9309038a5f1"
+        },
+        "definition": {
+          "description": "Judge whether financing, restructuring, or listing actions materially change runway, dilution, or tradability."
+        },
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/catalysts/financing_listing_action/versions/v5/skill.md",
+          "sha256": "0a4a16182df89786206744512da164415b51d13a00473bebad6af6f4e9dfe43a"
+        },
+        "skill_text": "Identify completed or binding financing, debt restructuring, exchange-compliance, redemption, reverse-split, or listing actions. Separate completed actions from proposals. Do not treat completed financing as automatically positive for the fixed surge target. Report completed capital-structure events as neutral capital-structure facts unless the visible span establishes a within-horizon change in runway, dilution, or tradability that is relevant to the fixed surge target; do not infer a directional effect from the existence of a refinancing, buyback authorization, note exchange, or ATM sale. Explain whether the point-in-time effect reduces or increases dilution, distress, or tradability, and whether it is a catalyst or merely a capital-structure event, with literal spans.\n"
+      },
+      {
+        "exact_ref": "guidance_acceleration:v3",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/management/guidance_acceleration/versions/v3/spec.json",
+          "sha256": "27ddc4483007f747f6a0aa7d7618ad2da560151f2d12b51ef8d5847b3c83d400"
+        },
+        "definition": {
+          "description": "Judge whether fresh management guidance materially strengthens the growth path versus prior guidance."
+        },
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/management/guidance_acceleration/versions/v3/skill.md",
+          "sha256": "b54eedf52a1bea3a277f0c652a66e31c0d8572010b9031eb333f8aa66d70e833"
+        },
+        "skill_text": "Compare current guidance with explicit prior guidance available in the input. Positive requires a material upward change in level, timing, or conviction; generic optimism is neutral. Preserve contrary qualifiers and literal spans.\n"
+      },
+      {
+        "exact_ref": "order_confirmation_disclosed:v3",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/order_confirmation/order_confirmation_disclosed/versions/v3/spec.json",
+          "sha256": "07d2fefcaeb8930c21c5c881f9fc32b3096542634e04bdacc19d40d01bce8387"
+        },
+        "definition": {
+          "description": "Within the lookback window, the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule. Materiality threshold: value >= $1M or volume >= 1000 units."
+        },
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/order_confirmation/order_confirmation_disclosed/versions/v3/skill.md",
+          "sha256": "cbe90f616917cfadd36b04ec800270772d0b5e3c6f6759e6726145d40a39e071"
+        },
+        "skill_text": "# Skill: Order Confirmation Disclosed\n\n## Purpose\nDetermine whether, within the lookback window (180 days before as_of), the company or its official filings/press releases disclose a new customer order, contract, offtake agreement, or binding award with a named counterparty or named program and a stated or implied value, volume, or delivery schedule.\n\n## Inputs\n- as_of: ISO-8601 timestamp\n- documents: list of documents, each with source_type, published_at, available_at, content\n\n## Lookback Window\nOnly consider documents with published_at >= as_of - 180 days and <= as_of.\n\n## Source Families\nConsider documents from: filing, news, transcript, 10-k, 10-q, 8-k, company_news, sec_filing, earnings_call.\n\n## Semantic Condition\nA qualifying event is a new customer order, contract, offtake agreement, or binding award that:\n- is disclosed by the company or its official filings/press releases;\n- names a counterparty or program;\n- states or implies a value, volume, or delivery schedule;\n- meets the materiality threshold: value >= $1,000,000 or volume >= 1,000 units (or equivalent). Below threshold is neutral.\n\n## Classification Rules\n- **positive**: A confirmed qualifying event is present in at least one document within the lookback window. This includes explicit announcements of new orders, contracts, offtake agreements, or binding awards that meet the materiality threshold and name a counterparty/program. Paraphrases that clearly confirm such an event also qualify. A binding award with only a stated maximum or ceiling value does not meet the materiality threshold unless a minimum or expected value is stated or implied.\n- **negative**: An explicit cancellation or denial of a qualifying event is present in at least one document within the lookback window. This includes statements that a previously announced order, contract, offtake agreement, or binding award has been cancelled, terminated, or denied.\n- **neutral**: Documents within the lookback window are adequate but contain only proposals, memoranda, non-binding intent, lookalikes, below-threshold mentions, or non-qualifying arrangements. Proposals are statements of possible future agreements without confirmation. Non-binding intent includes expressions of interest, exploratory discussions, or memoranda of understanding. Lookalikes are generic mentions of orders/contracts without any specific new event. Below-threshold mentions are qualifying events that do not meet the materiality threshold. Non-qualifying arrangements include distribution agreements, joint pursuit agreements, and similar arrangements that do not themselves constitute a new customer order, contract, offtake agreement, or binding award with a stated or implied value, volume, or delivery schedule.\n- **unavailable**: No documents within the lookback window, or the available documents are genuinely insufficient to make a judgment (e.g., only cover pages, boilerplate, or text that does not address orders/contracts). Post-cutoff-only corpora (all documents published after as_of) also yield unavailable.\n\n## Evidence Citation\nFor positive: cite the verbatim span that confirms the qualifying event.\nFor negative: cite the verbatim span that cancels or denies the event.\nFor neutral: cite the verbatim span that shows the proposal, non-binding intent, lookalike, below-threshold mention, or non-qualifying arrangement.\nFor unavailable: explain why evidence is insufficient.\n\n## Output\nReturn a JSON object with:\n- value: one of \"positive\", \"neutral\", \"negative\", \"unavailable\"\n- confidence: float between 0 and 1\n- evidence: list of cited spans (verbatim) with document_id and text\n"
+      },
+      {
+        "exact_ref": "order_quality:v2",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/orders/order_quality/versions/v2/spec.json",
+          "sha256": "b604c5c835f5203be8ef191d03b474698ee26a0c805d46ff1470803c80727d70"
+        },
+        "definition": {
+          "description": "Judge whether disclosed orders are binding, economically material, timed, and likely to convert to revenue."
+        },
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/orders/order_quality/versions/v2/skill.md",
+          "sha256": "c6d9cfe368bf660ec6107489686dbf7ef1efaf19b658bba1fa623a1afb8f51a5"
+        },
+        "skill_text": "Separate binding purchase orders and funded backlog from MOUs, framework agreements, maximum-ceiling awards, and non-binding pipeline. Evaluate amount, customer commitment, delivery timing, cancellation rights, and revenue conversion. Cite literal spans.\n"
+      },
+      {
+        "exact_ref": "commercialization_status:v2",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/product/commercialization_status/versions/v2/spec.json",
+          "sha256": "56325ffe9f5bed14256073f640fece46ba4957d8bb56ecf838ebae173e8d109b"
+        },
+        "definition": {
+          "description": "Judge whether a previously non-commercial technical product or technology has become sellable and repeatable; ordinary output from mature operations is not applicable."
+        },
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/product/commercialization_status/versions/v2/skill.md",
+          "sha256": "740415e4dfee1f87355e5370b26ccfc1b3318fed76b0245c586e7d0133d5db7a"
+        },
+        "skill_text": "Distinguish laboratory demonstration, certification, pilot production, first commercial shipment, and repeatable scaled sales for a distinct previously non-commercial product or technology. Positive requires evidence of real commercial delivery or repeat revenue, not a roadmap claim. Ordinary production, throughput, cost, or guidance from an already mature mine, utility, financial institution, or established service is not a commercialization milestone; when the visible evidence shows only such mature operations, return unavailable with empty evidence. Cite literal spans.\n"
+      },
+      {
+        "exact_ref": "customer_concentration:v2",
+        "spec": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/risks/customer_concentration/versions/v2/spec.json",
+          "sha256": "30548fdbcb6d1ede05b3c5c703eaafdbaeed117e9ea1aa99a7c0667708b89c32"
+        },
+        "definition": {
+          "description": "Judge whether the growth thesis depends excessively on one customer or one customer program."
+        },
+        "skill": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_slow_feedback_stage_20261021_v1/workspace/signals/risks/customer_concentration/versions/v2/skill.md",
+          "sha256": "524bb45add2db7e30add6b3d4dabac620c2499477e16eb8100e43fd133755e04"
+        },
+        "skill_text": "Extract disclosed revenue, backlog, order, or deployment concentration. Negative means the growth thesis is materially dependent on one customer with limited replication evidence. Positive means adoption is demonstrably diversified. Unknown identity alone is unavailable, not neutral.\n"
+      }
+    ],
+    "finding": "None measures dated management ICFR assessment/material-weakness/remediation conclusions. This is a distinct business object from capital/listing action, changed guidance, qualifying orders/order quality, commercialization, customer concentration. Negative-word substring count is not equivalent semantic measurement.",
+    "candidate_review": "Object-level novelty remains to be checked against actual generated definition. Reject renamed or duplicated existing measurements, keyword-only/unscoped flags, undefined semantics and label copying. Legitimate clear binary identification is not rejected merely for using presence language."
+  },
+  "fixed_denominators": {
+    "pipeline_positive_control": 1,
+    "consumer_source_controls": 4,
+    "consumer_case_refs": [
+      "case-001",
+      "case-003",
+      "case-005",
+      "case-006"
+    ],
+    "retention": "Keep every failed, skipped, blocked, unknown or unselected member in its frozen denominator. No at-least-one-success subset reporting."
+  },
+  "pipeline_positive_control": {
+    "pass_requires_all": [
+      "Fresh independent native Mining actually authors a new reusable source-grounded ICFR measurement from authorized material; no handwritten or oracle-derived Signal substitute.",
+      "Preserve original dev8 grouping/axis, all existing backlog/context obligations, authentic role requests/answers/corrections/ledgers and native materialization evidence.",
+      "Candidate is a reusable, measurable ICFR business-object definition with clear immutable applicability, evidence and unknown semantics. A legitimate binary dated-management-identified-weakness measurement or reasonable annual-assessment scope is allowed; no four-way factual classifier or broader reference obligation is imposed.",
+      "Apply its legitimate immutable scope consistently across all four controls. An inapplicable case may correctly yield domain unknown with residual need; reject impossible/post-cutoff inputs, company/date lookup, arbitrary result-driven exclusion or a vacuous all-cases-unavailable control. At least one source-grounded applicable observation must demonstrate actual measurement, not only safe refusal.",
+      "Native spec→skill→tests→real fixture execution faithfully implements the authored definition; fixture answers do not alter definition or authorize new source policy.",
+      "Independent source/semantic review binds exact candidate/spec/skill/tests/oracle hashes before any promotion, and rejects unknown or incorrect semantics.",
+      "Actual native technical validation, duplicate checks, admission/provenance recording and atomic promotion publish an exact version with predictive effect unverified; no fabricated passing validation or effectiveness evaluator.",
+      "Baseline18 remain unchanged; reopened Registry retains exact promoted spec/skill/tests/admission/transition.",
+      "All four actual native Fast source controls autonomously retrieve and execute the newly admitted exact version within portfolio bounds; result passes source review and reaches actual Reflect/final context with diagnostic-use binding.",
+      "Durable reopen equality and terminal seal preserve accepted outputs and failure denominator without business pointers/committed-use events."
+    ],
+    "fails": [
+      "Honest no-pattern/insufficient-evidence outcome (legal domain outcome, but fails this answerable full-chain positive control).",
+      "Budget/resource/transport/identity/schema/authoring failure, unselected new version, skipped execution or incomplete consumer chain.",
+      "Handwritten candidate, hand-authored answer, forced new-ref retrieval, oracle leak, reentry of completed phases, or retroactive oracle weakening.",
+      "Any known critical source/semantic/version/admission/consumer error accepted as passing."
+    ]
+  },
+  "consumer_controls": {
+    "original_source_obligations": [
+      {
+        "case_ref": "case-001",
+        "case_id": "cik_0001951089:20250530",
+        "source_number": 1768,
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1768.json",
+          "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+        },
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001951089/sec:cik_0001951089:000121390024092156.json",
+          "sha256": "7efdd10cddd361431ff69de9d58498bc1b64dd553c081e4e13feef486c584b05"
+        },
+        "document_id": "sec:cik_0001951089:000121390024092156",
+        "content_hash": "034dd6c1e90d95ba9b19885ac86a9ce9e6e87b16deedfff8032c6dea7256304f",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1951089/000121390024092156/ea0217031-20f_critical.htm",
+        "registrant_cik": "0001951089",
+        "accession": "0001213900-24-092156",
+        "form": "20-F",
+        "acceptance_at": "2024-10-30T18:40:53.000Z",
+        "published_at": "2024-10-30T18:40:53+00:00",
+        "available_at": "2024-10-30T18:40:53+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "terminology_conflict_counterexample",
+            "raw_start": 258500,
+            "raw_end": 258891,
+            "raw_span": "<p style=\"text-align: justify; font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-indent: 0.25in\">In connection with the audit of our consolidated\nfinancial statements for the years ended June 30, 2024 and 2023, we and the auditors identified six significant deficiencies in our internal\ncontrol over financial reporting. The significant deficiencies related to the following:</p>",
+            "readable_rendering": "In connection with the audit of our consolidated financial statements for the years ended June 30, 2024 and 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The significant deficiencies related to the following:",
+            "raw_span_sha256": "abf0aa4070f72cdfe6247318f91a3819e712564139dfa03fa528d2cc0dbd4b1c"
+          },
+          {
+            "kind": "terminology_conflict_counterexample",
+            "raw_start": 269491,
+            "raw_end": 270925,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; text-indent: 0.25in\">In the course of auditing\nthe consolidated financial statements for the years ended June 30, 2024, we and our independent registered public accounting firm identified\nsix significant deficiencies in the internal control over financial reporting as of June 30, 2024, in accordance with the standards established\nby the PCAOB. A significant deficiency is a deficiency, or a combination of deficiencies, in internal control over financial reporting\nthat is less severe than a material weakness, yet important enough to merit attention by those responsible for oversight of the financial\nreporting. These significant deficiencies relate to the segregation of duties, related party transactions, accounting for accounts payable\nand accrued expenses, income tax provision and related disclosures, accounting for complex financial instruments, and cybersecurity programs.\nWe aim to take certain measures by hiring additional personnel and implement polices and procedures to remediate the identified significant\ndeficiencies, although no assurance can be given as to whether these steps will be sufficient. The implementation of these improvements\nmay increase our administrative expenses. To the extent these steps are not successful, we could be forced to incur additional expenses\nand require more of management&#8217;s time.</p>",
+            "readable_rendering": "In the course of auditing the consolidated financial statements for the years ended June 30, 2024, we and our independent registered public accounting firm identified six significant deficiencies in the internal control over financial reporting as of June 30, 2024, in accordance with the standards established by the PCAOB. A significant deficiency is a deficiency, or a combination of deficiencies, in internal control over financial reporting that is less severe than a material weakness, yet important enough to merit attention by those responsible for oversight of the financial reporting. These significant deficiencies relate to the segregation of duties, related party transactions, accounting for accounts payable and accrued expenses, income tax provision and related disclosures, accounting for complex financial instruments, and cybersecurity programs. We aim to take certain measures by hiring additional personnel and implement polices and procedures to remediate the identified significant deficiencies, although no assurance can be given as to whether these steps will be sufficient. The implementation of these improvements may increase our administrative expenses. To the extent these steps are not successful, we could be forced to incur additional expenses and require more of management’s time.",
+            "raw_span_sha256": "333d90a01acf99157342e449415f9f57793567838fed2666453753ac225ceef6"
+          },
+          {
+            "kind": "terminology_conflict_counterexample",
+            "raw_start": 902843,
+            "raw_end": 903862,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; text-indent: 0.25in\">Our management is responsible\nfor establishing and maintaining adequate internal control over financial reporting. Internal control over financial reporting is a process\ndesigned to provide reasonable assurance regarding the reliability of financial reporting and the preparation of financial statements\nin accordance with IFRS. A material weakness is a deficiency, or a combination of deficiencies, in internal control over financial reporting\nsuch that there is a reasonable possibility that a material misstatement of annual or interim financial statements will not be prevented\nor detected on a timely basis. In connection with the audit of our consolidated financial statements for the years ended June 30, 2024,\nand 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The identified\nmaterial weaknesses related to the following matters:</p>",
+            "readable_rendering": "Our management is responsible for establishing and maintaining adequate internal control over financial reporting. Internal control over financial reporting is a process designed to provide reasonable assurance regarding the reliability of financial reporting and the preparation of financial statements in accordance with IFRS. A material weakness is a deficiency, or a combination of deficiencies, in internal control over financial reporting such that there is a reasonable possibility that a material misstatement of annual or interim financial statements will not be prevented or detected on a timely basis. In connection with the audit of our consolidated financial statements for the years ended June 30, 2024, and 2023, we and the auditors identified six significant deficiencies in our internal control over financial reporting. The identified material weaknesses related to the following matters:",
+            "raw_span_sha256": "e9b7bf1e964023d69dfc39bba8af1d91873d20192bfdecc0a8bb2893fed3af24"
+          }
+        ],
+        "object": "Original Critical Metals filing calls six items significant deficiencies, defines that concept as less severe than material weakness, then Item15 labels identified items material weaknesses.",
+        "assessment_scope": {
+          "report_period_end": "2024-06-30",
+          "explicit_references": [
+            "2024-06-30",
+            "2023-06-30"
+          ],
+          "direct_date_scope": "Audit/ICFR statements reference FY2024 and FY2023; retain the exact sentence scope rather than inventing a later cutoff assessment."
+        },
+        "mandatory_distinctions": [
+          "Significant deficiency differs from material weakness.",
+          "Internal terminology conflict is real original-body content; preserve both sides.",
+          "No lexical tie-break, majority vote, severity upgrade, or silent choice of the favorable sentence."
+        ],
+        "unknown_rules": "A preserved conflict/unknown about clean severity classification is correct. Neutral, absence, or definite material weakness inferred by deleting one side fails."
+      },
+      {
+        "case_ref": "case-003",
+        "case_id": "cik_0002009312:20250930",
+        "source_number": 1501,
+        "cutoff": "2025-09-30T00:00:00+00:00",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1501.json",
+          "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+        },
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/10-k/cik_0002009312/sec:cik_0002009312:000164117225001168.json",
+          "sha256": "632e9a3ba4f1a115cb40f627e0d584cc46d2650752449fbc4d5b915ddb52e606"
+        },
+        "document_id": "sec:cik_0002009312:000164117225001168",
+        "content_hash": "a9e13fc2183551fabc81a570a3934c287fa988d378dfd0f2f751b1501b3525f4",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/2009312/000164117225001168/form10-k.htm",
+        "registrant_cik": "0002009312",
+        "accession": "0001641172-25-001168",
+        "form": "10-K",
+        "acceptance_at": "2025-03-28T20:00:48.000Z",
+        "published_at": "2025-03-28T20:00:48+00:00",
+        "available_at": "2025-03-28T20:00:48+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "hypothetical_only_counterexample",
+            "raw_start": 478218,
+            "raw_end": 478843,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\"><b><i>We\nmay experience material weaknesses in our internal controls and financial reporting may limit our ability to prevent or detect financial\nmisstatements or omissions. As a result, our financial reports may not be in compliance with U.S. GAAP. Any material weakness, misstatement\nor omission in our financial statements will negatively affect the market and the price of our stock, which could result in significant\nloss to our investors.</i></b></span></p>",
+            "readable_rendering": "We may experience material weaknesses in our internal controls and financial reporting may limit our ability to prevent or detect financial misstatements or omissions. As a result, our financial reports may not be in compliance with U.S. GAAP. Any material weakness, misstatement or omission in our financial statements will negatively affect the market and the price of our stock, which could result in significant loss to our investors.",
+            "raw_span_sha256": "a83ec9690dde296db958c4c1869a36fd19d5c908ac03d39094d93cc97998b140"
+          },
+          {
+            "kind": "additional_management_or_clock_countercheck",
+            "raw_start": 854628,
+            "raw_end": 855026,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0pt 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\">This\nAnnual Report does not include a report of management&#8217;s assessment regarding internal controls over financial reporting due to\na transition period established by rules of the SEC for newly public companies.</span></p>",
+            "readable_rendering": "This Annual Report does not include a report of management’s assessment regarding internal controls over financial reporting due to a transition period established by rules of the SEC for newly public companies.",
+            "raw_span_sha256": "17113463a7c82de32ee2e0d33ebfbc2cba9cb835171639ce1a53bf83baf0ab80"
+          },
+          {
+            "kind": "additional_management_or_clock_countercheck",
+            "raw_start": 1647050,
+            "raw_end": 1647582,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0pt 0pt 0; text-align: justify\"><span style=\"font-family: Times New Roman, Times, Serif; font-size: 10pt\">The\nCompany evaluated all events and transactions that occurred after December 31, 2024 up through March 28, 2025, which is the date that\nthese consolidated financial statements are available to be issued, there were no other any material subsequent events that require disclosure\nin these consolidated financial statements other than disclosed below.</span></p>",
+            "readable_rendering": "The Company evaluated all events and transactions that occurred after December 31, 2024 up through March 28, 2025, which is the date that these consolidated financial statements are available to be issued, there were no other any material subsequent events that require disclosure in these consolidated financial statements other than disclosed below.",
+            "raw_span_sha256": "34394c1a0779052bd78ca018725790197da3c24d9dcd9cfe52025b4f517bc579"
+          }
+        ],
+        "object": "Hypothetical may-experience-material-weakness risk language; management ICFR assessment expressly omitted under newly public company transition period.",
+        "assessment_scope": {
+          "report_period_end": "2024-12-31",
+          "management_icfr_assessment_date": null,
+          "reason": "No management assessment is supplied; report period is not an assessment date."
+        },
+        "mandatory_distinctions": [
+          "Hypothetical risk is not actual identification.",
+          "Explicit no-assessment is not an explicit no-material-weakness conclusion.",
+          "Do not substitute disclosure-controls assessment or no-change language for missing management ICFR assessment."
+        ],
+        "unknown_rules": "A source-grounded domain unknown/insufficient-management-assessment conclusion is correct; a technical/budget failure is not this domain result."
+      },
+      {
+        "case_ref": "case-005",
+        "case_id": "cik_0001814215:20250530",
+        "source_number": 1507,
+        "cutoff": "2025-05-30T00:00:00+00:00",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1507.json",
+          "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+        },
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001814215/sec:cik_0001814215:000095017025075392.json",
+          "sha256": "144cfaccae608a2351b0e8085cda17e22092281f95bbf1c9d6e63046364b6c80"
+        },
+        "document_id": "sec:cik_0001814215:000095017025075392",
+        "content_hash": "5b637f54f99546efee5338e6cba61f225d77f5cbfc2fa4664b39e044c2aa1aae",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1814215/000095017025075392/buru-20250331.htm",
+        "registrant_cik": "0001814215",
+        "accession": "0000950170-25-075392",
+        "form": "10-Q",
+        "acceptance_at": "2025-05-20T21:28:45.000Z",
+        "published_at": "2025-05-20T21:28:45+00:00",
+        "available_at": "2025-05-20T21:28:45+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "actual_management_icfr_conclusion",
+            "raw_start": 2334869,
+            "raw_end": 2336241,
+            "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025,  as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.</span><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\"> </span></p>",
+            "readable_rendering": "Under the supervision and with the participation of our management, including our principal executive officer and principal financial and accounting officer, we conducted an evaluation of the effectiveness of our disclosure controls and procedures as of the end of the fiscal quarter ended March 31, 2025, as such term is defined in Rules 13a-15(e) and 15d-15(e) under the Exchange Act. Based on this evaluation, our principal executive officer and principal financial and accounting officer have concluded that during the period covered by this report, our management concluded that our internal control over financial reporting was not effective due to a material weakness in our control environment around the accounting and presentation of complex financial instrument transactions that was not effectively designed or maintained. This material weakness could result in material misstatements of the financial statements that would not be prevented or detected on a timely basis.",
+            "raw_span_sha256": "3915de744fe00e31706fe1f8bb6b95973902c7a1d403875529d580284f4b7b0a"
+          },
+          {
+            "kind": "explicit_nonremediation",
+            "raw_start": 2336241,
+            "raw_end": 2337349,
+            "raw_span": "<p style=\"font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:6pt;text-align:justify;\"><span style=\"color:#000000;white-space:pre-wrap;font-size:9pt;font-family:Times New Roman;font-kerning:none;min-width:fit-content;\">We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.</span></p>",
+            "readable_rendering": "We plan to take steps to enhance and improve the design of our internal control over financial reporting. During the period covered by this quarterly report on Form 10-Q, we have not been able to remediate the material weaknesses identified above. To remediate such weaknesses, we intend to implement the following changes during our fiscal year ending December 31, 2025: (i) hire additional qualified personnel to address inadequate segregation of duties and ineffective risk management; and (ii) adopt sufficient written policies and procedures for accounting and financial reporting. The remediation efforts set out in (i) and (ii) are dependent upon our receiving additional financing to cover the costs of implementing the changes required. If we are unsuccessful in securing such funds, remediation efforts may be adversely affected in a material manner.",
+            "raw_span_sha256": "20b24be5b4d41556083f607e9d373cefea703a4906568fa97a679f986175618c"
+          }
+        ],
+        "object": "Management conclusion about ICFR control environment for accounting/presentation of complex financial instruments; explicitly not effective due to a material weakness, and unremediated during this report period.",
+        "assessment_scope": {
+          "report_period_end": "2025-03-31",
+          "direct_date_scope": "Disclosure-controls evaluation is as of quarter end March 31, 2025; the same paragraph says management ICFR conclusion during the period covered. Do not strengthen this wording into a separate newly dated later assessment."
+        },
+        "mandatory_distinctions": [
+          "Actual identified ICFR weakness, not merely may/could risk.",
+          "Remediation intent and financing dependence do not prove remediation completed.",
+          "Keep disclosure controls and ICFR distinct even though they appear in one paragraph."
+        ],
+        "unknown_rules": "No inference about latest cutoff-day state, later remediation, or stock effect. Source facts are answerable; a legitimate immutable candidate scope may be inapplicable and must preserve the unresolved need. Independent effect uncertainty alone does not erase a measurable in-scope fact."
+      },
+      {
+        "case_ref": "case-006",
+        "case_id": "cik_0001946703:20250731",
+        "source_number": 1500,
+        "cutoff": "2025-07-31T00:00:00+00:00",
+        "source": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/reviewed_gpre_capture_snapshot_20261021_v1/stage/snapshot/documents/1500.json",
+          "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+        },
+        "original": {
+          "path": "/Users/l/Project/Recommandation/runs/cold_start/data/global-raw-info-oracle-v1/filing/cik_0001946703/sec:cik_0001946703:000121390025033933.json",
+          "sha256": "1345f2ae9d45c1ad769d6cb8bb861ec375ab654fdc3fc68253b2daaa8f725ad5"
+        },
+        "document_id": "sec:cik_0001946703:000121390025033933",
+        "content_hash": "bd2b4276a7c5e4d267f5ec556fb0d2510e255da1b36dc9c52aa5289112db3562",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1946703/000121390025033933/ea0238515-20f_webuy.htm",
+        "registrant_cik": "0001946703",
+        "accession": "0001213900-25-033933",
+        "form": "20-F",
+        "acceptance_at": "2025-04-22T12:00:54.000Z",
+        "published_at": "2025-04-22T12:00:54+00:00",
+        "available_at": "2025-04-22T12:00:54+00:00",
+        "raw_evidence_anchors": [
+          {
+            "kind": "explicit_no_material_weakness_conclusion",
+            "raw_start": 933913,
+            "raw_end": 934606,
+            "raw_span": "<p style=\"font: 10pt Times New Roman, Times, Serif; margin: 0pt 0; text-align: justify; background-color: white\"><span style=\"font-family: Times New Roman, Times, Serif\">A\nmaterial weakness is a deficiency, or combination of deficiencies, in internal control over financial reporting, such that there is a\nreasonable possibility that a material misstatement of the Company&#8217;s annual or interim financial statements will not be prevented\nor detected on a timely basis. In its assessment of the effectiveness of internal control over financial reporting as of December 31,\n2024, the Company determined that there were no control deficiencies that constituted material weaknesses.</span></p>",
+            "readable_rendering": "A material weakness is a deficiency, or combination of deficiencies, in internal control over financial reporting, such that there is a reasonable possibility that a material misstatement of the Company’s annual or interim financial statements will not be prevented or detected on a timely basis. In its assessment of the effectiveness of internal control over financial reporting as of December 31, 2024, the Company determined that there were no control deficiencies that constituted material weaknesses.",
+            "raw_span_sha256": "889dc62d986623cccac992d2dd7688c7d26940b8f8c961fea2b4c4035173b72f"
+          }
+        ],
+        "object": "Management/Company ICFR effectiveness assessment explicitly says there were no control deficiencies constituting material weaknesses.",
+        "assessment_scope": {
+          "explicit_assessment_date": "2024-12-31",
+          "report_period_end": "2024-12-31"
+        },
+        "mandatory_distinctions": [
+          "Explicit dated contrary conclusion is stronger than silence.",
+          "Same filing hypothetical future weaknesses do not override actual dated assessment.",
+          "No broad claim of no deficiencies, no risk, or effective controls in all respects beyond exact statement."
+        ],
+        "unknown_rules": "Later/current condition and predictive effect remain unknown. Explicit source conclusion cannot be discarded as missing evidence; a legitimate immutable measurement scope may be inapplicable, with accurate residual need."
+      }
+    ],
+    "per_case_pass_requires_all": [
+      "Execute the exact new admitted version through autonomous native retrieval and production portfolio limits; record any omissions and unresolved need.",
+      "Independently derive expected output from frozen candidate definition and original facts, preserving object, report/assessment date, cutoff and source provenance.",
+      "For applicable observations, exact source-grounded result and interpretation follow the candidate own measurement semantics. For legitimately inapplicable cases, preserve accurate scope reason and unresolved dated-assessment need. Do not impose a reference four-way classifier or fixed enum mapping; reject invented fact, lost counterevidence or false need closure.",
+      "Reflect closes only proven parts of the dated public-assessment need; missing assessment/conflict/current-state residuals remain explicit.",
+      "Final context preserves actual result, coverage/cause, evidence, period, exact version and residual. Runtime failure may not masquerade as domain unknown.",
+      "Save exact diagnostic-use provenance; never record committed round use or stock efficacy."
+    ],
+    "unknown_is_correct_only_when": "Original source or immutable candidate scope lacks an applicable clean measurement, including omitted assessment, unresolved terminology conflict or legitimate annual-versus-quarterly scope. Preserve cause and residual. Unknown cannot hide adequate in-scope facts or a technical failure; vacuous all-cases unavailable does not pass the pipeline positive control.",
+    "not_fixed": "No four-case SignalValue enum mapping or candidate implementation is preauthored. Case facts are private oracle evidence, not production answers."
+  },
+  "counterexample_rejection_rules": [
+    "A keyword hit in source1501 yields definite actual weakness: fail.",
+    "Source1501 no assessment becomes no weaknesses/favorable fact: fail.",
+    "Source1500 hypothetical risk overrides explicit dated no-weakness conclusion: fail.",
+    "Source1768 only one side of conflicting severity terminology is cited/retained: fail.",
+    "Source1507 remediation plan is treated as completed remediation, or disclosure controls substituted for ICFR: fail.",
+    "Assessment/report date is promoted to cutoff/current state or retrieved_at to publication date: fail.",
+    "Technically unavailable-shaped output closes missing-assessment/conflict need as answered domain evidence: fail.",
+    "Source1507 and1500 are both in scope, but a keyword-only/unscoped/undefined flag erases their opposite dated factual conclusions: fail. A legitimate clearly defined binary measurement may encode them differently, and reasonable immutable scope may exclude one while preserving its residual need.",
+    "Existing Signal renamed as ICFR, keyword-only word-occurrence flag without object/date/semantics, label copying, authored fixtures alone or schema/model agreement treated as new capability: fail. Presence language in a well-defined reusable measurement is allowed."
+  ],
+  "stage_spec_review": {
+    "material_conflict_found": false,
+    "interpretations_required": [
+      "Pipeline denominator1 is a capability control, not a candidate quota; honest no-pattern is legal and still control failure.",
+      "Private source facts stay out of authors; only preflighted scope-only ICFR assignment may enter.",
+      "An existing narrative skill presence-based historical classification does not override this stage explicit surge-axis meaning.",
+      "Need formulation and consumer expectations cannot silently add a new global SignalValue definition or canonical interface.",
+      "Respect legitimate measurement differences and reasonable pre-result applicability scope; reference facts are not extra candidate definition obligations. No causal/paired-gain admission requirement is added."
+    ]
+  },
+  "scope_limits": {
+    "external_calls": 0,
+    "new_business_labels_check_lockedtest": 0,
+    "business_stage_or_product_changes": 0,
+    "not_closed_by_this_stage": [
+      "magnitude Mining/admission/reuse",
+      "S1/S2 fresh feedback capability",
+      "committed S8 use",
+      "full business-loop recovery",
+      "independent benefit",
+      "whole engineering MVP"
+    ]
+  },
+  "freeze_revision": 4,
+  "preauthor_clarification": {
+    "at_utc": "2026-10-22T23:00:42.520674+00:00",
+    "supersedes_private_initial_draft": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle/superseded-v1.json",
+      "sha256": "c420ed98239bb470f3ef6d330f32870949fd0df7078501671ee1614eb03e562e"
+    },
+    "authority": "Parent explicit prospective clarification before any production author dispatch; no candidate or consumer result read.",
+    "reason": "Preserve legitimate binary dated ICFR measurements and reasonable immutable scopes. Narrow generic presence rejection to keyword-only/unscoped/undefined/tag-copy shortcuts; no new causal or paired-gain gate."
+  },
+  "predecessor_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+      "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+      "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+      "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+      "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+      "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+      "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+    }
+  ],
+  "prospective_revision": {
+    "evaluation_destination": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v3",
+    "oracle_destination": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v3/acceptance-obligations.json",
+    "source_oracle": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle-v2/acceptance-obligations.json",
+      "sha256": "e650fb4f73bc5067ee29193328cd3d091dd3b52e4d3c62e5ed095399000ec0d9"
+    },
+    "original_semantic_oracle": {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/oracle/acceptance-obligations.json",
+      "sha256": "9fec7af60c3b34c8c10139504fae9199286eaf6179cf39ef2d012fbdf2855aa5"
+    },
+    "new_actor_stage_existed_at_freeze": false,
+    "new_candidate_or_consumer_outputs_read": false,
+    "old_author_response_semantics_used_to_change_oracle": false,
+    "source_stability_authority": "Parent explicitly stated source stable to freeze after final driver pending-progress binding update.",
+    "purpose": "New code-version evaluation retaining issued catalog/navigation and computed working observations; no change to source population, measurement, admission semantics or resource ceilings.",
+    "old_controls": [
+      {
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop.json",
+          "sha256": "1af38671391550b4000f82ce3383d424c74fa5d49a66974e7f4d1fe229d3dfd2"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-cbc9f1ab.tar.gz",
+          "sha256": "458a37029165843be44bba9197501e62b8d02857733280fa3fe3f0bb802dc96f"
+        },
+        "pending_progress": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage/progress.json",
+          "sha256": "c2fd2104438f94ef44402ec83f42fe4070801edd03b81fb825893006cc1f6081"
+        },
+        "answered_unique_requests": 12,
+        "logical_reservations": 2001316,
+        "candidate_denominator": 1,
+        "candidate_acceptance": "uncompleted",
+        "consumer_denominator": 4,
+        "consumer_attempted": 0,
+        "new_role_answers_imported": false
+      },
+      {
+        "stop_receipt": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json",
+          "sha256": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca"
+        },
+        "runtime_archive": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/frozen-runtime-98147bc1.tar.gz",
+          "sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64"
+        },
+        "pending_progress": {
+          "path": "/Users/l/Project/Recommandation/runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/progress.json",
+          "sha256": "0fd2ba50edbab78744c09deec96a19a44ecf1f22f82e3c773fa1c21f89e1cd80"
+        },
+        "answered_unique_requests": 11,
+        "logical_reservations": 1837419,
+        "candidate_denominator": 1,
+        "candidate_acceptance": "uncompleted",
+        "consumer_denominator": 4,
+        "consumer_attempted": 0,
+        "new_role_answers_imported": false
+      }
+    ],
+    "old_denominators_not_rewritten": true,
+    "new_fixed_denominators_are_independent": true,
+    "driver_obligation": "Preserve both old stages, stop receipts, exact file maps, archives, pending-progress bytes and unanswered identities. Verify actual original wire/receipt accounting; never import old answers/caches or reenter stopped roots."
+  }
+}

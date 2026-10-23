@@ -1,0 +1,6 @@
+test_native_wire_counts_complete_cache_and_rejects_before_receive (tests.test_mining_catalog_working_context.MiningCatalogWorkingContextTests.test_native_wire_counts_complete_cache_and_rejects_before_receive) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+OK

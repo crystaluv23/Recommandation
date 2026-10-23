@@ -1,0 +1,1 @@
+{"action": "read_span", "document_ref": "document-[ANON_ID_0000]-transport", "offset": 0, "length": 40, "rationale": ["Synthetic transport response only."]}

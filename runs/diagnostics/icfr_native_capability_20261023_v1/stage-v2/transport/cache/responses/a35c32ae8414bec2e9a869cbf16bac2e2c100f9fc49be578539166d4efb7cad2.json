@@ -1,0 +1,28 @@
+{
+  "decision_token_scores": null,
+  "json_output": {
+    "action": "read_span",
+    "event_ref": "event-99d2c1094c6984b5",
+    "length": 4000,
+    "offset": 1148801,
+    "rationale": [
+      "Read the actual controls-and-procedures disclosure for positive case-003 to ground an ICFR measurement.",
+      "The directory is discovery only; material weakness, remediation and effectiveness remain unestablished until the raw text is read."
+    ]
+  },
+  "model": "independent-subagent",
+  "raw_output": "{\"action\":\"read_span\",\"event_ref\":\"event-99d2c1094c6984b5\",\"offset\":1148801,\"length\":4000,\"rationale\":[\"Read the actual controls-and-procedures disclosure for positive case-003 to ground an ICFR measurement.\",\"The directory is discovery only; material weakness, remediation and effectiveness remain unestablished until the raw text is read.\"]}",
+  "request_hash": "a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2",
+  "response_id": "local-a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2",
+  "usage": {
+    "accounting_tokens": 193062,
+    "agent_id": "/root/icfr_v2_h005",
+    "cost": 0.0,
+    "cost_basis": "zero_external_api_cost_internal_unknown",
+    "inbox_sha256": "579e5f1d86d89fbba94a8b396692d3b19e2e0070b2723ab3ee05d56fa59c42a1",
+    "internal_agent_cost": null,
+    "raw_output_sha256": "b1ab09ba53fda7e46b7c7be2f73f725c985809513573142cf557f6fa84f08775",
+    "request_hash": "a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2",
+    "token_usage": null
+  }
+}

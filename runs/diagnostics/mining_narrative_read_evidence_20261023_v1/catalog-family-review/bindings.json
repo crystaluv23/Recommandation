@@ -1,0 +1,88 @@
+{
+  "stage_artifacts_before_and_after_equal": {
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/manifest.json": "cb925c507700704390a9c9f711616d27f7db1606787e6d4e6d1ff8729f99577e",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v2.json": "a5d1e07bf480df350e29dc8e1027cc4844d37b1265ecf339bcb0112b70c6b5ca",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8.json": "8612df5db4cbd7f9a46dd69f5270d35fba278ab476eb47e452747669a1d56089",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8.txt": "21ddcced3bdb719fae1b742d8f6141917ca4e7b033c58219b22168b7d3b18a5a",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/575c114968542e64030ed4a3aa7059c12c34e62527a07b8cf29376a477d31cc8.json": "f960943e5c0e5435ce0990136690bb0a3e82155d02eace143cd2d3d4188ac1e5",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/14297d7f06341ae97a155ac0899a8a5bc890c7621fdf9c21237cad762d4d1231.json": "43b6a554aa78eb4dca26e7c29a04f60479dbd122131128bc40ae233d5a0b7caa",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/14297d7f06341ae97a155ac0899a8a5bc890c7621fdf9c21237cad762d4d1231.txt": "c8f2d9e99095f784c95dbc75825de48447c5f9709f56e98904e85a820daab788",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/14297d7f06341ae97a155ac0899a8a5bc890c7621fdf9c21237cad762d4d1231.json": "7c332b3f7f107d579b16ed00c6af404df95bf7dde4512bf219e7a7ee12c977ea",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/c8b680aa458c068a21898ffe833111cf4a7086d25b58b835a0daef4c879c4d6c.json": "b0d30bf0a6ae2c6e5ed1fc3c7b37eed485ede93d3ab8c7868c41869907c59641",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/c8b680aa458c068a21898ffe833111cf4a7086d25b58b835a0daef4c879c4d6c.txt": "61ea9cca2776ff3cb9bc4e2075f58d54b377f2a587a99f36dd7a3d2c2b0e0b09",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/c8b680aa458c068a21898ffe833111cf4a7086d25b58b835a0daef4c879c4d6c.json": "65dcbeb7735230d679a2304f89ad14db5ce0c4b04e6f8da9c3c82d720962faa2",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656.json": "b00173e4f142d75db3ea37f0a195847ea4cee395e3cca18167e2faa109414775",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656.txt": "faad1deaaa86556bb85e1f4b83687761cb543403b001dc8dfb02f53bf0e3f213",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/f45e2d7206fb5fed41c550e93d802f47cf3df6db0e8efb8531a3a56de9320656.json": "59f836ef858577884f4e5411963eb2eca5a0c3cb336d3032af2484cea7d2769e",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2.json": "579e5f1d86d89fbba94a8b396692d3b19e2e0070b2723ab3ee05d56fa59c42a1",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2.txt": "b1ab09ba53fda7e46b7c7be2f73f725c985809513573142cf557f6fa84f08775",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/a35c32ae8414bec2e9a869cbf16bac2e2c100f9fc49be578539166d4efb7cad2.json": "50bfa88ca85d4c827cda69d5215f0d7c98a772acd6cd5da10ed1e591b9e47ac6",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5.json": "0eea5062f82b3f09513bc7190e82bca764ed8f273009bc1792bfaa2d3d8ed1b8",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5.txt": "e130d0f968158239b82f47ac960515a5e74b924e23e7eb22ae0bc37314b786c9",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/0a8d56410b85d18cdf4c69cfb3d1953f7893c64df26998140b1f18b8c690e8e5.json": "5229fbd8aac7d32ce2dc29ab94eb6d427a5165ccee3ca731a698533fb6e59f59",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d.json": "d80beff6cc3cd5de1c4f00ae81dc8ab4f0730fc4edd8ddacaf2e1b47b5aa8118",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d.txt": "62efb2892949b706e8e410c3b11349ebd94571e357fec6d38a300ca357582e19",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/d2e43a074a577cbcd3f1181fd73917e1e2819a7b6342e105e82fecd45f58927d.json": "963c3599c803abf5003e2f7112319df48f676b70bd2843a342ee6e4a8414e1eb",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3.json": "4604dfc8dcbc88bd2eefa79f12b0d12fb12e9d3f774305d01af7a91e3e8d66c3",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3.txt": "ee0968d2734d54b233741b7dfdc20326ed18a2c2303ebdaa582d99eca7860666",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/6cdc866a7a687b9143d14c66bfad50730a3c04a4388cd7f902d5f6be87348ee3.json": "6552a9724602912a1f139bc4406907237fb06cfe5fdbd2a94cbf78786df988d0",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/0932a19b81399678e33d33b002288ecf36f5d20e1299004b404e2a97849d0860.json": "0102b4217ac03e3e4b3fe3fb416d7685d339fe2a723d1b9b6ebe891b23eba154",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/0932a19b81399678e33d33b002288ecf36f5d20e1299004b404e2a97849d0860.txt": "9d1d1be70608d43a9a9a996a52aa87bf751be0287c9bbaacfc4a318c2602f632",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/0932a19b81399678e33d33b002288ecf36f5d20e1299004b404e2a97849d0860.json": "ea396ebc337da58f029b2c7da4f0d9c23aec2a14b1b577d9f62bb830a86c5183",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e.json": "7e38c852f562e5ce0e7e3294271b3d45344ae1ee16e45ca9b8f7f8f288b1961f",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e.txt": "0b2314fae93e5034db4aee00309c38b3e368afe45997f01170b9b428c4c53eaa",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/8009aace68cc7db8007e870c6d1ede99978174a03807bf3e71a141b8e4c83f7e.json": "c01b66dbea61eb6cb88ee87d9ba4da38b839493ca713b50a8d2b8ea8a63f01b9",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/inbox/6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd.json": "76396263dfad832ba2409326c8cee1224aa0afb749154fce2eb4165ba5c99631",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/outbox/6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd.txt": "8bbf39b1450d5fdf67a331fd4807588c7a0fac29c4dd33ae654a12e64ad087ac",
+    "runs/diagnostics/icfr_native_capability_20261023_v1/stage-v2/exchange/receipts/6a55d9b7bcbfabdc45784dd69f181c543812b8dbd8cffeff14f9903f0ae18ecd.json": "7ff408b26bc586dfb3eb3e243d327a035f3c2096086379511b392815c9d288ed"
+  },
+  "sources": [
+    {
+      "path": "src/stock_opportunity_agent/research/mining_controller.py",
+      "frozen_archive_sha256": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+      "manifest_sha256": "4183dc392b62a77c9e55423ec88b510a266747f08d562329fb4b00426d34af31",
+      "current_checkout_sha256_at_review": "d18e1ded1351773244d807fbba9030dad7deb2a28c1f25b8ccb03c357af13c30",
+      "baseline_copy": "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/src/stock_opportunity_agent/research/mining_controller.py"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_role_model.py",
+      "frozen_archive_sha256": "95a66c54b0fff56ab13693469ee6b3490a79c21ae9ea94d1f17661ffce44b285",
+      "manifest_sha256": "95a66c54b0fff56ab13693469ee6b3490a79c21ae9ea94d1f17661ffce44b285",
+      "current_checkout_sha256_at_review": "318fa8bd10ba582df7e94b1db62552f34d4a09bbd1c4367e92c62321889ba97c",
+      "baseline_copy": "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/src/stock_opportunity_agent/research/mining_role_model.py"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/stage_contracts.py",
+      "frozen_archive_sha256": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+      "manifest_sha256": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+      "current_checkout_sha256_at_review": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+      "baseline_copy": "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/src/stock_opportunity_agent/research/stage_contracts.py"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "frozen_archive_sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+      "manifest_sha256": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+      "current_checkout_sha256_at_review": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+      "baseline_copy": "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/src/stock_opportunity_agent/research/evolution_reflection_memory.py"
+    },
+    {
+      "path": "src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "frozen_archive_sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+      "manifest_sha256": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+      "current_checkout_sha256_at_review": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+      "baseline_copy": "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/src/stock_opportunity_agent/research/mining_agent_tools.py"
+    },
+    {
+      "path": "spec/src/stock_opportunity_agent/research/signal_mining_agent.md",
+      "frozen_archive_sha256": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3",
+      "manifest_sha256": "4270e8bf8e43e275c65e6f83dfb8941ed5227e625e1a5b66312e8a8e87836ea3",
+      "current_checkout_sha256_at_review": "a94ecfb71c618301ce00797cf62be89c1024f9931bcc2183c3923836646f8704",
+      "baseline_copy": "runs/diagnostics/mining_narrative_read_evidence_20261023_v1/catalog-family-review/frozen-baseline/spec/src/stock_opportunity_agent/research/signal_mining_agent.md.txt"
+    }
+  ],
+  "archive_sha256": "97a42cc50e30d1231f372eb02c020741773c70e33d057433cb5eb88047993e64",
+  "binding_scope": "33 fixed wire artifacts + manifest + parent stop; six owning frozen source/spec files from archive, not changing live checkout",
+  "network_calls": 0,
+  "model_calls": 0,
+  "tests_or_stage_execution": 0
+}

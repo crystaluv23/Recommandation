@@ -1,0 +1,59 @@
+{
+  "final_source_binding_verified": true,
+  "expected_final_four_hashes": {
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+    "src/stock_opportunity_agent/research/mining_controller.py": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+    "tests/test_mining_catalog_working_context.py": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485"
+  },
+  "stable_sources": {
+    "src/stock_opportunity_agent/research/mining_controller.py": "1f5dfc82eb2e4ec2480c4dcad1e7d030a2ac9330420964c2e75825eefa0d5dd8",
+    "src/stock_opportunity_agent/research/mining_role_model.py": "105325b137c8751b11c5478b66d1fb392ab50fc8a0caff4a1f3a8d9f8ff10f70",
+    "src/stock_opportunity_agent/research/mining_agent_tools.py": "f9d656ef0c6af2fa71f1ece4c205cb3bae7fbe9526c3cda889e5e711707951a2",
+    "src/stock_opportunity_agent/research/stage_contracts.py": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494",
+    "src/stock_opportunity_agent/research/evolution_transport.py": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42",
+    "src/stock_opportunity_agent/research/local_role_exchange.py": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d",
+    "src/stock_opportunity_agent/research/evolution_reflection_memory.py": "599994cd96ace3c9e93d4ecbc92b03eeb42001b804d8db40ca4b61eddc9def04",
+    "spec/src/stock_opportunity_agent/research/signal_mining_agent.md": "2f62346dec4bc595a93bd8a20daf2e9541ec3a6a40e1a3653dd8c66247c1949b",
+    "tests/test_mining_catalog_working_context.py": "a8f00a6096546562f23e09e720642b811f915053dd276f8cf382336b4cd5c485",
+    "tests/test_mining_narrative_citation_readiness.py": "080d09b09f09edb092e19e4022dd447fba3df9617a90a5dee060f270d599014c",
+    "tests/test_mining_narrative_read_evidence.py": "ad4899fa9a841bb940ca7f251f1c55a331df3850cf1bb0b24e615b33aca1fa38"
+  },
+  "artifacts_sha256": {
+    "controls.py": "48674a618b3135f29ae1c2ee3b9d10e457a30f256538d3474ed24cc08116cf13",
+    "initial-import-error.txt": "ebb41b1e4b34aef98c7ade6962d55deb615679cc0901f09ec3768ba26223232c",
+    "plan.md": "6bf9a3f50d84869462d574d27dd578669f1c638595144dd23bc15cd52742c45c",
+    "review.md": "f1df0ff059aae1af9d0fbb7220c35deb15b22ebabd27618428ff498383608619",
+    "controls-first.py.txt": "1d7f9b21e2848916f987f17759b0e66bf2cb63d12b541ebab4a2d79e1866f5ad",
+    "harness-corrected/results.json": "db649ff2d8be7c249a0861cc45b73922126d3ca7fea5d762996edc8e39719f37",
+    "harness-corrected/native-wire-cost.json": "eca91d6e6087228159b02f439fd3620b269fe8db093aca017486a09b290d2e3e",
+    "harness-corrected/source-bindings-start.json": "c404f30fae6a26743376397b113d2839d4892fad2024b337c254e10a8ab1a672",
+    "harness-corrected/source-bindings-end.json": "c404f30fae6a26743376397b113d2839d4892fad2024b337c254e10a8ab1a672",
+    "harness-corrected/synthetic-native/unused.json": "9a4d6f94762528c21c2dcb542f6351bcc7cd765f94b34b515db680296341f277",
+    "harness-corrected/synthetic-native/exchange/.dispatch.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "harness-corrected/synthetic-native/exchange/contract.json": "c77beab9a557fa92ad9d6ce40c0ebe6d45f6edd8177968de5b3239156b415549",
+    "harness-corrected/synthetic-native/exchange/receipts/1d6dc986c329cd69b3164a3c2e1953fdf4abf0d5a601b1556e65c91900a48ca5.json": "9225d7338ca000c1e4c55c9bcba59205dc19765b8d3f429298b94bcf657ec078",
+    "harness-corrected/synthetic-native/exchange/outbox/1d6dc986c329cd69b3164a3c2e1953fdf4abf0d5a601b1556e65c91900a48ca5.txt": "63205f09b55936d32e79a3152f9c413234d757d4f9696f41769edb7c7e2db8d9",
+    "harness-corrected/synthetic-native/exchange/inbox/1d6dc986c329cd69b3164a3c2e1953fdf4abf0d5a601b1556e65c91900a48ca5.json": "47c50d776cf596bc4757c4d851fc39d0b6cb30c1b5820d67d9368faeebef8939",
+    "harness-corrected/synthetic-native/cache/responses/1d6dc986c329cd69b3164a3c2e1953fdf4abf0d5a601b1556e65c91900a48ca5.json": "87815857165ed06bc7572537f89edff84ed5a0252ed06fc5898dc68652a8d632",
+    "harness-corrected/synthetic-native/requests/1d6dc986c329cd69b3164a3c2e1953fdf4abf0d5a601b1556e65c91900a48ca5.json": "2074e42801073ea4f009e1da996afdeb9a46e2e1a268c183279edf03eeba6884",
+    "final-first/results.json": "4bbfa34d8549e5a0842d6cddcde2c62a29be93837734e00e3f4a018361866218",
+    "final-first/source-bindings-start.json": "c404f30fae6a26743376397b113d2839d4892fad2024b337c254e10a8ab1a672",
+    "final-first/actual-two-source-projection.json": "c2654524fcfc86a6994564ee2d16d68634f7f5fbca90f7a94fe8f031e46b02ee",
+    "final-first/source-bindings-end.json": "c404f30fae6a26743376397b113d2839d4892fad2024b337c254e10a8ab1a672"
+  },
+  "first_controls": {
+    "passed": 5,
+    "total": 8
+  },
+  "only_failed_harness_groups_rerun": {
+    "passed": 3,
+    "total": 3
+  },
+  "distinct_controls_passed": 8,
+  "production_stage_executions": 0,
+  "production_answers_written": 0,
+  "network_calls": 0,
+  "synthetic_native_response_consumptions": 1,
+  "scope": "independent offline native modules and two exact real-source projection, no fresh/full pipeline acceptance"
+}
