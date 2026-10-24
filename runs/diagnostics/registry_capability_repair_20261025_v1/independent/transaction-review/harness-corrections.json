@@ -1,0 +1,11 @@
+{
+  "schema_version": "independent-transaction-review-harness-corrections-v1",
+  "first_attempt": {
+    "passed_controls_before_error": 19,
+    "control": "seven_retrieval_drift",
+    "error": "Signal retrieval source group is outside declared source_types",
+    "cause": "The control removed filing from cash_reserves source_types but retained a required source group containing filing. Candidate hashing therefore rejected malformed setup before the actual repair entry.",
+    "product_defect": false,
+    "correction": "Add company_facts to existing financials/filing sources. This remains structurally valid but changes an unauthorized retrieval field and must be rejected by repair equality."
+  }
+}

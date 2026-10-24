@@ -1,0 +1,9 @@
+{
+  "admission_keys": {
+    "3": "83bf32683e48345ae8ee139f8042147153b5b90e7f210cf15d00e7c1a7cb5f85",
+    "4": "9341ee431b06ea0be8de9063c2758d881472f50733e380b91db9f07c9bea571a"
+  },
+  "category": "financial",
+  "signal_id": "revenue_growth_yoy",
+  "stable_version": 4
+}

@@ -1,0 +1,9 @@
+{
+  "accepted": true,
+  "candidate_hash": "b2a456dde52c3f1582642f2e8a43b7bb3a50bee71980607d185abe1367a4aa0b",
+  "executed_tests": 3,
+  "input_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "reasons": [],
+  "signal_ref": "cash_to_current_liabilities_ratio:v3",
+  "validator_hash": "4998dd1afbd8c5eedc173d6a81c4780993be9fccf4c906be6cb41f289c7ecb11"
+}

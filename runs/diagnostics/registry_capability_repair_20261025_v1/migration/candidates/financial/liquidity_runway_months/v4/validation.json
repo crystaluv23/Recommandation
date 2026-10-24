@@ -1,0 +1,7 @@
+{
+  "candidate_hash": "929d82be0faa7537beee30eb69b680215e76d1b73f3b62e5abe11f1f05eff7ab",
+  "latest_evaluation_key": "1f6eef0c8fdd70e3c61abcbae89a22cf016ec6546248fbd7c11f67743fe0071b",
+  "schema_version": "signal-candidate-validation-pointer-v1",
+  "signal_ref": "liquidity_runway_months:v4",
+  "status": "admitted"
+}

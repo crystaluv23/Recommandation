@@ -1,0 +1,7 @@
+{
+  "candidate_hash": "5121ae32c275cd7fc54c767f01f5e553ed2b1913a1569bc61d562450a693c2ae",
+  "latest_evaluation_key": "24cd612f3b3598914951fbcea03ccb514e06a9e8bb2a43999be112109a839f16",
+  "schema_version": "signal-candidate-validation-pointer-v1",
+  "signal_ref": "net_share_retirement_yoy:v4",
+  "status": "admitted"
+}

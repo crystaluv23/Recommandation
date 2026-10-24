@@ -1,0 +1,7 @@
+{
+  "candidate_hash": "3d02cbef8830409fe9f1946ca411e75898ad5547be9829f4987f3b55f6cdc0c3",
+  "latest_evaluation_key": "70f09d691d94e8c8ece05bef9c7e2f2d476d6f44c545cb864eb983cbc72c633a",
+  "schema_version": "signal-candidate-validation-pointer-v1",
+  "signal_ref": "cash_burn_rate_elevated:v3",
+  "status": "admitted"
+}

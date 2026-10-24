@@ -1,0 +1,9 @@
+{
+  "accepted": true,
+  "candidate_hash": "929d82be0faa7537beee30eb69b680215e76d1b73f3b62e5abe11f1f05eff7ab",
+  "executed_tests": 5,
+  "input_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "reasons": [],
+  "signal_ref": "liquidity_runway_months:v4",
+  "validator_hash": "4998dd1afbd8c5eedc173d6a81c4780993be9fccf4c906be6cb41f289c7ecb11"
+}

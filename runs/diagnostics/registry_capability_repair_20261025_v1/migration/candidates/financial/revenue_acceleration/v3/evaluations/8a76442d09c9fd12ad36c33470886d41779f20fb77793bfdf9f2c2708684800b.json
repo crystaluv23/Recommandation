@@ -1,0 +1,35 @@
+{
+  "accepted": true,
+  "admission_identity": {
+    "candidate_hash": "6e9740fe66ccbabba4ed47a963c31c81c4fe7282b23f66b39b76eec524d63255",
+    "contract_validation": {
+      "accepted": true,
+      "executed_tests": 6,
+      "reasons": []
+    },
+    "input_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "research_provenance": {
+      "generation_case_ids": [],
+      "induction_case_ids": [],
+      "origin": "unknown",
+      "source_input_hash": "488c7121d9187261abcb37c43aaa224873b17803c4726b44c0284ac221745778"
+    },
+    "research_targets": [
+      "surge_direction"
+    ],
+    "schema_version": "signal-candidate-admission-identity-v1",
+    "signal_ref": "revenue_acceleration:v3",
+    "validator_hash": "4998dd1afbd8c5eedc173d6a81c4780993be9fccf4c906be6cb41f289c7ecb11"
+  },
+  "candidate_hash": "6e9740fe66ccbabba4ed47a963c31c81c4fe7282b23f66b39b76eec524d63255",
+  "contract_validation": {
+    "accepted": true,
+    "executed_tests": 6,
+    "reasons": []
+  },
+  "evaluation_key": "8a76442d09c9fd12ad36c33470886d41779f20fb77793bfdf9f2c2708684800b",
+  "reasons": [],
+  "schema_version": "signal-candidate-admission-v1",
+  "signal_ref": "revenue_acceleration:v3",
+  "status": "admitted"
+}

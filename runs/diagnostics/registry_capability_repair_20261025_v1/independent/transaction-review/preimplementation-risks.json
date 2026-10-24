@@ -1,0 +1,21 @@
+{
+  "schema_version": "independent-capability-repair-implementation-risks-v1",
+  "review_base_commit": "18561d00b7174a1e431c8d7d7aac84d70d2f8ec6",
+  "status": "awaiting_public_api_implementation",
+  "read": ["AGENTS.md", "progress/status.md", "spec/src/stock_opportunity_agent/signal_library.md#explicit-capability-repair-of-an-unhealthy-historical-registry"],
+  "minimum_risks": [
+    "A mutable caller-provided allowed-change map must not silently replace the exact frozen approved repair plan during recovery.",
+    "The definition hash omits original tests, history, stats and metadata: preserve a complete original path/hash inventory alongside the ordered definition snapshot.",
+    "Distinguish untouched original source198 from successor registry.json and nine designated manifests, whose precisely allowed writes are necessary. All other inherited bytes remain identical.",
+    "Reject source-root/path-alias repair and competing prepared state before entering the global internal read-bypass flag.",
+    "Full next-version validation must use the immutable original baseline after a fault has advanced some successor manifests. Otherwise recovery incorrectly demands v+2 or compares against partially repaired semantics.",
+    "Complete actual candidate validation, all fixtures and stable/batch semantic deduplication must precede prepared status. Legacy accepted records and forged fixture counts cannot replace actual validator execution.",
+    "Require exact admission-v1 keys, candidate/input/validator identities, truthful provenance and complete targets. A changed latest pointer must not silently select a different evaluation.",
+    "Final actual all18 capability audit must finish before version13 or promotion/applied markers exist. Fault recovery must preserve that ordering and never increment twice.",
+    "Fail closed on unexpected transition mode/status, mutated originals/candidates/admissions, missing/extra members or a wider definition/fixture mutation family.",
+    "An atomic logical transaction may contain private partial files while prepared, but normal readers must never expose that partially repaired state."
+  ],
+  "execution_boundary": "Future counterexamples invoke the actual public entry on disposable diagnostic clones only. They do not publish the approved migration destination or mutate the original run.",
+  "external_calls": 0,
+  "claims": "Risk preparation only; no implementation or migration acceptance."
+}

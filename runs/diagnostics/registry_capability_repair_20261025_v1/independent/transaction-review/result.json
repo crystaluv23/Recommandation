@@ -1,0 +1,983 @@
+{
+  "schema_version": "independent-capability-repair-controls-v1",
+  "controls": [
+    {
+      "name": "actual_preparation_independent_candidate_crosscheck",
+      "passed": true,
+      "candidates": 9,
+      "fixtures": 27,
+      "published": 0
+    },
+    {
+      "name": "complete_driver_publish_replay_disposable_only",
+      "passed": true,
+      "output_version": 13,
+      "count": 18,
+      "promoted": [
+        "cash_burn_rate_elevated:v3",
+        "cash_reserves:v3",
+        "cash_to_current_liabilities_ratio:v3",
+        "gross_margin_change:v4",
+        "liquidity_runway_months:v4",
+        "net_share_retirement_yoy:v4",
+        "operating_cash_flow_margin:v3",
+        "revenue_acceleration:v3",
+        "revenue_growth_yoy:v4"
+      ],
+      "output_hash": "cd4d0f4a31de885585f37becb85300505b51af59424e6183046b75807d6c0ab5",
+      "all_nine_effect_unverified": true,
+      "replay_writes": 0
+    },
+    {
+      "name": "ordinary_entry_unhealthy_baseline",
+      "passed": true,
+      "rejected": true,
+      "version": 12
+    },
+    {
+      "name": "source_alias_original",
+      "passed": true,
+      "rejected_before_write": true
+    },
+    {
+      "name": "source_alias_target_alias",
+      "passed": true,
+      "rejected_before_write": true
+    },
+    {
+      "name": "source_alias_candidate_alias",
+      "passed": true,
+      "rejected_before_write": true
+    },
+    {
+      "name": "candidate_symlink_tree",
+      "passed": true,
+      "rejected": "capability repair: Registry symlink is forbidden",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "actual_validator_rename_resistant_stable_duplicate",
+      "passed": true,
+      "reasons": [
+        "execution-semantic duplicate of stable signal cash_reserves"
+      ],
+      "staged_duplicate": 0
+    },
+    {
+      "name": "duplicate_description_stopped_by_immutable_scope",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_version",
+      "passed": true,
+      "rejected": "capability repair: original version changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_hash",
+      "passed": true,
+      "rejected": "capability repair: original definition hash changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_refs",
+      "passed": true,
+      "rejected": "capability repair: original complete membership changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "disabled_reason_changed",
+      "passed": true,
+      "rejected": "capability repair: original disabled reasons differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "disabled_ref_omitted",
+      "passed": true,
+      "rejected": "capability repair: original disabled reasons differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_update",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "extra_update",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "skipped_next_version",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "candidate_hash_wrong",
+      "passed": true,
+      "rejected": "capability repair: candidate content hash changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "admission_key_wrong",
+      "passed": true,
+      "rejected": "capability repair: exact admission-v1 required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_admission_key",
+      "passed": true,
+      "rejected": "capability repair: every candidate needs exact admission and validation",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_validation_binding",
+      "passed": true,
+      "rejected": "capability repair: every candidate needs exact admission and validation",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_code_binding",
+      "passed": true,
+      "rejected": "capability repair: complete repair/validator/executor code bindings required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_threshold_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_description_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_function_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_retrieval_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "approved_margin_policy_drift",
+      "passed": true,
+      "rejected": "capability repair: approved definition or fixtures differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_body_only",
+      "passed": true,
+      "rejected": "capability repair: new fixture metadata must declare same CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_metadata_only",
+      "passed": true,
+      "rejected": "capability repair: new fixture body must declare synthetic CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_mismatched",
+      "passed": true,
+      "rejected": "capability repair: new fixture metadata must declare same CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_malformed",
+      "passed": true,
+      "rejected": "capability repair: new fixture body must declare synthetic CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_expected",
+      "passed": true,
+      "rejected": "capability repair: fixture changed beyond issuer declaration",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_period",
+      "passed": true,
+      "rejected": "capability repair: fixture body changed beyond CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_value",
+      "passed": true,
+      "rejected": "capability repair: fixture body changed beyond CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_unit",
+      "passed": true,
+      "rejected": "capability repair: fixture body changed beyond CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_company",
+      "passed": true,
+      "rejected": "capability repair: fixture changed beyond issuer declaration",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_empty",
+      "passed": true,
+      "rejected": "capability repair: nonempty complete fixtures required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_executed_tests",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_validator_hash",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_input_registry_hash",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_accepted",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "legacy_admission",
+      "passed": true,
+      "rejected": "capability repair: exact admission-v1 required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unbound_validation_bytes",
+      "passed": true,
+      "rejected": "capability repair: bound artifact changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unbound_admission_bytes",
+      "passed": true,
+      "rejected": "candidate validation hash differs from staged content",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "inherited_changed",
+      "passed": true,
+      "rejected": "capability repair: successor is not exact original byte clone",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "inherited_deleted",
+      "passed": true,
+      "rejected": "capability repair: original successor file removed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "inherited_extra",
+      "passed": true,
+      "rejected": "capability repair: successor is not exact original byte clone",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unrelated_prepared",
+      "passed": true,
+      "rejected": "capability repair: unrelated or unknown transition blocks repair",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unrelated_unknown",
+      "passed": true,
+      "rejected": "capability repair: unrelated or unknown transition blocks repair",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fault_after_transition_prepared",
+      "passed": true,
+      "fired": [
+        [
+          "after_transition_prepared",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_spec",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_spec",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_tests",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_tests",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_stats",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_stats",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_manifest",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_manifest",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_admission",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_admission",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_repair_output_audit",
+      "passed": true,
+      "fired": [
+        [
+          "after_repair_output_audit",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_registry_version",
+      "passed": true,
+      "fired": [
+        [
+          "after_registry_version",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_before_output_snapshot",
+      "passed": true,
+      "fired": [
+        [
+          "before_output_snapshot",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_output_snapshot",
+      "passed": true,
+      "fired": [
+        [
+          "after_output_snapshot",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_promotion_record",
+      "passed": true,
+      "fired": [
+        [
+          "after_promotion_record",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_before_transition_applied",
+      "passed": true,
+      "fired": [
+        [
+          "before_transition_applied",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "invalid_transition_unknown_status",
+      "passed": true,
+      "normal_reads_blocked": 3,
+      "version": 12
+    },
+    {
+      "name": "invalid_transition_missing_status",
+      "passed": true,
+      "normal_reads_blocked": 3,
+      "version": 12
+    },
+    {
+      "name": "invalid_transition_unknown_schema",
+      "passed": true,
+      "normal_reads_blocked": 3,
+      "version": 12
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_missing",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_corrupt",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_boolean_to_integer",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_integer_to_float",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_missing",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_corrupt",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_boolean_to_integer",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_integer_to_float",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "prepared_exact_candidate_key_plan_identity",
+      "passed": true,
+      "wrong_key_rejected": true,
+      "candidate_change_rejected": true,
+      "read_blocked": true
+    },
+    {
+      "name": "abrupt_process_exit_fresh_process_exact_recovery",
+      "passed": true,
+      "exit_code": 73,
+      "recovery_exit": 0,
+      "version": 13
+    }
+  ],
+  "passed_controls": 74,
+  "original_198_unchanged": true,
+  "formal_migration_destination_touched": false,
+  "production_source_bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/scripts/repair_historical_signal_registry.py",
+      "sha256": "06506fcd90049bc5ff7d8d215a9626e967ca587582e8dc70dc44a1c2a1d3d9bb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/scripts/repair_historical_signal_registry.md",
+      "sha256": "636d80d7eae3fad0cbd02abc324a0777d925ed814fa7e693acc1342a5d281534"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/__init__.py",
+      "sha256": "ad886197273f30a45b19150b41bd89c7884974f4704941b2fb7ac5e93a042ff0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/artifacts.py",
+      "sha256": "04695d82683e7a9d7332cfe02dda29c47abacd05dda698e8cb4a8f969dacdd75"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/__init__.py",
+      "sha256": "7d71a878cbbba5e7c722258fc1d7460ba433b708bbd6c481cc2a4d714e0343fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/inflections.py",
+      "sha256": "962b0c79dbd381a560a84155b3e6a881beb5421305839d1961bb30a87d57cbed"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/label_store.py",
+      "sha256": "d88db2eb794ecdb11bd378f06e00452904bcdf26b0a3f57f4297c6e725e584af"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/learning.py",
+      "sha256": "0869902905c668e9575bf1291d9d6929e9701c04ffb1865b413dba958844d6db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/matching.py",
+      "sha256": "267664934c0eeafbfe37b5b98ff4f7c79a15017ef02ff3ab52b1cfad46d2c728"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/outcomes.py",
+      "sha256": "b092bba5f9c7098a08e2ad9f55dea3a7ac740be9dc5c0ed9b15e8990938097ff"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/packets.py",
+      "sha256": "3a4c235f876bc37b5e6d8301bd078cc08c58b99c965c34ca5f929b845970472c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/cases/selection.py",
+      "sha256": "0dabd0eb1e047c1503e5b7e722896186d02c9e280d2fdaabc0a0a380bdeb3c07"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/config.py",
+      "sha256": "15f986126132be975cc020142632d4f5a5dfb1e27135921c635b3a9367f76a50"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/__init__.py",
+      "sha256": "8aea988d69cda004b2cab3cb99fe5e36811c0bf9e8617889f1590278c197ac79"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/acquisition.py",
+      "sha256": "7f7298d90e21b00cfd4fdfd095e116167c20e1136826b23754d1c9a729004270"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/backfill.py",
+      "sha256": "07bd13d8cf2e6546a96b05a83879e3d58ba271a0c93e7535a307b17481bd595d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/disclosure.py",
+      "sha256": "21db5eaeb42a7f98896f14e0ad8efd0852a2ae489d7b918719f74c315d9dee2b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/documents.py",
+      "sha256": "7f57d2e40ae9f5c60ae7c69ef75fac70d3217867632bd1e927e9d1c49a9981c9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/filing_orientation.py",
+      "sha256": "e539b5dd16333a939a81169783c2716e50e410497e7e4a180c5247289b8581db"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/historical_news.py",
+      "sha256": "8a5e07eb53d08cc4be95ba37f547d1d3864febdac03a11f6f1a162b52583cef2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/json_stream.py",
+      "sha256": "e24b9c3583fc6b7fc14c1f8e20cce06d29db34b425115260abd7008efe7d65ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/markup.py",
+      "sha256": "6142b661e74dd16c9d08358478817cb35b3668cfb2c2b13182a3ffd0f2e555d8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/point_in_time.py",
+      "sha256": "9722c575b33c03c100f8f5e647db1f7d60dc378ed99290e975e090f6b1c4d642"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/raw_info.py",
+      "sha256": "985f18dcd8c7102b007341632470c2b5bc0a0978fb3029e23d4c4c80926faddf"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/resolution.py",
+      "sha256": "dc2a24c345e1abee9c5618312283ab1b22a368fafc2247ddc0f3acedd35d8f36"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/reviewed_snapshot.py",
+      "sha256": "907c12e3d8fb010ae6c1606d3b494db6bf90750c3718f9135a61896f25f8e45b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sec_company_facts.py",
+      "sha256": "95c114a8ef9d9b175464a9accabe380beca2c939684215647550fcd61d281562"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/__init__.py",
+      "sha256": "1b84151cfebec6ff6f42a7350f0d21df1870abe6592ef7db0a7177a7b4074590"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/alpha_vantage.py",
+      "sha256": "ec72a36d91dc1af4a07f70a4cc02214b14681d8cdd594564edeb8519932670d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/catalog.py",
+      "sha256": "b59cfbe8b4a5e7174cb7d01db84e8a005f4da060f1eebeb6d84e6c4749bfa022"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/core.py",
+      "sha256": "ce5704451a560b5487472dae9cb5009ebb69a9c7dc80969c383d95b25f46e8b2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/finnhub.py",
+      "sha256": "74dfda1e717b168ad6bb9764a266cb9cf0c2327261bdaec8b08680207f62efa2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/fred.py",
+      "sha256": "9b15369b9c9a414bb412559e01876fa77acf931a1467fff4c56e1215e4a71aee"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/massive.py",
+      "sha256": "359d5fa9a96e963167ccab61c22431a240f94697c13c50fb606ef6438615160b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/openfigi.py",
+      "sha256": "237bd47a6c4c1064db960714bb6bf992cf0370c2ce07b9e1441a58d1d3a24d85"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/sec_edgar.py",
+      "sha256": "2195e04f95af1afa295f5c2ffe26d62db728c8d4aed622dc6b58fb4f7dd40526"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/state.py",
+      "sha256": "553797633aaac3f1090020f6f8c6a77cb6be36829a937a9e63d4bbf746ccc08c"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/sources/stooq.py",
+      "sha256": "4483d28bd8d6f4ef71d52d599eccd5338b697eeb19a9422cbd3da60f89cfd134"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/data/structured.py",
+      "sha256": "77a36978955b2aa40805a38f78437d275f71498ddbfb61ebd1ba658b562feb6e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/__init__.py",
+      "sha256": "cc16eaea477be155eccb1f37c12f755d6672ea42cc265e171df2162e1939f0d0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/agent.py",
+      "sha256": "d4450fe67bcb0607c5e006389094f8c1b46ba39f123ca55ec5384c8322dbae2e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/deepseek.py",
+      "sha256": "73d35cda63a13cd8aa080b9272f2729b63a4a77f76ebeece1a109cdee7c4c5e8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/local.py",
+      "sha256": "328d604fbf8205f8d1d1765697f9047a99b35aac8183c00ee15939dadd1efb2d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openai.py",
+      "sha256": "9cd43b389fb0ea37382d615b6572e4b360eb4da6c279896806cc420529df66c4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter.py",
+      "sha256": "ab7737565e81661ea41879492bad3a9b9513356dbf1ec32ef4b9d4d3955f6f51"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/llm/openrouter_jev.py",
+      "sha256": "836d95d9f5c2ace89ccb674bb0cdcee709a66a6656a1682f261877d8bb905291"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/__init__.py",
+      "sha256": "500e2b3660b859940efce402e89d78f9ca3f42117f7202bcc1ec68bcb57b493b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/knowledge.py",
+      "sha256": "df57838ed67bdb86abd99ea95594ec1239d968877ef8fa63bfce0c8848af4eca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/playbooks.py",
+      "sha256": "7eb513aee485afe1027e2db09f4c01dc8a3772eac130a973140316902d20446a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/signals.py",
+      "sha256": "16378ba31ae7a2248f44f053688223c8ff3ed096dcb0583fa6ba39d375526c1b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/memory/themes.py",
+      "sha256": "923ead11d92d9337a471258f74180aa98750ea2fdab06e560690d39b7bcb6498"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/models.py",
+      "sha256": "7e0704241b11313b8c99720371ed1e5b76015b33f5af2d2d4a9f911bbfac98fb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/orchestration.py",
+      "sha256": "6a0f001eeb5f5326fba76fb2393f5f56a894b104c79f7b3e1d49f3246443625f"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/__init__.py",
+      "sha256": "87ba194588441926a3baf6754e6ecb49c29b88f7f23cdf9146d1b655ab59bace"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_orientation.py",
+      "sha256": "bca6ffa3e4bc88bbfedcf2a787220cf47b6a9cc8556c92225aa23360e68c4b23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/basic_info_visibility.py",
+      "sha256": "86b657550768f3896f69ca4618d7c7f0e66bfbe59977532d6ef3a26f8068aecd"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cold_start.py",
+      "sha256": "1684343ee72c5b0b3eb21339094761574a5c608138c24f9eb8aa0401837f2603"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/compute_tools.py",
+      "sha256": "1ee884f6bcf610f80d774a1f1d9b76c99b0682427a655c06beec9526f99a3bcc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/cross_round_reflection.py",
+      "sha256": "86b61e23f8f7e11a1c558dee54659ff9e7bc598dec8a3d6f3ab1558b9ffb1347"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/distillation.py",
+      "sha256": "bf7106cb0f20dcbc5ffbbccc930482422c395c61f9ada60c4560807bc92ecca0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evidence_acquisition.py",
+      "sha256": "52834ba6ebad97fe17513fad8864e15d8e034e07ea8d481e3056df9227d0ad4d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_benefit.py",
+      "sha256": "e7df40559b084168425e87b0d57a8113ea8d76a52e622fdbb020dc962c37e8d1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_control.py",
+      "sha256": "593283673033f404ea39bd46b7872da7f704cf7d8b9902165381dbdaa5c3036d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_core.py",
+      "sha256": "47032bca4de5a6f8145100235e802c4339137b508d3eb65dcaa4afbc09abd53d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dashboard.py",
+      "sha256": "6870025b06d7070469a954dc190b8d99869062cdcb3f0392c60f4ee82cd70c83"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_dataset.py",
+      "sha256": "fb7f7b65d5c9729e42ff5b104cdce8c8bf47e97c6e1600995c892a46ec58d9e9"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_jev_roles.py",
+      "sha256": "6874b6771585ce265ff8d18f945e658088210c9066fbf944e391fa548777ffc8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_output_validation.py",
+      "sha256": "3fc449936485510837b31596e5e3beb8d3dc726a63f2509ec831ef3ab316a7fa"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_plan_roles.py",
+      "sha256": "0a3e96fbbbb62ab7ed1df7b31a0baa1d12ef3bb9adaa34210d3d99b283570556"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_reflection_memory.py",
+      "sha256": "38b9a092012d90b4769062de3614dbd43e8f02612f41e088d05e8db48b9b0cbc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_research_validation.py",
+      "sha256": "443930f588474bdf889d395c5cf7f6843bafa62811272a8025af2af9a2df2386"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_runtime.py",
+      "sha256": "ed831068f375f7ef7e524faac120ce50df226874fcd7019e50b289cf1178dae2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_settings.py",
+      "sha256": "96c634fe572fdf56c677f1d43f2cb3e6f893dcc5a589b490c167d571f70cc8bc"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_signal_roles.py",
+      "sha256": "733e2f305a25cebb60e136cf1b1e21a2ae219ddaefd9a2636bc39b40944c31e7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_state_patch.py",
+      "sha256": "7bb2c074b8b54508a105e523421e1d42c5c6a417beb047ee6bd061b956b6f6b0"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/evolution_transport.py",
+      "sha256": "b5fe81e696251bc4e6e84da055a2a4ebfbc9b9d82d6814aec6942ff5288dcf42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/inflection_discovery.py",
+      "sha256": "4dc4484aaa64a7403d81ec2613c2026149473f1f615f216dc8b61c1c463291d4"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/information_plan.py",
+      "sha256": "c3134df9c7d8a1a6342874f6ad80fa6f7386fa37ddb9e2ee4e7ea11ef4d51636"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/local_role_exchange.py",
+      "sha256": "2296dafdbf2a847255bf5b6b77080ab623f0b7e93e6f8b961451ca16e3dc579d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_agent_tools.py",
+      "sha256": "c58cbd09c3af03e5c65fa9040456f31b10ec6758ea4a0af38cc2959480f06040"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_closure.py",
+      "sha256": "ff51e985e26f13edc34c91f3fe51b3f900fecf76252674df3d204508ce94bed2"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_controller.py",
+      "sha256": "2427275235520d59f2baba7e59b740087ada559685b3ee59b08e4f30293f0550"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_replay.py",
+      "sha256": "1afdc7dcaef55094d9d615fbff56524c4f7cca822f44f4994f515f9b531f4348"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/mining_role_model.py",
+      "sha256": "a9c545e5dab37aaa2d6c8487e9f68c49f2aad9cc9b0ccf8084cdcd7e8a05fa70"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/plan_evolution.py",
+      "sha256": "a1cf5d7f63df174a03c2b5074cdd854a2b1a031ab6b87591904184df3ea1d76a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/playbooks.py",
+      "sha256": "ec064fe9a1c936ea464c1eb1499620ec212fae69ae0dc65b24d0af9be647aa23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_artifacts.py",
+      "sha256": "fb0ecf206731825cecf778dd2718502e9875c1d74db039b41ccc769a5cc46b86"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/ralph_loop.py",
+      "sha256": "fb490e85c7ec4fb89a63392710742f1ea8fabb39ee10dbc87a5c16d081bb1513"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/repair.py",
+      "sha256": "c36d52e01313318019eb1c73f1ae60a2d338f6b7dbb921782c626e6889b955ea"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/research_targets.py",
+      "sha256": "6d4ef5f618dd20aa5b7658623f904a30465a18640bba7023ac43dad8fa9ee925"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/scheme_evolution.py",
+      "sha256": "343f760c917c2574b1b5ce2b1a3e3323c1bfc3762680213aa2c557462e75c184"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_evolution.py",
+      "sha256": "9d6fdf76e4997274b6245f995b48f639d2818385d749c2e6a9ff4dd6df27912e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_source_reading.py",
+      "sha256": "5dec23847a4aeefc71bbee1a36adf45181658ffe63f564f03879c45381468033"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/signal_tracking.py",
+      "sha256": "b6f749200506a00644d522ea6bce3a10b10ce3ba95c461d96c1fd405ac9b6e4b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/research/stage_contracts.py",
+      "sha256": "15eb32ca8ef0cddec928f412eb4cab87a7167fb9d35c9f3acd59ce81e52ee494"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_capability_repair.py",
+      "sha256": "c8e8285fb50795513084a1cb6619da2ee4943b0b2f05ba275a01f373b45bbd42"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signal_library.py",
+      "sha256": "4a7a615d621ed39b5ba03cf2cdb99bc672137ef154dc6ee216b7ec4884391602"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/signals.py",
+      "sha256": "2f21a134ebf8b6a8fcd1b65e305829080bd531e2e9a324d4781fac2376aa2a97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/src/stock_opportunity_agent/themes.py",
+      "sha256": "72e8f07c77e95afbee7495f411137df9c0b1dc80ab96feb0a06d0dc320f432ed"
+    }
+  ],
+  "external_calls": 0,
+  "labels": 0,
+  "scope": "Disposable local clone transaction controls. No formal migration, fresh consumer, Mining, Slow completion or gain claim."
+}

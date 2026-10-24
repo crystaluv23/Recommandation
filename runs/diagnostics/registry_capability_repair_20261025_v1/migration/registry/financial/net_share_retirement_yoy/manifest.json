@@ -1,0 +1,9 @@
+{
+  "admission_keys": {
+    "3": "50e5b02066976deb89d43f362fcd6284b2716d5f84e5435d132b7948fe412c62",
+    "4": "24cd612f3b3598914951fbcea03ccb514e06a9e8bb2a43999be112109a839f16"
+  },
+  "category": "financial",
+  "signal_id": "net_share_retirement_yoy",
+  "stable_version": 4
+}

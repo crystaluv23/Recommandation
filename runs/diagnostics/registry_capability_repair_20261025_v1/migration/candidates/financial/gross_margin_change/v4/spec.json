@@ -1,0 +1,49 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure latest reported gross margin (GrossProfit/revenue) minus the same fiscal window one year earlier. Anchor to latest canonical revenue end and shortest explicitly reported duration on a tied end, before requiring current profit or comparators. Require exact month-aligned 3/6/9/12-month windows and same currency; YTD compares identical YTD windows. Missing current/prior gross profit or revenue, zero revenue, unresolved required-window conflicts, stale current periods, unsupported stubs or 52/53-week calendars are unavailable; never replace the latest anchor with an older complete pair. Numeric change >=0.08 is positive, <=-0.02 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute change above 2 has partial coverage and confidence 0.5 without changing the measurement."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.gross_margin_change",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": -0.02,
+    "period_policy": "same_window_yoy",
+    "positive_min": 0.08
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Latest reported gross margin minus the same fiscal window one year earlier; latest revenue anchor, shortest duration on ties. Exact 3/6/9/12-month boundaries and currency; missing profits, zero revenue or conflicts unavailable.",
+    "minimum_distinct_periods": 2,
+    "minimum_period_span_days": 330,
+    "query_terms": [
+      "revenue",
+      "gross profit"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "gross_margin_change",
+  "version": 4
+}

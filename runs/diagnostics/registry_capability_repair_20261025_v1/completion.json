@@ -1,0 +1,34 @@
+{
+  "code_archive": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/registry_capability_repair_20261025_v1/frozen-code-manifest.json",
+    "sha256": "58661f391814c49367ebd753650273a8972717dd922eaf268ec16f2910f161a4"
+  },
+  "complete_signal_membership": 18,
+  "effect_status": "unverified",
+  "independent_review": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/registry_capability_repair_20261025_v1/independent/formal-publication-review/final-review.json",
+    "sha256": "ebc4d05b90efb971bcc718b8bc3c4cda0cfa34ff1cb629dbc1944018a69ba8be"
+  },
+  "mvp": "open",
+  "new_mining": 0,
+  "new_model_answers": 0,
+  "original_198_unchanged": true,
+  "plan": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/registry_capability_repair_20261025_v1/migration/plan.json",
+    "sha256": "8db8ff1023b0d96a5387bfca40186c71d5eda7ef9140c516f3e903edfad95d99"
+  },
+  "registry_hash": "cd4d0f4a31de885585f37becb85300505b51af59424e6183046b75807d6c0ab5",
+  "registry_version": 13,
+  "result": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/registry_capability_repair_20261025_v1/migration/result.json",
+    "sha256": "c7fcd8392e92b9b79af8131817ed03dad4c8eeebc28becf8b64209fb6ea09bbe"
+  },
+  "schema_version": "approved-registry-repair-completion-v1",
+  "scope": "Exact approved separate Registry migration only; no Fast/Slow pointer or whole MVP completion.",
+  "state": "completed",
+  "transition": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/registry_capability_repair_20261025_v1/migration/registry/.transitions/approved-capability-repair-20261025.json",
+    "sha256": "7cd485c7a97f166dd3bb79cd5c20291d57c5515e226630f34809aba27017976c"
+  },
+  "updates": 9
+}

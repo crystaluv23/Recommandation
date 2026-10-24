@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_promotion_marker_boolean_type_cannot_coerce_an_integer (tests.test_signal_capability_repair.CapabilityRepairTests.test_promotion_marker_boolean_type_cannot_coerce_an_integer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_capability_repair.py", line 220, in test_promotion_marker_boolean_type_cannot_coerce_an_integer
+    with self.assertRaisesRegex(ValidationError, 'marker'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValidationError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 8.602s
+
+FAILED (failures=1)

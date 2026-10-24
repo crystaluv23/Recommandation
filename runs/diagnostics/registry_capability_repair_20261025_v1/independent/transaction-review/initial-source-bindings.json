@@ -1,0 +1,5 @@
+{
+  "src/stock_opportunity_agent/signal_capability_repair.py": "bfe60182f4195cc0e80cbb05af08cedf1efbb23576a8bfb38f0ca1129de0b089",
+  "src/stock_opportunity_agent/signal_library.py": "08c741aa306bbb6a04d388cf26a720f45bb9b9a482ae91b1570d729719af2e50",
+  "src/stock_opportunity_agent/research/signal_evolution.py": "9d6fdf76e4997274b6245f995b48f639d2818385d749c2e6a9ff4dd6df27912e"
+}

@@ -1,0 +1,73 @@
+{
+  "confidence": "repeated",
+  "directional": {
+    "correct": 12,
+    "unavailable": 0,
+    "unavailable_with_inputs": 0,
+    "unavailable_without_inputs": 0,
+    "wrong": 8
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [
+    {
+      "context_tag": "capital_intensive",
+      "issuers": 21,
+      "observations": 21,
+      "positive_surge_rate": 1.0
+    },
+    {
+      "context_tag": "small_cap",
+      "issuers": 14,
+      "observations": 14,
+      "positive_surge_rate": 1.0
+    },
+    {
+      "context_tag": "large_cap",
+      "issuers": 7,
+      "observations": 7,
+      "positive_surge_rate": null
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 1,
+    "misleading": 2,
+    "other": 2
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 60,
+  "selection_reason_codes": [
+    {
+      "count": 35,
+      "reason_code": "assess_applicability"
+    },
+    {
+      "count": 17,
+      "reason_code": "combine_evidence"
+    },
+    {
+      "count": 8,
+      "reason_code": "answer_need"
+    }
+  ],
+  "signal_ref": "liquidity_runway_months:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 9,
+      "surge": 8
+    },
+    "neutral": {
+      "non_surge": 0,
+      "surge": 2
+    },
+    "positive": {
+      "non_surge": 0,
+      "surge": 3
+    },
+    "unavailable": {
+      "non_surge": 0,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 22,
+  "unique_observations": 22
+}

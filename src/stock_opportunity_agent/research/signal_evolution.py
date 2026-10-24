@@ -42,6 +42,7 @@ from stock_opportunity_agent.signal_library import (
     SignalValue,
     default_deterministic_signal_functions,
     deterministic_signal_function_contracts,
+    signal_execution_behavior_identity,
     signal_result_model_view,
 )
 
@@ -1609,19 +1610,7 @@ class SignalCandidateValidator:
     def _behavior_identity(spec: SignalSpec, skill: str | None) -> str:
         """Return a rename-resistant first-pass execution identity."""
 
-        return _canonical_hash(
-            {
-                "modality": (
-                    spec.modality.value if spec.modality is not None else None
-                ),
-                "execution_type": spec.execution_type.value,
-                "function": spec.function,
-                "skill": _normalize_semantics(skill or ""),
-                "source_types": list(spec.source_types),
-                "retrieval": spec.retrieval_policy.to_dict(),
-                "parameters": dict(spec.parameters),
-            }
-        )
+        return signal_execution_behavior_identity(spec, skill)
 
     def _execute_fixture(
         self,

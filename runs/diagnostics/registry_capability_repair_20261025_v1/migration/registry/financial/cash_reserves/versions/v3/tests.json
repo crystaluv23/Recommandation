@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "as_of": "2025-02-01T00:00:00+00:00",
+      "documents": [
+        {
+          "available_at": "2025-01-20T00:00:00+00:00",
+          "content": "{\"cik\":\"0001999991\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":150000000}],\"filing_date\":\"2025-01-20\",\"form\":\"10-K\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+          "metadata": {
+            "cik": "0001999991"
+          },
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "cash buffer"
+    }
+  ]
+}

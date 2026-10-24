@@ -1,0 +1,49 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure revenue acceleration as the latest standalone quarter's YoY revenue growth minus the immediately preceding standalone quarter's YoY growth, requiring all four explicitly reported windows. For latest annual inputs, compare adjacent annual YoY growth and require three annual windows. Anchor to latest canonical revenue end, shortest explicitly reported duration on a tied end. Require exact month-aligned 3-month quarterly or 12-month annual boundaries and same currency. Never skip a quarter, mix quarterly with annual growth, synthesize standalone quarters from YTD or fall back to an older complete pair. Missing current/year-ago/adjacent/year-ago-adjacent windows, zero prior-year denominators, unresolved required-window conflicts, stale current periods, cumulative YTD, unsupported stubs or 52/53-week calendars are unavailable. Numeric acceleration >=0.05 is positive, <=-0.05 negative, otherwise neutral; categories describe this measurement, not future returns. Preserve full literal operands and evidence. Default current freshness is 550 days; absolute acceleration above 5 has partial coverage and confidence 0.5 without changing the measurement."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.revenue_acceleration",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": -0.05,
+    "period_policy": "adjacent_yoy",
+    "positive_min": 0.05
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Latest standalone-quarter YoY revenue growth minus immediately prior quarter YoY growth: four reported windows. Annual uses adjacent annual YoY: three windows. Missing/zero/conflicting/mixed/YTD/unsupported windows unavailable.",
+    "minimum_distinct_periods": 3,
+    "minimum_period_span_days": 330,
+    "query_terms": [
+      "revenue",
+      "sales"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "revenue_acceleration",
+  "version": 3
+}

@@ -1,0 +1,72 @@
+{
+  "tests": [
+    {
+      "as_of": "2025-02-01T00:00:00+00:00",
+      "documents": [
+        {
+          "available_at": "2025-01-20T00:00:00+00:00",
+          "content": "{\"cik\":\"0001999991\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-30},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+          "document_id": "burn-high",
+          "metadata": {
+            "cik": "0001999991"
+          },
+          "published_at": "2025-01-20T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "positive",
+      "name": "high_burn_positive"
+    },
+    {
+      "as_of": "2025-02-01T00:00:00+00:00",
+      "documents": [
+        {
+          "available_at": "2025-01-20T00:00:00+00:00",
+          "content": "{\"cik\":\"0001999991\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":-5},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+          "document_id": "burn-low",
+          "metadata": {
+            "cik": "0001999991"
+          },
+          "published_at": "2025-01-20T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "neutral",
+      "name": "low_burn_neutral"
+    },
+    {
+      "as_of": "2025-02-01T00:00:00+00:00",
+      "documents": [
+        {
+          "available_at": "2025-01-20T00:00:00+00:00",
+          "content": "{\"cik\":\"0001999991\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":\"2024-10-01\",\"tag\":\"NetCashProvidedByUsedInOperatingActivities\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":10},{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+          "document_id": "burn-none",
+          "metadata": {
+            "cik": "0001999991"
+          },
+          "published_at": "2025-01-20T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "negative",
+      "name": "cash_generation_negative"
+    },
+    {
+      "as_of": "2025-02-01T00:00:00+00:00",
+      "documents": [
+        {
+          "available_at": "2025-01-20T00:00:00+00:00",
+          "content": "{\"cik\":\"0001999991\",\"facts\":[{\"end\":\"2024-12-31\",\"start\":null,\"tag\":\"CashAndCashEquivalentsAtCarryingValue\",\"taxonomy\":\"us-gaap\",\"unit\":\"USD\",\"value\":100}],\"filing_date\":\"2025-01-20\",\"form\":\"10-Q\",\"schema_version\":\"sec-company-facts-document-v1\"}",
+          "document_id": "burn-missing",
+          "metadata": {
+            "cik": "0001999991"
+          },
+          "published_at": "2025-01-20T00:00:00+00:00",
+          "source_type": "financials"
+        }
+      ],
+      "expected": "unavailable",
+      "name": "missing_ocf_unavailable"
+    }
+  ]
+}

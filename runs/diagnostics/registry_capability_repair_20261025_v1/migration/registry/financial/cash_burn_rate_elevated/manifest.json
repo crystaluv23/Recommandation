@@ -1,0 +1,8 @@
+{
+  "admission_keys": {
+    "3": "70f09d691d94e8c8ece05bef9c7e2f2d476d6f44c545cb864eb983cbc72c633a"
+  },
+  "category": "financial",
+  "signal_id": "cash_burn_rate_elevated",
+  "stable_version": 3
+}

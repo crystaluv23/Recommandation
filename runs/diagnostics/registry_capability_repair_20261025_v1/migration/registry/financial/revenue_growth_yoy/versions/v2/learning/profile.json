@@ -1,0 +1,73 @@
+{
+  "confidence": "repeated",
+  "directional": {
+    "correct": 7,
+    "unavailable": 1,
+    "unavailable_with_inputs": 1,
+    "unavailable_without_inputs": 0,
+    "wrong": 5
+  },
+  "disputed_observations": 0,
+  "recurring_contexts": [
+    {
+      "context_tag": "capital_intensive",
+      "issuers": 12,
+      "observations": 12,
+      "positive_surge_rate": 0.5
+    },
+    {
+      "context_tag": "large_cap",
+      "issuers": 11,
+      "observations": 11,
+      "positive_surge_rate": 0.6
+    },
+    {
+      "context_tag": "small_cap",
+      "issuers": 10,
+      "observations": 10,
+      "positive_surge_rate": 1.0
+    }
+  ],
+  "reflection_attribution": {
+    "ignored": 4,
+    "misleading": 4,
+    "other": 2
+  },
+  "schema_version": "signal-learning-profile-v1",
+  "selection_events": 53,
+  "selection_reason_codes": [
+    {
+      "count": 39,
+      "reason_code": "assess_applicability"
+    },
+    {
+      "count": 10,
+      "reason_code": "combine_evidence"
+    },
+    {
+      "count": 3,
+      "reason_code": "confirm_hypothesis"
+    }
+  ],
+  "signal_ref": "revenue_growth_yoy:v2",
+  "state_outcome_matrix": {
+    "negative": {
+      "non_surge": 3,
+      "surge": 3
+    },
+    "neutral": {
+      "non_surge": 3,
+      "surge": 5
+    },
+    "positive": {
+      "non_surge": 2,
+      "surge": 4
+    },
+    "unavailable": {
+      "non_surge": 1,
+      "surge": 0
+    }
+  },
+  "unique_issuers": 21,
+  "unique_observations": 21
+}

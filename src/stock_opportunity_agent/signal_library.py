@@ -1792,6 +1792,29 @@ class SignalTargetEvaluation:
         )
 
 
+def signal_version_content_hash(spec: SignalSpec, skill: str | None,
+                                tests: Iterable[Mapping[str, Any]]) -> str:
+    """Hash the same version payload in candidate, stable and historical readers."""
+
+    return hashlib.sha256(json.dumps({'spec': spec.to_dict(),
+        'skill': skill.rstrip() if skill is not None else None, 'tests': list(tests)},
+        sort_keys=True, separators=(',', ':')).encode('utf-8')).hexdigest()
+
+
+def signal_execution_behavior_identity(spec: SignalSpec, skill: str | None) -> str:
+    """Hash rename-resistant execution behavior for validation and publication."""
+
+    return _canonical_hash({
+        "modality": spec.modality.value if spec.modality is not None else None,
+        "execution_type": spec.execution_type.value,
+        "function": spec.function,
+        "skill": " ".join(re.findall(r"[a-z0-9]+", (skill or "").casefold())),
+        "source_types": list(spec.source_types),
+        "retrieval": spec.retrieval_policy.to_dict(),
+        "parameters": dict(spec.parameters),
+    })
+
+
 class SignalRegistry:
     """File-backed progressive-disclosure Signal Registry."""
 
@@ -2511,13 +2534,7 @@ class SignalRegistry:
         """Hash the exact staged spec, skill, and executable fixtures."""
 
         spec, skill = self.load_candidate(signal_ref)
-        payload = {
-            "spec": spec.to_dict(),
-            "skill": (skill.rstrip() if skill is not None else None),
-            "tests": list(self.load_candidate_tests(signal_ref)),
-        }
-        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
-        return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        return signal_version_content_hash(spec, skill, self.load_candidate_tests(signal_ref))
 
     def record_candidate_admission(
         self,
@@ -2612,11 +2629,7 @@ class SignalRegistry:
         if admission_keys.get(str(spec.version)) != record["evaluation_key"]:
             raise ValidationError("published Signal admission key differs from manifest")
         skill = self.load_skill(signal_ref)
-        stable_hash = hashlib.sha256(json.dumps({
-            "spec": spec.to_dict(),
-            "skill": skill.rstrip() if skill is not None else None,
-            "tests": list(self.load_tests(signal_ref)),
-        }, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+        stable_hash = signal_version_content_hash(spec, skill, self.load_tests(signal_ref))
         if record["candidate_hash"] != stable_hash or record["accepted"] is not True:
             raise ValidationError("published Signal admission differs from version content")
         return {
@@ -2846,6 +2859,15 @@ class SignalRegistry:
             for path in sorted((candidate_dir / "evaluations").glob("*.json"))
         )
 
+    def capability_repair(
+        self, plan: Mapping[str, Any], *, plan_hash: str,
+    ) -> SignalRegistryTransition:
+        """Apply only an exact, approved historical issuer-fixture repair plan."""
+
+        from stock_opportunity_agent.signal_capability_repair import apply_capability_repair
+
+        return apply_capability_repair(self, plan, plan_hash=plan_hash)
+
     def promote_validated_batch(
         self,
         validated_candidates: Mapping[str, str],
@@ -2978,6 +3000,11 @@ class SignalRegistry:
                 self._fault_checkpoint("after_stable_admission", signal_ref)
             promoted_specs.append(spec)
 
+        if intent.get("mode") == "capability_repair":
+            from stock_opportunity_agent.signal_capability_repair import verify_repair_output
+
+            verify_repair_output(self, intent)
+            self._fault_checkpoint("after_repair_output_audit")
         if ordered_candidates:
             if self.version == input_version:
                 self.bump_version()
@@ -2995,7 +3022,8 @@ class SignalRegistry:
                 candidate_dir / "promotion.json",
                 {
                     "promoted": True,
-                    "mode": "automatic_after_machine_validation",
+                    "mode": ("capability_repair" if intent.get("mode") == "capability_repair"
+                             else "automatic_after_machine_validation"),
                     "transition_id": transition_id,
                     **(
                         {"evaluation_key": validated_evaluations[spec.ref]}
@@ -3029,10 +3057,18 @@ class SignalRegistry:
         if self._transition_recovery_active:
             return
         for path in sorted((self.root / ".transitions").glob("*.json")):
-            if _read_json(path).get("status") == "prepared":
+            transition = _read_json(path)
+            if (transition.get("status") != "applied" or transition.get("schema_version") not in {
+                "signal-registry-transition-v1", "signal-registry-transition-v2",
+                "signal-registry-capability-repair-v1",
+            }):
                 raise ValidationError(
-                    "Signal Registry has a prepared transition requiring recovery"
+                    "Signal Registry has a prepared or invalid transition requiring recovery"
                 )
+            if transition.get("schema_version") == "signal-registry-capability-repair-v1":
+                from stock_opportunity_agent.signal_capability_repair import verify_applied_repair_readable
+
+                verify_applied_repair_readable(self, path, transition)
 
     def _fault_checkpoint(self, stage: str, signal_ref: str | None = None) -> None:
         if self._fault_injector is not None:

@@ -1,0 +1,10 @@
+{
+  "schema_version": "independent-formal-audit-harness-correction-v1",
+  "initial_error": "AssertionError: set(output.research_status) == set(expected_new_nine)",
+  "cause": "The read-only audit incorrectly assumed only the nine new versions have status. The original Registry already contains valid admissions for financing_listing_action:v5, guidance_acceleration:v3 and order_confirmation_disclosed:v3. They must be preserved.",
+  "correction": "Require all nine new statuses and compare every unchanged healthy ref's output status exactly to the original. The resulting status map must equal nine new plus the three inherited original admissions.",
+  "second_error": "Python asdict(replay) preserves promoted tuple, while saved JSON restores promoted list; direct Python equality falsely rejected the same JSON transition.",
+  "second_correction": "Compare canonical JSON hashes, which preserve JSON numeric/boolean type distinctions while normalizing Python tuple/list serialization.",
+  "product_defect": false,
+  "formal_or_source_write_performed": false
+}

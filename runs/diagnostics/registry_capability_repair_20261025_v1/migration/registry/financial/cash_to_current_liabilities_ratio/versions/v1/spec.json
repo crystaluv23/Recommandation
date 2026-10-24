@@ -1,0 +1,54 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure the ratio of latest CashAndCashEquivalentsAtCarryingValue to latest LiabilitiesCurrent for a company as of a point in time. Higher values indicate stronger short-term liquidity."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skills/cash_to_current_liabilities_ratio.md",
+    "type": "llm"
+  },
+  "parameters": {
+    "negative_max": 1.0,
+    "positive_min": 1.0
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "latest point-in-time CashAndCashEquivalentsAtCarryingValue and LiabilitiesCurrent for the same company_id",
+    "query_terms": [
+      "CashAndCashEquivalentsAtCarryingValue",
+      "LiabilitiesCurrent",
+      "cash",
+      "current liabilities",
+      "liquidity ratio",
+      "10-Q",
+      "10-K",
+      "20-F",
+      "SEC company facts",
+      "USD"
+    ],
+    "source_types": [
+      "company_facts",
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "cash_to_current_liabilities_ratio",
+  "version": 1
+}

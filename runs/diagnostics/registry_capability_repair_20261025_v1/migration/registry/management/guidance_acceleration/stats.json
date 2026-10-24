@@ -1,0 +1,64 @@
+{
+  "cost": {
+    "total_cost": 0.0,
+    "total_tokens": 0
+  },
+  "processed_observation_ids": [
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000701818:20250930:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000723125:20250731:0:1:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000860413:20250930:0:3:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000895421:20250731:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001018963:20250930:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001051627:20250930:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001174922:20250731:0:3:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001521036:20250331:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001576942:20250530:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001590364:20250731:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001646188:20250530:0:1:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001689548:20250930:0:1:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001830043:20250930:0:0:guidance_acceleration:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001847409:20250131:0:0:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000701818:20250930:1:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000860413:20250930:0:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000895421:20250731:0:0:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000936395:20250930:0:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001018963:20250930:0:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001051627:20250930:1:3:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001164727:20250731:0:2:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001174922:20250731:0:0:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001521036:20250331:0:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001576942:20250530:0:3:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001590364:20250731:0:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001830043:20250930:0:0:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001847409:20250131:1:1:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001869198:20250331:0:2:guidance_acceleration:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0002023554:20250930:0:0:guidance_acceleration:v3"
+  ],
+  "state_statistics": {
+    "negative": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    },
+    "neutral": {
+      "surge": 3,
+      "surge_rate": 0.2,
+      "total": 15
+    },
+    "positive": {
+      "surge": 6,
+      "surge_rate": 0.6666666666666666,
+      "total": 9
+    },
+    "unavailable": {
+      "surge": 3,
+      "surge_rate": 0.6,
+      "total": 5
+    }
+  },
+  "usage": {
+    "executed": 29,
+    "retrieved": 29,
+    "unavailable": 5
+  }
+}

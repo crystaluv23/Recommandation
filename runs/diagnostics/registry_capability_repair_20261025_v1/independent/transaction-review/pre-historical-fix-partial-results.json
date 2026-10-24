@@ -1,0 +1,579 @@
+{
+  "controls": [
+    {
+      "name": "actual_preparation_independent_candidate_crosscheck",
+      "passed": true,
+      "candidates": 9,
+      "fixtures": 27,
+      "published": 0
+    },
+    {
+      "name": "complete_driver_publish_replay_disposable_only",
+      "passed": true,
+      "output_version": 13,
+      "count": 18,
+      "promoted": [
+        "cash_burn_rate_elevated:v3",
+        "cash_reserves:v3",
+        "cash_to_current_liabilities_ratio:v3",
+        "gross_margin_change:v4",
+        "liquidity_runway_months:v4",
+        "net_share_retirement_yoy:v4",
+        "operating_cash_flow_margin:v3",
+        "revenue_acceleration:v3",
+        "revenue_growth_yoy:v4"
+      ],
+      "output_hash": "cd4d0f4a31de885585f37becb85300505b51af59424e6183046b75807d6c0ab5",
+      "all_nine_effect_unverified": true,
+      "replay_writes": 0
+    },
+    {
+      "name": "ordinary_entry_unhealthy_baseline",
+      "passed": true,
+      "rejected": true,
+      "version": 12
+    },
+    {
+      "name": "source_alias_original",
+      "passed": true,
+      "rejected_before_write": true
+    },
+    {
+      "name": "source_alias_target_alias",
+      "passed": true,
+      "rejected_before_write": true
+    },
+    {
+      "name": "source_alias_candidate_alias",
+      "passed": true,
+      "rejected_before_write": true
+    },
+    {
+      "name": "candidate_symlink_tree",
+      "passed": true,
+      "rejected": "capability repair: Registry symlink is forbidden",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "actual_validator_rename_resistant_stable_duplicate",
+      "passed": true,
+      "reasons": [
+        "execution-semantic duplicate of stable signal cash_reserves"
+      ],
+      "staged_duplicate": 0
+    },
+    {
+      "name": "duplicate_description_stopped_by_immutable_scope",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_version",
+      "passed": true,
+      "rejected": "capability repair: original version changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_hash",
+      "passed": true,
+      "rejected": "capability repair: original definition hash changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_refs",
+      "passed": true,
+      "rejected": "capability repair: original complete membership changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "disabled_reason_changed",
+      "passed": true,
+      "rejected": "capability repair: original disabled reasons differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "disabled_ref_omitted",
+      "passed": true,
+      "rejected": "capability repair: original disabled reasons differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_update",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "extra_update",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "skipped_next_version",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "candidate_hash_wrong",
+      "passed": true,
+      "rejected": "capability repair: candidate content hash changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "admission_key_wrong",
+      "passed": true,
+      "rejected": "capability repair: exact admission-v1 required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_admission_key",
+      "passed": true,
+      "rejected": "capability repair: every candidate needs exact admission and validation",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_validation_binding",
+      "passed": true,
+      "rejected": "capability repair: every candidate needs exact admission and validation",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_code_binding",
+      "passed": true,
+      "rejected": "capability repair: complete repair/validator/executor code bindings required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_threshold_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_description_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_function_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_retrieval_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "approved_margin_policy_drift",
+      "passed": true,
+      "rejected": "capability repair: approved definition or fixtures differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_body_only",
+      "passed": true,
+      "rejected": "capability repair: new fixture metadata must declare same CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_metadata_only",
+      "passed": true,
+      "rejected": "capability repair: new fixture body must declare synthetic CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_mismatched",
+      "passed": true,
+      "rejected": "capability repair: new fixture metadata must declare same CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_malformed",
+      "passed": true,
+      "rejected": "capability repair: new fixture body must declare synthetic CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_expected",
+      "passed": true,
+      "rejected": "capability repair: fixture changed beyond issuer declaration",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_period",
+      "passed": true,
+      "rejected": "capability repair: fixture body changed beyond CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_value",
+      "passed": true,
+      "rejected": "capability repair: fixture body changed beyond CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_unit",
+      "passed": true,
+      "rejected": "capability repair: fixture body changed beyond CIK",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_company",
+      "passed": true,
+      "rejected": "capability repair: fixture changed beyond issuer declaration",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fixture_empty",
+      "passed": true,
+      "rejected": "capability repair: nonempty complete fixtures required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_executed_tests",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_validator_hash",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_input_registry_hash",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "validation_accepted",
+      "passed": true,
+      "rejected": "capability repair: complete actual validation binding differs",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "legacy_admission",
+      "passed": true,
+      "rejected": "capability repair: exact admission-v1 required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unbound_validation_bytes",
+      "passed": true,
+      "rejected": "capability repair: bound artifact changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unbound_admission_bytes",
+      "passed": true,
+      "rejected": "candidate validation hash differs from staged content",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "inherited_changed",
+      "passed": true,
+      "rejected": "capability repair: successor is not exact original byte clone",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "inherited_deleted",
+      "passed": true,
+      "rejected": "capability repair: original successor file removed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "inherited_extra",
+      "passed": true,
+      "rejected": "capability repair: successor is not exact original byte clone",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unrelated_prepared",
+      "passed": true,
+      "rejected": "capability repair: unrelated or unknown transition blocks repair",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "unrelated_unknown",
+      "passed": true,
+      "rejected": "capability repair: unrelated or unknown transition blocks repair",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "fault_after_transition_prepared",
+      "passed": true,
+      "fired": [
+        [
+          "after_transition_prepared",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_spec",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_spec",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_tests",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_tests",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_stats",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_stats",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_manifest",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_manifest",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_stable_admission",
+      "passed": true,
+      "fired": [
+        [
+          "after_stable_admission",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_repair_output_audit",
+      "passed": true,
+      "fired": [
+        [
+          "after_repair_output_audit",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_registry_version",
+      "passed": true,
+      "fired": [
+        [
+          "after_registry_version",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_before_output_snapshot",
+      "passed": true,
+      "fired": [
+        [
+          "before_output_snapshot",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_output_snapshot",
+      "passed": true,
+      "fired": [
+        [
+          "after_output_snapshot",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_after_promotion_record",
+      "passed": true,
+      "fired": [
+        [
+          "after_promotion_record",
+          "cash_burn_rate_elevated:v3"
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "fault_before_transition_applied",
+      "passed": true,
+      "fired": [
+        [
+          "before_transition_applied",
+          null
+        ]
+      ],
+      "recovered_version": 13,
+      "idempotent": true
+    },
+    {
+      "name": "invalid_transition_unknown_status",
+      "passed": true,
+      "normal_reads_blocked": 3,
+      "version": 12
+    },
+    {
+      "name": "invalid_transition_missing_status",
+      "passed": true,
+      "normal_reads_blocked": 3,
+      "version": 12
+    },
+    {
+      "name": "invalid_transition_unknown_schema",
+      "passed": true,
+      "normal_reads_blocked": 3,
+      "version": 12
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_missing",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_corrupt",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_boolean_to_integer",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_cash_burn_rate_elevated:v3_integer_to_float",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_missing",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_corrupt",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_boolean_to_integer",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "applied_marker_revenue_growth_yoy:v4_integer_to_float",
+      "passed": true,
+      "rejected": true,
+      "writes": 0
+    },
+    {
+      "name": "prepared_exact_candidate_key_plan_identity",
+      "passed": true,
+      "wrong_key_rejected": true,
+      "candidate_change_rejected": true,
+      "read_blocked": true
+    },
+    {
+      "name": "abrupt_process_exit_fresh_process_exact_recovery",
+      "passed": true,
+      "exit_code": 73,
+      "recovery_exit": 0,
+      "version": 13
+    }
+  ],
+  "original_198_unchanged": true
+}

@@ -1011,6 +1011,8 @@ of exposing a mix of input and partially materialized output versions. Only the
 promotion recovery path, after verifying the same transition identity, may read
 that intermediate state and reconcile the remaining files, Registry version,
 output hash, and applied marker.
+Missing/unknown transition status or schema also fails closed; it cannot make
+partially materialized versions readable by ceasing to spell `prepared`.
 
 Historical v2/v3 validation had three durable dispositions. `promoted` meant both the
 candidate contract and the independent paired effectiveness gate passed.
@@ -1194,3 +1196,10 @@ separate successor Registry; the original Registry is retained byte-for-byte.
 The actual v12/18 repair and interruption/counterexample tests are required before
 claiming this interface works. A published repair is neither new Mining nor
 fresh downstream use nor a completed Slow cycle or MVP.
+
+The exact `capability_repair(plan, plan_hash=...)` plan and original/partial byte
+inventory rules are owned by [the repair helper](signal_capability_repair.md).
+The existing rename-resistant execution-behavior hash is shared with the
+candidate validator so repair publication and candidate dedup use one identity.
+Candidate, stable admission and repair-history checks also share one canonical
+version-content hash; the existing spec/skill/tests payload and hashes do not change.

@@ -1,0 +1,51 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Assess a company's estimated liquidity runway in months, computed as latest point-in-time CashAndCashEquivalentsAtCarryingValue divided by the absolute monthly-average NetCashProvidedByUsedInOperatingActivities over the reported period. A runway at or below 6 months is positive evidence of near-term financing dependence; a runway at or above 12 months or explicit denial/cancellation of a low-runway condition is negative; intermediate or non-qualifying narrative is neutral; insufficient point-in-time inputs are unavailable."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "skill_file": "skills/liquidity_runway_months.md",
+    "type": "llm"
+  },
+  "parameters": {
+    "negative_runway_min_months": 12,
+    "positive_runway_max_months": 6
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Use the latest point-in-time CashAndCashEquivalentsAtCarryingValue and NetCashProvidedByUsedInOperatingActivities for the same reporting entity and period; when multiple facts conflict, prefer the most recent available_at.",
+    "lookback_days": 365,
+    "query_terms": [
+      "CashAndCashEquivalentsAtCarryingValue",
+      "NetCashProvidedByUsedInOperatingActivities",
+      "liquidity runway",
+      "operating cash flow",
+      "cash burn",
+      "months"
+    ],
+    "source_types": [
+      "financials",
+      "company_facts"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "liquidity_runway_months",
+  "version": 1
+}

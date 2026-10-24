@@ -1,0 +1,8 @@
+{
+  "admission_keys": {
+    "4": "0345722bc1b96ffc5157f7f5593466feb12cafa3b7bd6d16121f2d3673fe53cd"
+  },
+  "category": "financial",
+  "signal_id": "gross_margin_change",
+  "stable_version": 4
+}

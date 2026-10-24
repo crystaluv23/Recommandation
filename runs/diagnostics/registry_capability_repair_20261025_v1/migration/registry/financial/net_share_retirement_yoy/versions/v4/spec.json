@@ -1,0 +1,48 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure year-over-year net share retirement, with dilution represented as a negative value."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.net_share_retirement_yoy",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": -0.05,
+    "positive_min": 0.02
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Latest weighted-average shares versus prior-year comparable period; both periods must be plausible weighted-average share counts in the same unit, and an implausible prior-year denominator yields unavailable.",
+    "minimum_distinct_periods": 2,
+    "minimum_period_span_days": 330,
+    "query_terms": [
+      "weighted average shares",
+      "shares outstanding"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "net_share_retirement_yoy",
+  "version": 4
+}

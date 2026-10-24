@@ -1,0 +1,18 @@
+{
+  "comparison_revision": "18561d00",
+  "unchanged_functions": [
+    "_revenue_acceleration_signal",
+    "_gross_margin_change_signal",
+    "_operating_cash_flow_margin_signal",
+    "_cash_burn_rate_elevated_signal",
+    "_liquidity_runway_months_signal",
+    "_cash_reserves_signal",
+    "_net_share_retirement_yoy_signal"
+  ],
+  "requested_names_not_present": [
+    "_revenue_growth_yoy_signal",
+    "_cash_to_current_liabilities_signal",
+    "_classify_numeric_value"
+  ],
+  "scope": "AST preservation only; actual admission/output/recovery is separately tested."
+}

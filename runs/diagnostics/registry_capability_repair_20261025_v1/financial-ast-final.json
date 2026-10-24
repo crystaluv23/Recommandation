@@ -1,0 +1,19 @@
+{
+  "comparison_revision": "18561d00",
+  "all_previous_top_level_functions_unchanged": 80,
+  "registered_financial_functions": {
+    "financial.revenue_growth_yoy": "_revenue_growth_signal",
+    "financial.revenue_acceleration": "_revenue_acceleration_signal",
+    "financial.gross_margin_change": "_gross_margin_change_signal",
+    "financial.revenue_acceleration_adjacent": "_revenue_acceleration_adjacent_signal",
+    "financial.gross_margin_change_yoy": "_gross_margin_change_yoy_signal",
+    "financial.operating_cash_flow_margin": "_operating_cash_flow_margin_signal",
+    "financial.net_share_retirement_yoy": "_net_share_retirement_yoy_signal",
+    "financial.cash_to_current_liabilities_ratio": "_cash_to_current_liabilities_ratio_signal",
+    "financial.cash_burn_rate_elevated": "_cash_burn_rate_elevated_signal",
+    "financial.liquidity_runway_months": "_liquidity_runway_months_signal",
+    "financial.cash_reserves": "_cash_reserves_signal"
+  },
+  "all_registered_financial_asts_equal": true,
+  "scope": "Source preservation; no new measurement or semantic publication claim."
+}

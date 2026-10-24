@@ -1,0 +1,50 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.operating_cash_flow_margin",
+    "type": "deterministic"
+  },
+  "modality": "structured",
+  "parameters": {
+    "negative_max": 0.0,
+    "positive_min": 0.1,
+    "routing_answer_need_phrases": [
+      "operating cash flow margin"
+    ]
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Operating cash flow and revenue for the same period.",
+    "minimum_distinct_periods": 1,
+    "query_terms": [
+      "operating cash flow",
+      "revenue"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "operating_cash_flow_margin",
+  "version": 3
+}

@@ -1,0 +1,150 @@
+{
+  "controls": [
+    {
+      "name": "actual_preparation_independent_candidate_crosscheck",
+      "passed": true,
+      "candidates": 9,
+      "fixtures": 27,
+      "published": 0
+    },
+    {
+      "name": "complete_driver_publish_replay_disposable_only",
+      "passed": true,
+      "output_version": 13,
+      "count": 18,
+      "promoted": [
+        "cash_burn_rate_elevated:v3",
+        "cash_reserves:v3",
+        "cash_to_current_liabilities_ratio:v3",
+        "gross_margin_change:v4",
+        "liquidity_runway_months:v4",
+        "net_share_retirement_yoy:v4",
+        "operating_cash_flow_margin:v3",
+        "revenue_acceleration:v3",
+        "revenue_growth_yoy:v4"
+      ],
+      "output_hash": "cd4d0f4a31de885585f37becb85300505b51af59424e6183046b75807d6c0ab5",
+      "all_nine_effect_unverified": true,
+      "replay_writes": 0
+    },
+    {
+      "name": "ordinary_entry_unhealthy_baseline",
+      "passed": true,
+      "rejected": true,
+      "version": 12
+    },
+    {
+      "name": "wrong_input_version",
+      "passed": true,
+      "rejected": "capability repair: original version changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_hash",
+      "passed": true,
+      "rejected": "capability repair: original definition hash changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "wrong_input_refs",
+      "passed": true,
+      "rejected": "capability repair: original complete membership changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "disabled_reason_changed",
+      "passed": true,
+      "rejected": "capability repair: original disabled reasons differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "disabled_ref_omitted",
+      "passed": true,
+      "rejected": "capability repair: original disabled reasons differ",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_update",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "extra_update",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "skipped_next_version",
+      "passed": true,
+      "rejected": "capability repair: must repair exactly every disabled next version",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "candidate_hash_wrong",
+      "passed": true,
+      "rejected": "capability repair: candidate content hash changed",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "admission_key_wrong",
+      "passed": true,
+      "rejected": "capability repair: exact admission-v1 required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_admission_key",
+      "passed": true,
+      "rejected": "capability repair: every candidate needs exact admission and validation",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_validation_binding",
+      "passed": true,
+      "rejected": "capability repair: every candidate needs exact admission and validation",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "missing_code_binding",
+      "passed": true,
+      "rejected": "capability repair: complete repair/validator/executor code bindings required",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_threshold_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_description_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    },
+    {
+      "name": "seven_function_drift",
+      "passed": true,
+      "rejected": "capability repair: unapproved definition/skill drift",
+      "version": 12,
+      "prepared": false
+    }
+  ],
+  "original_198_unchanged": true
+}

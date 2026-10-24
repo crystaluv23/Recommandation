@@ -1,0 +1,47 @@
+{
+  "category": "financial",
+  "definition": {
+    "description": "Measure the latest point-in-time change in gross margin."
+  },
+  "evidence_policy": {
+    "require_exact_span": true,
+    "require_source": true,
+    "require_timestamp": true
+  },
+  "execution": {
+    "function": "financial.gross_margin_change",
+    "type": "deterministic"
+  },
+  "parameters": {
+    "negative_max": -0.02,
+    "positive_min": 0.08
+  },
+  "raw_retrieval": {
+    "comparison_requirement": "Latest gross margin versus prior comparable period.",
+    "minimum_distinct_periods": 2,
+    "minimum_period_span_days": 330,
+    "query_terms": [
+      "revenue",
+      "gross profit"
+    ],
+    "source_types": [
+      "financials"
+    ]
+  },
+  "schema": {
+    "confidence": {
+      "type": "float"
+    },
+    "value": {
+      "type": "categorical",
+      "values": [
+        "positive",
+        "neutral",
+        "negative",
+        "unavailable"
+      ]
+    }
+  },
+  "signal_id": "gross_margin_change",
+  "version": 2
+}

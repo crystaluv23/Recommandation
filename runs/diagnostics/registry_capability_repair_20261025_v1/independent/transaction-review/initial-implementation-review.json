@@ -1,0 +1,32 @@
+{
+  "schema_version": "independent-capability-repair-initial-code-review-v1",
+  "status": "static_findings_pending_actual_driver_controls",
+  "implementation": "SignalRegistry.capability_repair -> signal_capability_repair.apply_capability_repair",
+  "positive_connections_observed": [
+    "Separate public entry leaves ordinary healthy-input promotion unchanged.",
+    "Exact original byte inventory and complete disabled reasons are reproduced without source constructor side effects.",
+    "Seven definitions are compared exactly except version; fixtures are checked against original values/units/periods/expected states after removing only declared CIK additions.",
+    "Exact bound validation/admission-v1 records and candidate hashes are required; stable and batch behavior/description dedup are explicit.",
+    "Shared application calls complete output verification before version increment for repair mode.",
+    "Applied replay rechecks candidate/admission bindings, allowed registry bytes, complete membership, audit and frozen output identity without rerunning normal materialization."
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "must_test_before_close",
+      "boundary": "Applied replay promotion records",
+      "observation": "promotion.json files reside in candidate_root and are omitted from candidate_hash and registry byte inventory. The applied replay shortcut does not read their contents or existence.",
+      "counterexample": "Complete a disposable repair, delete or corrupt one exact candidate promotion.json, reopen and replay identical plan. Expected fail-closed verification, not an exact-replay success claim.",
+      "suggestion": "Verify all nine exact promotion marker identities against mode/transition/admission key/output version/hash on applied replay without writes."
+    },
+    {
+      "id": "R2",
+      "priority": "must_test_before_close",
+      "boundary": "Unknown repair status and normal reads",
+      "observation": "The normal read gate blocks only status prepared. The repair entry rejects unknown status, but an unknown/missing status can remove read exclusion before a transaction is actually applied.",
+      "counterexample": "Fault after complete output audit before version increment, change transition status to unknown, then call fresh-instance freeze/list/load. All must reject instead of exposing next-version definitions at input registry version.",
+      "suggestion": "For repair-schema/mode transitions, block ordinary reads unless status is a recognized valid terminal applied; retain appropriate legacy compatibility."
+    }
+  ],
+  "scope_limits": "Read-only static inspection only. No driver, staging, admission, transaction, fault or publication has been invoked. Findings require actual entry verification after the parent preparation driver is ready."
+}

@@ -1,0 +1,57 @@
+{
+  "cost": {
+    "total_cost": 0.0,
+    "total_tokens": 0
+  },
+  "processed_observation_ids": [
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000839470:20250731:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000860413:20250930:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0000895421:20250731:1:1:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001018963:20250930:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001051627:20250930:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001174922:20250731:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001309402:20250530:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001801368:20250331:0:2:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001847409:20250131:0:3:liquidity_runway_months:v3",
+    "354f0cd78c50a629764d45e8a8939259dbdd06eebff5abfad687cb42652cb04e:plan_r0001_c02:cik_0001869198:20250331:0:1:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000701818:20250930:0:3:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000723125:20250731:0:1:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0000839470:20250731:0:2:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001018963:20250930:1:1:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001051627:20250930:0:2:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001576942:20250530:0:0:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001646188:20250530:0:2:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001689548:20250930:0:1:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001801368:20250331:0:2:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001847409:20250131:0:1:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001869198:20250331:0:1:liquidity_runway_months:v3",
+    "583d458d3bd63113133e73d646c92869c993a1060971b2e674452635fbea4ae4:plan_r0001_c01:cik_0001920294:20250530:1:1:liquidity_runway_months:v3"
+  ],
+  "state_statistics": {
+    "negative": {
+      "surge": 7,
+      "surge_rate": 0.4666666666666667,
+      "total": 15
+    },
+    "neutral": {
+      "surge": 2,
+      "surge_rate": 0.6666666666666666,
+      "total": 3
+    },
+    "positive": {
+      "surge": 4,
+      "surge_rate": 1.0,
+      "total": 4
+    },
+    "unavailable": {
+      "surge": 0,
+      "surge_rate": null,
+      "total": 0
+    }
+  },
+  "usage": {
+    "executed": 22,
+    "retrieved": 22,
+    "unavailable": 0
+  }
+}

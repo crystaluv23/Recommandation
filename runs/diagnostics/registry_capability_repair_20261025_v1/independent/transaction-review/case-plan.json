@@ -1,0 +1,126 @@
+{
+  "schema_version": "independent-capability-repair-case-plan-v1",
+  "groups": [
+    {
+      "id": "B01",
+      "counterexample_group": "Ordinary promotion still rejects original unhealthy v12 and does not create a prepared record.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B02",
+      "counterexample_group": "Separate repair refuses source root itself, a path alias to it, and a successor containing changed historical bytes.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B03",
+      "counterexample_group": "Wrong input version, definition hash, ordered 18 refs, missing/extra original path or changed original bytes rejects preparation.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B04",
+      "counterexample_group": "Disabled map omits a ref, adds healthy ref, changes reason, or hides a different capability failure: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B05",
+      "counterexample_group": "Eight repairs, ten repairs, same version, skipped version, duplicate Signal id, new/deleted Signal or healthy-ref update: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B06",
+      "counterexample_group": "Seven-definition drift in description, function, retrieval, parameters, threshold, schema, policy, units or evidence permissions: reject even if generic validation passes.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B07",
+      "counterexample_group": "Seven-fixture drift in values, tags, periods, units, expected output, source family or company id: reject; only declared synthetic issuer fields may change.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B08",
+      "counterexample_group": "Body-only, metadata-only, mismatched, malformed or inferred historical CIK: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B09",
+      "counterexample_group": "GMv4/accelv3 differs from frozen approved policy payload, changes function id or period policy: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B10",
+      "counterexample_group": "Empty fixtures, unavailable substituted for expected positive, incomplete fixture count, forged accepted contract, legacy v2/v3 admission or missing exact key: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B11",
+      "counterexample_group": "Wrong candidate hash, input hash, validator hash, admission key/path or mutated admission record: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B12",
+      "counterexample_group": "Full validator concept mismatch, wrong function, evidence weakening or forbidden identity/leakage term: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B13",
+      "counterexample_group": "Stable semantic duplicate and within-batch description or execution-behavior duplicate: reject.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B14",
+      "counterexample_group": "Actual original OCF share-of-revenue description passes a generic equivalent-concept repair while wrong numerator/denominator prose still fails; unchanged seven spec bytes except version.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B15",
+      "counterexample_group": "Fault immediately after prepared: fresh instance load_spec/list/freeze refuse reads; exact repair recovery succeeds.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B16",
+      "counterexample_group": "Fault after each candidate spec/tests/skill/stats/manifest/admission copy: normal reads refuse; exact recovery writes only same versions.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B17",
+      "counterexample_group": "Final all-18 capability failure or changed untouched healthy fixture leaves version 12, no promotion/applied marker and unreadable prepared state.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B18",
+      "counterexample_group": "Fault after successful full audit but before version: recovery reaudits the same exact content and advances to 13 once.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B19",
+      "counterexample_group": "Fault after version 13, output hash, each promotion marker or before applied: exact replay returns one stable hash/version13 without double increment.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B20",
+      "counterexample_group": "Prepared recovery with missing update, changed candidate/hash/key, changed repair plan or extra Signal rejects and stays unreadable.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B21",
+      "counterexample_group": "A new unrelated prepared transaction or unexpected status blocks rather than using the global recovery bypass to hide it.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B22",
+      "counterexample_group": "Applied exact replay is idempotent; a changed candidate/key/plan/input cannot reuse its transition id.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B23",
+      "counterexample_group": "Original 198 source files and historical failure artifacts are identical after success and every interrupted/rejected path.",
+      "status": "pending_actual_implementation"
+    },
+    {
+      "id": "B24",
+      "counterexample_group": "All nine published version-bound statuses remain admitted/effect-unverified; new Mining count stays zero and completed run pointers unchanged.",
+      "status": "pending_actual_implementation"
+    }
+  ],
+  "authority": "Exact original baseline.json plus approved owning leafspec; no new research semantics."
+}

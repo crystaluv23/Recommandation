@@ -1,0 +1,9 @@
+{
+  "accepted": true,
+  "candidate_hash": "5c6aa58b794241730eed63b20523946ee24afdb8073671fcb2fac0149e80babe",
+  "executed_tests": 1,
+  "input_registry_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+  "reasons": [],
+  "signal_ref": "operating_cash_flow_margin:v3",
+  "validator_hash": "4998dd1afbd8c5eedc173d6a81c4780993be9fccf4c906be6cb41f289c7ecb11"
+}
