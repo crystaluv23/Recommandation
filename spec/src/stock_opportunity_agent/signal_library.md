@@ -1147,3 +1147,50 @@ result and call has actual usage accounting. Unavailable after explicit limited
 visibility remains distinct from a negative measurement. Whole-document fingerprints
 remain the within-case no-op identity; cross-Plan observational conflicts do not prove
 identical model-facing views or technical failures.
+
+## Explicit capability repair of an unhealthy historical Registry
+
+User approval on 2026-10-25 permits the restricted repair envelope in
+`reports/mvp-next-boundaries-20261024.md`. Ordinary `promote_validated_batch`
+still requires a healthy complete input `freeze()`; it gains no unhealthy-input
+flag. A separate `capability_repair` transaction may prepare only an exact,
+byte-bound historical baseline with a predeclared complete disabled-ref/reason
+map. This is an engineering recovery interface, not a new admission policy or
+permission to guess historical source identity.
+
+The caller freezes the input Registry version, ordered complete refs/definition
+hash, every original relative file path/hash, exact disabled reasons, candidate
+hashes and exact admission-v1 evaluation keys. The repair must provide exactly
+one next version for every disabled ref, with no added/deleted Signal or update
+of healthy refs. Ordinary candidate validation, nonempty complete fixture
+execution, stable and within-batch semantic deduplication precede preparation.
+Legacy v2/v3 effectiveness validation cannot substitute for admission-v1 here.
+All output effects stay unverified with honest research provenance.
+
+An immutable repair plan binds permitted definition changes explicitly. In the
+approved v12/18 migration these are only gross_margin_change:v4 and
+revenue_acceleration:v3 with their previously approved period policies. Other
+seven updates retain spec fields except version, measurements, parameters,
+thresholds, units, periods, fixture expected results and skill bytes; only new
+fixture issuer declarations are authored. Synthetic CIK appears consistently in
+new fixture body and metadata. Old fixture bytes remain unchanged and are not
+retroactively certified. The input failure must match the frozen failure map;
+unrelated failures or a smaller replacement catalog cannot pass preparation.
+
+Persist `mode=capability_repair` and its complete repair identity in the existing
+prepared transition before any stable mutation. Ordinary Registry reads remain
+blocked until applied. Recovery must reverify that identity, immutable historical
+files and allowable manifest/version changes, exact candidate bytes, admission
+keys and original complete Signal membership. A changed validation, missing
+update, unrelated mutation or changed original file fails closed. It may
+reconcile only the same new versions, never append an additional version.
+
+The full original membership must pass the actual capability audit before the
+Registry version advances, promotion markers or the applied marker are written.
+A crash after that audit can finish only the same transaction and advance the
+version at most once. A failed audit leaves prepared state unavailable to normal
+readers and retains its failure for exact recovery. Publication occurs only in a
+separate successor Registry; the original Registry is retained byte-for-byte.
+The actual v12/18 repair and interruption/counterexample tests are required before
+claiming this interface works. A published repair is neither new Mining nor
+fresh downstream use nor a completed Slow cycle or MVP.

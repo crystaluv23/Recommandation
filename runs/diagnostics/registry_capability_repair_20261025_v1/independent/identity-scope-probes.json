@@ -1,0 +1,384 @@
+{
+  "schema_version": "independent-in-memory-identity-scope-probes-v1",
+  "results": {
+    "cash_burn_rate_elevated:v2": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 4
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "high_burn_positive",
+          "passed": true
+        },
+        {
+          "name": "low_burn_neutral",
+          "passed": true
+        },
+        {
+          "name": "cash_generation_negative",
+          "passed": true
+        },
+        {
+          "name": "missing_ocf_unavailable",
+          "passed": true
+        }
+      ],
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+        ],
+        "executed_tests": 0
+      }
+    },
+    "cash_reserves:v2": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 1
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "cash buffer",
+          "passed": true
+        }
+      ],
+      "unauthorized_threshold_drift": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 1,
+        "note": "Probe whether generic validator permits fixture-compatible drift; repair-specific equality must reject any such drift."
+      },
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+        ],
+        "executed_tests": 0
+      }
+    },
+    "cash_to_current_liabilities_ratio:v2": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 3
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "matched_ratio_negative",
+          "passed": true
+        },
+        {
+          "name": "matched_ratio_positive",
+          "passed": true
+        },
+        {
+          "name": "missing_liabilities_unavailable",
+          "passed": true
+        }
+      ],
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+        ],
+        "executed_tests": 0
+      }
+    },
+    "liquidity_runway_months:v3": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 5 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+          "fixture 5 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid",
+          "fixture 5 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 5
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "low_runway_positive",
+          "passed": true
+        },
+        {
+          "name": "intermediate_runway_neutral",
+          "passed": true
+        },
+        {
+          "name": "long_runway_negative",
+          "passed": true
+        },
+        {
+          "name": "cash_generation_negative",
+          "passed": true
+        },
+        {
+          "name": "missing_ocf_unavailable",
+          "passed": true
+        }
+      ],
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 2 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 3 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 4 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch",
+          "fixture 5 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+        ],
+        "executed_tests": 0
+      }
+    },
+    "net_share_retirement_yoy:v3": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 1
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "net share retirement",
+          "passed": true
+        }
+      ],
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+        ],
+        "executed_tests": 0
+      }
+    },
+    "operating_cash_flow_margin:v2": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+        ],
+        "executed_tests": 0
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "cash-generative revenue",
+          "passed": true
+        }
+      ],
+      "disallowed_description_control": {
+        "accepted": true,
+        "executed_tests": 1,
+        "reasons": [],
+        "note": "Diagnostic only: changes approved immutable spec wording and must not be used for repair under current scope."
+      },
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+        ],
+        "executed_tests": 0
+      }
+    },
+    "revenue_growth_yoy:v3": {
+      "neither": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "body_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding"
+        ],
+        "executed_tests": 0
+      },
+      "metadata_only": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts CIK shape is invalid"
+        ],
+        "executed_tests": 0
+      },
+      "matched": {
+        "accepted": true,
+        "reasons": [],
+        "executed_tests": 1
+      },
+      "matched_stable_fixture_audit": [
+        {
+          "name": "positive growth",
+          "passed": true
+        }
+      ],
+      "mismatched": {
+        "accepted": false,
+        "reasons": [
+          "fixture 1 failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts body issuer mismatch"
+        ],
+        "executed_tests": 0
+      }
+    }
+  },
+  "original_unchanged": true,
+  "external_calls": 0,
+  "staged_candidates": 0,
+  "admissions": 0,
+  "promotions": 0,
+  "claim": "In-memory diagnostic probes only; no repair implementation or publication."
+}

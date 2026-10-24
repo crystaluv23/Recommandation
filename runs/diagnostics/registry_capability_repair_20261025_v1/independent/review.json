@@ -1,0 +1,121 @@
+{
+  "schema_version": "independent-capability-repair-boundary-review-v1",
+  "scope": "Read-only proposal B review before implementation. No product/spec edits, staging, admission, promotion, external acquisition, models, labels or business pointer changes.",
+  "status": "reviewed_plan_with_one_preimplementation_validator_issue",
+  "baseline_evidence": "baseline.json",
+  "probe_evidence": "identity-scope-probes.json",
+  "harness_correction_evidence": "probe-attempts.json",
+  "baseline": {
+    "version": 12,
+    "signal_count": 18,
+    "original_files": 198,
+    "definition_hash": "40a451c051b0bfbdf424121a5362405f2fae6672c2be7b0f51e8072e8bd4ae8d",
+    "original_path_hash_manifest_hash": "a6cb0d8fc72b0bb1c7124ea6f67e54c8d9d44cd883ebf2f55c00f113e7a505c8",
+    "exact_disabled_refs": [
+      "cash_burn_rate_elevated:v2", "cash_reserves:v2", "cash_to_current_liabilities_ratio:v2",
+      "gross_margin_change:v3", "liquidity_runway_months:v3", "net_share_retirement_yoy:v3",
+      "operating_cash_flow_margin:v2", "revenue_acceleration:v2", "revenue_growth_yoy:v3"
+    ],
+    "common_exact_reason": "schema_fixture_failed: technical execution failure: validation_failed: deterministic_result_validation_failed: ValidationError: SEC Company Facts opaque company has no explicit issuer binding",
+    "disabled_fixture_count": 18,
+    "all_disabled_fixture_documents_lack_body_and_metadata_cik": true,
+    "original_unchanged": true
+  },
+  "actual_probe_findings": [
+    {
+      "id": "P1",
+      "finding": "Compact canonical synthetic body+metadata CIK alone permits full actual validator acceptance for six of the seven fixture-only next versions. Those six execute all 15 original fixtures with unchanged expected outputs.",
+      "accepted_prior_refs": ["cash_burn_rate_elevated:v2", "cash_reserves:v2", "cash_to_current_liabilities_ratio:v2", "liquidity_runway_months:v3", "net_share_retirement_yoy:v3", "revenue_growth_yoy:v3"]
+    },
+    {
+      "id": "P2",
+      "finding": "operating_cash_flow_margin:v2's unchanged description states operating cash flow as a share of revenue. The full validator requires the literal token margin, rejects this equivalent description before executing fixtures, and produces executed_tests=0. The matched-identity actual stable fixture audit passes. All required duration fields are already explicit: both operands start 2024-01-01 and end 2024-12-31.",
+      "code": "src/stock_opportunity_agent/research/signal_evolution.py:128 and :1565",
+      "next_action": "A separately scoped generic semantic synonym fix can retain the approved unchanged definition and support explicit operating-cash-flow share/ratio of revenue. Keep wrong numerator, wrong denominator and generic share prose rejected. Do not change the other-seven spec text or reported periods to pass.",
+      "control": "Adding margin to the description in memory permits 1/1 fixture execution, but that description change is outside the current seven-definition repair envelope and must not become the migration payload."
+    },
+    {
+      "id": "P3",
+      "finding": "The actual generic validator accepts cash_reserves with positive_min changed from 100000000 to 99000000 against the same passing fixture. Full validation cannot enforce the restricted identity-only contract; repair-specific exact spec equality except version is necessary."
+    },
+    {
+      "id": "P4",
+      "finding": "Initial diagnostic used default JSON separators, which removed compact exact literal spans and made present facts appear unavailable. These failures were harness-induced; compact canonical serialization corrected them. Original cashburn periods were already explicit. No period additions were made."
+    }
+  ],
+  "ordinary_transaction_reuse_pitfalls": [
+    {
+      "id": "T1", "code": "signal_library.py:2899",
+      "finding": "Ordinary preparation invokes healthy freeze and correctly rejects original v12. Do not add an unhealthy-input bypass flag to the ordinary interface."
+    },
+    {
+      "id": "T2", "code": "signal_library.py:2981-2990",
+      "finding": "Ordinary application increments registry.json before full output freeze/audit. Restricted repair must instead materialize under prepared read exclusion, audit all exact 18 refs first, then increment at most once and record promotion/applied markers. A failed audit must leave the version at 12 and prepared unreadable."
+    },
+    {
+      "id": "T3", "code": "signal_library.py:3139-3205",
+      "finding": "The definition snapshot hash covers version/spec/skill only. It cannot establish immutable fixture/history/stats/admission files or exact 198-file preservation. Bind and verify the complete original path/hash map in addition to the definition hash. Source originals remain byte-for-byte immutable; successor's designated nine manifests and registry.json must change only as declared. All successor historical version files and other original files remain byte-identical."
+    },
+    {
+      "id": "T4", "code": "signal_library.py:3041-3110; signal_evolution.py:1472-1563 and :5144-5161",
+      "finding": "Promotion's validation helper reruns stable deterministic fixture audit and next-version/category checks, but does not run the full candidate validator's concept, leakage, execution type/function, evidence or stable semantic checks; within-batch semantic and behavior dedup exists in Slow orchestration. A repair entry must use the complete actual validator plus stable and within-batch dedup before preparation."
+    },
+    {
+      "id": "T5", "code": "signal_library.py:3078-3091",
+      "finding": "Ordinary promotion accepts legacy validation-v2/evaluation-v3 as well as admission-v1 and allows omitted exact evaluation keys. Repair must require a complete exact key map and admission-v1 only, bound to candidate hash, frozen input hash, frozen validator hash, complete fixture count and honest provenance. A latest pointer is not authority."
+    },
+    {
+      "id": "T6", "code": "signal_library.py:2880-2897 and :3028-3035",
+      "finding": "An existing transition is matched field-by-field for supplied intent; recovery's broad _transition_recovery_active flag bypasses ordinary read exclusion globally on that instance. Explicitly bind mode/repair plan/complete file inventory/disabled map; reject unexpected transition status, unrelated prepared transitions and competing executor activity. Private snapshot_from_refs is not a normal consumer read escape."
+    },
+    {
+      "id": "T7", "code": "signal_library.py:2959-2978 and :3207-3246",
+      "finding": "Partial materialization can advance a manifest before stable admission copy. Recovery must handle exactly these expected partial states with write-or-verify semantics and recheck candidate/admission bytes; it must not use current manifest as the baseline for next-version full validation, which would incorrectly require v+2 after a partial v+1 write. Validate against the immutable input snapshot or reuse only an exact frozen prior complete admission."
+    },
+    {
+      "id": "T8", "code": "signal_library.py:2810-2838 and :2522-2587",
+      "finding": "Admission APIs validate record identities and fixture counts but do not themselves prove the full validator was invoked, bind expected validator source automatically, or enforce known research target membership. Repair must connect the real validation result, expected validator identity and explicit target/provenance scope. No hand-authored accepted record is sufficient."
+    },
+    {
+      "id": "T9", "code": "signal_library.py:1891-1938",
+      "finding": "The final actual capability audit executes deterministic fixtures and checks LLM skill presence for untouched healthy refs; it is the approved health criterion, not evidence of fresh LLM execution or research gain. Do not overstate all-18 audit as fresh semantic consumption."
+    }
+  ],
+  "new_leafspec_review": {
+    "path": "spec/src/stock_opportunity_agent/signal_library.md",
+    "section": "Explicit capability repair of an unhealthy historical Registry",
+    "assessment": "Matches approved separate successor, exact nine, exact next versions, immutable baseline, unchanged seven definitions, complete validator/dedup/admission, audit-before-version, prepared read exclusion, exact recovery and effect-unverified boundaries. Product implementation and interruption evidence still absent.",
+    "clarifications_for_implementation": [
+      "Freeze source original inventory separately from the successor allowed mutation inventory; do not demand that designated successor manifests/registry.json remain unchanged.",
+      "At recovery bind exact mode/plan and reject unfamiliar prepared/applied statuses; verify candidate content and exact admission key even if latest validation pointer changed.",
+      "Use an immutable baseline validation view for full next-version checks after partial successor materialization."
+    ]
+  },
+  "required_counterexamples_for_implementation": [
+    "Ordinary promotion still rejects original unhealthy v12 and does not create a prepared record.",
+    "Separate repair refuses source root itself, a path alias to it, and a successor containing changed historical bytes.",
+    "Wrong input version, definition hash, ordered 18 refs, missing/extra original path or changed original bytes rejects preparation.",
+    "Disabled map omits a ref, adds healthy ref, changes reason, or hides a different capability failure: reject.",
+    "Eight repairs, ten repairs, same version, skipped version, duplicate Signal id, new/deleted Signal or healthy-ref update: reject.",
+    "Seven-definition drift in description, function, retrieval, parameters, threshold, schema, policy, units or evidence permissions: reject even if generic validation passes.",
+    "Seven-fixture drift in values, tags, periods, units, expected output, source family or company id: reject; only declared synthetic issuer fields may change.",
+    "Body-only, metadata-only, mismatched, malformed or inferred historical CIK: reject.",
+    "GMv4/accelv3 differs from frozen approved policy payload, changes function id or period policy: reject.",
+    "Empty fixtures, unavailable substituted for expected positive, incomplete fixture count, forged accepted contract, legacy v2/v3 admission or missing exact key: reject.",
+    "Wrong candidate hash, input hash, validator hash, admission key/path or mutated admission record: reject.",
+    "Full validator concept mismatch, wrong function, evidence weakening or forbidden identity/leakage term: reject.",
+    "Stable semantic duplicate and within-batch description or execution-behavior duplicate: reject.",
+    "Actual original OCF share-of-revenue description passes a generic equivalent-concept repair while wrong numerator/denominator prose still fails; unchanged seven spec bytes except version.",
+    "Fault immediately after prepared: fresh instance load_spec/list/freeze refuse reads; exact repair recovery succeeds.",
+    "Fault after each candidate spec/tests/skill/stats/manifest/admission copy: normal reads refuse; exact recovery writes only same versions.",
+    "Final all-18 capability failure or changed untouched healthy fixture leaves version 12, no promotion/applied marker and unreadable prepared state.",
+    "Fault after successful full audit but before version: recovery reaudits the same exact content and advances to 13 once.",
+    "Fault after version 13, output hash, each promotion marker or before applied: exact replay returns one stable hash/version13 without double increment.",
+    "Prepared recovery with missing update, changed candidate/hash/key, changed repair plan or extra Signal rejects and stays unreadable.",
+    "A new unrelated prepared transaction or unexpected status blocks rather than using the global recovery bypass to hide it.",
+    "Applied exact replay is idempotent; a changed candidate/key/plan/input cannot reuse its transition id.",
+    "Original 198 source files and historical failure artifacts are identical after success and every interrupted/rejected path.",
+    "All nine published version-bound statuses remain admitted/effect-unverified; new Mining count stays zero and completed run pointers unchanged."
+  ],
+  "conclusion": "Baseline and restricted plan review complete; implementation not yet reviewed or accepted. Resolve the generic OCF description synonym false rejection without changing the approved definition, then implement the separate repair with the listed counterexamples. No capability repair, S4, fresh consumption, Slow completion, gain or MVP closure is claimed."
+}

@@ -1,0 +1,27 @@
+{
+  "external_API": 0,
+  "labels": 0,
+  "prediction_sink": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/prediction-sink.json",
+    "sha256": "66b7ddcbb869c50be7e60c19b855b1afeb9fcfdfc29b5cf5908d321df3062f38"
+  },
+  "receipts": 2,
+  "semantic_acceptance": "requires independent actual-answer review; old0of1 unchanged",
+  "state": "completed",
+  "usage": {
+    "historical_cumulative_reserved": 364582,
+    "requests": [
+      {
+        "request_hash": "1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662",
+        "reservation": 59446,
+        "stage": "research_controller_reflect"
+      },
+      {
+        "request_hash": "e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614",
+        "reservation": 69285,
+        "stage": "blind_predictor_predict"
+      }
+    ],
+    "total": 128731
+  }
+}

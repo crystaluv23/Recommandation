@@ -1,0 +1,10 @@
+{
+  "schema_version": "independent-bounded-qualifier-expectation-v1",
+  "description": "Measure operating cash flow to revenue ratio, preserving matching currency and period.",
+  "earlier_expected_accepted": true,
+  "bounded_matcher_accepted": false,
+  "final_expected_accepted": false,
+  "reason": "The revised disclosed lexical grammar only permits qualifier introductions for/using/from/based on/over/during. Preserving is outside that bounded grammar. This is a deliberate conservative rejection and does not justify expanding to arbitrary natural-language semantic parsing.",
+  "remaining_original_case_expectations_changed": false,
+  "product_change_requested_for_this_case": false
+}

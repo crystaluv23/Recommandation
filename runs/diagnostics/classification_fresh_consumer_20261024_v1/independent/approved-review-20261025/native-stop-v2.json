@@ -1,0 +1,10 @@
+{
+  "native_core_propagates_approved_allowance_stop": true,
+  "predictor_called_after_stop": false,
+  "production_inboxes": 0,
+  "supervisor_persists_terminal_failure": true,
+  "terminal_reentry_refused": true,
+  "evaluated_role_answers": 0,
+  "external_API": 0,
+  "labels": 0
+}

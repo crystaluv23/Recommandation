@@ -1,0 +1,22 @@
+{
+  "schema_version": "independent-review-artifact-bindings-v1",
+  "reviewed_sources": {
+    "src/stock_opportunity_agent/signal_library.py": "d7490eb612baeb01e65a7db5a734dd14b19abd5fb492096ba82c51401e89ade6",
+    "src/stock_opportunity_agent/research/signal_evolution.py": "2d01548090c0338b1655bb8a757534ec06577890fdcefd31e2106fa7b6103e35",
+    "spec/src/stock_opportunity_agent/signal_library.md": "6b750df2aa34553d4d01aa50fd96c8a40847e1df6e30858f27021b88d6e4b144"
+  },
+  "review_artifacts": {
+    "baseline.json": "ca0c733c9f5d0cd93e21668385d89b1686f0ad42e4f1ed6597990825ecf95d2b",
+    "capture_baseline.py": "3fd46b968a3f23eede3be867c3fd2db306e8b3e1bb2210fecb12d883dab6b709",
+    "identity-scope-probes.json": "4e78a1d2ca71f7f00602fc56954800815dbb04b05a4c6ab0961c1a15986ee1b8",
+    "probe-attempts.json": "6f8bbf7cb2b4b79173963dc7a483dda44f7fb60b01551d610e119a96d346f37f",
+    "probe_identity_scope.py": "be5f0a3fe82b9a09d8c49bcba13d0e4dc548fd5d2a9966f4c01a82efc89128b7",
+    "review.json": "94446e924ec86948375c57c731375e843616abaf713d7f6a96aac1d8b002fab4"
+  },
+  "original_198_unchanged": true,
+  "all_seven_matched_stable_audits_pass": true,
+  "matched_stable_fixture_count": 16,
+  "actual_full_candidate_validator_accepts": 6,
+  "actual_full_candidate_validator_rejects": 1,
+  "remaining_rejection": "Equivalent OCF description missing literal margin; explicit periods unchanged."
+}

@@ -1,0 +1,16 @@
+{
+  "historical_cumulative_reserved": 364582,
+  "requests": [
+    {
+      "request_hash": "1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662",
+      "reservation": 59446,
+      "stage": "research_controller_reflect"
+    },
+    {
+      "request_hash": "e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614",
+      "reservation": 69285,
+      "stage": "blind_predictor_predict"
+    }
+  ],
+  "total": 128731
+}

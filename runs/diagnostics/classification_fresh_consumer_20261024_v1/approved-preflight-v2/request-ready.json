@@ -1,0 +1,7 @@
+{
+  "event_type": "request_ready",
+  "model_alias": "independent-subagent",
+  "request_hash": "1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662",
+  "request_path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/approved-preflight-v2/requests/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+  "stage": "research_controller_reflect"
+}

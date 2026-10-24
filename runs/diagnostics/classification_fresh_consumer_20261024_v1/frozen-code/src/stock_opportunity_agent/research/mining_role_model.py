@@ -1,0 +1,358 @@
+"""Live role adapter between the mining controller and a JSON role caller.
+
+Bridges the fixed controller action protocol onto any ``JSONRoleCaller``
+(the same structured transport the production Slow roles use), so a shadow
+cycle can drive the LabelAwareMiningController with the real DeepSeek client
+while every call stays inside the ordinary attempt/cost ledger. The adapter
+translates views to payloads and model output to action objects; contract
+enforcement stays entirely in the controller.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import re
+from copy import deepcopy
+from typing import Any, Mapping
+
+from stock_opportunity_agent.models import ValidationError
+from stock_opportunity_agent.research.evolution_core import AgentUsage
+from stock_opportunity_agent.research.evolution_transport import IdentityOutputRejected, StructuredOutputInvalid
+from stock_opportunity_agent.research.evolution_output_validation import (
+    _SOURCE_FACT_RELATION_INSTRUCTION,
+)
+from stock_opportunity_agent.research.evolution_state_patch import PATCH_INSTRUCTION
+from stock_opportunity_agent.research.stage_contracts import NEED_ROW_RATIONALE_CONTRACT
+from stock_opportunity_agent.research.scheme_evolution import EvolutionControlFlow
+
+MINING_CONTROLLER_STAGE = "mining_controller_step"
+
+_REFERENCE_FIELDS = frozenset({
+    "fact_ref", "fact_refs", "known_fact_refs", "relation_ref", "relation_refs",
+    "known_relation_refs", "evidence_refs", "ref", "refs", "relation",
+})
+_LITERAL_FIELDS = frozenset({
+    "content", "original", "spec", "skill", "definition", "measurement",
+    "falsifiers", "usage_context", "rationale", "value", "exact_span", "masked",
+    "raw_span", "readable_text", "meta_info", "meta_memory_disclosures",
+    "slow_method_memory", "signal_catalog", "prior_modality_footprints",
+    "measurable_evidence_manifest", "backlog_needs",
+})
+_HANDLE_INSTRUCTION = (
+    " reference_handles declares lossless request-local fact/relation handles. "
+    "Use the displayed handles in structural reference fields only; they have "
+    "the same runtime authority as their original refs. Never treat spelling "
+    "as a feature. Source text, fact values and prose remain literal. Copy "
+    "issued patch base_hash/paths unchanged; do not recompute their hashes."
+)
+
+
+class _MiningReferenceHandles:
+    """Shorten large reference indexes without changing canonical graph records."""
+
+    def __init__(self, view: Mapping[str, Any]) -> None:
+        self.forward: dict[str, str] = {}
+        self.reverse: dict[str, str] = {}
+        self.kinds: dict[str, str] = {}
+        self.prefix = ""
+        self.scope_hash = ""
+        indexes = {key: view.get(key, []) for key in ("known_fact_refs", "known_relation_refs")}
+        if len(json.dumps(indexes, ensure_ascii=False, separators=(",", ":")).encode()) <= 8192:
+            return
+        # The complete typed map is also a cache discriminator. Ordinals alone
+        # would give two different canonical graphs an identical model wire.
+        refs = [(kind, ref) for kind, key in (("f", "known_fact_refs"), ("r", "known_relation_refs"))
+                for ref in sorted(set(indexes[key])) if isinstance(ref, str)]
+        self.scope_hash = hashlib.sha256(json.dumps(refs, ensure_ascii=False,
+            separators=(",", ":")).encode()).hexdigest()
+        strings: list[str] = []
+
+        def collect(value):
+            if isinstance(value, str):
+                strings.append(value)
+            elif isinstance(value, Mapping):
+                for key, item in value.items():
+                    collect(key)
+                    collect(item)
+            elif isinstance(value, (list, tuple)):
+                for item in value:
+                    collect(item)
+
+        collect(view)
+        self.prefix = "~" + self.scope_hash[:8] + ":"
+        while any(self.prefix in value for value in strings):
+            self.prefix = "~" + self.prefix
+        counts = {"f": 0, "r": 0}
+        for kind, ref in refs:
+            # A canonical identifier cannot belong to both evidence kinds.
+            if ref in self.forward:
+                raise ValidationError("Mining reference indexes overlap")
+            alias = f"{self.prefix}{kind}{counts[kind]:x}"
+            self.forward[ref] = alias
+            self.reverse[alias] = ref
+            self.kinds[ref] = kind
+            counts[kind] += 1
+
+    @staticmethod
+    def _field(path: str) -> str:
+        fields = re.findall(r"[A-Za-z_][A-Za-z0-9_]*", path)
+        return fields[-1] if fields else ""
+
+    def transform(self, value: Any, *, restore: bool = False, field: str = "") -> Any:
+        """Transform only typed reference slots, preserving literal values/prose."""
+        if not self.forward:
+            return value
+        if field in _LITERAL_FIELDS:
+            return deepcopy(value)
+        reference = field in _REFERENCE_FIELDS
+        table = self.reverse if restore else self.forward
+
+        def scalar(item):
+            if not isinstance(item, str):
+                return item
+            if item not in table:
+                if restore and item.startswith(self.prefix):
+                    raise ValidationError("Unknown request-local Mining reference handle")
+                return item
+            canonical = table[item] if restore else item
+            kind = self.kinds[canonical]
+            expected = "f" if "fact_ref" in field else "r" if "relation_ref" in field or field == "relation" else None
+            if expected and kind != expected:
+                if restore:
+                    raise ValidationError("Mining reference handle has the wrong evidence kind")
+                return item
+            return table[item]
+
+        if isinstance(value, str):
+            return scalar(value) if reference else value
+        if isinstance(value, (list, tuple)):
+            items = [self.transform(item, restore=restore, field=field) for item in value]
+            return tuple(items) if isinstance(value, tuple) else items
+        if not isinstance(value, Mapping):
+            return value
+        result = {}
+        for key, item in value.items():
+            target = key
+            if key == "value" and field == "identity_guards":
+                target = str(value.get("field", ""))
+            elif key in {"value", "exact_value"} and field in {"operations", "allowed_operations"}:
+                target = str(value.get("field") or self._field(str(value.get("path", ""))))
+            elif key == "item_id" and field == "obligations":
+                target = str(value.get("item_id_field", ""))
+            if (key == "allowed_append_values" and field == "obligations"
+                    or key == "exact_append_limits" and field == "output_patch_contract") and isinstance(item, Mapping):
+                converted = {path: self.transform(values, restore=restore, field=self._field(path))
+                             for path, values in item.items()}
+            elif key == "result" and (value.get("action") in {"inspect_catalog", "inspect_manifest"}
+                    or value.get("scope") in {"signals", "memory", "backlog", "evidence"}):
+                converted = deepcopy(item)
+            else:
+                converted = self.transform(item, restore=restore, field=target)
+            # Reference-keyed dictionaries occur in exact append permissions;
+            # semantic/source object keys outside a reference slot stay literal.
+            new_key = scalar(key) if reference else key
+            if new_key in result:
+                raise ValidationError("Mining reference restoration creates a duplicate key")
+            result[new_key] = converted
+        return result
+
+    def payload(self, view: Mapping[str, Any]) -> dict[str, Any]:
+        """Return the one encoded object shared by estimation and actual caller."""
+        payload = self.transform(dict(view))
+        if self.forward:
+            if "reference_handles" in payload:
+                raise ValidationError("Mining reference_handles is adapter-owned")
+            payload["reference_handles"] = {"scope_hash": self.scope_hash,
+                "namespace": self.prefix, "lifetime": "this_request_only"}
+        return payload
+
+
+class MiningRequestBudgetExhausted(EvolutionControlFlow):
+    """Stop an explicitly scoped request budget without a research verdict."""
+
+_REQUEST_BUDGET_INSTRUCTION = (
+    " request_budget counts complete LLM requests, including tool continuations "
+    "and terminal decisions. Its decimal strings are exact integers. If "
+    "remaining_after < next_minimum, no further decision fits; preserve gaps "
+    "and choose a supported terminal when needed."
+)
+
+_MINING_CONTROLLER_PROMPT = (
+    """[Role and admission]
+You choose one action per step as the bounded, label-aware Signal-mining decision core over a point-in-time Evidence Graph. Runtime owns tools, ledger, budgets, labels and termination. A candidate is a reusable measurement; it need not independently predict a surge or magnitude class. Admission requires technical correctness, PIT evidence, uniqueness and executable fixtures; effect remains unverified and is tracked after admission. Do not withhold a concrete measurable candidate solely because strict paired benefit is unproved; never fabricate support. Every assembled action requires rationale as a non-empty array of short strings.
+
+[Action interfaces]
+inspect_manifest {}; inspect_catalog {scope?:signals|evidence|memory|backlog,cursor?:integer,level?:case|plan|round|cross_round,signal_ref?:exact-version ref,item_refs?:array}; fetch_evidence {case_refs,source_families,max_documents,query|null}; compute_statistic {rule,fact_refs[2]}; read_span {exactly one of fact_ref|event_ref|document_ref, bounded offset/length for event/document}; compare_groups {concepts}; propose_candidate {candidate}; record_deferred {}; record_no_pattern {coverage}; record_need_dispositions {base_hash,need_dispositions,rationale}.
+Fetch may combine several families, all from available_source_families; obtain needed evidence in as few fetches as possible. tool_contracts is authoritative for compute rules, operand scope/order and read target/window limits. Compute only listed rules with two finite numeric fact_refs from one case in supplied order; inspect selected facts or compare_groups if case/period is unclear. read_span uses one named target field, never returned target/ref keys. Raw narrative text is authoritative; event/document reads charge browse, fact reads heavy.
+
+[Catalogs and memory]
+Catalog defaults to signals. scope=evidence returns a paginated titled document directory; last_action_result.result contains actual contents and next_cursor. For the next evidence page copy that next_cursor into inspect_catalog {scope:evidence,cursor:<integer>}; without a new fetch, omitted/zero cursor repeats page one, adding no coverage. counts.omitted_after means unread, not absent; retain coverage limitations if needed pages exceed budget. Omitted/unread entries remain available; missing or unread content never establishes absence.
+catalog_observations retains only successful actual inspect_catalog responses across later actions, all four scopes, most recent first, at most8 whole responses/32000 UTF-8 JSON bytes. Use their complete cards, originals and raw section coordinates without repeating a query solely to recover a visible response. Each is a historical tool response bound to its arguments, action id, response hash and source snapshot; source_snapshot_matches reports whether that runtime source/progress snapshot still matches. Ordinary evidence reads/compute do not change directory population: saved next_cursor remains valid while source_snapshot_matches is true, so do not re-query page zero merely after a read. A fetch that changes the population can change pagination; refresh at ordinary cost only when needed. Historical read_windows never asserts current read status; use live read progress. Omitted/oversized response locators/sizes are explicit; they do not reveal unread content or grant permissions. Current need_disposition_contract/base_hash/allowed_need_refs alone authorizes dispositions; a retained old row does not restore already staged needs. Revisit remains inspect_catalog at its ordinary scope cost. No semantic summaries, new reads or free tools are implied.
+Signal cards contain actual capability_contract, original hash and read size. signal_catalog is bounded; signal_catalog_disclosure names omissions. Before detail-dependent coverage assertions, read complete exact-version spec/skill bundles via scope=signals,item_refs within read_byte_limit.
+scope=memory browses the complete authorized Experience index: level filters its directory, signal_ref filters associated Experience, cursor pages it, and item_refs reads 1-3 complete item/supporting-source originals within read_byte_limit and cumulative original_disclosure_limit. Browse/read charge browse, not light. Read originals persist in meta_memory_disclosures; slow_method_memory retains completed method and cross_round reflections. Use axis/hypothesis-relevant items, not every feedback as a feature. Cross-round changes are retrospective diagnostics with unknown causes, not observable economic factors.
+
+[Source bindings and progress]
+computed_statistics retains complete results of actual compute_statistic calls, ordered fact refs and current source-bound operands across reads/catalogs/compare, at most12 whole entries/8000 UTF-8 JSON bytes, with explicit omissions/oversized refs. Automatic co-occurrence/same-concept relations are not computed results. A number alone never establishes unit/period/namespace comparability. Legacy relations lack operand snapshots: any later fetch conservatively invalidates the working result (even a repeat fetch); missing/case-mismatched operands also invalidate it. Invalidated rows retain the complete historical relation, including rule/ordered fact refs/old value and reason, so ordinary recomputation remains addressable; they never attach current operand units or establish a current valid result. Candidate citations to invalidated computed relations are rejected before admission; repeat ordinary charged compute_statistic with current ordered fact_refs when needed. No automatic recomputation or new authority is implied. Fact reads preserve taxonomy/concept/unit/period/value bindings. Unknown namespace establishes neither an automatic comparable pair nor a unique basis; matching concept words do not equate namespaces. structured_read_progress retains whole already-read fact receipts across actions, with source bindings and repeated-read counts. Its bounded most-recent-first page discloses omissions and oversized refs. Unshown history proves neither absence nor comparability; read counts do not prove semantic sufficiency. Revisit known fact_refs via read_span at ordinary heavy cost when needed.
+comparison_progress retains executed comparison locators for an unchanged fact/group/axis snapshot. These are lookup metadata, not source reads. Use their refs between operand reads; refresh invalidated/omitted units with compare_groups at ordinary heavy cost.
+evidence_digest summarizes fetched families and per-concept positive/control case coverage; last_action_result is the previous action result. Use these with narrative_read_progress to preserve document/range coverage across intervening catalogs. narrative_read_evidence retains complete masked readable source windows from actual reads, most recently read first, with exact source bindings and per-target case scopes. Its whole-unit page is bounded to12 units/40000 UTF-8 JSON bytes; omitted/oversized coordinates and sizes are explicit. Compare these retained source texts across actions; revisit omitted units via the ordinary charged read_span, never infer unread body or another case event from a shared document. Read counts and progress metadata alone do not establish semantic sufficiency: claims require exact raw reads. Never call an already-read range a first read; if insufficient, continue at next_readable_start or choose another document. Avoid refetching covered families; spend remaining budget on compute_statistic, compare_groups or termination.
+
+[Case binding and raw navigation]
+query_navigation keeps actual explicit-query fetch origins across actions (12 whole hints/8000 bytes), with source/case/hash/clocks, raw_start/read_length<=4000 and explicit omissions. It is not an exhaustive search or source read. Use only source_snapshot_matches=true and origin_status=located hints, via ordinary read_span {document_ref,offset:raw_start,length:read_length}; continue with next_readable_start when needed. Metadata/unmapped fragments and historical hints grant no evidence or current locator authority. Query hits may be TOC/crossrefs; read and interpret the source, refine a query or fetch scope at ordinary heavy cost when needed. Empty queries add no hints. Never cite a navigation_ref or count navigation as exploration.
+Join directory case_bindings and read case_refs to label_map before a positive/control narrative contrast; title/position does not determine group. Each event is one case-scoped observation; shared documents may have several bindings and receipts retain all observed scopes. Directory raw_chars,readable_start and section raw_start supply coordinates. Use supplied body/section offsets instead of zero past hidden HTML/XBRL metadata; read_span length <=4000 raw characters. Directory rows are discovery_only: only actual reads establish source evidence. has_readable_text=false has not explored narrative evidence; use next_readable_start for a new exact raw read, never repeat that empty range.
+
+[Candidate contract]
+candidate requires measurement{observable,value_kind,normalization}, falsifiers[{condition,expected_observation}], evidence_refs. value_kind is exactly boolean|ordinal|numeric|categorical; ratios are numeric. Optional usage_context{when_to_use:string|null,failure_conditions:[strings],related_refs:[disclosed Experience item refs]} describes economic/research conditions weakening or reversing meaning beyond missing extraction inputs; leave unobserved boundaries unknown. Card performance is observed-use association, not causal proof.
+Cite only known_fact_refs,known_event_refs,known_relation_refs already in the ledger, or document refs established by actual read_span. At least one fetch_evidence must precede any proposal. Every known concept named in observable/normalization needs at least one cited fact of that concept; compare_groups gives each value's fact_ref. Observable must be genuinely new: never reuse/version a signal_catalog signal_ref base name; existing Signal changes belong to separate Update.
+For narrative measurement include measurement.predicate{modality:narrative,source_families,lookback_days,semantic_condition,threshold{field,operator,value}}; its families must intersect cited narrative evidence. Headlines, previews and attribute_case_coverage steer search only. Before proposing, every cited narrative event/document needs an executed nonempty readable window for its own document/hash and case scope. A matching document read may support its fetched event bindings; reading another case's event or hidden-only markup does not. Source access is necessary, not proof that a span supports the measurement; inspect the raw meaning and counterevidence.
+prior_modality_footprints contains earlier modality metrics and staged_candidate_outcomes: real check-cohort tp/fn/fp/tn,availability,disposition. A semantic family whose fires never overlap positives (tp near zero,fn high) is a demonstrated predicate-label mismatch: propose a different narrative contrast, not that same family.
+
+[Hypothesis backlog]
+backlog_needs is a bounded unresolved page, not the full backlog; backlog_disclosure names omissions. scope=backlog pages all semantic cards; item_refs reads whole originals within its byte cap. record_need_dispositions uses the issued need_disposition_contract.base_hash and only allowed_need_refs; each successful action must handle at least one new need. Independent valid rows are saved despite sibling failures, with remaining errors in last_action_result.result.invalid_rows. Never repeat/overwrite accepted rows. These are staged intents, not resolved capabilities.
+Final proposal/no-pattern may include only remaining need_dispositions; runtime assembles saved rows and checks the entire backlog exactly once. Row {need_refs,disposition,signal_refs,rationale}; disposition exactly new_measurement|deferred_measurement|update_existing|repair_dependency|not_testable|fast_plan_action. For every need_dispositions row, """
+    + NEED_ROW_RATIONALE_CONTRACT
+    + """ Only update_existing cites exactly one existing signal ref; all other dispositions cite none.
+source_scope distinguishes original examples/current dev cases; case_prediction_times gives actual dev cutoffs. Outside-cohort origins are not missing original-issuer data. Generalize without dropping metric,comparison,entity level,time qualifiers; use each dev case's own PIT cutoff. State partial coverage and unsupported remainder, never substitute nearby proxies: actual-only revenue cannot establish forecast deviation; consolidated margin cannot establish same-store sales; historical burn cannot establish future plans. Source refs alone do not prove coverage. Partial reads permit unestablished/deferred evidence, never cohort-wide source-absence claims.
+
+[Budgets, admissibility and terminals]
+Never exceed view budgets. heavy_remaining=0 prohibits fetches,statistics,comparisons,proposals,fact reads; event/document reads remain allowed while browse_remaining>0. Light actions require light_remaining>0; its exhaustion does not exhaust heavy/browse. Repeating a budget-inadmissible action ends the seed as deferred_budget.
+available_actions lists names with at least one budget-admissible variant; state prerequisites still apply. inspect_catalog uses only tool_contracts.inspect_catalog.allowed_scopes: signals/evidence/backlog charge light; memory charges browse. At light_remaining=0 its name may remain available only for memory, never authorizing the other scopes. After scope-budget rejection choose an allowed scope/other admissible action, never repeat the rejected scope.
+Fetch broadly once/twice, then compute/compare and reserve terminal budget. Listed free terminal/disposition actions remain budget-admissible; domain terminals still require evidence/exploration. Use record_deferred for a control-plane outcome when a supported domain terminal is unavailable.
+Domain terminals are inadmissible while modality_coverage shows any available structured/narrative modality unexplored: fetch missing structured evidence and read at least one bounded raw narrative event/document span. Narrative listing/fetch proves availability, not grounded exploration. Control-plane terminals remain admissible. Exploration creates no candidate quota: propose only a recurring supported factor regardless of modality.
+record_no_pattern must cite explored_families from your actual prior fetches and give a supported research reason, never invented exhaustion. Named counters/exhaustion claims in rationale/coverage must match current runtime budget; light/browse exhaustion does not exhaust heavy, and positive heavy does not oblige a candidate.
+research_axis fixes the positive/control comparison; labels come only from runtime label_map. Never author/rewrite/expand either. Never request post-prediction facts or use identities/file ordering as features.
+"""
+)
+
+
+class MiningAgentRoleModel:
+    """Adapt one JSON role caller to the controller's ``next_action`` shape."""
+
+    def __init__(
+        self,
+        caller: Any,
+        *,
+        stage: str = MINING_CONTROLLER_STAGE,
+        max_output_tokens: int = 4000,
+        temperature: float = 0.2,
+        identity_aliases: tuple[str, ...] = (),
+        max_request_tokens: int | None = None,
+        max_total_tokens: int | None = None,
+        max_calls: int | None = None,
+    ) -> None:
+        self.caller = caller
+        self.stage = stage
+        self.max_output_tokens = max_output_tokens
+        self.temperature = temperature
+        self.identity_aliases = identity_aliases
+        self.usage = AgentUsage()
+        self.requests: list[str] = []
+        self.request_limits = {key: value for key, value in (
+            ("single_limit", max_request_tokens), ("total_limit", max_total_tokens),
+            ("call_limit", max_calls)) if value is not None}
+        if any(type(value) is not int or value < 1 for value in self.request_limits.values()):
+            raise ValidationError("Mining request limits must be positive integers")
+        if self.request_limits and not callable(getattr(caller, "estimate_json_request_tokens", None)):
+            raise ValidationError("Mining request limits require the complete caller estimator")
+        self.reserved_tokens = 0
+        self.reserved_calls = 0
+
+    def _budgeted_payload(self, system_prompt: str, view: Mapping[str, Any]):
+        """Disclose exact scoped cost without changing its own serialized size."""
+        common = dict(allow_outcomes=True, anonymous_aliases=self.identity_aliases,
+            max_output_tokens=self.max_output_tokens, temperature=self.temperature)
+        estimate = self.caller.estimate_json_request_tokens
+        floor = estimate(system_prompt=_MINING_CONTROLLER_PROMPT
+            + _SOURCE_FACT_RELATION_INSTRUCTION + _REQUEST_BUDGET_INSTRUCTION,
+            payload={}, **common)
+        # Two self-referential fields keep a constant serialized width.
+        width = max(20, *(len(str(value)) + 2 for value in self.request_limits.values()))
+        budget = {"unit": "bytes_plus_output", **self.request_limits,
+            "used": self.reserved_tokens, "this_request": "0" * width,
+            "next_minimum": floor}
+        total = self.request_limits.get("total_limit")
+        if total is not None:
+            budget["remaining_after"] = "0" * width
+        if "call_limit" in budget:
+            budget["calls_used"] = self.reserved_calls
+            budget["calls_remaining_after"] = budget["call_limit"] - self.reserved_calls - 1
+        payload = {**view, "request_budget": budget}
+        required = estimate(system_prompt=system_prompt, payload=payload, **common)
+        budget["this_request"] = str(required).zfill(width)
+        if total is not None:
+            budget["remaining_after"] = str(total - self.reserved_tokens - required).zfill(width)
+        if any(len(budget[key]) != width for key in ("this_request", "remaining_after") if key in budget):
+            raise MiningRequestBudgetExhausted("Mining request reservation exceeds accounting width")
+        if estimate(system_prompt=system_prompt, payload=payload, **common) != required:
+            raise MiningRequestBudgetExhausted("Mining caller estimator changed during budget disclosure")
+        ceilings = [budget[key] for key in ("single_limit",) if key in budget]
+        if total is not None:
+            ceilings.append(total - self.reserved_tokens)
+        if ((ceilings and required > min(ceilings))
+                or budget.get("calls_remaining_after", 0) < 0):
+            raise MiningRequestBudgetExhausted("Mining scoped request budget exhausted before prepare")
+        return payload, required, min(ceilings) if ceilings else None
+
+    def _consume(self, usage: AgentUsage, reserved: int) -> None:
+        self.reserved_tokens += reserved
+        self.reserved_calls += 1
+        self.usage = AgentUsage(llm_calls=self.usage.llm_calls + usage.llm_calls,
+            tokens=self.usage.tokens + usage.tokens, cost=self.usage.cost + usage.cost)
+        trace = getattr(self.caller, "request_hash_trace", ())
+        if isinstance(trace, (list, tuple)):
+            self.requests.extend(str(item) for item in trace[len(self.requests):])
+
+    def next_action(self, view: Mapping[str, Any]) -> dict[str, Any]:
+        """Send one controller view and return the model's action object."""
+
+        invalid = view.get("last_invalid_action")
+        if isinstance(invalid, Mapping) and isinstance(
+            invalid.get("output_patch_contract"), Mapping
+        ):
+            output_instruction = (
+                "Output only a JSON object with exactly base_hash and operations. "
+                "Use last_invalid_action.output_patch_contract to edit its "
+                "invalid_output at the authorized paths. Preserve the failed "
+                "action and every correct argument. A full action object or a "
+                "changed action is invalid. Fix the reported patch_error within "
+                "the same base and permissions when present. "
+            ) + PATCH_INSTRUCTION
+        else:
+            output_instruction = (
+                "Return exactly one JSON object with keys action and rationale "
+                "plus the action's own fields. rationale is a non-empty array "
+                "of short strings. When last_invalid_action is present, fix "
+                "the reported issue by choosing one admissible action. "
+            )
+        system_prompt = (
+                output_instruction + _MINING_CONTROLLER_PROMPT
+                + _SOURCE_FACT_RELATION_INSTRUCTION
+            )
+        handles = _MiningReferenceHandles(view)
+        payload, reserved, ceiling = handles.payload(view), 0, None
+        if handles.forward:
+            system_prompt += _HANDLE_INSTRUCTION
+        if self.request_limits:
+            system_prompt += _REQUEST_BUDGET_INSTRUCTION
+            payload, reserved, ceiling = self._budgeted_payload(system_prompt, payload)
+        kwargs = dict(stage=self.stage, system_prompt=system_prompt, payload=payload,
+            allow_outcomes=True,
+            anonymous_aliases=self.identity_aliases,
+            max_output_tokens=self.max_output_tokens,
+            temperature=self.temperature,
+        )
+        if ceiling is not None:
+            kwargs["max_request_tokens"] = ceiling
+        try:
+            parsed, usage = self.caller.complete_json(**kwargs)
+        except BaseException as exc:
+            # Pending/pre-dispatch failures have no answered usage to consume.
+            usage = getattr(exc, "usage", None)
+            answered = isinstance(exc, (StructuredOutputInvalid, IdentityOutputRejected))
+            if isinstance(usage, AgentUsage) and (answered or usage.llm_calls or usage.tokens or usage.cost):
+                self._consume(exc.usage, reserved)
+            raise
+        self._consume(usage, reserved)
+        if not isinstance(parsed, Mapping):
+            raise ValidationError("mining controller action must be an object")
+        return handles.transform(dict(parsed), restore=True)

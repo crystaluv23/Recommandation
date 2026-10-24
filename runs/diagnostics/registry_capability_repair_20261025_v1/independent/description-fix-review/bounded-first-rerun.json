@@ -1,0 +1,307 @@
+{
+  "schema_version": "independent-description-fix-review-v1",
+  "seven_identity_only_candidates": {
+    "cash_burn_rate_elevated:v2": {
+      "next_ref": "cash_burn_rate_elevated:v3",
+      "accepted": true,
+      "executed_tests": 4,
+      "fixture_count": 4,
+      "reasons": [],
+      "spec_equal_except_version": true
+    },
+    "cash_reserves:v2": {
+      "next_ref": "cash_reserves:v3",
+      "accepted": true,
+      "executed_tests": 1,
+      "fixture_count": 1,
+      "reasons": [],
+      "spec_equal_except_version": true
+    },
+    "cash_to_current_liabilities_ratio:v2": {
+      "next_ref": "cash_to_current_liabilities_ratio:v3",
+      "accepted": true,
+      "executed_tests": 3,
+      "fixture_count": 3,
+      "reasons": [],
+      "spec_equal_except_version": true
+    },
+    "liquidity_runway_months:v3": {
+      "next_ref": "liquidity_runway_months:v4",
+      "accepted": true,
+      "executed_tests": 5,
+      "fixture_count": 5,
+      "reasons": [],
+      "spec_equal_except_version": true
+    },
+    "net_share_retirement_yoy:v3": {
+      "next_ref": "net_share_retirement_yoy:v4",
+      "accepted": true,
+      "executed_tests": 1,
+      "fixture_count": 1,
+      "reasons": [],
+      "spec_equal_except_version": true
+    },
+    "operating_cash_flow_margin:v2": {
+      "next_ref": "operating_cash_flow_margin:v3",
+      "accepted": true,
+      "executed_tests": 1,
+      "fixture_count": 1,
+      "reasons": [],
+      "spec_equal_except_version": true
+    },
+    "revenue_growth_yoy:v3": {
+      "next_ref": "revenue_growth_yoy:v4",
+      "accepted": true,
+      "executed_tests": 1,
+      "fixture_count": 1,
+      "reasons": [],
+      "spec_equal_except_version": true
+    }
+  },
+  "description_cases": [
+    {
+      "description": "Measure operating cash flow as a share of revenue for the latest exact reported duration.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow as a share of revenue.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure OPERATING CASH FLOW as a percentage of revenue.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash-flow divided by revenue.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow to revenue ratio.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow margin.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow divided by revenue for the same exact reported duration.",
+      "expected_accepted": true,
+      "accepted": true,
+      "executed_tests": 1,
+      "reasons": [],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow to revenue ratio, preserving matching currency and period.",
+      "expected_accepted": true,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": false
+    },
+    {
+      "description": "Measure revenue as a share of operating cash flow.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure revenue divided by operating cash flow.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow as a share of cash.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure net income as a share of revenue.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow divided by current liabilities.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow growth and revenue growth.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure investing cash flow divided by revenue.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure financing cash flow as a percentage of revenue.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure nonoperating cash flow as a share of revenue.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow as a share of revenue growth.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow divided by revenue growth.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow as a percentage of revenue per share.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow to revenue growth ratio.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    },
+    {
+      "description": "Measure operating cash flow as a share of revenue minus expenses.",
+      "expected_accepted": false,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": true
+    }
+  ],
+  "unexpected_acceptances": [
+    {
+      "description": "Measure operating cash flow to revenue ratio, preserving matching currency and period.",
+      "expected_accepted": true,
+      "accepted": false,
+      "executed_tests": 0,
+      "reasons": [
+        "definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin"
+      ],
+      "matched_expected": false
+    }
+  ],
+  "pre_fix_screen_on_unexpected_acceptances": [],
+  "disclosed_contract": [
+    [
+      "operating",
+      "cash",
+      "flow",
+      "margin"
+    ],
+    [
+      "operating cash flow as a share of revenue"
+    ],
+    [
+      "operating cash flow as a percentage of revenue"
+    ],
+    [
+      "operating cash flow divided by revenue"
+    ],
+    [
+      "operating cash flow to revenue ratio"
+    ]
+  ],
+  "original_198_unchanged": true,
+  "staged": 0,
+  "admitted": 0,
+  "promoted": 0,
+  "reviewed_source_hash": "870d6bbf6488723bcad51dbfeaaffd03dd5128d584e8cd98f6d7cd79cb09002b"
+}

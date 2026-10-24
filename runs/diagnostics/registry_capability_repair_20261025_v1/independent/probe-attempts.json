@@ -1,0 +1,20 @@
+{
+  "schema_version": "independent-diagnostic-harness-correction-v1",
+  "first_attempt": {
+    "failure": "AssertionError: cash_burn_rate_elevated:v2 matched identity still returned SEC operating-cash-flow duration facts were unavailable",
+    "content_serialization": "json.dumps(body, sort_keys=True)",
+    "premature_inference": "Possible missing duration contradiction",
+    "validity": "Invalid inference: default JSON spaces made raw compact exact spans absent. Original cashburn fixtures already include explicit start/end."
+  },
+  "second_attempt": {
+    "result": "All seven matched identity variants rejected; 3 unavailable fixtures succeeded",
+    "validity": "Same serialization defect; retained as diagnostic harness failure, not product repair failure."
+  },
+  "correction": {
+    "content_serialization": "json.dumps(body, sort_keys=True, separators=(',', ':'))",
+    "reason": "Preserve canonical compact JSON source and exact literal spans used by _sec_facts/_make_sec_fact",
+    "final_evidence": "identity-scope-probes.json"
+  },
+  "original_registry_mutated": false,
+  "staging_admission_or_promotion_performed": false
+}

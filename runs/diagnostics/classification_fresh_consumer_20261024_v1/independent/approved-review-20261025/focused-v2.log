@@ -1,0 +1,12 @@
+test_extra_allowance_stop_escapes_native_validation_and_budget_handlers (test_classification_consumer_stage.ClassificationConsumerStageTests.test_extra_allowance_stop_escapes_native_validation_and_budget_handlers) ... ok
+test_new_allowance_cannot_be_replaced_by_native_or_goal_allowance (test_classification_consumer_stage.ClassificationConsumerStageTests.test_new_allowance_cannot_be_replaced_by_native_or_goal_allowance) ... ok
+test_reconstruction_preserves_whole_ordered_charge_and_immutable_receipts (test_classification_consumer_stage.ClassificationConsumerStageTests.test_reconstruction_preserves_whole_ordered_charge_and_immutable_receipts) ... ok
+test_request_and_shared_call_ceiling_are_checked_before_handoff (test_classification_consumer_stage.ClassificationConsumerStageTests.test_request_and_shared_call_ceiling_are_checked_before_handoff) ... ok
+test_same_native_limits_and_old_debt_are_kept (test_classification_consumer_stage.ClassificationConsumerStageTests.test_same_native_limits_and_old_debt_are_kept) ... ok
+test_terminal_stages_reject_reentry (test_classification_consumer_stage.ClassificationConsumerStageTests.test_terminal_stages_reject_reentry) ... ok
+test_unknown_role_and_duplicate_request_do_not_dispatch (test_classification_consumer_stage.ClassificationConsumerStageTests.test_unknown_role_and_duplicate_request_do_not_dispatch) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.018s
+
+OK

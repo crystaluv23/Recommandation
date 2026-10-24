@@ -1,0 +1,39 @@
+{
+  "schema_version": "independent-description-fix-final-review-v1",
+  "assessment": "pass_with_bounded_lexical_scope",
+  "description_cases": 36,
+  "description_outcomes_match_declared_grammar": 36,
+  "actual_next_version_candidate_passes": 7,
+  "actual_fixture_executions": 16,
+  "spec_unchanged_except_version": true,
+  "mismatched_identity_rejected_for_all_seven": true,
+  "original_198_unchanged": true,
+  "previous_five_false_acceptances_now_rejected": true,
+  "allowed_qualifier_families_checked": [
+    "for",
+    "using",
+    "from",
+    "based on",
+    "over",
+    "during"
+  ],
+  "qualification": "Conservative preserving-clause rejection is outside the disclosed grammar and documented in qualifier-scope.json. Existing multi-token substring checks remain unchanged; this review does not prove arbitrary natural-language semantic truth or capability_repair implementation.",
+  "update_and_mining_disclose_same_matching_constant": true,
+  "source_hashes": {
+    "src/stock_opportunity_agent/research/signal_evolution.py": "870d6bbf6488723bcad51dbfeaaffd03dd5128d584e8cd98f6d7cd79cb09002b",
+    "spec/src/stock_opportunity_agent/research/signal_evolution.md": "0a15265fa85490029dd8e1c0bbf59501d98755399e2903d9b8f7edcf0a2b79fb",
+    "tests/test_signal_description_ratios.py": "7bcaca808bc6ceaa11a6264a664178c6327863487457fd9a5ec4111240998043"
+  },
+  "artifacts": {
+    "before-bounded-matcher.json": "e949244e0cc86eb89b5c4b004275afa81b5043674669ceb83ba578871bcef505",
+    "bounded-first-rerun.json": "913c304f4fdc2725ff096b1aef2a51d49cc8550aa65122327c30ff2f3bb26754",
+    "first-review.json": "bd6c37c04e2d7875857266a1b7b5d0662222fd2728ae80de1dbc1fdec39fab4a",
+    "qualifier-scope.json": "ad5ba9dbfcadf5f51572a8d17825cd5048f72b5c8c1c02473dc2c587ae781a65",
+    "result.json": "1fbebc7b986ed002b400452ea691e7d4c1e1956bb5b2addb0a5dbff3a9a66240",
+    "review_description.py": "506bb925854f32170f28fee868f24ec71dd41404b299c116f959ae9a0605c219"
+  },
+  "staged": 0,
+  "admitted": 0,
+  "promoted": 0,
+  "external_calls": 0
+}

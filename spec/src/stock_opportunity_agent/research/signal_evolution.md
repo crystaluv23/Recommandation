@@ -400,6 +400,18 @@ Update and Mining, and the finite dual-loop coordinator. It depends on
   outside this bounded description screen; the formula/fixtures still govern
   measurement validity. Update cannot change that frozen definition to satisfy
   an inconsistent keyword requirement.
+  Operating-cash-flow margin likewise admits explicit numerator/denominator
+  wording: operating cash flow as a share/percentage of revenue, divided by
+  revenue, or an operating cash flow to revenue ratio. These ordered phrases
+  preserve the frozen definition without requiring the incidental word margin.
+  Reversed operands, cash or income as denominator/numerator, and generic cash
+  flow growth do not match these alternatives. This remains a disclosed lexical
+  screen; it neither certifies semantic truth nor changes fixtures or formulas.
+  Single ordered phrases require whole-word boundaries, no immediate non/not
+  prefix, and a complete denominator/ratio followed only by an optional qualifier
+  introduced by for/using/from/based on/over/during. Revenue growth, revenue per
+  share and revenue minus expenses are different denominators. Update and Mining
+  disclose this matcher rule alongside the shared alternatives table.
   The role adapter may resolve a model-selected case/document/content-bound
   source span ref to its complete local literal before source validation.
   Canonical case diagnostics retain the original `document_ref,exact_span`

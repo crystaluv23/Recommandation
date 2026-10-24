@@ -1,0 +1,117 @@
+{
+  "counterexamples": [
+    {
+      "control": "UTF8 complete native message bytes plus output exact-fit",
+      "passed": true
+    },
+    {
+      "control": "One-unit-over fixed extra allowance refused",
+      "passed": true
+    },
+    {
+      "control": "Budget exception is control flow, outside content ValidationError",
+      "passed": true
+    },
+    {
+      "control": "Budget exception bypasses native budget fallback",
+      "passed": true
+    },
+    {
+      "control": "Reconstruction reserves both ordered requests exactly once per logical chain",
+      "passed": true
+    },
+    {
+      "control": "Reconstruction reserves both ordered requests exactly once per logical chain",
+      "passed": true
+    },
+    {
+      "control": "Changed same-hash reservation rejects immutably",
+      "passed": true
+    },
+    {
+      "control": "Rejected drift preserves original immutable reservation",
+      "passed": true
+    },
+    {
+      "control": "Physical unanswered inbox consumes shared slot 1",
+      "passed": true
+    },
+    {
+      "control": "Physical unanswered inbox consumes shared slot 2",
+      "passed": true
+    },
+    {
+      "control": "Physical unanswered inbox consumes shared slot 3",
+      "passed": true
+    },
+    {
+      "control": "Fourth physical handoff rejected before inbox",
+      "passed": true
+    },
+    {
+      "control": "Exactly three local physical inboxes persisted",
+      "passed": true
+    },
+    {
+      "control": "Actual current measurement equals pre-frozen original complete result",
+      "passed": true
+    },
+    {
+      "control": "Complete original accepted bootstrap preserved",
+      "passed": true
+    },
+    {
+      "control": "Actual declaration canonical result binding",
+      "passed": true
+    },
+    {
+      "control": "Actual declaration consumed parameters match frozen public semantics",
+      "passed": true
+    },
+    {
+      "control": "Actual anonymous Reflect request carries complete actual declaration",
+      "passed": true
+    },
+    {
+      "control": "Actual anonymous Reflect request preserves all five exact unresolved needs",
+      "passed": true
+    },
+    {
+      "control": "Preflight created no production inbox",
+      "passed": true
+    },
+    {
+      "control": "Old terminal usage remains full historical debt",
+      "passed": true
+    },
+    {
+      "control": "Source record hash 174",
+      "passed": true
+    },
+    {
+      "control": "Source literal span 174",
+      "passed": true
+    },
+    {
+      "control": "Source available before prediction 174",
+      "passed": true
+    },
+    {
+      "control": "Source record hash 36",
+      "passed": true
+    },
+    {
+      "control": "Source literal span 36",
+      "passed": true
+    },
+    {
+      "control": "Source available before prediction 36",
+      "passed": true
+    }
+  ],
+  "passed": 27,
+  "production_roles": 0,
+  "production_inboxes": 0,
+  "external_API": 0,
+  "labels": 0
+}

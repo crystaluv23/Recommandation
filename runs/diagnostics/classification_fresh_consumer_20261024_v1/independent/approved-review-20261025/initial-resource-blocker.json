@@ -1,0 +1,11 @@
+{
+  "status": "blocked_before_dispatch",
+  "finding": "Approved extra-envelope limit uses native RuntimeBudgetExceeded; native core catches it and can proceed to final prediction, violating profile terminal-stop requirement.",
+  "evidence": [
+    "scripts/run_classification_consumer_stage.py Budget.__call__ raises RuntimeBudgetExceeded for per-request/extra-unit/call ceiling.",
+    "src/stock_opportunity_agent/research/evolution_core.py RuntimeBudgetExceeded subclasses ValidationError; reflection catch sets BUDGET_EXHAUSTED and breaks collection then continues prediction.",
+    "Budget refuses before increment, leaving prior reserved total unchanged; smaller subsequent Predictor can fit remaining approved allowance."
+  ],
+  "recommended_fix": "Use profile-specific EvolutionControlFlow exception for fixed-envelope refusal, outside RuntimeBudgetExceeded/content ValidationError; allow resume supervisor to persist terminal failure. Do not alter generic runtime fallback semantics.",
+  "independent_control": "counterexamples.py assertion failed: Budget exception is control flow, outside content ValidationError. No production role/API/labels."
+}

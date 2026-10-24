@@ -5992,6 +5992,10 @@ class SignalEvolutionTests(TestCase):
             expected_concepts = signal_description_concept_contracts(engine.validator.deterministic_functions)
             self.assertEqual(engine._mining_candidate_contract()["deterministic_description_concepts"], expected_concepts)
             self.assertEqual(update_model.requests[0]["candidate_contract"]["deterministic_description_concepts"], expected_concepts)
+            mining_matching = engine._mining_candidate_contract()["deterministic_description_matching"]
+            self.assertEqual(update_model.requests[0]["candidate_contract"]["deterministic_description_matching"], mining_matching)
+            self.assertIn("complete word boundaries", mining_matching)
+            self.assertIn("revenue per share", mining_matching)
 
             self.assertEqual(
                 engine._mining_candidate_contract()["deterministic_function_contracts"],

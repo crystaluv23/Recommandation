@@ -1,0 +1,74 @@
+{
+  "schema_version": "classification-actual-interim-semantic-review-v1",
+  "status": "reflect_and_final_anonymous_input_passed_predictor_sink_pending",
+  "F7": "This actual first Reflect response correctly identifies positive as low runway, adds a labelled financing-risk inference with explicit stock-direction/unrestricted-cash/future-financing limits; preserves all five exact unresolved needs,0answered dispositions and both original evidence pointers.",
+  "F8": "Actual final anonymous request retains5.374720662778656months/formula/Q1/two literal cash98610000 and OCF-55041000 operands; genuine finalization trigger=max_signal_rounds and all unresolved needs.",
+  "classification_binding": "Complete actual executor declaration and canonical result hash preserved into final anonymous request with <=6/>=12 thresholds and consumed parameters. No fabricated legacy sidecar.",
+  "reflect_corrections": 0,
+  "resource_reservations": {
+    "historical_cumulative_reserved": 364582,
+    "requests": [
+      {
+        "request_hash": "1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662",
+        "reservation": 59446,
+        "stage": "research_controller_reflect"
+      },
+      {
+        "request_hash": "e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614",
+        "reservation": 69285,
+        "stage": "blind_predictor_predict"
+      }
+    ],
+    "total": 128731
+  },
+  "raw_receipt_binding_verified": true,
+  "final_semantic_verdict": "pending_predictor_raw_acceptance_sink_completion",
+  "evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/accepted-reflect.json",
+      "sha256": "b4b6a35440629096409f960eeb0e32f8ee7964f7e7978b5a7641df32f71d1dbb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/outbox/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.txt",
+      "sha256": "1a8884914a3f8171e534f0aca7b95defb67167c2a5ac1f0010f4bb8583e8ebda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/receipts/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+      "sha256": "2f784ee98f3de16ef0f0f515b096a1245bfc6ded4fb5ef33d718577a3b7be541"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/inbox/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+      "sha256": "66ea906ab3632fa328a08f9e4c60b54bfa8a05b3bfadae5d6186b439735a97f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/inbox/e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614.json",
+      "sha256": "8886f7555f07802ad28a38a7ad147886484aee202eca5c153c14d4ec7dc2f6ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/predictor-input.json",
+      "sha256": "043df2a95990e52ea3917e8df8fb1f29e4d21793c374fb740fe2beb424705b64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/actual-batch.json",
+      "sha256": "8d406637797ea661e70c1dfcd753c085daa7b6ef139b100431bbfe4f4599f68a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/request-reservations.json",
+      "sha256": "34268846114ca72f21ac4c0f0269fc9bc8eacf45f5fa3c617115c967443780e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/conditional-consumer-oracle.json",
+      "sha256": "9920a644dd8015741573bd10ad5dfaee7daed99c4d435a3e54908b08d8e39a61"
+    }
+  ],
+  "scope_limits": [
+    "No direction/probability or confidence target.",
+    "Predictor answer and durable sink not yet accepted.",
+    "OldF9=0/1 and originalfinancial9/routing verdicts unchanged; no research-gain/MVP claim."
+  ],
+  "reviewer_execution": {
+    "production_roles": 0,
+    "external_API": 0,
+    "labels": 0
+  }
+}

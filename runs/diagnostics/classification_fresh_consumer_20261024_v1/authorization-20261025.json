@@ -1,0 +1,32 @@
+{
+  "approved": true,
+  "date": "2026-10-25",
+  "finalization_reserve": 64000,
+  "historical_cumulative_ceiling": {
+    "llm_calls": 7,
+    "tokens": 380819
+  },
+  "historical_usage": {
+    "llm_calls": 4,
+    "tokens": 235851
+  },
+  "limitations": "Approval of both exact proposals; no external API, old terminal reentry, whole successor or budget reset.",
+  "native_instance_ceiling": {
+    "llm_calls": 5,
+    "tokens": 256000
+  },
+  "native_instance_prior": {
+    "llm_calls": 2,
+    "tokens": 111032
+  },
+  "new_logical_units": 144968,
+  "new_role_calls": 3,
+  "per_request": 131072,
+  "proposal": {
+    "path": "/Users/l/Project/Recommandation/reports/mvp-next-boundaries-20261024.md",
+    "sha256": "5d6a37c31d3021060f345c9e261d51c651642f418ad37400d769dcae2cac0385"
+  },
+  "registry_capability_repair_approved": true,
+  "schema_version": "user-approved-mvp-boundaries-v1",
+  "user_instruction": "你提到的两个我都批准，然后继续按照该MVP收敛验收标准迭代吧"
+}

@@ -127,6 +127,10 @@ _FUNCTION_DESCRIPTION_CONCEPTS = {
     "financial.gross_margin_change_yoy": (("gross", "margin"),),
     "financial.operating_cash_flow_margin": (
         ("operating", "cash", "flow", "margin"),
+        ("operating cash flow as a share of revenue",),
+        ("operating cash flow as a percentage of revenue",),
+        ("operating cash flow divided by revenue",),
+        ("operating cash flow to revenue ratio",),
     ),
     "financial.net_share_retirement_yoy": (
         ("share", "retirement"),
@@ -150,11 +154,36 @@ _FUNCTION_DESCRIPTION_CONCEPTS = {
     "news.negative_word_count": (("negative", "word"),),
 }
 
+_DESCRIPTION_MATCHING_CONTRACT = (
+    "Multi-token alternatives require all normalized substrings. A single "
+    "ordered ratio phrase requires complete word boundaries, no immediately "
+    "preceding non/not, and ends at its denominator/ratio or continues with "
+    "for, using, from, based on, over or during. Transformed denominators such "
+    "as revenue growth, revenue per share or revenue minus expenses do not "
+    "match a revenue denominator. This screen is not proof of semantic truth."
+)
+
+
+def _description_alternative_matches(description: str, group: tuple[str, ...]) -> bool:
+    """Match disclosed words or a bounded ordered numerator/denominator phrase."""
+    if len(group) != 1 or " " not in group[0]:
+        return all(token in description for token in group)
+    for match in re.finditer(r"(?:^| )" + re.escape(group[0]) + r"(?=$| )", description):
+        prefix = description[:match.start()].split()
+        if prefix and prefix[-1] in {"non", "not"}:
+            continue
+        tail = description[match.end():].strip()
+        if not tail or any(tail.startswith(word + " ") for word in (
+            "for", "using", "from", "based on", "over", "during",
+        )):
+            return True
+    return False
+
 
 def signal_description_concept_contracts(functions: Mapping[str, Any]) -> dict[str, list[list[str]]]:
     """Disclose the exact bounded description screen used for known functions.
 
-    Each function admits one complete alternative of normalized substrings;
+    Each function admits one complete alternative under the disclosed matcher;
     matching names is not proof that the authored formula is semantically true.
     """
 
@@ -1569,7 +1598,7 @@ class SignalCandidateValidator:
         if alternatives is None:
             return ()
         description = _normalize_semantics(spec.description)
-        if any(all(token in description for token in group) for group in alternatives):
+        if any(_description_alternative_matches(description, group) for group in alternatives):
             return ()
         return (
             "definition-to-implementation mismatch: description does not name "
@@ -5827,6 +5856,7 @@ class SignalEvolutionEngine:
                 "deterministic_description_concepts": signal_description_concept_contracts(
                     self.validator.deterministic_functions
                 ),
+                "deterministic_description_matching": _DESCRIPTION_MATCHING_CONTRACT,
                 "changed_paths_allowed": list(SIGNAL_UPDATE_MUTABLE_PATHS),
                 "changed_paths_excluded": [
                     "spec.version",
@@ -10021,11 +10051,12 @@ class SignalEvolutionEngine:
             "deterministic_description_concepts": signal_description_concept_contracts(
                 self.validator.deterministic_functions
             ),
+            "deterministic_description_matching": _DESCRIPTION_MATCHING_CONTRACT,
             "constraints": [
                 "new signal_id only; existing stable identities belong to Update",
                 "non-empty point-in-time fixtures required",
-                "description must contain every normalized substring in one disclosed "
-                "deterministic_description_concepts alternative for its function",
+                "description must match one disclosed deterministic_description_concepts "
+                "alternative under deterministic_description_matching for its function",
                 "choose a deterministic function only when its documented measurement "
                 "matches the definition; parameters do not replace its formula",
                 "structured modality requires an exact registered deterministic "

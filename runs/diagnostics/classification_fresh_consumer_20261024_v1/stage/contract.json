@@ -1,0 +1,38 @@
+{
+  "cumulative_ceiling": {
+    "llm_calls": 7,
+    "tokens": 380819
+  },
+  "fixed_denominator": 1,
+  "historical_usage": {
+    "cost": 0.0,
+    "llm_calls": 4,
+    "tokens": 235851
+  },
+  "limits": {
+    "max_case_tokens": 256000,
+    "max_local_role_calls": 3,
+    "max_request_tokens": 131072,
+    "max_structured_corrections": 1,
+    "structured_reasoning_token_reserve": 0
+  },
+  "new_logical_units": 144968,
+  "new_role_calls": 3,
+  "prior_case_usage": {
+    "cost": 0.0,
+    "llm_calls": 2,
+    "tokens": 111032
+  },
+  "runtime_limits": {
+    "finalization_token_reserve": 64000,
+    "max_cost": 20.0,
+    "max_llm_calls": 5,
+    "max_llm_signals_per_round": 2,
+    "max_signal_calls": 1,
+    "max_signal_rounds": 1,
+    "max_signals_per_round": 4,
+    "max_tokens": 256000
+  },
+  "schema_version": "approved-classification-consumer-v1",
+  "scope": "same runway classification native consumer; no labels/round commit"
+}

@@ -1,0 +1,209 @@
+"""SEC EDGAR data-source provider."""
+
+from __future__ import annotations
+
+import re
+from datetime import date, datetime, timezone
+from typing import Any
+
+from stock_opportunity_agent.config import DataSourceConfig
+from stock_opportunity_agent.data.sources import register
+from stock_opportunity_agent.data.sources.core import (
+    DataSourceError,
+    FilingMetadata,
+    JsonTransport,
+    SecurityListing,
+    array_get,
+    format_cik,
+    optional_date,
+    utc_now,
+)
+from stock_opportunity_agent.models import ValidationError
+
+
+class SecEdgarClient:
+    """SEC EDGAR submissions and company facts client."""
+
+    def __init__(
+        self,
+        user_agent: str,
+        *,
+        base_url: str = "https://data.sec.gov",
+        sec_base_url: str = "https://www.sec.gov",
+        transport: JsonTransport | None = None,
+    ) -> None:
+        if not user_agent.strip():
+            raise ValidationError("SEC user_agent must not be empty")
+        from stock_opportunity_agent.data.sources.core import UrllibJsonTransport
+
+        self.user_agent = user_agent
+        self.base_url = base_url.rstrip("/")
+        self.sec_base_url = sec_base_url.rstrip("/")
+        self.transport = transport or UrllibJsonTransport()
+
+    @classmethod
+    def from_config(cls, config: DataSourceConfig, transport: JsonTransport | None = None) -> "SecEdgarClient":
+        """Create an EDGAR client from data-source config."""
+
+        return cls(config.sec_user_agent, transport=transport)
+
+    def submissions(self, cik: str) -> dict[str, Any]:
+        """Return raw SEC submissions JSON for a zero-padded CIK."""
+
+        return self.transport.get_json(
+            f"{self.base_url}/submissions/CIK{format_cik(cik)}.json",
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+
+    def historical_submissions(self, filename: str) -> dict[str, Any]:
+        """Return one exact SEC-referenced historical submissions JSON file."""
+
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*\.json", filename):
+            raise ValidationError("SEC historical submissions filename is unsafe")
+        return self.transport.get_json(
+            f"{self.base_url}/submissions/{filename}",
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+
+    def company_facts(self, cik: str) -> dict[str, Any]:
+        """Return raw SEC company facts JSON for a zero-padded CIK."""
+
+        return self.transport.get_json(
+            f"{self.base_url}/api/xbrl/companyfacts/CIK{format_cik(cik)}.json",
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+
+    def company_tickers_exchange(self) -> list[SecurityListing]:
+        """Return SEC company ticker and exchange mappings as universe listing rows."""
+
+        data = self.transport.get_json(
+            f"{self.sec_base_url}/files/company_tickers_exchange.json",
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+        fields = data.get("fields")
+        rows = data.get("data")
+        if not isinstance(fields, list) or not isinstance(rows, list):
+            raise DataSourceError("SEC ticker exchange response missing fields or data")
+        try:
+            cik_index = fields.index("cik")
+            name_index = fields.index("name")
+            ticker_index = fields.index("ticker")
+            exchange_index = fields.index("exchange")
+        except ValueError as exc:
+            raise DataSourceError("SEC ticker exchange response missing required columns") from exc
+
+        retrieved_at = utc_now()
+        listings: list[SecurityListing] = []
+        for row in rows:
+            if not isinstance(row, list):
+                continue
+            listings.append(
+                SecurityListing(
+                    symbol=str(row[ticker_index]),
+                    name=str(row[name_index]),
+                    exchange=str(row[exchange_index]),
+                    asset_type="equity",
+                    status="active",
+                    source="sec_edgar",
+                    retrieved_at=retrieved_at,
+                    cik=format_cik(str(row[cik_index])),
+                )
+            )
+        return listings
+
+    def recent_filings_as_of(self, cik: str, as_of_date: date) -> list[FilingMetadata]:
+        """Return recent filings whose filing date was available by ``as_of_date``."""
+
+        data = self.submissions(cik)
+        recent = data.get("filings", {}).get("recent", {})
+        return _filings_from_arrays(cik, recent, as_of_date)
+
+    def filings_from_arrays_as_of(
+        self,
+        cik: str,
+        arrays: Any,
+        as_of_date: date,
+    ) -> list[FilingMetadata]:
+        """Normalize one already-fetched recent or historical filing array set."""
+
+        return _filings_from_arrays(cik, arrays, as_of_date)
+
+    def filing_document_text(self, filing: FilingMetadata) -> str:
+        """Fetch a filing primary-document body as text through the SEC archive URL."""
+
+        get_text = getattr(self.transport, "get_text", None)
+        if get_text is None:
+            raise DataSourceError("transport does not support text downloads")
+        return get_text(
+            filing.source_url,
+            {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"},
+        )
+
+
+@register("sec_edgar")
+def source(config: DataSourceConfig, transport: JsonTransport | None = None) -> SecEdgarClient:
+    """Registered SEC EDGAR source factory."""
+
+    return SecEdgarClient.from_config(config, transport=transport)
+
+
+def _optional_aware_datetime(value: Any) -> datetime | None:
+    if not value or str(value).casefold() in {"none", "null", "nan", "-"}:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
+def _filings_from_arrays(
+    cik: str,
+    arrays: Any,
+    as_of_date: date,
+) -> list[FilingMetadata]:
+    """Normalize SEC parallel filing arrays without performing I/O."""
+
+    required = ("accessionNumber", "filingDate", "form", "primaryDocument")
+    if not isinstance(arrays, dict) or not all(
+        isinstance(arrays.get(key), list) for key in required
+    ):
+        raise DataSourceError("SEC submissions response missing filing arrays")
+    count = len(arrays["accessionNumber"])
+    if any(len(arrays[key]) != count for key in required):
+        raise DataSourceError("SEC submissions filing arrays have inconsistent lengths")
+    cik_padded = format_cik(cik)
+    cik_no_zeros = str(int(cik_padded))
+    retrieved_at = utc_now()
+    filings: list[FilingMetadata] = []
+    for index in range(count):
+        try:
+            filing_date = date.fromisoformat(str(arrays["filingDate"][index]))
+        except ValueError as exc:
+            raise DataSourceError("SEC submissions filing date is invalid") from exc
+        if filing_date > as_of_date:
+            continue
+        accession = str(arrays["accessionNumber"][index])
+        primary_document = str(arrays["primaryDocument"][index])
+        accession_path = accession.replace("-", "")
+        filings.append(
+            FilingMetadata(
+                cik=cik_padded,
+                accession_number=accession,
+                filing_date=filing_date,
+                report_date=optional_date(array_get(arrays, "reportDate", index)),
+                form=str(arrays["form"][index]),
+                primary_document=primary_document,
+                source_url=(
+                    "https://www.sec.gov/Archives/edgar/data/"
+                    f"{cik_no_zeros}/{accession_path}/{primary_document}"
+                ),
+                retrieved_at=retrieved_at,
+                accepted_at=_optional_aware_datetime(
+                    array_get(arrays, "acceptanceDateTime", index)
+                ),
+            )
+        )
+    return filings

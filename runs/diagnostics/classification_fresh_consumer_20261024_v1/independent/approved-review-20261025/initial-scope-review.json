@@ -1,0 +1,80 @@
+{
+  "schema_version": "classification-approved-initial-independent-review-v1",
+  "review_scope": "Read-only pre-dispatch resource and oracle scope; parent implementation not yet reviewed. No production dispatch or source modifications.",
+  "status": "scope_consistent_pending_implementation_review",
+  "resources": {
+    "historical_units": 235851,
+    "historical_responses": 4,
+    "additional_units": 144968,
+    "additional_responses": 3,
+    "cumulative_units": 380819,
+    "cumulative_responses": 7,
+    "current_instance_prior_units": 111032,
+    "current_instance_prior_responses": 2,
+    "native_instance_units": 256000,
+    "native_instance_responses": 5,
+    "per_request_units": 131072,
+    "finalization_reserve": 64000
+  },
+  "bindings": [
+    {
+      "path": "/Users/l/Project/Recommandation/AGENTS.md",
+      "sha256": "75767f90cebeea00c4f670dc431a6db49852edecdfcbbd28fbf8f338c3d30c1e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/progress/status.md",
+      "sha256": "a8c4ac4b828943fc6ad71a2a2561c00aa0eb7efa0a34cf906220c975c44f2f8e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/mvp-next-boundaries-20261024.md",
+      "sha256": "5d6a37c31d3021060f345c9e261d51c651642f418ad37400d769dcae2cac0385"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/financial-context-consumer-20261023.md",
+      "sha256": "45d4a54a52aa7f0b54167507d845fd4a7c0e20d7994a5ee0a83b01024cb8cf63"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/reports/classification-meta-context-20261023.md",
+      "sha256": "f162b383887693276df5c80c863df331b1ba1450ca9b01c92c5fa0c4580e845a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/conditional-consumer-oracle.json",
+      "sha256": "9920a644dd8015741573bd10ad5dfaee7daed99c4d435a3e54908b08d8e39a61"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/spec/agent-workflow.md",
+      "sha256": "6a71beab596ce7ce46a90dab33569081172e71af8cde1e82a1981a4d45051cf6"
+    }
+  ],
+  "semantic_obligations": [
+    "One actual newly executed deterministic v3 result, exact original result equality; sidecar from invoked callable with exact round/ref/result_hash.",
+    "Complete original bootstrap and five exact unresolved needs, context-only permission owns no answers.",
+    "Final anonymous request, actual raw answers/corrections, final context and durable prediction sink; preserve result identity and complete declaration with anonymous view hash.",
+    "Affirmative category interpretation agrees with low-runway thresholds; numeric positivity does not explain category. No funding adequacy, unrestricted cash, bullish direction or assured future runway inferred.",
+    "No required probability/direction/confidence/belief change. Silence can be noncontradictory but is not positive comprehension.",
+    "Old terminal outcomes and usages unchanged; no API, labels, acquisition, Registry mutation or business pointers."
+  ],
+  "independent_counterexamples": [
+    "Changed, missing, synthetic-default or stale classification sidecar.",
+    "Same-ref declaration with wrong result hash or round.",
+    "Half-open threshold inversion; positive numeric runway misread as favorable category.",
+    "Need deletion/paraphrase/full answered disposition despite context-only result.",
+    "Finalization claimed as complete research; budget failure relabelled successful finalization.",
+    "Oracle accidentally forwarded to evaluated role.",
+    "Fourth physical response, over-unit request or changed replay request before cache/receive/inbox.",
+    "Budget/control-flow exception caught as model correction; failed raw response omitted from ledger.",
+    "Reconstruction recharges answered receipt or skips immutable reservation check.",
+    "Old terminal stage reopened or new directory used to evade fixed limit."
+  ],
+  "limits": [
+    "Initial scope review only; no actual fresh model semantics or prediction effect has been observed.",
+    "At most one correction is a ceiling, not a guarantee that a correction and both roles fit the fixed unit budget."
+  ],
+  "execution": {
+    "production_roles": 0,
+    "production_signal_execution": 0,
+    "external_API": 0,
+    "labels": 0,
+    "source_edits": 0
+  }
+}

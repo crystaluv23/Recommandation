@@ -1,0 +1,141 @@
+EEEEEFF.EEEEE
+======================================================================
+ERROR: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure operating cash flow as a share of revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 52, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure OPERATING CASH FLOW as a percentage of revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 52, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure operating cash-flow divided by revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 52, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure the operating cash flow to revenue ratio.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 52, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure operating cash flow margin.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 52, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_wrong_numerator_denominator_and_different_concepts_remain_rejected (test_signal_description_ratios.SignalDescriptionRatioTests.test_wrong_numerator_denominator_and_different_concepts_remain_rejected) (description='Measure revenue as a share of operating cash flow.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 67, in test_wrong_numerator_denominator_and_different_concepts_remain_rejected
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_wrong_numerator_denominator_and_different_concepts_remain_rejected (test_signal_description_ratios.SignalDescriptionRatioTests.test_wrong_numerator_denominator_and_different_concepts_remain_rejected) (description='Measure operating cash flow as a share of cash.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 67, in test_wrong_numerator_denominator_and_different_concepts_remain_rejected
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_wrong_numerator_denominator_and_different_concepts_remain_rejected (test_signal_description_ratios.SignalDescriptionRatioTests.test_wrong_numerator_denominator_and_different_concepts_remain_rejected) (description='Measure net income as a share of revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 67, in test_wrong_numerator_denominator_and_different_concepts_remain_rejected
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_wrong_numerator_denominator_and_different_concepts_remain_rejected (test_signal_description_ratios.SignalDescriptionRatioTests.test_wrong_numerator_denominator_and_different_concepts_remain_rejected) (description='Measure operating cash flow divided by current liabilities.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 67, in test_wrong_numerator_denominator_and_different_concepts_remain_rejected
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+ERROR: test_wrong_numerator_denominator_and_different_concepts_remain_rejected (test_signal_description_ratios.SignalDescriptionRatioTests.test_wrong_numerator_denominator_and_different_concepts_remain_rejected) (description='Measure operating cash flow growth and revenue growth.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 67, in test_wrong_numerator_denominator_and_different_concepts_remain_rejected
+    candidate = replace(self.candidate, definition={'description': description})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/l/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/dataclasses.py", line 1588, in replace
+    return obj.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SignalSpec.__init__() got an unexpected keyword argument 'definition'
+
+======================================================================
+FAIL: test_original_exact_definition_executes_all_identity_repaired_fixtures (test_signal_description_ratios.SignalDescriptionRatioTests.test_original_exact_definition_executes_all_identity_repaired_fixtures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 38, in test_original_exact_definition_executes_all_identity_repaired_fixtures
+    self.assertTrue(checked.accepted, checked.reasons)
+AssertionError: False is not true : ('definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin',)
+
+======================================================================
+FAIL: test_same_disclosed_table_contains_the_actual_ordered_alternatives (test_signal_description_ratios.SignalDescriptionRatioTests.test_same_disclosed_table_contains_the_actual_ordered_alternatives)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 75, in test_same_disclosed_table_contains_the_actual_ordered_alternatives
+    self.assertIn(['operating cash flow as a share of revenue'],
+AssertionError: ['operating cash flow as a share of revenue'] not found in [['operating', 'cash', 'flow', 'margin']]
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.587s
+
+FAILED (failures=2, errors=10)

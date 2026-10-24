@@ -3,9 +3,9 @@
   "objective": "Fast/Slow 工程 MVP：限定支持范围内可信输入、正确执行与反馈、方向/magnitude技术准入及精确复用、持久化/恢复闭环；独立预测收益为后续里程碑",
   "goal_snapshot": {
     "status": "active",
-    "checked_at": "2026-10-23T06:12:59+00:00",
+    "checked_at": "2026-10-24T17:01:49.536571+00:00",
     "thread_id": "01a1674b-9484-78d0-955c-6db9b35d0a4c",
-    "source": "Live get_goal confirms current continuing unbudgeted MVP goal active. Independent reviewer and exact-inbox production agents actually start this turn. Frozen v4 bounded diagnostic preserves v3 debt/original limits and old terminal states; not a full successor, budget reset, new efficacy claim or external API authorization."
+    "source": "Live get_goal confirms user approved both exact resource/interface proposals and continued original MVP goal. Fixed classification native diagnostic only; no full successor, old terminal reentry, API or historical usage reset."
   },
   "acceptance": [
     {
@@ -2034,10 +2034,26 @@
         "runs/diagnostics/icfr_native_capability_20261023_v1/parent-control-stop-v4.json"
       ],
       "result": "Parent stopped repeated-window strategy after26 actual answers/5367457; with old debt36/7423398, remaining44calls/5159514; NOT budget exhaustion. Two exact rereads successively evict next selected old window; source/fact/relation/event/candidate inventories unchanged. h027 raw not submitted/executed; native pending/no completion; candidate1 uncompleted/0passed, consumers0/4, business0/0. No infinite-loop/code-bug/no-pattern or inability-to-synthesize claim. Parent verified25 review bindings/182 code/1481 source before prefix seal. No reentry/immediate v5/cap reset. Approved A and adjacent financial definitions are separate local repair work; Fast/MVP/gain open."
+    },
+    {
+      "id": "classification-fresh-consumer-20261025",
+      "strategy": "approved_exact_classification_native_consumer",
+      "failure_families": [
+        "categorical_meaning_lost_or_confused_with_numeric_sign",
+        "approved_extra_allowance_absorbed_by_native_finalization"
+      ],
+      "acceptance_advances": [],
+      "evidence": [
+        "reports/classification-fresh-consumer-20261025.md",
+        "runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/completion.json",
+        "runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/post-consumer-review-20261025/final-review.json",
+        "runs/diagnostics/classification_fresh_consumer_20261024_v1/frozen-code-manifest.json"
+      ],
+      "result": "Actual fixed repaired consumer1/1 after2firstanswers/0correction;128731new logical units, cumulative364582/6 under380819/7; actual affirmative low-runway understanding,5needs/unknowns/source/sink preserved. Old0of1/wholeF9/Fast/MVP remain open; no broader acceptance level/gain asserted. Approved Registry repair remains to implement after original198/18/9 and synonym-boundary prerequisites."
     }
   ],
   "review": {
-    "after_iteration": "mining-native-v4-20261023",
+    "after_iteration": "classification-fresh-consumer-20261025",
     "evidence": [
       "reports/icfr-source-and-native-path-preflight-20261023.md",
       "runs/diagnostics/icfr_native_capability_20261023_v1/source-review/obligations.json",
@@ -2093,7 +2109,10 @@
       "reports/classification-meta-context-20261023.md",
       "reports/financial-period-policy-20261023.md",
       "reports/fixture-audit-alignment-20261024.md",
-      "reports/mvp-next-boundaries-20261024.md"
+      "reports/mvp-next-boundaries-20261024.md",
+      "runs/diagnostics/classification_fresh_consumer_20261024_v1/authorization-20261025.json",
+      "reports/classification-fresh-consumer-20261025.md",
+      "reports/registry-capability-repair-20261025.md"
     ],
     "blind_spots": [
       "只核对accepted state和处置投影，漏看三个消费者完整Signal summary仍携带未来actual",
@@ -2212,21 +2231,22 @@
       "First handle projection relied on recursively named reference slots and therefore rewrote opaque source JSON/semantic thresholds; source originals and typed operation containers need schema-owned boundaries in every duplicate working-view copy. Independent controls found defaultscope=None and inspect_manifest copies missed after first literal repair. Complete actual payload roundtrip/native zero-receive fit and synthetic preservation do not prove fresh role planning or any candidate, and a code-specific immutable oracle refusal must not be repaired by refreshing that sealed oracle.",
       "The true-origin repair initially concatenated per-case navigation in input order and reversed all rows for recency; isolated source geometry and the first independent8groups did not test whole-fetch case permutations or same-fetch projection order. Existing accounting regression found it, canonical case order and newest-fetch grouping now preserve both. Script hypothetical query/read after old-answer reconstruction is only a mechanical/full-cost probe: it supplies no fresh decision and cannot count its two captures as sequential answered requests or replace real candidate/admission/use evidence.",
       "Postrepair new-code evaluation permission does not permit resetting an exhausted target or importing earlier answers. Preserve exact old receipt costs in both role-visible reserved counters and hard gates, reconstruct only local ordered caches, and test both sides of completed-seed snapshots. Empty exchange directories and exchange/contract.json are normal transport initialization, not imported answers. Independent authorization review is not independent implementation acceptance. Subagent service thread limit stops further dispatch; offline tests cannot substitute for fresh model behavior and no external API fallback is authorized. Matching counters and snapshot can be jointly rewritten; bind accepted checkpoint bytes in a separate immutable receipt before restoring. The added joint-rewrite test actually failed the earlier implementation, so earlier497 did not close this family.",
-      "The old service thread limit was a verified dispatch stop, not a permanent unavailable state. This turn actually started independent reviewer and fresh exact-inbox actors before continuing. Independent implementation review and exact semantic-oracle equality now permit same-budget code-version evaluation, but partial fresh navigation/read fidelity cannot substitute for complete candidate/admission/consumer capability or Fast closure."
+      "The old service thread limit was a verified dispatch stop, not a permanent unavailable state. This turn actually started independent reviewer and fresh exact-inbox actors before continuing. Independent implementation review and exact semantic-oracle equality now permit same-budget code-version evaluation, but partial fresh navigation/read fidelity cannot substitute for complete candidate/admission/consumer capability or Fast closure.",
+      "An extra diagnostic budget expressed as native RuntimeBudgetExceeded could be absorbed into finalization and continue Predictor. Independent actualcore zeroallowance counterexample exposed it before modeldispatch; dedicated controlflow now terminal. Ordered-ratio synonyms can introduce nonoperating or transformed-revenue falseacceptances despite positive fixtures; independent negative controls required wholeword and denominator-completion checks. Neither local synonym repair nor narrow fresh classification1of1 proves whole Registry migration/F9/MVP."
     ],
     "decision": {
       "acceptance_id": "content_chain",
-      "kind": "human_decision",
-      "strategy": "preserve_budget_and_request_explicit_repair_boundaries",
-      "action": "Await fixed additional consumer allowance and restricted Registry capability-repair interface decisions; adapter repair is local and does not publish or dispatch.",
-      "stop": "No old stage reentry, prior-usage reset, missing-CIK repair in old files, reduced18 coverage, alias bypass or fresh role dispatch before required decisions.",
-      "question": "Authorize the exact new consumer allowance and restricted atomic historical-Registry repair contract?",
-      "pass": "Only independently supported local evidence; full Fast/MVP remain open.",
-      "fail": "Preserve actual counterexamples and unknown source dispositions before further execution.",
-      "on_pass": "Freeze only explicitly approved envelopes; preserve all old verdicts and source/period/identity gates.",
-      "on_fail": "Retain refused publication and prior financial/F9/Mining results; do not emulate passing closure.",
-      "new_evidence": "Current final-code input preflight carries live classification; resource audit proves235851/4calls leaves20149/1call. Normal18 audit rejects9 truly unbound legacy fixtures; separate candidate/stable adapter drift repaired with407 associated and independent controls. No publication or fresh roles.",
-      "distinguishing_variable": "Two explicit resource/interface boundaries with concrete prepared evidence, not another renamed run or a guess at missing identity."
+      "kind": "repair",
+      "strategy": "approved_restricted_registry_capability_repair",
+      "action": "Implement approved separate-successor capability_repair after independent bounded description review; preserve complete original198 files/18 membership and exact9 nextversions, admission-v1 and original complete output audit before version increment.",
+      "stop": "No original Registry mutation, historical fixture rewrite, reduced membership, omitted repair, extra measurement change, effect claim, API, old terminal reentry or full successor. Failed preconditions retain diagnostic disposition.",
+      "question": "Can exact approved9updates repair the frozen unhealthy baseline atomically and recover without changing original history or weakening full18 capability/admission gates?",
+      "pass": "All approved nextversions validate with complete fixtures/dedup/admission and immutable scope; genuine final18audit passes before version bump/applied; interruption controls recover exact candidate/key/hash once.",
+      "fail": "Any original/source/scope/identity drift, missing/legacy admission, partial ordinary visibility, failed full audit or wrong recovery/version is accepted.",
+      "on_pass": "Freeze and execute the exact separate successor migration after independent counterreview, then verify exact downstream use separately.",
+      "on_fail": "Retain failure and originalbaseline; repair the causal boundary without changing definition/expected outcomes or bypassing complete membership.",
+      "new_evidence": "User approvedB. Original v12/18/198 exactbaseline and9disabled map independently captured; native sharedordinary transaction increments beforeaudit and lacks wholefile binding. OCF ratio equivalent description was mistakenly screened out; bounded synonym/negativecontrols tested before migration. A narrow actual consumer1/1 is now completed and codearchived.",
+      "distinguishing_variable": "Explicit byte/scope-bound unhealthy-baseline repair transaction versus ordinary healthy-input promotion; completeaudit precedespublication and replay binds exactoriginalplan."
     }
   },
   "successor_prerequisites": [

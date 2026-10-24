@@ -1,0 +1,144 @@
+{
+  "passed": 34,
+  "checks": [
+    {
+      "check": "Pointer is stage completion with exact durable sink hash",
+      "passed": true
+    },
+    {
+      "check": "Original bootstrap preserved complete",
+      "passed": true
+    },
+    {
+      "check": "No extra role responses/correction stage",
+      "passed": true
+    },
+    {
+      "check": "Receipt raw/inbox/request binding 1b331edf",
+      "passed": true
+    },
+    {
+      "check": "Inbox equals actual native message payload 1b331edf",
+      "passed": true
+    },
+    {
+      "check": "Complete native message-byte/output reservation 1b331edf",
+      "passed": true
+    },
+    {
+      "check": "Receipt raw/inbox/request binding e75f08fa",
+      "passed": true
+    },
+    {
+      "check": "Inbox equals actual native message payload e75f08fa",
+      "passed": true
+    },
+    {
+      "check": "Complete native message-byte/output reservation e75f08fa",
+      "passed": true
+    },
+    {
+      "check": "Fresh distinct Reflect/Predictor author receipts",
+      "passed": true
+    },
+    {
+      "check": "Accepted Reflect state exactly applies original raw operations",
+      "passed": true
+    },
+    {
+      "check": "All five exact unresolved needs retained with no answered ownership",
+      "passed": true
+    },
+    {
+      "check": "Actual new measurement equals frozen original complete result",
+      "passed": true
+    },
+    {
+      "check": "Declaration binds exact actual result/version/consumed parameters",
+      "passed": true
+    },
+    {
+      "check": "Entire actual anonymous final request equals identity projection of persisted sink context",
+      "passed": true
+    },
+    {
+      "check": "Predictor input exactly equals sink complete local context",
+      "passed": true
+    },
+    {
+      "check": "Final state equals accepted Reflect state",
+      "passed": true
+    },
+    {
+      "check": "Actual stop cause retained",
+      "passed": true
+    },
+    {
+      "check": "Complete actual declaration reaches final anonymous wire",
+      "passed": true
+    },
+    {
+      "check": "Numeric sign and category remain independently explicit",
+      "passed": true
+    },
+    {
+      "check": "Exact measurement/formula/period/unit reaches final consumer",
+      "passed": true
+    },
+    {
+      "check": "Both complete literal operand sources reach final consumer",
+      "passed": true
+    },
+    {
+      "check": "Predictor accepted exactly original raw fields with native derived is_surge",
+      "passed": true
+    },
+    {
+      "check": "Durable prediction equals accepted original answer",
+      "passed": true
+    },
+    {
+      "check": "Exact newly reserved logical units128731",
+      "passed": true
+    },
+    {
+      "check": "Native prior-inclusive usage239763/4 preserved",
+      "passed": true
+    },
+    {
+      "check": "Historical debt cumulative364582/6 below380819/7",
+      "passed": true
+    },
+    {
+      "check": "Completed stage has no failure and no labels",
+      "passed": true
+    },
+    {
+      "check": "Old consumer still terminal old235851/4 unchanged",
+      "passed": true
+    },
+    {
+      "check": "No oracle/review text in either evaluated inbox",
+      "passed": true
+    },
+    {
+      "check": "Predictor baseline numbers correctly round actual inputs",
+      "passed": true
+    },
+    {
+      "check": "Predictor margin numbers/units/comparison shown in source card",
+      "passed": true
+    },
+    {
+      "check": "Predictor price change/endpoints/window agree with metric",
+      "passed": true
+    },
+    {
+      "check": "Predictor truncation/news limits agree with actual packet",
+      "passed": true
+    }
+  ],
+  "production_roles": 0,
+  "external_API": 0,
+  "labels": 0
+}

@@ -1,0 +1,53 @@
+FFFFFF..
+======================================================================
+FAIL: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure operating cash flow as a share of revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 54, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    self.assertTrue(checked.accepted, checked.reasons)
+AssertionError: False is not true : ('definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin',)
+
+======================================================================
+FAIL: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure OPERATING CASH FLOW as a percentage of revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 54, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    self.assertTrue(checked.accepted, checked.reasons)
+AssertionError: False is not true : ('definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin',)
+
+======================================================================
+FAIL: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure operating cash-flow divided by revenue.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 54, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    self.assertTrue(checked.accepted, checked.reasons)
+AssertionError: False is not true : ('definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin',)
+
+======================================================================
+FAIL: test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition (test_signal_description_ratios.SignalDescriptionRatioTests.test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition) (description='Measure the operating cash flow to revenue ratio.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 54, in test_ordered_equivalent_ratio_phrases_execute_without_rewriting_definition
+    self.assertTrue(checked.accepted, checked.reasons)
+AssertionError: False is not true : ('definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin',)
+
+======================================================================
+FAIL: test_original_exact_definition_executes_all_identity_repaired_fixtures (test_signal_description_ratios.SignalDescriptionRatioTests.test_original_exact_definition_executes_all_identity_repaired_fixtures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 38, in test_original_exact_definition_executes_all_identity_repaired_fixtures
+    self.assertTrue(checked.accepted, checked.reasons)
+AssertionError: False is not true : ('definition-to-implementation mismatch: description does not name the concept measured by financial.operating_cash_flow_margin',)
+
+======================================================================
+FAIL: test_same_disclosed_table_contains_the_actual_ordered_alternatives (test_signal_description_ratios.SignalDescriptionRatioTests.test_same_disclosed_table_contains_the_actual_ordered_alternatives)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/l/Project/Recommandation/tests/test_signal_description_ratios.py", line 75, in test_same_disclosed_table_contains_the_actual_ordered_alternatives
+    self.assertIn(['operating cash flow as a share of revenue'],
+AssertionError: ['operating cash flow as a share of revenue'] not found in [['operating', 'cash', 'flow', 'margin']]
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.161s
+
+FAILED (failures=6)

@@ -1,0 +1,202 @@
+{
+  "schema_version": "classification-fresh-consumer-independent-final-review-v1",
+  "verdict": "pass_narrow_fixed_repaired_consumer_1_of_1",
+  "acceptance_scope": "Actual repaired classification declaration and this exact original context-only runway result through new Reflect, final anonymous Predictor and durable sink. Old financial-context-consumer semantic0/1 remains immutable. This is not globalF9 closure or completeMVP.",
+  "oracle": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/conditional-consumer-oracle.json",
+    "sha256": "9920a644dd8015741573bd10ad5dfaee7daed99c4d435a3e54908b08d8e39a61"
+  },
+  "authorization": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/authorization-20261025.json",
+    "sha256": "798eca2a2667afa99e92f2f287b7687950f73d7c86be143428484b7bab50dfe8"
+  },
+  "completion": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/completion.json",
+    "sha256": "8ebcb4f64d80187b75b9544e1b0258f427c6b4ee35a56cc5e9b27b18d42fca03"
+  },
+  "prediction_sink": {
+    "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/prediction-sink.json",
+    "sha256": "66b7ddcbb869c50be7e60c19b855b1afeb9fcfdfc29b5cf5908d321df3062f38"
+  },
+  "evidence": [
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/post-consumer-review-20261025/final_checks.py",
+      "sha256": "4d06578e2437da8f5a43e63b2cd808bc252860e06c22660673cc42d4b5011db7"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/post-consumer-review-20261025/final-checks.json",
+      "sha256": "4034faa60b6547f77c0ecada1cdf21a0a9233a5ea220e6f1bedb712ce6198d43"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/post-consumer-review-20261025/reflect-final-input-review.json",
+      "sha256": "eeca8b5444a384b216ed49a337a1252db285758f1b554c4a9f7cc5d373086020"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/conditional-consumer-oracle.json",
+      "sha256": "9920a644dd8015741573bd10ad5dfaee7daed99c4d435a3e54908b08d8e39a61"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/authorization-20261025.json",
+      "sha256": "798eca2a2667afa99e92f2f287b7687950f73d7c86be143428484b7bab50dfe8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/independent/approved-review-20261025/pre-dispatch.json",
+      "sha256": "d3327f7f0cdd0cbd6a5f0b47b3c1b295634af7eb3b05ba8b0a5d90c0e68e384d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/frozen-code-manifest.json",
+      "sha256": "0677aeec2d7406544b43f4db5a53c8dfffe5796615aab034bac9107ce8d199ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/manifest.json",
+      "sha256": "86fc93da52f804f9d2da173ff2368731d92696d05571fb7895b094f289ef914b"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/contract.json",
+      "sha256": "d6dce2368ae516cf1af64f75c1d170fe08f277a66996b0577c8ac7aecf6857be"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/inputs.json",
+      "sha256": "a8dc721e15981a29aa5d0c9675975694c9be94191ae642d2b6b20e66151f634d"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/completion.json",
+      "sha256": "8ebcb4f64d80187b75b9544e1b0258f427c6b4ee35a56cc5e9b27b18d42fca03"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/prediction-sink.json",
+      "sha256": "66b7ddcbb869c50be7e60c19b855b1afeb9fcfdfc29b5cf5908d321df3062f38"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/accepted-reflect.json",
+      "sha256": "b4b6a35440629096409f960eeb0e32f8ee7964f7e7978b5a7641df32f71d1dbb"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/accepted-prediction.json",
+      "sha256": "680e426f2a6cbe8e1eca44f45c8ebbf16de590770a71a37059ec36a47abd7428"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/actual-batch.json",
+      "sha256": "8d406637797ea661e70c1dfcd753c085daa7b6ef139b100431bbfe4f4599f68a"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/predictor-input.json",
+      "sha256": "043df2a95990e52ea3917e8df8fb1f29e4d21793c374fb740fe2beb424705b64"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/request-reservations.json",
+      "sha256": "34268846114ca72f21ac4c0f0269fc9bc8eacf45f5fa3c617115c967443780e1"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/bootstrap.json",
+      "sha256": "afc0235f0ae6e59d6bcee715370891dd09002a88a661e01b55ace5ee8f2ee02e"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/inbox/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+      "sha256": "66ea906ab3632fa328a08f9e4c60b54bfa8a05b3bfadae5d6186b439735a97f8"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/inbox/e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614.json",
+      "sha256": "8886f7555f07802ad28a38a7ad147886484aee202eca5c153c14d4ec7dc2f6ba"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/outbox/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.txt",
+      "sha256": "1a8884914a3f8171e534f0aca7b95defb67167c2a5ac1f0010f4bb8583e8ebda"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/outbox/e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614.txt",
+      "sha256": "4897ff69f8e9290f04618851c59a2226f7983ee4d39e398051e8d1212b109094"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/receipts/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+      "sha256": "2f784ee98f3de16ef0f0f515b096a1245bfc6ded4fb5ef33d718577a3b7be541"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/exchange/receipts/e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614.json",
+      "sha256": "75b38ad6a3f4df59c37a4cda78aa5511042ff95305e0c12e44e3bbfdc4030105"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/requests/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+      "sha256": "95eb7ae7b55d1217c9533fdf39ccc0bccbd290aad751a5293e231a2583b990ca"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/requests/e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614.json",
+      "sha256": "df4c2b4a6b0051c2dd2ef7c47341df9fc3c298c71892303679434a443ec62b97"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/reservations/1b331edf090e1d8650275ba3251dfd50ac60c1cc6e160cab9c1c12bd94e4f662.json",
+      "sha256": "74569dad2c92eccb88a2f4430498b7fd0c48141d0a244b5e49ea335a187deb23"
+    },
+    {
+      "path": "/Users/l/Project/Recommandation/runs/diagnostics/classification_fresh_consumer_20261024_v1/stage/reservations/e75f08fab7ee6f8110152ad8302a689a0c72c84113a32f8a42f8249cc5d12614.json",
+      "sha256": "8f915c752f75bd9ac0c25a6a7f91e05b559d3a80f3c34b513551d1b21ac45c76"
+    }
+  ],
+  "verified_chain": {
+    "F7": "First fresh Reflect raw patch accepted without correction; precise numeric claim adopts both literal operand evidence refs. It expressly identifies positive as low cash runway with a labelled historical-burn financing-risk inference, without favorable-stock/unrestricted-cash/future-funding conclusion. All5exact unresolved needs retained, need_dispositions.items empty, no fabricated ownership.",
+    "F8": "Complete result value5.374720662778656months/formula/Q1 period and both whole literal operand sources survive final context. Finalized stop retains actual max_signal_rounds trigger; open questions and historical-burn limits remain.",
+    "F9": "Actual whole anonymous final request exactly equals identity projection of durable sink context. Complete invoked-callable declaration/result hash/spec/consumed thresholds retained. Actual first Predictor raw expressly says positive category means low runway rather than favorable stock direction, uses conditional historical-burn inference and preserves funding/adoption/milestone unknowns. Accepted fields equal raw plus native derived is_surge; sink prediction exactly equals accepted answer.",
+    "input_integrity": "Current complete deterministic result equals original strict pass, bootstrap equals original complete authority, formal1863source/108code bindings reverified. Both original literal record/span/PIT checks were independently verified before dispatch.",
+    "resources": "2freshresponses0correction;59446Reflect+69285Predictor=128731new logical reserved units. Native prior111032+128731=239763/4calls<=256000/5; old debt235851+128731=364582/6calls<=380819/7. All request/reservation/receipt/raw hashes checked.",
+    "boundary": "Completion binds exact durable sink; no labels/truth/score/Posthoc or business pointer was entered.0externalAPI. Parent subsequently archived108frozen code files before unrelated source changes."
+  },
+  "semantic_counterexample_review": [
+    {
+      "counterexample": "Positive categorical state merely means positive numeric month measurement",
+      "observation": "Both new raw authors affirm low-runway meaning; Predictor explicitly separates stock direction. No numeric-sign substitution.",
+      "result": "not_present"
+    },
+    {
+      "counterexample": "Historical cash carrying value proves unrestricted funding, assured future runway or milestone affordability",
+      "observation": "Reflect explicitly disclaims unrestricted/future financing sufficiency; Predictor calls continued burn an inference and lists unrestricted cash/future burn/committed financing/debt/covenants/dilution as unresolved.",
+      "result": "not_present"
+    },
+    {
+      "counterexample": "Context-only scalar answers or narrows financing need/all needs",
+      "observation": "All5exact strings and0answered dispositions remain through accepted state/final anonymous wire/sink.",
+      "result": "not_present"
+    },
+    {
+      "counterexample": "Collection finalization means complete research or silently changes budget stop",
+      "observation": "Actual trigger=max_signal_rounds; Predictor explicitly says unresolved questions remain and finalization is not answered research.",
+      "result": "not_present"
+    },
+    {
+      "counterexample": "Final answer invents baseline/margin/period/price-shape facts or upgrades finite visibility into nonexistence",
+      "observation": "Every numerical claim matches actual baseline, projection or metric. Truncation/news limitations stated. Assertions of undisclosed milestones/adoption are limited to visible packet.",
+      "result": "not_present"
+    },
+    {
+      "counterexample": "Intermediate declaration present but final anonymous wire/persisted sink differ",
+      "observation": "Entire anonymous final_context equals exact identity projection of sink context; both source operands/actual result/declaration/needs preserved.",
+      "result": "not_present"
+    }
+  ],
+  "independent_controls": {
+    "pre_dispatch_independent_controls": 27,
+    "pre_dispatch_focused_tests": 7,
+    "actual_native_terminal_stop_control": true,
+    "post_consumer_persisted_chain_controls": 34,
+    "pre_dispatch_resource_blocker": "Found and resolved before first inbox; original failing evidence retained."
+  },
+  "not_evaluated": [
+    "No required direction, probability, confidence, belief change or citation style; actual candidate_judgment is not an accuracy verdict.",
+    "No labels or realized-return comparison, independent prediction benefit or self-evolution gain.",
+    "One fixed repaired case does not prove all threshold variants, future fresh cases, allF4-F9, Critic/Slow/Mining semantic consumption or completeMVP.",
+    "No OS interruption or full business recovery was exercised.",
+    "Logical reservations and zero externalAPI do not establish actual host model token/cost usage; those remain unknown.",
+    "The unused correction/remaining16237logical units are not authorization to append samples or reopen completed stage."
+  ],
+  "old_outcomes_unchanged": {
+    "financial_consumer_F9": "0/1",
+    "financial9": "6 strict pass /1 prior-version literal failure /2 historical period-policy unknown",
+    "routing_portfolio": "0/1"
+  },
+  "reviewer_execution": {
+    "production_roles": 0,
+    "production_Signal_calculations_this_post_review": 0,
+    "external_API": 0,
+    "labels": 0,
+    "source_edits": 0
+  }
+}
